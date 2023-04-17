@@ -83,6 +83,7 @@ finally: $\{3\}$ vs. $\{4\}$.
 
 ```{r}
 #| nested,
+#| echo = FALSE,
 #| out.width="90%",
 #| fig.cap = "Nested dichotomies. The boxes show two different ways a four-category response can be represented as three nested dichotomies."
 knitr::include_graphics("fig/nested.jpg")
