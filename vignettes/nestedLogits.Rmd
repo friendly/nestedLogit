@@ -2,7 +2,7 @@
 title: "Nested dichotomies logistic regression models"
 author: "Michael Friendly and John Fox"
 date: "`r Sys.Date()`"
-package: nestedLogits
+package: nestedLogit
 output: 
   rmarkdown::html_vignette:
   fig_caption: yes
@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
   warning = FALSE,
+  fig.align = "center",
   fig.height = 6,
   fig.width = 7,
   fig.path = "fig/",
@@ -89,12 +90,24 @@ finally: $\{3\}$ vs. $\{4\}$.
 knitr::include_graphics("fig/nested.jpg")
 ```
 
+This figure makes clear that nested dichotomies are not unique or equivalent.
+Different choices will have different interpretations and different fitted probabilities.
 Such models make the most sense when there are substantive reasons for considering the response
 categories in terms of such dichotomies. For example, in the diagram above at the right, this would make sense if the categories were _ordered_, $1 < 2 < 3 < 4$, so each of the three submodels can be interpreted as `above_1`, `above_2`, `above_3`.
 <!-- $\mathrm{above}: \{1, 2, 3}$. -->
 
-As well, this figure makes clear that nested dichotomies are not unique or equivalent.
-Different choices will have different interpretations and different fitted probabilities.
+For another example, the figure below shows a case where psychiatric patients
+are classified into four diagnostic categories.  These might be considered
+ordered categories and dichotomized as in the 4-category above.
+However, it might make better sense to dichotomize ...
+
+```{r}
+#| nested-psychiatric,
+#| echo = FALSE,
+#| out.width="70%",
+#| fig.cap = "Nested dichotomies. The boxes show two different ways a four-category response can be represented as three nested dichotomies."
+knitr::include_graphics("fig/nested-psychiatric.png")
+```
 
 ## Example: Women's labor force participation
 
@@ -112,6 +125,21 @@ the York University Institute for Social Research. The variables are:
 * `children`: Presence of children in the home, `absent` or `present`
 * `region`: Region of Canada (not used here)
 
+The response, `partic` is a factor, but the levels are ordered
+alphabetically. To correct this, we make it an ordered factor.
+
+```{r}
+library(dplyr)
+data(Womenlf, package = "carData")
+Womenlf <- Womenlf |>
+  mutate(partic = ordered(partic, 
+                          levels = c("not.work", "parttime", "fulltime")))
+
+table(Womenlf$partic)
+```
+### Defining dichotomies
+
+It is at least arguable to consider a woman's labor choice
 
 
 ## References

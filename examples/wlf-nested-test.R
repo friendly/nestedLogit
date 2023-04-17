@@ -9,7 +9,7 @@ data(Womenlf, package = "carData")
 #' ## Fit nested dichotomies 'by hand'
 
 Womenlf <- Womenlf |>
-  mutate(partic = ordered(levels = "not.work", "parttime", "fulltime")) |>
+  mutate(partic = ordered(partic, levels = c("not.work", "parttime", "fulltime"))) |>
   mutate(work = ifelse(partic=="not.work", 0, 1)) |>
   mutate(full = case_when(
     work & partic == "fulltime" ~ 1,
