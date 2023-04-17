@@ -22,12 +22,15 @@ Imports:
   broom,
   stats
 Suggests:
-  carData
+  carData,
+  knitr,
+  rmarkdown
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr, rmarkdown
 URL: https://github.com/friendly/nestedLogit
 BugReports: https://github.com/friendly/nestedLogit/issues

@@ -9,6 +9,7 @@ data(Womenlf, package = "carData")
 #' ## Fit nested dichotomies 'by hand'
 
 Womenlf <- Womenlf |>
+  mutate(partic = ordered(levels = "not.work", "parttime", "fulltime")) |>
   mutate(work = ifelse(partic=="not.work", 0, 1)) |>
   mutate(full = case_when(
     work & partic == "fulltime" ~ 1,
@@ -20,13 +21,13 @@ mod.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
 
 #' ## Use nestedLogit()
 
-mod.nested <- nestedLogit(partic ~ hincome + children, 
+mod.nested <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                  data=Womenlf)
 
 #' ## Compare coefficients
-#' 
+#'
 c.hand <- rbind(work = coef(mod.work),
           full = coef(mod.full))
 
@@ -35,8 +36,8 @@ c.nest <- t(coef(mod.nested))
 all.equal(c.hand, c.nest)
 
 #' ## Test predict()
-#' 
-new <- expand.grid(hincome=seq(0, 45, length=10), 
+#'
+new <- expand.grid(hincome=seq(0, 45, length=10),
                     children=c("absent", "present"))
 
 #' ## by hand
@@ -57,9 +58,9 @@ pred.hand <- data.frame(
 pred.nested <- predict(mod.nested, new)
 
 #' ## Compare predictions
-#' 
+#'
 
-all.equal(pred.hand, as.data.frame(pred.nested), 
+all.equal(pred.hand, as.data.frame(pred.nested),
           check.attributes = FALSE)
 
 

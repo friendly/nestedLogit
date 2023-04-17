@@ -1,0 +1,119 @@
+---
+title: "Nested dichotomies logistic regression models"
+author: "Michael Friendly and John Fox"
+date: "`r Sys.Date()`"
+package: nestedLogits
+output: 
+  rmarkdown::html_vignette:
+  fig_caption: yes
+bibliography: ["references.bib"]
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Nested dichotomies logistic regression models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.height = 6,
+  fig.width = 7,
+  fig.path = "fig/",
+  dev = "png",
+  comment = "#>"
+)
+
+# save some typing
+knitr::set_alias(w = "fig.width",
+                 h = "fig.height",
+                 cap = "fig.cap")
+
+# colorize text
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+```
+
+```{r setup}
+library(nestedLogit)
+library(knitr)
+```
+
+## Models for polytomous responses
+
+### Multinomial model
+For a categorical ("_polytomous_") response variable with more than two response categories, 
+one natural extension of the standard logistic regression _logit_ model is the _multinomial logit_ 
+(or, _generalized logit_) model.
+When the polytomous response has $m$ levels, the multinomial logit model is comprised of
+$m-1$ log odds comparisons with a reference level, typically the last, as described in
+@Fox:2016:ARA, \S 14.2.1 and @FriendlyMeyer:2016:DDAR, \S 8.2.
+The standard implementation of this model is `multinom()` in the
+`nnet` package.
+<!-- TODO: reference R packages -->
+
+### Nested logit model
+A sometimes simpler approach, called _nested dichotomies_, is to fit a collection of $m-1$ 
+separate models for each of a hierarchically nested set of binary comparisons among the
+response categories.  This is simpler, because it uses the familiar logistic regression model
+for each of the dichotomies. Taken together, this set of $m-1$ models comprises a complete
+model for the polytomous response, just as does the multinomial logit model.
+
+However, by the construction of **nested** dichotomies, the submodels are statistically independent,
+so that test statistics, such as the likelihood ratio $G^2$ tests and tests for
+individual coefficients can be added to give overall tests for the full polytomy.
+
+This is illustrated in the figure below, where response categories $Y = \{1, 2, 3, 4\}$
+can be divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these dichotomies can be
+divided as $\{1\}$ vs. $\{2\}$ and then $\{3\}$ vs. $\{4\}$.
+Alternatively, as shown in the right side of the figure, the response categories
+can be divided progressively---
+first: $\{1\}$ vs. $\{2, 3, 4\}$,
+next: $\{2\}$ vs. $\{3, 4\}$, and
+finally: $\{3\}$ vs. $\{4\}$.
+
+
+```{r}
+#| nested,
+#| out.width="90%",
+#| fig.cap = "Nested dichotomies. The boxes show two different ways a four-category response can be represented as three nested dichotomies."
+knitr::include_graphics("fig/nested.jpg")
+```
+
+Such models make the most sense when there are substantive reasons for considering the response
+categories in terms of such dichotomies. For example, in the diagram above at the right, this would make sense if the categories were _ordered_, $1 < 2 < 3 < 4$, so each of the three submodels can be interpreted as `above_1`, `above_2`, `above_3`.
+<!-- $\mathrm{above}: \{1, 2, 3}$. -->
+
+As well, this figure makes clear that nested dichotomies are not unique or equivalent.
+Different choices will have different interpretations and different fitted probabilities.
+
+## Example: Women's labor force participation
+
+For a main example, we consider the data set `Womenlf` from the `carData` package.
+This data gives the responses of 263 women from a 1977 survey carried out by
+the York University Institute for Social Research. The variables are:
+<!-- TODO: cite Social Change in Canada Project -->
+
+* `partic`: labor force participation, the response, with levels
+  + `fulltime`: working full-time
+  + `not.work`: not working outside the home
+  + `parttime` : working part-time.
+
+* `hincome`: Husband's income, in \$1,000s
+* `children`: Presence of children in the home, `absent` or `present`
+* `region`: Region of Canada (not used here)
+
+
+
+## References
+
+
+
