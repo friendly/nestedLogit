@@ -1,0 +1,36 @@
+#' @name GSS
+#' @docType data
+#' 
+#' @title Data From the U.S. General Social Survey 1972-2016
+#'
+#' @description This data set is drawn from the U.S. General Social Survey (GSS) for years
+#' between 1972 and 2016.
+#'
+#' @usage data("GSS", package = "nestedLogit")
+#'
+#' @format A data frame with 44091 rows and 3 columns.
+#' \describe{
+#'   \item{parentdeg}{A factor representing parents' attained level of education 
+#'   (highest "degree" obtained), recording
+#'   the higher of mother's and father's education, with levels \code{"l.t.highschool"}, 
+#'   \code{"highschool"}, \code{"college"}, and \code{"graduate"}.}
+#'   \item{degree}{The respondent's level of education, a factor with the same levels
+#'   as \code{parentdeg}.}
+#'   \item{year}{The year of the survey, between \code{1972} and 
+#'   code{2016}.}
+#'   }
+#'
+#' @source General Social Survey, NORC, The University of Chicago 
+#' \url{https://www.norc.org/Research/Projects/Pages/general-social-survey.aspx}.
+#' 
+#' @seealso \code{\link{nestedLogit}}.
+#'
+#' @examples
+#' round(100*with(GSS, prop.table(table(degree, parentdeg), 2)))
+#' m.GSS <- nestedLogit(degree ~ parentdeg*year, 
+#'                      continuationLogits(c("l.t.highschool",  "highschool", 
+#'                                            "college", "graduate")),
+#'                      data=GSS)
+#' car::Anova(m.GSS)
+#' summary(m.GSS)
+"GSS"

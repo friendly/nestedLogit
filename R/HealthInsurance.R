@@ -1,0 +1,48 @@
+#' @name HealthInsurance
+#' @docType data
+#' 
+#' @title Choice of Health Insurance Product
+#'
+#' @description A company recently introduced a new health insurance provider for 
+#' its employees. At the beginning of the year the employees had to choose one of 
+#' three (or four) different health plan products from this provider to best suit 
+#' their needs.
+#' 
+#' This dataset was modified from its original source (McNulty, 2022) for the 
+#' present purposes by adding a fourth choice, sampled randomly from the original three.
+#'
+#' @usage data("HealthInsurance", package = "nestedLogit")
+#'
+#' @format A data frame with 1448 rows and 7 columns.
+#' \describe{
+#'   \item{product}{Choice among three products, a factor with levels \code{"A"}, \code{"B"}, 
+#'   and \code{"C"}.}
+#'   \item{product4}{Choice among four products, a factor with levels \code{"A"}, \code{"B"}, 
+#'   \code{"C"}, and \code{"D"}.}
+#'   \item{age}{The age of the individual, in years.}
+#'   \item{household}{The number of people living with the individual in the 
+#'   same household.}
+#'   \item{position_level}{Position level in the company at the time the choice was made, 
+#'   where 1 is is the lowest level and 5 is the highest, a numeric vector.}
+#'   \item{gender}{The gender of the individual, a factor with levels \code{"Female"}
+#'   and \code{"Male"}.}
+#'   \item{absent}{The number of days the individual was absent from work in the year 
+#'   prior to the choice,}
+#'   }
+#'
+#' @source Originally taken from McNulty, K. (2022). 
+#' \emph{Handbook of Regression Modeling in People Analytics},
+#' \url{https://peopleanalytics-regression-book.org/data/health_insurance.csv}.
+#' 
+#' @seealso \code{\link{nestedLogit}}.
+#'
+#' @examples
+#' lbinary <- logits(AB_CD = dichotomy(c("A", "B"), c("C", "D")),
+#'                   A_B   = dichotomy("A", "B"),
+#'                   C_D   = dichotomy("C", "D"))
+#' as.matrix(lbinary)
+#' health.nested <- nestedLogit(product4 ~ age  + gender * household + position_level,
+#'                              dichotomies = lbinary, data = HealthInsurance)
+#'                              car::Anova(health.nested)
+#' coef(health.nested)
+"HealthInsurance"
