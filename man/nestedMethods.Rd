@@ -47,6 +47,8 @@
 
 \method{update}{nested}(object, formula, dichotomies, data, subset, contrasts, ...)
 
+\method{as.matrix}{dichotomies}(x, ...)
+
 \method{as.character}{dichotomies}(x, ...)
 
 \method{as.matrix}{continuationDichotomies}(x, ...)

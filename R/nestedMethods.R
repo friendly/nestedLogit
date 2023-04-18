@@ -5,11 +5,11 @@
 #' as.matrix.dichotomies
 #' @description Various methods for processing \code{"nested"} and related objects.
 #' @seealso \code{\link{nestedLogit}}
-#' 
+#'
 #' @param x,object,object2,mod in most cases, an object of class \code{"nested"}.
-#' @param newdata a data frame containing combinations of values of the predictors 
+#' @param newdata a data frame containing combinations of values of the predictors
 #'        at which fitted probabilities are to be computed.
-#' @param as.matrix if \code{TRUE} (the default for \code{coef}) return coefficients 
+#' @param as.matrix if \code{TRUE} (the default for \code{coef}) return coefficients
 #'        as a matrix with one column for each nested dichotomy,
 #'        or coefficient covariances as a matrix with one row and column for each
 #'        combination of dichotomies and coefficients; if \code{FALSE} (the default for
@@ -21,11 +21,11 @@
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
 #' @param \dots arguments to be passed down.
-#' 
+#'
 #' @author John Fox and Michael Friendly
 #' @keywords regression
-#' @examples 
-#' 
+#' @examples
+#'
 #' # TODO: add examples for at least some of the methods
 
 
@@ -48,9 +48,9 @@ summary.nested <- function(object, ...) {
     result[[i]]$dichotomy <- object$models[[i]]$dichotomy
   }
   class(result) <- "summary.nested"
-  attr(result, "formula") <- object$formula 
-  attr(result, "subset") <- object$subset 
-  attr(result, "contrasts.print") <- object$contrasts.print 
+  attr(result, "formula") <- object$formula
+  attr(result, "subset") <- object$subset
+  attr(result, "contrasts.print") <- object$contrasts.print
   result
 }
 
@@ -275,7 +275,7 @@ update.nested <- function(object, formula, dichotomies, data, subset, contrasts,
   } else {
     update(object$formula, formula)
   }
-  if (missing(dichotomies)) dichotomies <- object$dichotomies 
+  if (missing(dichotomies)) dichotomies <- object$dichotomies
   if (missing(data)) {
     data.name <- object$data.name
     data <- object$data
@@ -283,10 +283,10 @@ update.nested <- function(object, formula, dichotomies, data, subset, contrasts,
     data.name <- deparse(substitute(data))
   }
   if (missing(subset)) {
-    subset <- object$subset 
+    subset <- object$subset
   }
   if (missing(contrasts)){
-    contrasts <- object$contrasts 
+    contrasts <- object$contrasts
     if (!is.null(contrasts) && contrasts == "NULL") contrasts <- NULL
   }
   result <- nestedLogit(formula, dichotomies=dichotomies, data=data,
@@ -296,15 +296,17 @@ update.nested <- function(object, formula, dichotomies, data, subset, contrasts,
     result$models[[i]]$call$data <- as.symbol(data.name)
   }
   if (missing(contrasts)){
-    result$contrasts <- object$contrasts 
-    result$contrasts.print <- object$contrasts.print 
+    result$contrasts <- object$contrasts
+    result$contrasts.print <- object$contrasts.print
   } else {
     result$contrasts <- contrasts
-    result$contrasts.print <- deparse(substitute(contrasts)) 
+    result$contrasts.print <- deparse(substitute(contrasts))
   }
   result
 }
 
+#' @rdname nestedMethods
+#' @exportS3Method as.matrix dichotomies
 as.matrix.dichotomies <- function(x, ...) {
   levels <- unique(unlist(x))
   responses <- matrix(NA, length(x), length(levels))
@@ -344,7 +346,7 @@ as.matrix.continuationDichotomies <- function(x, ...){
 }
 
 
-#' 
+#'
 #  TODO: Check whether each row defines a dichotomy [DONE]
 #        Check whether dichotomies are nested
 #        Why doesn't this work as a method for class `matrix`?  -- Need to call it as `as.dichotomies.matrix()`
@@ -363,7 +365,7 @@ as.dichotomies.matrix <- function(x, ...) {
   if(is.null(colnames(x))) colnames(x) <- LETTERS[1:nlevels]
   levels <- colnames(x)
   dnames <- rownames(x)
-  
+
   logits <- vector("list", nlogits)
   for(i in 1:nlogits) {
     if (!all(x[i,] %in% c(0, 1, NA)))
@@ -375,7 +377,7 @@ as.dichotomies.matrix <- function(x, ...) {
   names(logits) <- dnames
   class(logits) <- "dichotomies"
   attr(logits, "levels") <- levels
-  
+
   logits
 }
 
