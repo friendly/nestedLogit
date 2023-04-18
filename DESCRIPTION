@@ -25,7 +25,8 @@ Imports:
 Suggests:
   carData,
   knitr,
-  rmarkdown
+  rmarkdown,
+  testthat
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8
