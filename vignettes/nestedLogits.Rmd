@@ -85,8 +85,8 @@ finally: $\{3\}$ vs. $\{4\}$.
 ```{r}
 #| nested,
 #| echo = FALSE,
-#| out.width="90%",
-#| fig.cap = "Nested dichotomies. The boxes show two different ways a four-category response can be represented as three nested dichotomies."
+#| out.width="80%",
+#| fig.cap = "**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies."
 knitr::include_graphics("fig/nested.jpg")
 ```
 
@@ -99,13 +99,15 @@ categories in terms of such dichotomies. For example, in the diagram above at th
 For another example, the figure below shows a case where psychiatric patients
 are classified into four diagnostic categories.  These might be considered
 ordered categories and dichotomized as in the 4-category above.
-However, it might make better sense to dichotomize ...
+However, it might make better sense to dichotomize the non-normal groups into
+a comparison of the depressed and manic group vs. schizophrenic and then
+a final contrast of the depressed and manic categories.
 
 ```{r}
 #| nested-psychiatric,
 #| echo = FALSE,
 #| out.width="70%",
-#| fig.cap = "Nested dichotomies. The boxes show two different ways a four-category response can be represented as three nested dichotomies."
+#| fig.cap = "**Psychiatric classification**: The figure shows how four diagnostic categories might be represented by nested dichotomies."
 knitr::include_graphics("fig/nested-psychiatric.png")
 ```
 
@@ -128,7 +130,7 @@ the York University Institute for Social Research. The variables are:
 The response, `partic` is a factor, but the levels are ordered
 alphabetically. To correct this, we make it an ordered factor.
 
-```{r}
+```{r order-partic}
 library(dplyr)
 data(Womenlf, package = "carData")
 Womenlf <- Womenlf |>
@@ -139,7 +141,82 @@ table(Womenlf$partic)
 ```
 ### Defining dichotomies
 
-It is at least arguable to consider a woman's labor choice
+It is at least arguable to consider a woman's labor choice as first involving
+a dichotomy (`work`) between women who are not working vs. those who are
+(part time or full time). A second dichotomy (`full`) contrasts those who work
+full time vs. part time, but among only those who work.
+
+the two binary variables can be created by recoding `partic` in the data frame
+as follows.  
+```{r recode}
+Womenlf <- Womenlf |>
+  mutate(work = ifelse(partic=="not.work", 0, 1)) |>
+  mutate(full = case_when(
+    work & partic == "fulltime" ~ 1,
+    work & partic == "parttime" ~ 0)
+  )
+```
+
+Note that the full sample of `r nrow(Womenlf)` cases is available for the `work` dichotomy,
+while only `r sum(Womenlf$partic != "not.work")` cases are involved in the distinction between
+part time and full time work.
+
+```{r xtabs}
+xtabs(~ partic + work, addNA=TRUE, data=Womenlf)
+xtabs(~ partic + full, addNA=TRUE, data=Womenlf)
+```
+
+
+We could then fit the separate models for these dichotomies manually:
+
+```{r submodels}
+mod.work <- glm(work ~ hincome + children, family=binomial, data=Womenlf)
+mod.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
+```
+
+But then, it would be difficult to obtain tests for the combined model,
+get and plot predicted values and so forth.
+
+### Using `dichotomy()` and `logits()`
+Instead, the `nestedLogit` package provides an easier way. The `dichotomy()` function
+creates a list of length two defining a single dichotomy. The `logits()` function
+uses $m-1$ calls to `dichotomy()` to create a list of class `dichotomies`
+containing the symbolic representation of these contrasts among the response categories.
+
+```{r comparisons}
+comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+                      full=dichotomy("parttime", "fulltime"))
+
+comparisons
+```
+For convenience, there are functions to convert these dichotomies to a matrix or to
+a character string representing the tree structure of the dichotomoies.
+
+```{r}
+as.matrix(comparisons)
+as.character(comparisons)
+```
+
+### Fitting the nested logit model
+
+To fit the model, we specify the `comparisons` argument as the `dichotomies` argument.
+```{r mod.nested}
+mod.nested <- nestedLogit(partic ~ hincome + children, 
+                          dichotomies = comparisons,
+                          data=Womenlf)
+```
+
+The result, `mod.nested` is a list containing the details of the model for the nested
+dichotomy. The `models` component contains results equivalent to what was fit manually
+above as `mod.work` and `mod.full`.
+
+```{r}
+names(mod.nested)
+names(mod.nested$models)
+```
+
+### Methods
+
 
 
 ## References
