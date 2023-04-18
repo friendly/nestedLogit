@@ -37,3 +37,13 @@ test_that("update.nested() works correctly, contrasts arg", {
   expect_equal(coef(m4), coef(m4a))
 })
 
+m5 <- nestedLogit(partic ~ hincome + children, 
+                  logits(full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                         part=dichotomy("not.work", "parttime")),
+                  data=Womenlf)
+m5a <- update(m2, dichotomies=logits(
+                         full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                         part=dichotomy("not.work", "parttime")))
+test_that("update.nested() works correctly, dichotomies arg", {
+  expect_equal(coef(m5), coef(m5a))
+})
