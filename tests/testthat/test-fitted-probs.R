@@ -1,4 +1,4 @@
-# test that nestedLogit() correctly computes fitted probabilities
+# test that nestedLogit()/predict.nested() correctly compute fitted probabilities
 
 m2 <- nestedLogit(degree ~ parentdeg + year, 
                   continuationLogits(c("l.t.highschool",  "highschool", 
