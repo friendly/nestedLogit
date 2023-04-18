@@ -46,6 +46,8 @@ colorize <- function(x, color) {
 ```{r setup}
 library(nestedLogit)
 library(knitr)
+library(car)
+library(broom)
 ```
 
 ## Models for polytomous responses
@@ -210,12 +212,27 @@ The result, `mod.nested` is a list containing the details of the model for the n
 dichotomy. The `models` component contains results equivalent to what was fit manually
 above as `mod.work` and `mod.full`.
 
-```{r}
+```{r names}
 names(mod.nested)
 names(mod.nested$models)
 ```
 
 ### Methods
+
+As befits a model-fitting function, the package defines a nearly complete set of methods for class `nested` objects:
+
+* `print()`, `summary()`: prints the results for each of the submodels
+* `update()` re-fits a model, allowing changes in the model `formula`, `data`, `subset`, and `contrasts`.
+* `coef()` returns the coefficients for the predictors in each dichotomy
+* `vcov()` returns the variance-covariance matrix of the predictors
+* `anova()` provides ANOVA Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of objects, anova tests the models against one another in the order specified.
+* `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model.
+* `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.
+* `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`.
+
+To illustrate some of these:
+
+## `predict()` and plotting
 
 
 

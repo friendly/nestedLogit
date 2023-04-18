@@ -5,42 +5,45 @@
 
 #' Binary Logit Models for Nested Dichotomies
 #'
-#' @description Fit a related set of binary logit models via the \code{\link{glm}} 
+#' @description Fit a related set of binary logit models via the \code{\link{glm}}
 #' function to nested dichotomies, comprising a model for the polytomy.
 #' A polytomous response with \eqn{m} categories can be analyzed using
 #' \eqn{m-1} binary logit comparisons.  When these comparisons are nested,
-#' the \eqn{m-1} sub-models are statistically independent. Therefore, 
+#' the \eqn{m-1} sub-models are statistically independent. Therefore,
 #' the likelihood chi-square statistics for the sub-models are additive
 #' and give overall tests for a model for the polytomy.
-#' 
+#' This method was introduced by Fienberg (1980),and subsequently illustrated by
+#' Fox(2016) and Friendly & Meyer (2016).
+#' TODO: Correct Fox (2016). \S 14.2.2 is from Applied Regression Analysis. The R Companion covers this in \S 5.8
+#'
 #' @details A dichotomy for a categorical variable is a comparison of one subset
 #' of levels against another subset. A set of dichotomies is nested, if after
 #' an initial dichotomy, all subsequent ones are \emph{within} the groups of levels
-#' lumped together in earlier ones.  
-#' 
+#' lumped together in earlier ones.
+#'
 #' For example, for a 3-level response, a first
 #' dichotomy could be \code{ {A}, {B, C}} and then the second one would be
 #' just \code{{B}, {C}}. Note that in the second dichotomy, observations
-#' with response \code{A} are treated as \code{NA}. 
-#' 
+#' with response \code{A} are treated as \code{NA}.
+#'
 #' The function \code{dichotomy} constructs a \emph{single} dichotomy in the required form,
 #' which is a list of length 2 containing two character vectors giving the levels
 #' defining the dichotomy. The function \code{logits} is used to create the
 #' set of dichotomies for a response factor.
 #' The function \code{continuationLogits} provides a
 #' convenient way to generate all dichotomies for an ordered response.
-#' 
+#'
 #' @aliases nestedLogit logits dichotomy continuationLogits
-#' 
+#'
 #' @param formula a model formula with the polytomous response on the left-hand side
 #'        and the usual linear-model-like specification on the right-hand side.
-#' @param dichotomies specification of the logits for the nested dichotomies, 
+#' @param dichotomies specification of the logits for the nested dichotomies,
 #'        constructed by the \code{logits} and \code{dichotomy} functions. See Details.
 #' @param data a data frame with the data for the model; unlike in most statistical
 #'        modeling functions, the \code{data} argument is required. Cases with \code{NA}s
 #'        in any of the variables appearing in the model formula will be removed
 #'        with a Note message.
-#' @param subset a character string speciifying an expression to fit the model 
+#' @param subset a character string speciifying an expression to fit the model
 #'        to a subset of the data; the default, \code{NULL}, uses the full data set.
 #' @param contrasts an optional list of contrast specification for specific factors in the
 #'        model; see \code{\link{lm}} for details.
@@ -52,32 +55,32 @@
 #'        or the number of levels, in which case the levels will be named \code{"A"}, \code{"B"}, \code{"C"}, etc.
 #' @param names an optional character vector of names for the continuation dichotomies; if absent,
 #'        names will be generated from the levels.
-#'        
-#' @return \code{nestedLogit} returns an object of class \code{"nested"} containing 
+#'
+#' @return \code{nestedLogit} returns an object of class \code{"nested"} containing
 #' the following elements:
 #' \itemize{
-#'    \item \code{models}, A named list of (normally) \eqn{m - 1} \code{"glm"} objects, 
-#'    each a binary logit model for one of the \eqn{m - 1} nested dichotomies representing 
+#'    \item \code{models}, A named list of (normally) \eqn{m - 1} \code{"glm"} objects,
+#'    each a binary logit model for one of the \eqn{m - 1} nested dichotomies representing
 #'    the \eqn{m}-level response.
 #'    \item \code{formula}, the model formula for the nested logit models.
-#'    \item \code{dichotomies}, the \code{"dichotomies"} object defining the nested dichotomies 
+#'    \item \code{dichotomies}, the \code{"dichotomies"} object defining the nested dichotomies
 #'    for the model.
 #'    \item \code{data.name}, the name of the data set to which the model is fit, of class \code{"name"}.
 #'    \item \code{data}, the data set to which the model is fit.
-#'    \item \code{subset}, a character representation of the \code{subset} argument or 
+#'    \item \code{subset}, a character representation of the \code{subset} argument or
 #'    \code{"NULL"} if the argument isn't specified.
-#'    \item \code{contrasts}, the \code{contrasts} argument or \code{NULL} if the argument 
+#'    \item \code{contrasts}, the \code{contrasts} argument or \code{NULL} if the argument
 #'    isn't specified.
 #'    \item{contrasts.print} a character representation of the \code{contrasts} argument or
 #'    \code{"NULL"} if the argument isn't specified.
 #' }
 #'   \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}.
-#' 
+#'
 #' @importFrom stats  anova binomial coef glm model.frame model.response na.omit pchisq predict update
 #' @references
 #' S. Fienberg (1980) \emph{The Analysis of Cross-Classified Categorical Data},
 #' 2nd Edition, MIT Press, Section 6.6.
-#' J. Fox (2016) \emph{An R Companion to Applied Regression}, 3rd Edition, Sage, 
+#' J. Fox (2016) \emph{An R Companion to Applied Regression}, 3rd Edition, Sage,
 #' Section 14.2.2.
 #' M. Friendly and D. Meyers (2016) \emph{Discrete Data Analysis with R}, CRC Press,
 #' Section 8.2.
@@ -86,12 +89,12 @@
 #' @keywords regression
 #' @examples
 #'   data(Womenlf, package = "carData")
-#'   
+#'
 #'   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
 #'   comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime"))
 #'
-#'   m <- nestedLogit(partic ~ hincome + children, 
+#'   m <- nestedLogit(partic ~ hincome + children,
 #'                    dichotomies = comparisons,
 #'                    data=Womenlf)
 #'   print(summary(m))
@@ -99,7 +102,7 @@
 #'   coef(m)
 #'
 #'   # get predicted values
-#'   new <- expand.grid(hincome=seq(0, 45, length=10), 
+#'   new <- expand.grid(hincome=seq(0, 45, length=10),
 #'                      children=c("absent", "present"))
 #'   pred.nested <- predict(m, new)
 #'
@@ -110,9 +113,9 @@
 #'   for ( kids in c("absent", "present") ) {
 #'     data <- subset(plotdata, children==kids)
 #'    with(data, {
-#'      plot(range(hincome), c(0,1), 
+#'      plot(range(hincome), c(0,1),
 #'           type="n",
-#'           xlab="Husband's Income", 
+#'           xlab="Husband's Income",
 #'           ylab='Fitted Probability',
 #'           main = paste("Children", kids),
 #'           cex.lab = 1.1)
@@ -126,11 +129,11 @@
 #'    }
 #'  }
 #'  par(op)
-#' 
+#'
 #' @export
-nestedLogit <- function(formula, dichotomies, data, subset=NULL, 
+nestedLogit <- function(formula, dichotomies, data, subset=NULL,
                         contrasts=NULL, ...) {
-  
+
   makeDichotomies <- function(y, dichotomies) {
     responses <- matrix(NA, length(y), length(dichotomies))
     for (i in seq_along(dichotomies)) {
@@ -140,10 +143,10 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
     colnames(responses) <- names(dichotomies)
     responses
   }
-  
+
   if (!inherits(dichotomies, "dichotomies"))
     stop("dichotomies must be of class 'dichotomies'")
-  
+
   data.name <- substitute(data)
   data.save <- data
   if (!is.null(subset)){
@@ -152,9 +155,9 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
   n.original <- nrow(data)
   data <- na.omit(data[, all.vars(formula)])
   n.final <- nrow(data)
-  if (n.final < n.original) message("Note: ", n.original - n.final, 
+  if (n.final < n.original) message("Note: ", n.original - n.final,
                                    " cases omitted due to missingness.")
-  
+
   nested.formula <- formula
   y <- model.response(model.frame(formula, data))
   n.dichot <- length(dichotomies)
@@ -163,7 +166,7 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
   resp.names <- names(dichotomies)
   names(models) <- resp.names
   formula[[2]] <- quote(..y)
-  
+
   for (i in seq(length = n.dichot)) {
     data$..y <- ys[, i]
     models[[i]] <- glm(formula, family = binomial, data = data, contrasts=contrasts, ...)
@@ -176,13 +179,13 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
     models[[i]]$call <- call
     models[[i]]$dichotomy <- dichotomies[[i]]
   }
-  
+
   result <- list(
     models = models,
     formula = nested.formula,
     dichotomies = dichotomies,
     data = data.save,
-    data.name = data.name, 
+    data.name = data.name,
     subset = subset,
     contrasts = contrasts,
     contrasts.print = deparse(substitute(contrasts))
@@ -194,39 +197,39 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
 #' @rdname nestedLogit
 #' @export
 logits <- function(...) {
-  
+
   checkDichotomies <- function(logits){
     nlevels <- length(unique(unlist(logits)))
     nlogits <- length(logits)
-    if (nlogits > (nlevels - 1L)) 
+    if (nlogits > (nlevels - 1L))
       stop("too many nested dichotomies (>", nlevels - 1L, ")")
-    if (nlogits < (nlevels - 1L)) 
+    if (nlogits < (nlevels - 1L))
       message("Note: number of nested dicotomies not equal to ", nlevels - 1L)
     return(invisible(NULL))
   }
-  
+
   hasParent <- function(dichotomy){
     any(sapply(all, function(each) setequal(union(dichotomy[[1L]], dichotomy[[2L]]), each)))
   }
-  
+
   allChildren <- function(dichotomies){
     all <- unlist(dichotomies, recursive=FALSE)
     for (levels in all){
       if (length(levels) == 1L) next
-      which <- sapply(dichotomies, function(dichotomy) setequal(levels, 
+      which <- sapply(dichotomies, function(dichotomy) setequal(levels,
                                                                 union(dichotomy[[1L]], dichotomy[[2L]])))
       if (!any(which)) message("Note: {", paste(levels, collapse=", "), "} is not subdivided")
     }
   }
-  
+
   logits <- list(...)
   duplicated <- duplicated(logits)
   if (any(duplicated)){
-    stop("the following dichotomies are duplicated: ", 
+    stop("the following dichotomies are duplicated: ",
          paste(names(logits)[duplicated], collapse=", "))
   }
   all <- unlist(logits, recursive=FALSE)
-  all$all <- levels <- unique(unlist(logits))                      
+  all$all <- levels <- unique(unlist(logits))
   nested <- sapply(logits, function(x) hasParent(x))
   if (any(!nested)) stop("dichotomies aren't nested")
   allChildren(logits)
@@ -255,7 +258,7 @@ dichotomy <- function(...) {
 
 
 #' Construct Continuation Logits for an Ordered Categorical Variable
-#' 
+#'
 #' This function constructs a set of \eqn{m-1} logit comparisons, called
 #' continuation logits,
 #' for an ordered response with \eqn{m} levels, say, \code{A, B, C, D},
@@ -277,8 +280,8 @@ dichotomy <- function(...) {
 #' @examples
 #' continuationLogits(c("none", "gradeschool", "highschool", "college"))
 #' continuationLogits(4)
-#' 
-#' 
+#'
+#'
 #  TODO:
 #  - add prefix = "above_" argument
 #  - allow reverse = FALSE (default) argument to do continuations in reverse order ???
