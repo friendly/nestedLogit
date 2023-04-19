@@ -28,7 +28,8 @@ Suggests:
   carData,
   knitr,
   rmarkdown,
-  testthat
+  testthat,
+  here
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8

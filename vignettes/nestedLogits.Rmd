@@ -6,7 +6,7 @@ package: nestedLogit
 output: 
   rmarkdown::html_vignette:
   fig_caption: yes
-bibliography: ["references.bib"]
+bibliography: ["references.bib", "packages.bib"]
 csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Nested dichotomies logistic regression models}
@@ -45,6 +45,9 @@ colorize <- function(x, color) {
 
 set.seed(47)
 options(digits = 4)
+
+# packages to be cited here. Code at the end automatically updates packages.bib
+to.cite <- c("car", "broom", "ggplot2", "directlabels")
 ```
 
 Load the packages we'll use here:
@@ -135,10 +138,12 @@ The variables are:
 
 * `hincome`: Husband's income, in \$1,000s
 * `children`: Presence of children in the home, `absent` or `present`
-* `region`: Region of Canada (not used here)
+* `region`: Region of Canada
 
 The response, `partic` is a factor, but the levels are ordered
-alphabetically. To correct this, we make it an ordered factor.
+alphabetically. To correct this, we make it an ordered factor. At that time, the majority
+of the 263 women surveyed where not working. 
+
 
 ```{r order-partic}
 library(dplyr) # A Grammar of Data Manipulation
@@ -149,6 +154,9 @@ Womenlf <- Womenlf |>
 
 table(Womenlf$partic)
 ```
+
+The question is: How can we understand these womens' labor choices in terms of the available variables?
+
 ### Defining dichotomies
 
 It is at least arguable to consider a woman's labor choice as first involving
@@ -240,9 +248,11 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.
 * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`.
 
-To illustrate some of these:
+We illustrate some of these:
 
-**Coefficients**: The coefficients, $\mathbf{\beta_{i1}}$ give the changes in the
+**Coefficients**: By default, `coef()` returns a matrix whose rows are the terms in the model and
+whose columns represent the nested dichotomies.
+The coefficients, $\mathbf{\beta_{i1}}$ give the changes in the
 log odds of working vs. not working associated with a \$1,000 increase
 in husband's income and with having children present vs. absent.
 $\mathbf{\beta_{i2}}$ is similar for the log odds of working full time vs. part time
@@ -250,6 +260,7 @@ among those who are working.
 $e^\mathbf{\beta}$ give the multiples of the odds for these comparisons.
 ```{r coef}
 coef(wlf.nested)
+
 exp(coef(wlf.nested))
 ```
 Thus, the odds of both working and working full time decrease with husband's income.
@@ -260,18 +271,53 @@ Having young children also decreases the odds of both.
 Anova(wlf.nested)
 ```
 
+**glance** and **tidy**: The `broom` package provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nested"` model gives a one-line summary of the statistics
+for each dichotomy. The `tidy method combines the coefficients for the sub-models, together with test
+statistics.
+
+```{r}
+glance(wlf.nested)   # summarize the sub-models
+
+tidy(wlf.nested)     # summarize the coefficients
+```
+
+<!-- TODO: ??? -->
+<!--   illustrate how the result of glance can be manipulated to produce a custom table -->
+<!-- > gl <- glance(wlf.nested) -->
+<!-- > gl |> select(response, deviance, df.residual) |> mutate(`G2/df` = deviance / df.residual) -->
+<!-- # A tibble: 2 × 4 -->
+<!--   response deviance df.residual `G2/df` -->
+<!--   <chr>       <dbl>       <int>   <dbl> -->
+<!-- 1 work         320.         260   1.23  -->
+<!-- 2 full         104.         105   0.995 -->
+
+
 **update**: Does it make sense to include `region` of Canada in the model?  This can be tested
 by adding it to the model formula, and comparing the new model with the original one using
 `anova()`. The significance tests here are for the additional contribution of `region` over
 the model that just includes main effects of `husincome` and `children`.
 
 ```{r update}
-wlf.nested1 <- update(wlf.nested, formula = . ~ . + region)
+wlf.nested.1 <- update(wlf.nested, formula = . ~ . + region)
 
-anova(wlf.nested, wlf.nested1)
+anova(wlf.nested, wlf.nested.1)
 ```
 
-In a similar way, we could fit and test a larger collection of models.
+Note that `anova()` with two or models tests these against one another, in the order specified.
+This assumes that the models compared are _nested_ (is this a pun?), in the sense that the
+terms in the smaller model are a subset of those in the larger model.
+
+In a similar way, we could fit and test a larger scope of models. For example to add
+an interaction between husband's income and children:
+
+```{r more-models}
+#| eval = TRUE
+wlf.nested.2 <- update(wlf.nested, formula = . ~ .^2)
+anova(wlf.nested, wlf.nested.2)
+```
+
+We can see neither `region` nor an interaction make a difference in goodness of fit of 
+either of the sub-models or the combined model for the three response categories.
 
 
 ## Obtaining fitted values: `predict()` 
@@ -330,7 +376,8 @@ for ( kids in c("absent", "present") ) {
 
 ### Using `ggplot`
 
-More control, and perhaps a more aesthetically pleasing figure can be produced using `ggplot`.
+More control, and perhaps a more aesthetically pleasing figure can be produced using `ggplot`
+[@R-ggplot2].
 However, `ggplot` wants the data in long format. That makes it easy to plot probability
 against one predictor and use `color` to distinguish the levels of
 `partic` and facet the plot by `children`.
@@ -370,7 +417,8 @@ gg
 ### Direct labels
 
 It's usually nicer to label the curves directly than to rely on a legend.
-The `directlabels` package can take a `ggplot` object, remove the legend and
+The `directlabels` package [@R-directlabels]
+can take a `ggplot` object, remove the legend and
 place labels along the curves. It is a little fiddly, and we haven't tried
 to make it avoid clipping some of the labels.
 
@@ -379,6 +427,11 @@ to make it avoid clipping some of the labels.
 #| fig.height = 4,
 #| fig.cap = "**direct labels**: Predicted probabilities, with labels on the curves"
 direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
+```
+
+```{r write-bib}
+# write a packages.bib file of the packages (.packages()) that have been used here
+knitr::write_bib(file = here::here("vignettes", "packages.bib"))
 ```
 
 
