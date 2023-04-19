@@ -37,8 +37,6 @@
 #' @examples
 #'
 #' # TODO: add examples for at least some of the methods
-
-
 #' @rdname nestedMethods
 #' @export
 print.nested <- function(x, ...) {
@@ -409,4 +407,5 @@ tidy.nested <- function(x, ...){
   result <- dplyr::bind_cols(response = response, result)
   result
 }
+
 
