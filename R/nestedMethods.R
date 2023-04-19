@@ -9,8 +9,8 @@
 #' \describe{
 #'   \item{\code{coef}, \code{vcov}}{return the coefficients and their variance-covariance matrix respectively.}
 #'   \item{\code{Anova}}{calculates type-II or type-III analysis-of-variance tables for \code{"nested"} objects.}
-#'   \item{\code{anova}}{computes analysis of variance (or deviance) tables for one or more fitted model objects.}
-#'   \item{\code{update}}{will re-fit a model with a change in any of the \code{formula}, \code{dichotomies},
+#'   \item{\code{anova}}{computes analysis of variance (or deviance) tables for one or more fitted \code{"nested"}  objects.}
+#'   \item{\code{update}}{will re-fit a \code{"nested"} model with a change in any of the \code{formula}, \code{dichotomies},
 #'        \code{data}, \code{subset}, \code{contrasts}, ...}
 #' }
 #'

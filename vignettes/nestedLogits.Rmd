@@ -41,8 +41,13 @@ colorize <- function(x, color) {
       x)
   } else x
 }
+
+
+set.seed(47)
+options(digits = 4)
 ```
 
+Load packages:
 ```{r setup}
 library(nestedLogit)
 library(knitr)
@@ -227,14 +232,56 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `vcov()` returns the variance-covariance matrix of the predictors
 * `anova()` provides ANOVA Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of objects, anova tests the models against one another in the order specified.
 * `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model.
+* `anova()` provides ANOVA analysis of deviance tables for one or more fitted model objects.
 * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.
 * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`.
 
 To illustrate some of these:
 
+**Coefficients**: The coefficients, $\mathbf{\beta_{i1}}$ give the changes in the
+log odds of working vs. not working associated with a \$1,000 increase
+in husband's income and with having children present vs. absent.
+$\mathbf{\beta_{i2}}$ is similar for the log odds of working full time vs. part time
+among those who are working.
+$e^\mathbf{\beta}$ give the multiples of the odds for these comparisons.
+```{r coef}
+coef(mod.nested)
+exp(coef(mod.nested))
+```
+Thus, the odds of both working and working full time decrease with husband's income.
+Having young children also decreases the odds of both.
+
+**Anova**: Gives Type II tests for each term in the model. Note that the `LR` $\chi^2$ and `df` for the `Combined Responses` is the sum of their values for the separate dichotomies.
+```{r Anova}
+Anova(mod.nested)
+```
+
+**update**: Does it make sense to include `region` of Canada in the model?  This can be tested
+by adding it to the model formula, and comparing the new model with the original one using
+`anova()`.
+
+```{r update}
+mod1.nested <- update(mod.nested, formula = . ~ . + region)
+
+anova(mod.nested, mod1.nested)
+```
+
+
+
 ## `predict()` and plotting
 
+By default, `predict()` for a `"nested"` model object returns the predicted probabilities
+(`type = "response"`) of
+each of the response categories for _all_ observations in the data set.
+Note that the computation is a bit tricky, because the probabilities of working full time
+are conditional on working outside the home.
 
+```{r}
+car::some(predict(mod.nested))
+```
+
+To construct a plot, it is sufficient to calculate predicted probabilities over a grid of
+values of the predictor variables.
 
 ## References
 

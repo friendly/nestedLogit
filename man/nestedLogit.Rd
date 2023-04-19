@@ -78,7 +78,6 @@ the likelihood chi-square statistics for the sub-models are additive
 and give overall tests for a model for the polytomy.
 This method was introduced by Fienberg (1980),and subsequently illustrated by
 Fox(2016) and Friendly & Meyer (2016).
-TODO: Correct Fox (2016). \S 14.2.2 is from Applied Regression Analysis. The R Companion covers this in \S 5.8
 
 This function constructs a set of \eqn{m-1} logit comparisons, called
 continuation logits,

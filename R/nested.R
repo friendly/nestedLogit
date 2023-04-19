@@ -14,7 +14,6 @@
 #' and give overall tests for a model for the polytomy.
 #' This method was introduced by Fienberg (1980),and subsequently illustrated by
 #' Fox(2016) and Friendly & Meyer (2016).
-#' TODO: Correct Fox (2016). \S 14.2.2 is from Applied Regression Analysis. The R Companion covers this in \S 5.8
 #'
 #' @details A dichotomy for a categorical variable is a comparison of one subset
 #' of levels against another subset. A set of dichotomies is nested, if after
