@@ -88,6 +88,15 @@ with one element for each dichotomy.}
 }
 \description{
 Various methods for processing \code{"nested"} and related objects.
+Most of these are the standard methods for a model-fitting function.
+
+\describe{
+\item{\code{coef}, \code{vcov}}{return the coefficients and their variance-covariance matrix respectively.}
+\item{\code{Anova}}{calculates type-II or type-III analysis-of-variance tables for \code{"nested"} objects.}
+\item{\code{anova}}{computes analysis of variance (or deviance) tables for one or more fitted model objects.}
+\item{\code{update}}{will re-fit a model with a change in any of the \code{formula}, \code{dichotomies},
+\code{data}, \code{subset}, \code{contrasts}, ...}
+}
 }
 \examples{
 

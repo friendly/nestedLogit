@@ -76,10 +76,13 @@ A polytomous response with \eqn{m} categories can be analyzed using
 the \eqn{m-1} sub-models are statistically independent. Therefore,
 the likelihood chi-square statistics for the sub-models are additive
 and give overall tests for a model for the polytomy.
+This method was introduced by Fienberg (1980),and subsequently illustrated by
+Fox(2016) and Friendly & Meyer (2016).
+TODO: Correct Fox (2016). \S 14.2.2 is from Applied Regression Analysis. The R Companion covers this in \S 5.8
 
 This function constructs a set of \eqn{m-1} logit comparisons, called
 continuation logits,
-for an ordered response with \eqn{m} levels, say, \code{A, B, C, D},
+for an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
 considered low to high.
 The first contrasts \code{B, C, D} against \code{A}.
 The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
@@ -102,15 +105,20 @@ defining the dichotomy. The function \code{logits} is used to create the
 set of dichotomies for a response factor.
 The function \code{continuationLogits} provides a
 convenient way to generate all dichotomies for an ordered response.
+For an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
+considered low to high:
+The dichotomy first contrasts \code{B, C, D} against \code{A}.
+The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
+The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
 }
 \examples{
   data(Womenlf, package = "carData")
-  
+
   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
   comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))
 
-  m <- nestedLogit(partic ~ hincome + children, 
+  m <- nestedLogit(partic ~ hincome + children,
                    dichotomies = comparisons,
                    data=Womenlf)
   print(summary(m))
@@ -118,7 +126,7 @@ convenient way to generate all dichotomies for an ordered response.
   coef(m)
 
   # get predicted values
-  new <- expand.grid(hincome=seq(0, 45, length=10), 
+  new <- expand.grid(hincome=seq(0, 45, length=10),
                      children=c("absent", "present"))
   pred.nested <- predict(m, new)
 
@@ -129,9 +137,9 @@ convenient way to generate all dichotomies for an ordered response.
   for ( kids in c("absent", "present") ) {
     data <- subset(plotdata, children==kids)
    with(data, {
-     plot(range(hincome), c(0,1), 
+     plot(range(hincome), c(0,1),
           type="n",
-          xlab="Husband's Income", 
+          xlab="Husband's Income",
           ylab='Fitted Probability',
           main = paste("Children", kids),
           cex.lab = 1.1)
@@ -152,11 +160,12 @@ continuationLogits(4)
 
 }
 \references{
-S. Fienberg (1980) \emph{The Analysis of Cross-Classified Categorical Data},
+S. Fienberg (1980). \emph{The Analysis of Cross-Classified Categorical Data},
 2nd Edition, MIT Press, Section 6.6.
-J. Fox (2016) \emph{An R Companion to Applied Regression}, 3rd Edition, Sage,
+J. Fox (2016), \emph{Applied Linear Regression and Generalized Linear Models}, 3rd Edition, Sage,
 Section 14.2.2.
-M. Friendly and D. Meyers (2016) \emph{Discrete Data Analysis with R}, CRC Press,
+J. Fox and S. Weisberg (2011), \emph{An R Companion to Applied Regression}, 2nd Edition, Sage, Section 5.8.
+M. Friendly and D. Meyers (2016), \emph{Discrete Data Analysis with R}, CRC Press,
 Section 8.2.
 }
 \seealso{
