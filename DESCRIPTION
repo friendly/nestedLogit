@@ -29,7 +29,10 @@ Suggests:
   knitr,
   rmarkdown,
   testthat,
-  here
+  here,
+  tidyr,
+  ggplot2,
+  directlabels
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8
