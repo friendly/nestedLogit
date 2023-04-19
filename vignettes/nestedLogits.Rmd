@@ -47,12 +47,14 @@ set.seed(47)
 options(digits = 4)
 ```
 
-Load packages:
+Load the packages we'll use here:
 ```{r setup}
-library(nestedLogit)
-library(knitr)
-library(car)
-library(broom)
+library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
+library(knitr)          # A General-Purpose Package for Dynamic Report Generation in R
+library(car)            # Companion to Applied Regression
+library(broom)          # Convert Statistical Objects into Tidy Tibbles
+library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(directlabels)   # Direct Labels for Multicolor Plots
 ```
 
 ## Models for polytomous responses
@@ -122,8 +124,9 @@ knitr::include_graphics("fig/nested-psychiatric.png")
 
 For a main example, we consider the data set `Womenlf` from the `carData` package.
 This data gives the responses of 263 women from a 1977 survey carried out by
-the York University Institute for Social Research. The variables are:
-<!-- TODO: cite Social Change in Canada Project -->
+the York University Institute for Social Research
+[@Atkinson-etal:1984].
+The variables are:
 
 * `partic`: labor force participation, the response, with levels
   + `fulltime`: working full-time
@@ -138,7 +141,7 @@ The response, `partic` is a factor, but the levels are ordered
 alphabetically. To correct this, we make it an ordered factor.
 
 ```{r order-partic}
-library(dplyr)
+library(dplyr) # A Grammar of Data Manipulation
 data(Womenlf, package = "carData")
 Womenlf <- Womenlf |>
   mutate(partic = ordered(partic, 
@@ -206,21 +209,22 @@ as.character(comparisons)
 
 ### Fitting the nested logit model
 
-To fit the model, we specify the `comparisons` argument as the `dichotomies` argument.
-```{r mod.nested}
-mod.nested <- nestedLogit(partic ~ hincome + children, 
+To fit the model, we specify these `comparisons` as the `dichotomies` argument.
+```{r wlf.nested}
+wlf.nested <- nestedLogit(partic ~ hincome + children, 
                           dichotomies = comparisons,
                           data=Womenlf)
 ```
 
-The result, `mod.nested` is a list containing the details of the model for the nested
+The result, `wlf.nested` is a list containing the details of the model for the nested
 dichotomy. The `models` component contains results equivalent to what was fit manually
 above as `mod.work` and `mod.full`.
 
 ```{r names}
-names(mod.nested)
-names(mod.nested$models)
+names(wlf.nested)
+names(wlf.nested$models)
 ```
+
 
 ### Methods
 
@@ -245,45 +249,142 @@ $\mathbf{\beta_{i2}}$ is similar for the log odds of working full time vs. part 
 among those who are working.
 $e^\mathbf{\beta}$ give the multiples of the odds for these comparisons.
 ```{r coef}
-coef(mod.nested)
-exp(coef(mod.nested))
+coef(wlf.nested)
+exp(coef(wlf.nested))
 ```
 Thus, the odds of both working and working full time decrease with husband's income.
 Having young children also decreases the odds of both.
 
 **Anova**: Gives Type II tests for each term in the model. Note that the `LR` $\chi^2$ and `df` for the `Combined Responses` is the sum of their values for the separate dichotomies.
 ```{r Anova}
-Anova(mod.nested)
+Anova(wlf.nested)
 ```
 
 **update**: Does it make sense to include `region` of Canada in the model?  This can be tested
 by adding it to the model formula, and comparing the new model with the original one using
-`anova()`.
+`anova()`. The significance tests here are for the additional contribution of `region` over
+the model that just includes main effects of `husincome` and `children`.
 
 ```{r update}
-mod1.nested <- update(mod.nested, formula = . ~ . + region)
+wlf.nested1 <- update(wlf.nested, formula = . ~ . + region)
 
-anova(mod.nested, mod1.nested)
+anova(wlf.nested, wlf.nested1)
 ```
 
+In a similar way, we could fit and test a larger collection of models.
 
 
-## `predict()` and plotting
+## Obtaining fitted values: `predict()` 
 
 By default, `predict()` for a `"nested"` model object returns the predicted probabilities
 (`type = "response"`) of
 each of the response categories for _all_ observations in the data set.
 Note that the computation is a bit tricky, because the probabilities of working full time
-are conditional on working outside the home.
+or part time are conditional on working outside the home.
 
 ```{r}
-car::some(predict(mod.nested))
+car::some(predict(wlf.nested))
 ```
 
+## Plotting
 To construct a plot, it is sufficient to calculate predicted probabilities over a grid of
-values of the predictor variables.
+values of the predictor variables. Here, we select a range of 0 - 45 in steps of 5,
+combined with the two values of `children`.
+
+```{r plotdata}
+new <- expand.grid(hincome=seq(0, 45, by = 5), 
+                   children=c("absent", "present"))
+
+pred.nested <- predict(wlf.nested, newdata = new)
+plotdata <- cbind(new, pred.nested)
+head(plotdata)
+```
+
+Because the fitted values are in multiple columns, it is easiest to plot these using
+`matplot()`. We could plot these all in a single (messy) figure, but it is clearer
+to show separate panels for children `absent` and `present`.
+
+To do this the `plotdata` data set is subset within a loop over the values of `children`
+and each subset is plotted by `matplot`. It is only necessary to include the legend
+in one panel. The plots are combined into a single figure using `par(mfrow())`.
+```{r wlf-matplot}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "**matplot**: Predicted probabilities of working at all or workinn part time or full time"
+op <- par(mfrow=c(1,2), mar=c(4,4,3,1)+.1)
+cols=c("blue", "magenta", "darkgreen")
+for ( kids in c("absent", "present") ) {
+  data <- subset(plotdata, children==kids)
+  matplot(data[, "hincome"], data[, 5:3], 
+          type = "l", lwd=3, lty = 1:3, col = cols,
+          xlab="Husband's Income", 
+          ylab='Fitted Probability',
+          main = paste("Children", kids),
+          cex.lab = 1.1)
+  if (kids=="absent") {
+    legend("topright", lty=1:3, lwd=3, col=cols, bty = "n",
+           legend=c("fulltime", "parttime", "not working"))
+  }
+}
+```
+
+### Using `ggplot`
+
+More control, and perhaps a more aesthetically pleasing figure can be produced using `ggplot`.
+However, `ggplot` wants the data in long format. That makes it easy to plot probability
+against one predictor and use `color` to distinguish the levels of
+`partic` and facet the plot by `children`.
+<!-- (The result of `tidyr::pivot_longer()` doesn't recognize an ordered nature of `"Working"`, -->
+<!-- so this must be done in a separate step.) -->
+
+
+```{r plotlong}
+plotlong <- plotdata |>
+  tidyr::pivot_longer(fulltime : not.work,
+                      names_to = "Working",
+                      values_to = "Probability") |>
+  mutate(Working = ordered(Working, 
+                           levels = c("not.work", "parttime", "fulltime")) )
+
+head(plotlong)
+```
+
+Then, one call to `ggplot` produces both panels. To sort the levels of `Working` appropriately,
+we made this an ordered factor in the step above, but assign the colors with a discrete scale.
+```{r wlf-ggplot}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "**ggplot**: Predicted probabilities of working at all or working part time or full time"
+
+gg <- ggplot(plotlong,
+             aes(x=hincome, y=Probability, color=Working)) +
+  geom_line(linewidth = 2) +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Probability") +
+  facet_wrap(~ children, labeller = label_both) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = c(.3, .8))
+gg
+```
+
+### Direct labels
+
+It's usually nicer to label the curves directly than to rely on a legend.
+The `directlabels` package can take a `ggplot` object, remove the legend and
+place labels along the curves. It is a little fiddly, and we haven't tried
+to make it avoid clipping some of the labels.
+
+```{r wlf-directlabels}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "**direct labels**: Predicted probabilities, with labels on the curves"
+direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
+```
+
 
 ## References
+
+
 
 
 
