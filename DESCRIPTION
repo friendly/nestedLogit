@@ -21,6 +21,8 @@ Imports:
   car,
   dplyr,
   broom,
+  graphics,
+  grDevices,
   stats
 Suggests:
   carData,
