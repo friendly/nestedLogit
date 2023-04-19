@@ -30,8 +30,15 @@
 #' which is a list of length 2 containing two character vectors giving the levels
 #' defining the dichotomy. The function \code{logits} is used to create the
 #' set of dichotomies for a response factor.
+
 #' The function \code{continuationLogits} provides a
 #' convenient way to generate all dichotomies for an ordered response.
+#' For an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
+#' considered low to high:
+#' The dichotomy first contrasts \code{B, C, D} against \code{A}.
+#' The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
+#' The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
+
 #'
 #' @aliases nestedLogit logits dichotomy continuationLogits
 #'
@@ -78,12 +85,13 @@
 #'
 #' @importFrom stats  anova binomial coef glm model.frame model.response na.omit pchisq predict update
 #' @references
-#' S. Fienberg (1980) \emph{The Analysis of Cross-Classified Categorical Data},
-#' 2nd Edition, MIT Press, Section 6.6.
-#' J. Fox (2016) \emph{An R Companion to Applied Regression}, 3rd Edition, Sage,
-#' Section 14.2.2.
-#' M. Friendly and D. Meyers (2016) \emph{Discrete Data Analysis with R}, CRC Press,
-#' Section 8.2.
+#' S. Fienberg (1980). \emph{The Analysis of Cross-Classified Categorical Data},
+#'       2nd Edition, MIT Press, Section 6.6.
+#' J. Fox (2016), \emph{Applied Linear Regression and Generalized Linear Models}, 3rd Edition, Sage,
+#'       Section 14.2.2.
+#' J. Fox and S. Weisberg (2011), \emph{An R Companion to Applied Regression}, 2nd Edition, Sage, Section 5.8.
+#' M. Friendly and D. Meyers (2016), \emph{Discrete Data Analysis with R}, CRC Press,
+#'       Section 8.2.
 #' @seealso \code{\link{nestedMethods}}
 #' @author John Fox
 #' @keywords regression
@@ -261,7 +269,7 @@ dichotomy <- function(...) {
 #'
 #' This function constructs a set of \eqn{m-1} logit comparisons, called
 #' continuation logits,
-#' for an ordered response with \eqn{m} levels, say, \code{A, B, C, D},
+#' for an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
 #' considered low to high.
 #' The first contrasts \code{B, C, D} against \code{A}.
 #' The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
