@@ -62,6 +62,8 @@ complete set of methods for class `nested` objects:
 - `glance()`, `tidy()` are extensions of `broom::glance.glm()` and
   `broom::tidy.glm()` to obtain compact summaries of a `nested` model
   object\`.
+- `plot()` provides basic plots of the predicted probabilities over a
+  range of values of the predictor variables.
 
 ## Examples
 
@@ -95,10 +97,16 @@ coef(m)
 #> (Intercept)      1.33582979  3.4777735
 #> hincome         -0.04230843 -0.1072679
 #> childrenpresent -1.57564843 -2.6514557
+```
 
+What the `"nested"` object contains:
+
+``` r
 names(m)
 #> [1] "models"          "formula"         "dichotomies"     "data"           
 #> [5] "data.name"       "subset"          "contrasts"       "contrasts.print"
+names(m$models)
+#> [1] "work" "full"
 ```
 
 `Anova()` produces analysis of variance deviance tests for the terms in
@@ -106,10 +114,6 @@ this model for each of the submodels, as well as for the combined
 responses of the polytomy.
 
 ``` r
-
-names(m$models)
-#> [1] "work" "full"
-
 car::Anova(m)
 #> 
 #>  Analysis of Deviance Tables (Type II tests)
@@ -140,6 +144,11 @@ car::Anova(m)
 
 A basic plot of predicted probabilities can be produced using the
 `plot()` method for `"nested"` objects.
+
+<!-- ```{r kludge, include=FALSE} -->
+<!-- #kludge - avoiding could not find function "plot.nested" -->
+<!-- plot <- nestedLogit:::plot.nested -->
+<!-- ``` -->
 
 ``` r
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
