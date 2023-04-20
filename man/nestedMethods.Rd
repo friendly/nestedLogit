@@ -99,11 +99,33 @@ Most of these are the standard methods for a model-fitting function.
 }
 }
 \examples{
+cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool", 
+                                      "college", "graduate"))
+print(cont.dichots)
+as.matrix(cont.dichots)
+as.character(cont.dichots)
+m <- nestedLogit(degree ~ parentdeg + year, 
+                 cont.dichots,
+                 data=GSS)
+print(m)
+summary(m)
+broom::glance(m)
+broom::tidy(m)
+car::Anova(m) # type-II (partial) tests
+head(predict(m)) # fitted probabilities for first few cases
+new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool", 
+                               "college", "graduate"),
+                   year=c(1972, 2016))
+fit <- predict(m, newdata=new)
+cbind(new, fit) # fitted probabilities at specific values of predictors
+coef(m) # coefficient estimates
+sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
+anova(m) # type-I (sequential) tests
+anova(update(m, . ~ . - year), m) # model comparison
 
-# TODO: add examples for at least some of the methods
 }
 \seealso{
-\code{\link{nestedLogit}}
+\code{\link{nestedLogit}}, \code{\link{plot.nested}}
 }
 \author{
 John Fox and Michael Friendly

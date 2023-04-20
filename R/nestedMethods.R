@@ -14,7 +14,7 @@
 #'        \code{data}, \code{subset}, \code{contrasts}, ...}
 #' }
 #'
-#' @seealso \code{\link{nestedLogit}}
+#' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nested}}
 #'
 #' @param x,object,object2,mod in most cases, an object of class \code{"nested"}.
 #' @param newdata a data frame containing combinations of values of the predictors
@@ -35,8 +35,30 @@
 #' @author John Fox and Michael Friendly
 #' @keywords regression
 #' @examples
+#' cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool", 
+#'                                       "college", "graduate"))
+#' print(cont.dichots)
+#' as.matrix(cont.dichots)
+#' as.character(cont.dichots)
+#' m <- nestedLogit(degree ~ parentdeg + year, 
+#'                  cont.dichots,
+#'                  data=GSS)
+#' print(m)
+#' summary(m)
+#' broom::glance(m)
+#' broom::tidy(m)
+#' car::Anova(m) # type-II (partial) tests
+#' head(predict(m)) # fitted probabilities for first few cases
+#' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool", 
+#'                                "college", "graduate"),
+#'                    year=c(1972, 2016))
+#' fit <- predict(m, newdata=new)
+#' cbind(new, fit) # fitted probabilities at specific values of predictors
+#' coef(m) # coefficient estimates
+#' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
+#' anova(m) # type-I (sequential) tests
+#' anova(update(m, . ~ . - year), m) # model comparison
 #'
-#' # TODO: add examples for at least some of the methods
 #' @rdname nestedMethods
 #' @export
 print.nested <- function(x, ...) {
