@@ -4,7 +4,7 @@
 #' \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
 #' for each level of the polytomous response variable, with one of the explanatory variables
 #' on the horizontal axis and other explanatory variables fixed to particular values.
-#' @seealso \code{\link{nestedLogit}}
+#' @seealso \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
 #' @param x an object of \code{"nested"} produced by \code{\link{nestedLogit}}.
 #' @param x.var quoted name of the variable to appear on the x-axis.
 #' @param others a named list of values for the other variables in the model,
