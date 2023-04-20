@@ -68,6 +68,58 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.
 * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`.
 
+## Examples
+
+This example uses data on women's labor force participation to fit a nested logit model for
+the response, `partic`, representing categories
+`not.work`, `parttime` and `fulltime for 263 women from a 1977
+survey in Canada. This dataset is explored in more detail in the
+package vignette, `vignette("nestedLogits", package = "nestedLogit")`.
+
+A model for the complete polytomy can be specified as two nested
+dichotomies, using helper functions `dichotomy()` and `logits()`:
+
+* `work`: {not.work} vs. {parttime, fulltime}
+* `full`: {parttime} vs. {fulltime}, but only for those working
+
+`nestedLogit()` effectively fits each of these dichotomies
+as logistic regression models via `glm(..., family = binomial)`
+
+```{r wlf-model}
+data(Womenlf, package = "carData")
+
+# Use `logits()` and `dichotomy()` to specify the comparisons of interest
+comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+                      full=dichotomy("parttime", "fulltime"))
+
+m <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+coef(m)
+
+names(m)
+```
+
+`Anova()` produces analysis of variance deviance tests for the terms in this model for each of the submodels, as well as for the combined responses of the polytomy.
+
+
+```{r wlf-anova}
+
+names(m$models)
+
+car::Anova(m)
+```
+<!-- A basic plot of predicted probabilities can be produced using -->
+<!-- the `plot()` method for `"nested"` objects. -->
+<!-- ```{r wlf-plot} -->
+<!-- #| out.width = "100%" -->
+<!-- op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1) -->
+<!-- plot(m, "hincome", list(children="absent"),  -->
+<!--      xlab="Husband's Income", legend=FALSE) -->
+<!-- plot(m, "hincome", list(children="present"),  -->
+<!--      xlab="Husband's Income") -->
+<!-- ``` -->
+
 
 ## Authors
 * John Fox

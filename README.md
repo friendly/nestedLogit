@@ -63,6 +63,92 @@ complete set of methods for class `nested` objects:
   `broom::tidy.glm()` to obtain compact summaries of a `nested` model
   object\`.
 
+## Examples
+
+This example uses data on women’s labor force participation to fit a
+nested logit model for the response, `partic`, representing categories
+`not.work`, `parttime` and
+`fulltime for 263 women from a 1977 survey in Canada. This dataset is explored in more detail in the package vignette,`vignette(“nestedLogits”,
+package = “nestedLogit”)\`.
+
+A model for the complete polytomy can be specified as two nested
+dichotomies, using helper functions `dichotomy()` and `logits()`:
+
+- `work`: {not.work} vs. {parttime, fulltime}
+- `full`: {parttime} vs. {fulltime}, but only for those working
+
+`nestedLogit()` effectively fits each of these dichotomies as logistic
+regression models via `glm(..., family = binomial)`
+
+``` r
+data(Womenlf, package = "carData")
+
+# Use `logits()` and `dichotomy()` to specify the comparisons of interest
+comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+                      full=dichotomy("parttime", "fulltime"))
+
+m <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+coef(m)
+#>                        work       full
+#> (Intercept)      1.33582979  3.4777735
+#> hincome         -0.04230843 -0.1072679
+#> childrenpresent -1.57564843 -2.6514557
+
+names(m)
+#> [1] "models"          "formula"         "dichotomies"     "data"           
+#> [5] "data.name"       "subset"          "contrasts"       "contrasts.print"
+```
+
+`Anova()` produces analysis of variance deviance tests for the terms in
+this model for each of the submodels, as well as for the combined
+responses of the polytomy.
+
+``` r
+
+names(m$models)
+#> [1] "work" "full"
+
+car::Anova(m)
+#> 
+#>  Analysis of Deviance Tables (Type II tests)
+#>  
+#> Response work: {not.work} vs. {parttime, fulltime}
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    4.8264  1    0.02803 *  
+#> children  31.3229  1  2.185e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> 
+#> Response full: {parttime} vs. {fulltime}
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome     8.981  1   0.002728 ** 
+#> children   32.136  1  1.437e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 
+#> 
+#> Combined Responses
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    13.808  2   0.001004 ** 
+#> children   63.459  2   1.66e-14 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+<!-- A basic plot of predicted probabilities can be produced using -->
+<!-- the `plot()` method for `"nested"` objects. -->
+<!-- ```{r wlf-plot} -->
+<!-- #| out.width = "100%" -->
+<!-- op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1) -->
+<!-- plot(m, "hincome", list(children="absent"),  -->
+<!--      xlab="Husband's Income", legend=FALSE) -->
+<!-- plot(m, "hincome", list(children="present"),  -->
+<!--      xlab="Husband's Income") -->
+<!-- ``` -->
+
 ## Authors
 
 - John Fox
