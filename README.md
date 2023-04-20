@@ -15,7 +15,7 @@ decomposition of tests for the overall polytomous response.
 
 ## Installation
 
-This package has not yet been submited to CRAN. This development version
+This package has not yet been submitted to CRAN. This development version
 can be installed to your R library directly from the [GitHub
 repo](https://github.com/friendly/nestedLogit) via:
 

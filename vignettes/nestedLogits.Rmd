@@ -213,7 +213,7 @@ comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
 comparisons
 ```
 For convenience, there are functions to convert these dichotomies to a matrix or to
-a character string representing the tree structure of the dichotomoies.
+a character string representing the tree structure of the dichotomies.
 
 ```{r}
 as.matrix(comparisons)

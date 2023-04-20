@@ -13,9 +13,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-3237-0941"))
   )
 Description: Provides functions for specifying and fitting nested dichotomy logistic regression models
-     for a polytomous response and methods for summarising those models.
+     for a multi-category response and methods for summarising those models.
      Nested dichotomies are statistically independent, and hence provide an
-     additive decomposition of tests for the overall polytomous response.
+     additive decomposition of tests for the overall 'polytomous' response.
 Depends: R (>= 3.5.0),
 Imports: 
   car,
@@ -25,18 +25,19 @@ Imports:
   grDevices,
   stats
 Suggests:
-  carData,
-  knitr,
-  rmarkdown,
-  testthat,
-  here,
-  tidyr,
-  ggplot2,
-  directlabels
+    carData,
+    knitr,
+    rmarkdown,
+    testthat,
+    here,
+    tidyr,
+    ggplot2,
+    directlabels,
+    spelling
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8
-Language: en
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr, rmarkdown

@@ -27,7 +27,7 @@ modeling functions, the \code{data} argument is required. Cases with \code{NA}s
 in any of the variables appearing in the model formula will be removed
 with a Note message.}
 
-\item{subset}{a character string speciifying an expression to fit the model
+\item{subset}{a character string specifying an expression to fit the model
 to a subset of the data; the default, \code{NULL}, uses the full data set.}
 
 \item{contrasts}{an optional list of contrast specification for specific factors in the
