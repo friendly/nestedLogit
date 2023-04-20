@@ -99,7 +99,7 @@ finally: $\{3\}$ vs. $\{4\}$.
 #| echo = FALSE,
 #| out.width="80%",
 #| fig.cap = "**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies."
-knitr::include_graphics("fig/nested.jpg")
+knitr::include_graphics(here::here("vignettes", "fig", "nested.jpg"))
 ```
 
 This figure makes clear that nested dichotomies are not unique or equivalent.
@@ -120,7 +120,7 @@ a final contrast of the depressed and manic categories.
 #| echo = FALSE,
 #| out.width="70%",
 #| fig.cap = "**Psychiatric classification**: The figure shows how four diagnostic categories might be represented by nested dichotomies."
-knitr::include_graphics("fig/nested-psychiatric.png")
+knitr::include_graphics(here::here("vignettes", "fig", "nested-psychiatric.png"))
 ```
 
 ## Example: Women's labor force participation
