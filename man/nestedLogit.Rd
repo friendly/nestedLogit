@@ -116,6 +116,7 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
   comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))
+  print(comparisons)
 
   m <- nestedLogit(partic ~ hincome + children,
                    dichotomies = comparisons,
@@ -130,31 +131,15 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   pred.nested <- predict(m, new)
 
   # plot
-  plotdata <- cbind(new, pred.nested)
-  op <- par(mfrow=c(1,2), mar=c(4,4,3,1)+.1)
-  cols <- c("blue", "magenta", "darkgreen")
-  for ( kids in c("absent", "present") ) {
-    data <- subset(plotdata, children==kids)
-   with(data, {
-     plot(range(hincome), c(0,1),
-          type="n",
-          xlab="Husband's Income",
-          ylab='Fitted Probability',
-          main = paste("Children", kids),
-          cex.lab = 1.1)
-     lines(hincome, fulltime,  lwd=3, lty=1, col=cols[1])
-     lines(hincome, parttime,  lwd=3, lty=2, col=cols[2])
-     lines(hincome, not.work,  lwd=3, lty=3, col=cols[3])
-     })
-   if (kids=="absent") {
-     legend(8, 0.99, lty=1:3, lwd=3, col=cols, bty = "n",
-            legend=c("fulltime", "parttime", "not working"))
-   }
- }
- par(op)
+  op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
+  plot(m, "hincome", list(children="absent"),
+       xlab="Husband's Income", legend=FALSE)
+  plot(m, "hincome", list(children="present"),
+       xlab="Husband's Income")
+  par(op)
 
-continuationLogits(c("none", "gradeschool", "highschool", "college"))
-continuationLogits(4)
+  continuationLogits(c("none", "gradeschool", "highschool", "college"))
+  continuationLogits(4)
 
 
 }

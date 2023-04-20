@@ -72,19 +72,19 @@ on the horizontal axis and other explanatory variables fixed to particular value
 }
 \examples{
 data(Womenlf, package = "carData")
-m <- nestedLogit(partic ~ hincome + children, 
+m <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                         data=Womenlf)
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(m, "hincome", list(children="absent"), 
+plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
-plot(m, "hincome", list(children="present"), 
+plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 par(op)
 }
 \seealso{
-\code{\link{nestedLogit}}
+\code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
 }
 \author{
 John Fox \email{jfox@mcmaster.ca}
