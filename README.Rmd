@@ -67,6 +67,8 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model.
 * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.
 * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`.
+* `plot()` provides basic plots of the predicted probabilities over a range of values of the predictor variables.
+
 
 ## Examples
 

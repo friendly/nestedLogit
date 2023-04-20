@@ -168,7 +168,7 @@ ggplot(plotlobs,
 
 #' ## Plot predicted logits
 #' The predicted logits for the separate dichotomies have different numbers of
-#' observations for each. We can get them from the `predict.glm()` methpd for
+#' observations for each. We can get them from the `predict.glm()` method for
 #' each dichotomy
 
 pred.logits <- sapply(wlf.nested$models, predict, newdata=new, type = "link")
