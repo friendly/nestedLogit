@@ -453,11 +453,11 @@ coefficients in the model, the predicted log odds of `work` and `full` are given
 <!-- equatiomatic::extract_eq(wlf.nested$models[[2]], use_coefs = TRUE) -->
 
 $$
-\log\left[ \frac { \widehat{P( \operatorname{work} = \operatorname{1} )} }{ 1 - \widehat{P( \operatorname{work} = \operatorname{1} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) - 1.58(\operatorname{children}_{\operatorname{present}})
+L_1 =\log\left[ \frac { \widehat{P( \operatorname{work} = \operatorname{1} )} }{ 1 - \widehat{P( \operatorname{work} = \operatorname{1} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) - 1.58(\operatorname{children}_{\operatorname{present}})
 $$
 
 $$
-\log\left[ \frac { \widehat{P( \operatorname{full} = \operatorname{1})} }{ 1 - \widehat{P( \operatorname{full} = \operatorname{1})} } \right] = 3.48 - 0.11(\operatorname{hincome}) - 2.65(\operatorname{children}_{\operatorname{present}})
+L_2 =\log\left[ \frac { \widehat{P( \operatorname{full} = \operatorname{1})} }{ 1 - \widehat{P( \operatorname{full} = \operatorname{1})} } \right] = 3.48 - 0.11(\operatorname{hincome}) - 2.65(\operatorname{children}_{\operatorname{present}})
 $$
 Here, $\operatorname{children}_{\operatorname{present}}$ is either 0 or 1, so this
 amounts to a shift in the intercept when children are present.

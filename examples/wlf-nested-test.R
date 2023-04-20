@@ -16,22 +16,22 @@ Womenlf <- Womenlf |>
     work & partic == "parttime" ~ 0)
   )
 
-mod.work <- glm(work ~ hincome + children, family=binomial, data=Womenlf)
-mod.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
+wlf.work <- glm(work ~ hincome + children, family=binomial, data=Womenlf)
+wlf.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
 
 #' ## Use nestedLogit()
 
-mod.nested <- nestedLogit(partic ~ hincome + children,
+wlf.nested <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                  data=Womenlf)
 
 #' ## Compare coefficients
 #'
-c.hand <- rbind(work = coef(mod.work),
-          full = coef(mod.full))
+c.hand <- rbind(work = coef(wlf.work),
+          full = coef(wlf.full))
 
-c.nest <- t(coef(mod.nested))
+c.nest <- t(coef(wlf.nested))
 
 all.equal(c.hand, c.nest)
 
@@ -43,8 +43,8 @@ new <- expand.grid(hincome=seq(0, 45, length=10),
 #' ## by hand
 
 #' predictions for the two submodels
-p.work     <- predict(mod.work, new, type='response')
-p.fulltime <- predict(mod.full, new, type='response')
+p.work     <- predict(wlf.work, new, type='response')
+p.fulltime <- predict(wlf.full, new, type='response')
 
 #' calculate unconditional probs for the three response categories
 
@@ -55,7 +55,7 @@ pred.hand <- data.frame(
 )
 
 #' ## `predict.nested()`
-pred.nested <- predict(mod.nested, new)
+pred.nested <- predict(wlf.nested, new)
 
 #' ## Compare predictions
 #'
