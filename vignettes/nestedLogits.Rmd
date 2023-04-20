@@ -99,8 +99,10 @@ finally: $\{3\}$ vs. $\{4\}$.
 #| echo = FALSE,
 #| out.width="80%",
 #| fig.cap = "**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies."
-knitr::include_graphics(here::here("vignettes", "fig", "nested.jpg"))
+knitr::include_graphics("nested.jpg")
 ```
+<!-- knitr::include_graphics(here::here("vignettes", "fig", "nested.jpg")) -->
+
 
 This figure makes clear that nested dichotomies are not unique or equivalent.
 Different choices will have different interpretations and different fitted probabilities.
@@ -120,8 +122,9 @@ a final contrast of the depressed and manic categories.
 #| echo = FALSE,
 #| out.width="70%",
 #| fig.cap = "**Psychiatric classification**: The figure shows how four diagnostic categories might be represented by nested dichotomies."
-knitr::include_graphics(here::here("vignettes", "fig", "nested-psychiatric.png"))
+knitr::include_graphics("nested-psychiatric.png")
 ```
+<!-- knitr::include_graphics(here::here("vignettes", "fig", "nested-psychiatric.png")) -->
 
 ## Example: Women's labor force participation
 
@@ -433,6 +436,9 @@ direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 # write a packages.bib file of the packages (.packages()) that have been used here
 knitr::write_bib(file = here::here("vignettes", "packages.bib"))
 ```
+
+### Plotting fitted log ods
+
 
 
 ## References
