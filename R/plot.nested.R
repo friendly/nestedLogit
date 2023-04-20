@@ -7,14 +7,14 @@
 #' @seealso \code{\link{nestedLogit}}
 #' @param x an object of \code{"nested"} produced by \code{\link{nestedLogit}}.
 #' @param x.var quoted name of the variable to appear on the x-axis.
-#' @param others a named list of values for the other variables in the model, 
-#' that is, other than \code{x.var}.
-#' @param n.x.values the number of evenly spaced values of \code{x.var} at which 
-#' to evaluate fitted probabilities to be plotted (default \code{100}).
+#' @param others a named list of values for the other variables in the model,
+#'        that is, other than \code{x.var}.
+#' @param n.x.values the number of evenly spaced values of \code{x.var} at which
+#'        to evaluate fitted probabilities to be plotted (default \code{100}).
 #' @param xlab label for the x-axis (defaults to the value of \code{x.var}).
 #' @param ylab label for the y-axis (defaults to \code{"Fitted Probability"}).
 #' @param main main title for the graph (if missing, constructed from the variables and
-#' values in \code{others}).
+#'        values in \code{others}).
 #' @param cex.main size of main title (see \code{\link{par}}).
 #' @param font.main font for main title (see \code{\link{par}}).
 #' @param pch plotting characters (see \code{\link{par}}).
@@ -22,22 +22,22 @@
 #' @param lty line types (see \code{\link{par}}).
 #' @param col line colors (see \code{\link{par}}).
 #' @param legend if \code{TRUE} (the default), add a legend for the
-#' response levels to the graph.
+#'        response levels to the graph.
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
 #' @param legend.location position of the legend (default \code{"topleft"},
-#' see \code{\link{legend}}).
+#'        see \code{\link{legend}}).
 #' @param \dots arguments to be passed to \code{plot}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
 #' data(Womenlf, package = "carData")
-#' m <- nestedLogit(partic ~ hincome + children, 
+#' m <- nestedLogit(partic ~ hincome + children,
 #'                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime")),
 #'                         data=Womenlf)
 #' op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-#' plot(m, "hincome", list(children="absent"), 
+#' plot(m, "hincome", list(children="absent"),
 #'      xlab="Husband's Income", legend=FALSE)
-#' plot(m, "hincome", list(children="present"), 
+#' plot(m, "hincome", list(children="present"),
 #'      xlab="Husband's Income")
 #' par(op)
 #' @importFrom grDevices palette
@@ -45,12 +45,12 @@
 #' @importFrom stats formula
 #' @rdname plot.nested
 #' @export
-plot.nested <- function(x, x.var, others, n.x.values=100, 
+plot.nested <- function(x, x.var, others, n.x.values=100,
                         xlab=x.var, ylab="Fitted Probability",
                         main, cex.main=1, font.main=1,
-                        pch=1:length(response.levels), 
+                        pch=1:length(response.levels),
                         lwd=3, lty=1:length(response.levels),
-                        col=palette()[1:length(response.levels)], 
+                        col=palette()[1:length(response.levels)],
                         legend=TRUE, legend.inset=0.01,
                         legend.location="topleft", ...){
   data <- x$data
@@ -78,7 +78,7 @@ plot.nested <- function(x, x.var, others, n.x.values=100,
   if (numeric.x){
     matplot(new[, x.var], new[, response.levels], type="l", lwd=lwd,
           col=col, xlab=xlab, ylab=ylab)
-    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd, 
+    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
            col=col, inset=legend.inset, xpd=TRUE)
   } else {
     n.x.levels <- nrow(new)
@@ -87,10 +87,10 @@ plot.nested <- function(x, x.var, others, n.x.values=100,
     box()
     axis(2)
     axis(1, at=1:n.x.levels, labels=new[, x.var])
-    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd, 
+    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
            col=col, pch=pch, inset=legend.inset, xpd=TRUE)
   }
-  if (missing(main)) main <- paste(paste(other.x, "=", as.character(unlist(others))), 
+  if (missing(main)) main <- paste(paste(other.x, "=", as.character(unlist(others))),
                                    collapse=", ")
   title(main, cex.main=cex.main, font.main=font.main)
 }
