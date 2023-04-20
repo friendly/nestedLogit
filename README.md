@@ -138,16 +138,18 @@ car::Anova(m)
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-<!-- A basic plot of predicted probabilities can be produced using -->
-<!-- the `plot()` method for `"nested"` objects. -->
-<!-- ```{r wlf-plot} -->
-<!-- #| out.width = "100%" -->
-<!-- op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1) -->
-<!-- plot(m, "hincome", list(children="absent"),  -->
-<!--      xlab="Husband's Income", legend=FALSE) -->
-<!-- plot(m, "hincome", list(children="present"),  -->
-<!--      xlab="Husband's Income") -->
-<!-- ``` -->
+A basic plot of predicted probabilities can be produced using the
+`plot()` method for `"nested"` objects.
+
+``` r
+op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
+plot(m, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend=FALSE)
+plot(m, "hincome", list(children="present"),
+     xlab="Husband's Income")
+```
+
+<img src="man/figures/README-wlf-plot-1.png" width="100%" />
 
 ## Authors
 
