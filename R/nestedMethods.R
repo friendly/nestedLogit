@@ -18,7 +18,11 @@
 #'
 #' @param x,object,object2,mod in most cases, an object of class \code{"nested"}.
 #' @param newdata a data frame containing combinations of values of the predictors
-#'        at which fitted probabilities are to be computed.
+#'        at which fitted probabilities (or other quantities) are to be computed.
+#' @param model either \code{"nested"} (the default), in which case fitted probabilities
+#' under the nested logit model are returned, or \code{"dichotomies"}, in which case
+#' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
+#' dichotomies and a named list of the results is returned.
 #' @param as.matrix if \code{TRUE} (the default for \code{coef}) return coefficients
 #'        as a matrix with one column for each nested dichotomy,
 #'        or coefficient covariances as a matrix with one row and column for each
@@ -54,6 +58,7 @@
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
 #' cbind(new, fit) # fitted probabilities at specific values of predictors
+#' predict(m, newdata=new, model="dichotomies", se.fit=TRUE) # on logit scale
 #' coef(m) # coefficient estimates
 #' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
 #' anova(m) # type-I (sequential) tests
@@ -179,35 +184,40 @@ print.dichotomies <- function(x, ...) {
 #' @rdname nestedMethods
 #' @importFrom stats predict
 #' @export
-predict.nested <- function(object, newdata, ...) {
-  if (missing(newdata))
-    newdata <- object$models[[1L]]$data
-  ndichot <- length(object$models)
-  if (ndichot < 2L)
-    stop("there are fewer than 2 nested dichotomies")
-  fitted <- vector(ndichot, mode = "list")
-  for (i in seq_along(object$models)) {
-    p <- predict(object$models[[i]], newdata = newdata, type = "response")
-    p <- cbind(1 - p, p)
-    attr(p, "columns") <- object$models[[i]]$dichotomy
-    fitted[[i]] <- p
-  }
-  response.levels <-
-    unique(unlist(lapply(fitted, function(x)
-      attr(x, "columns"))))
-  p <- matrix(1, nrow(newdata), length(response.levels))
-  colnames(p) <- response.levels
-  for (level in response.levels) {
+predict.nested <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
+  model <- match.arg(model)
+  if (model == "nested"){
+    if (missing(newdata))
+      newdata <- object$models[[1L]]$data
+    ndichot <- length(object$models)
+    if (ndichot < 2L)
+      stop("there are fewer than 2 nested dichotomies")
+    fitted <- vector(ndichot, mode = "list")
     for (i in seq_along(object$models)) {
-      which <- sapply(object$models[[i]]$dichotomy, function(x)
-        level %in% x)
-      if (!any(which))
-        next
-      p[, level] <- p[, level] * fitted[[i]][, which]
+      p <- predict(object$models[[i]], newdata = newdata, type = "response")
+      p <- cbind(1 - p, p)
+      attr(p, "columns") <- object$models[[i]]$dichotomy
+      fitted[[i]] <- p
     }
+    response.levels <-
+      unique(unlist(lapply(fitted, function(x)
+        attr(x, "columns"))))
+    p <- matrix(1, nrow(newdata), length(response.levels))
+    colnames(p) <- response.levels
+    for (level in response.levels) {
+      for (i in seq_along(object$models)) {
+        which <- sapply(object$models[[i]]$dichotomy, function(x)
+          level %in% x)
+        if (!any(which))
+          next
+        p[, level] <- p[, level] * fitted[[i]][, which]
+      }
+    }
+    rownames(p) <- rownames(newdata)
+    return(p)
+  } else {
+    lapply(object$model, predict, newdata=newdata, ...)
   }
-  rownames(p) <- rownames(newdata)
-  p
 }
 
 #' @rdname nestedMethods

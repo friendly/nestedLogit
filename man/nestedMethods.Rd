@@ -35,7 +35,7 @@
 
 \method{print}{dichotomies}(x, ...)
 
-\method{predict}{nested}(object, newdata, ...)
+\method{predict}{nested}(object, newdata, model = c("nested", "dichotomies"), ...)
 
 \method{coef}{nested}(object, as.matrix = TRUE, ...)
 
@@ -67,7 +67,12 @@ as.dichotomies(x, ...)
 \item{\dots}{arguments to be passed down.}
 
 \item{newdata}{a data frame containing combinations of values of the predictors
-at which fitted probabilities are to be computed.}
+at which fitted probabilities (or other quantities) are to be computed.}
+
+\item{model}{either \code{"nested"} (the default), in which case fitted probabilities
+under the nested logit model are returned, or \code{"dichotomies"}, in which case
+\code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
+dichotomies and a named list of the results is returned.}
 
 \item{as.matrix}{if \code{TRUE} (the default for \code{coef}) return coefficients
 as a matrix with one column for each nested dichotomy,
@@ -118,6 +123,7 @@ new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
                    year=c(1972, 2016))
 fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
+predict(m, newdata=new, model="dichotomies", se.fit=TRUE) # on logit scale
 coef(m) # coefficient estimates
 sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
 anova(m) # type-I (sequential) tests
