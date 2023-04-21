@@ -61,6 +61,7 @@ broom::augment(wlf.nested$models[[1]], se_fit = TRUE) |> head()
 broom::augment(wlf.nested$models[[1]], type.predict = "response") |> head()
 broom::augment(wlf.nested$models[[1]], type.predict = "response", se_fit = TRUE) |> head()
 
+predict(wlf.nested) |> head()
 
 
 wlf.augmented <- lapply(wlf.nested$models, broom::augment)
@@ -75,7 +76,7 @@ names(wlf.augmented[[1]])
 
 #' Make the plot
 wlf.aug <- wlf.aug |>
-  mutate(response = factor(response, levels=c("work", "full")))
+  mutate(response = ordered(response, levels=c("work", "full")))
 
 gg <- ggplot(wlf.aug,
        aes(x=hincome, y=.fitted, color=children)) +
@@ -95,3 +96,10 @@ gg + geom_errorbar(aes(ymin=.fitted-.se.fit, ymax=.fitted+.se.fit),
 gg + geom_ribbon(aes(ymin=.fitted-.se.fit,
                      ymax=.fitted+.se.fit,
                      fill = children), alpha = 0.4)
+
+#' label the lines directly
+library(geomtextpath)
+gg + geom_textline(aes(label = children), vjust=-0.5, size=6) +
+  theme(legend.position = "none")
+
+
