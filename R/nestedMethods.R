@@ -12,6 +12,7 @@
 #'   \item{\code{anova}}{computes analysis of variance (or deviance) tables for one or more fitted \code{"nested"}  objects.}
 #'   \item{\code{update}}{will re-fit a \code{"nested"} model with a change in any of the \code{formula}, \code{dichotomies},
 #'        \code{data}, \code{subset}, \code{contrasts}, ...}
+#'   \item{\code{predict}}{computes predicted values from a fitted \code{"nested"} model.}
 #' }
 #'
 #' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nested}}
@@ -19,7 +20,7 @@
 #' @param x,object,object2,mod in most cases, an object of class \code{"nested"}.
 #' @param newdata a data frame containing combinations of values of the predictors
 #'        at which fitted probabilities (or other quantities) are to be computed.
-#' @param model either \code{"nested"} (the default), in which case fitted probabilities
+#' @param model For the predict method, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
 #' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
 #' dichotomies and a named list of the results is returned.
@@ -39,12 +40,12 @@
 #' @author John Fox and Michael Friendly
 #' @keywords regression
 #' @examples
-#' cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool", 
+#' cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool",
 #'                                       "college", "graduate"))
 #' print(cont.dichots)
 #' as.matrix(cont.dichots)
 #' as.character(cont.dichots)
-#' m <- nestedLogit(degree ~ parentdeg + year, 
+#' m <- nestedLogit(degree ~ parentdeg + year,
 #'                  cont.dichots,
 #'                  data=GSS)
 #' print(m)
@@ -53,7 +54,7 @@
 #' broom::tidy(m)
 #' car::Anova(m) # type-II (partial) tests
 #' head(predict(m)) # fitted probabilities for first few cases
-#' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool", 
+#' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
@@ -216,7 +217,7 @@ predict.nested <- function(object, newdata, model=c("nested", "dichotomies"), ..
     rownames(p) <- rownames(newdata)
     return(p)
   } else {
-    lapply(object$model, predict, newdata=newdata, ...)
+    lapply(object$models, predict, newdata=newdata, ...)
   }
 }
 
