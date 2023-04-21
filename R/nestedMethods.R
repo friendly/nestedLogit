@@ -59,7 +59,9 @@
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
 #' cbind(new, fit) # fitted probabilities at specific values of predictors
-#' predict(m, newdata=new, model="dichotomies", se.fit=TRUE) # on logit scale
+#' predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
+#' predictions
+#' predictions$above_l.t.highschool # on logit scale
 #' coef(m) # coefficient estimates
 #' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
 #' anova(m) # type-I (sequential) tests
@@ -217,8 +219,20 @@ predict.nested <- function(object, newdata, model=c("nested", "dichotomies"), ..
     rownames(p) <- rownames(newdata)
     return(p)
   } else {
-    lapply(object$models, predict, newdata=newdata, ...)
+    result <- lapply(object$model, predict, newdata=newdata, ...)
+    attr(result, "model") <- deparse(substitute(object))
+    class(result) <- "predictDichotomies"
+    return(result)
   }
+}
+
+#' @rdname nestedMethods
+#' @export
+print.predictDichotomies <- function(x, ...){
+  cat("\n predictions for binary logit models from nested logit model:",
+      attr(x, "model"))
+  cat("\n for responses:", paste(names(x), sep=", "))
+  cat(paste0("\n access via $", names(x)[1], " etc."))
 }
 
 #' @rdname nestedMethods

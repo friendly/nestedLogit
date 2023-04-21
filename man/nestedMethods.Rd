@@ -16,6 +16,7 @@
 \alias{as.matrix.continuationDichotomies}
 \alias{as.character.dichotomies}
 \alias{as.matrix.dichotomies}
+\alias{print.predictDichotomies}
 \alias{anova.nested}
 \alias{print.anova.nested}
 \alias{as.dichotomies}
@@ -36,6 +37,8 @@
 \method{print}{dichotomies}(x, ...)
 
 \method{predict}{nested}(object, newdata, model = c("nested", "dichotomies"), ...)
+
+\method{print}{predictDichotomies}(x, ...)
 
 \method{coef}{nested}(object, as.matrix = TRUE, ...)
 
@@ -124,7 +127,9 @@ new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
                    year=c(1972, 2016))
 fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
-predict(m, newdata=new, model="dichotomies", se.fit=TRUE) # on logit scale
+predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE) 
+predictions
+predictions$above_l.t.highschool # on logit scale
 coef(m) # coefficient estimates
 sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
 anova(m) # type-I (sequential) tests
