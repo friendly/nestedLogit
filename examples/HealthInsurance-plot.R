@@ -21,7 +21,7 @@ health.binary <- nestedLogit(product4 ~ age  + gender * household + position_lev
                              dichotomies = lbinary, data = HealthInsurance)
 car::Anova(health.binary)
 
-new <- expand.grid(age=seq(20, 70, by = 5), 
+new <- expand.grid(age=seq(20, 70, by = 5),
                    gender = c("Female", "Male"),
                    household = mean(HealthInsurance$household),
                    position_level = mean(HealthInsurance$position_level)
@@ -34,7 +34,7 @@ plotdat <- fit.binary |>
   tidyr::gather(key="Level", value="Probability", A:D)
 
 gg <- ggplot(plotdat, aes(x = age, y = Probability, colour= Level)) +
-  geom_line(linewidth = 1.5) + 
+  geom_line(linewidth = 1.5) +
   facet_grid(~ gender, labeller= label_both) +
   ggtitle("Nested model: {{A B} {C D}}, {A B}, {C D}")
 
@@ -52,7 +52,7 @@ plotdat <- fit.contin |>
   tidyr::gather(key="Level", value="Probability", A:D)
 
 gg <- ggplot(plotdat, aes(x = age, y = Probability, colour= Level)) +
-  geom_line(linewidth = 1.5) + 
+  geom_line(linewidth = 1.5) +
   facet_grid(~ gender, labeller= label_both) +
   ggtitle("Continuation logits")
 
@@ -77,7 +77,7 @@ plotdat <- fit.multi |>
   tidyr::gather(key="Level", value="Probability", A:D)
 
 gg <- ggplot(plotdat, aes(x = age, y = Probability, colour= Level)) +
-  geom_line(linewidth = 1.5) + 
+  geom_line(linewidth = 1.5) +
   facet_grid(~ gender, labeller= label_both) +
   ggtitle("Multinomial model")
 
@@ -88,3 +88,9 @@ direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 diff <- predict(health.binary, newdata = new) - predict(health.multi, newdata = new, type = "probs")
 max(diff)
 summary(diff)
+
+# get predicted 'class' from multinom
+
+pred <- predict(health.multi, type = "class")
+table(HealthInsurance$product4, pred)
+
