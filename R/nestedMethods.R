@@ -219,7 +219,7 @@ predict.nested <- function(object, newdata, model=c("nested", "dichotomies"), ..
     rownames(p) <- rownames(newdata)
     return(p)
   } else {
-    result <- lapply(object$model, predict, newdata=newdata, ...)
+    result <- lapply(object$models, predict, newdata=newdata, ...)
     attr(result, "model") <- deparse(substitute(object))
     class(result) <- "predictDichotomies"
     return(result)

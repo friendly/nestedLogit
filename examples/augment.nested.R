@@ -46,6 +46,7 @@ augment.nested <- function(x,
 library(nestedLogit)
 library(dplyr)
 library(broom)
+library(ggplot2)
 data(Womenlf, package = "carData")
 
 wlf.nested <- nestedLogit(partic ~ hincome + children,
@@ -72,5 +73,25 @@ names(wlf.aug)
 # why don't we get the other variables computed by broom::augment.glm?
 names(wlf.augmented[[1]])
 
+#' Make the plot
+wlf.aug <- wlf.aug |>
+  mutate(response = factor(response, levels=c("work", "full")))
 
+gg <- ggplot(wlf.aug,
+       aes(x=hincome, y=.fitted, color=children)) +
+  geom_line(linewidth = 3) +
+  geom_point(size = 1.5, shape = 16, color = "black") +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Log Odds") +
+  facet_wrap(~ response, labeller = label_both) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = c(.35, .85))
 
+#' add error bars
+gg + geom_errorbar(aes(ymin=.fitted-.se.fit, ymax=.fitted+.se.fit),
+              colour="black", width=.1)
+
+#' better: use a ribbon
+gg + geom_ribbon(aes(ymin=.fitted-.se.fit,
+                     ymax=.fitted+.se.fit,
+                     fill = children), alpha = 0.4)
