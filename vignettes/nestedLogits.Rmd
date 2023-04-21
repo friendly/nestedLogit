@@ -197,6 +197,16 @@ mod.work <- glm(work ~ hincome + children, family=binomial, data=Womenlf)
 mod.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
 ```
 
+The two log odds models are:
+<!-- equatiomatic::extract_eq(mod.work) -->
+<!-- equatiomatic::extract_eq(mod.work) -->
+
+$$
+L_1 =\log\left[ \frac { P( \operatorname{work} = \operatorname{1} ) }{ 1 - P( \operatorname{work} = \operatorname{1} ) } \right] = \alpha_1 + \beta_{11}(\operatorname{hincome}) + \beta_{12}(\operatorname{children}_{\operatorname{present}})
+$$
+$$
+L_2 = \log\left[ \frac { P( \operatorname{full} ) }{ 1 - P( \operatorname{full} ) } \right] = \alpha_2 + \beta_{21}(\operatorname{hincome}) + \beta_{22}(\operatorname{children}_{\operatorname{present}})
+$$
 But then, it would be difficult to obtain tests for the combined model,
 get and plot predicted values and so forth.
 
@@ -216,7 +226,9 @@ For convenience, there are functions to convert these dichotomies to a matrix or
 a character string representing the tree structure of the dichotomies.
 
 ```{r}
+#| collapse = FALSE
 as.matrix(comparisons)
+
 as.character(comparisons)
 ```
 
@@ -234,7 +246,9 @@ dichotomy. The `models` component contains results equivalent to what was fit ma
 above as `mod.work` and `mod.full`.
 
 ```{r names}
+#| collapse = FALSE
 names(wlf.nested)
+
 names(wlf.nested$models)
 ```
 
@@ -267,6 +281,7 @@ $e^\mathbf{\beta}$ give the multiples of the odds for these comparisons.
 ```{r coef}
 coef(wlf.nested)
 
+# show as odds
 exp(coef(wlf.nested))
 ```
 Thus, the odds of both working and working full time decrease with husband's income.
@@ -438,10 +453,6 @@ to make it avoid clipping some of the labels.
 direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 ```
 
-```{r write-bib}
-# write a packages.bib file of the packages (.packages()) that have been used here
-knitr::write_bib(file = here::here("vignettes", "packages.bib"))
-```
 
 ### Plotting fitted log odds
 
@@ -495,6 +506,44 @@ for ( kids in c("absent", "present") ) {
 }
 ```
 
+Finally, we can use `ggplot` as before to plot the fitted logits, first transforming the long format.
+
+```{r}
+plotlongl <- plotdatal |>
+  tidyr::pivot_longer(work : full,
+                      names_to = "Dichotomy",
+                      values_to = "logit") |>
+  mutate(Dichotomy = ordered(Dichotomy,
+                         levels = c("work", "full")) )
+```
+
+Doing this gives the flexibility that we can facet the plot either by `children` (as before)
+or `Dichotomy`. The latter nicely shows that the additive model has equal slopes for husband's
+income within both panels: increasing husband's income decreases the log odds of working,
+but at a faster rate for the `full` dichotomy.
+Having young children decreases the log odds of working either at all
+or working fulltime as compared to parttime.
+```{r wlf-gglogits}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "**log odds**: Predicted logits of the  `work` and `full` dichotomies"
+ggplot(plotlongl,
+       aes(x=hincome, y=logit, color=children)) +
+  geom_line(linewidth = 3) +
+  geom_point(size = 1.5, shape = 16, color = "black") +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Log Odds") +
+  facet_wrap(~ Dichotomy, labeller = label_both) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = c(.35, .82))
+
+```
+
+
+```{r write-bib}
+# write a packages.bib file of the packages (.packages()) that have been used here
+knitr::write_bib(file = here::here("vignettes", "packages.bib"))
+```
 
 ## References
 

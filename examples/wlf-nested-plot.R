@@ -192,3 +192,23 @@ for ( kids in c("absent", "present") ) {
   }
 }
 par(op)
+
+#' Do this with ggplot, but make panels for the dichotomy
+
+plotlongl <- plotdatal |>
+  tidyr::pivot_longer(work : full,
+                      names_to = "Dichotomy",
+                      values_to = "logit") |>
+  mutate(Dichotomy = ordered(Dichotomy,
+                         levels = c("work", "full")) )
+
+ggplot(plotlongl,
+       aes(x=hincome, y=logit, color=children)) +
+  geom_line(linewidth = 3) +
+  geom_point(size = 1.5, shape = 16, color = "black") +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Log Odds") +
+  facet_wrap(~ Dichotomy, labeller = label_both) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = c(.35, .85))
+
