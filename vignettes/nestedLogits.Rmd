@@ -58,6 +58,7 @@ library(car)            # Companion to Applied Regression
 library(broom)          # Convert Statistical Objects into Tidy Tibbles
 library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
 library(directlabels)   # Direct Labels for Multicolor Plots
+library(dplyr)          # A Grammar of Data Manipulation
 ```
 
 ## Models for polytomous responses
@@ -82,9 +83,15 @@ model for the polytomous response, just as does the multinomial logit model.
 This approach stems from @Fienberg:80 and
 is described in @Fox:2016:ARA, \S 14.2.2 and @FriendlyMeyer:2016:DDAR, \S 8.2.
 
-However, by the construction of **nested** dichotomies, the submodels are statistically independent,
+However, by the construction of **nested** dichotomies, the submodels are 
+`r colorize("statistically independent", "blue")` 
+(because the likelihood for the polytomous response is the product of the likelihoods for
+the dichotomies),
 so that test statistics, such as the likelihood ratio $G^2$ tests and tests for
 individual coefficients can be added to give overall tests for the full polytomy.
+In this way, the $m-1$ dichotomies are analogous to $m-1$
+`r colorize("orthogonal", "blue")` contrasts for a for an $m$-level factor in an ANOVA design.
+
 
 This is illustrated in the figure below, where response categories $Y = \{1, 2, 3, 4\}$
 can be divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these dichotomies can be
@@ -110,6 +117,7 @@ This figure makes clear that nested dichotomies are not unique or equivalent.
 Different choices will have different interpretations and different fitted probabilities.
 Such models make the most sense when there are substantive reasons for considering the response
 categories in terms of such dichotomies. For example, in the diagram above at the right, this would make sense if the categories were _ordered_, $1 < 2 < 3 < 4$, so each of the three submodels can be interpreted as `above_1`, `above_2`, `above_3`.
+In this case, the scheme for generating the dichotomies is often called _continuation logits_.
 <!-- $\mathrm{above}: \{1, 2, 3}$. -->
 
 For another example, the figure below shows a case where psychiatric patients
@@ -117,7 +125,10 @@ are classified into four diagnostic categories.  These might be considered
 ordered categories and dichotomized as in the 4-category above.
 However, it might make better sense to dichotomize the non-normal groups into
 a comparison of the depressed and manic group vs. schizophrenic and then
-a final contrast of the depressed and manic categories.
+a final contrast of the depressed and manic categories. Then, a model predicting
+diagnosis can be interpreted in terms of the log odds of being classed
+for each of the dichotomies. By independence, ANOVA and coefficient tests for the 
+full multi-category response are based on the sums over the three dichotomies.
 
 ```{r}
 #| nested-psychiatric,
@@ -136,22 +147,21 @@ the York University Institute for Social Research
 [@Atkinson-etal:1984].
 The variables are:
 
-* `partic`: labor force participation, the response, with levels
+* `partic`: labor force participation, the response, with levels:
   + `fulltime`: working full-time
   + `not.work`: not working outside the home
   + `parttime` : working part-time.
 
 * `hincome`: Husband's income, in \$1,000s
 * `children`: Presence of children in the home, `absent` or `present`
-* `region`: Region of Canada
+* `region`: Region of Canada (`r paste(levels(Womenlf$region), collapse=", ")`)
 
 The response, `partic` is a factor, but the levels are ordered
 alphabetically. To correct this, we make it an ordered factor. At that time, the majority
-of the 263 women surveyed where not working. 
+of the 263 women surveyed were not working. 
 
 
 ```{r order-partic}
-library(dplyr) # A Grammar of Data Manipulation
 data(Womenlf, package = "carData")
 Womenlf <- Womenlf |>
   mutate(partic = ordered(partic, 
@@ -169,7 +179,7 @@ a dichotomy (`work`) between women who are not working vs. those who are
 (part time or full time). A second dichotomy (`full`) contrasts those who work
 full time vs. part time, but among only those who work.
 
-The two binary variables can be created by recoding `partic` in the data frame
+The two binary variables can be created by re-coding `partic` in the data frame
 as follows.  
 ```{r recode}
 Womenlf <- Womenlf |>
@@ -182,7 +192,8 @@ Womenlf <- Womenlf |>
 
 Note that the full sample of `r nrow(Womenlf)` cases is available for the `work` dichotomy,
 while only `r sum(Womenlf$partic != "not.work")` cases are involved in the distinction between
-part time and full time work.
+part time and full time work. The relations of `partic` to these dichotomies can be seen
+below:
 
 ```{r xtabs}
 xtabs(~ partic + work, addNA=TRUE, data=Womenlf)
@@ -235,6 +246,8 @@ as.character(comparisons)
 ### Fitting the nested logit model
 
 To fit the model, we specify these `comparisons` as the `dichotomies` argument.
+The model formula, `partic ~ hincome + children` specifies a main effects model
+for husband's income and presence of young children.
 ```{r wlf.nested}
 wlf.nested <- nestedLogit(partic ~ hincome + children, 
                           dichotomies = comparisons,
@@ -292,8 +305,9 @@ Having young children also decreases the odds of both.
 Anova(wlf.nested)
 ```
 
-**glance** and **tidy**: The `broom` package provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nested"` model gives a one-line summary of the statistics
-for each dichotomy. The `tidy method combines the coefficients for the sub-models, together with test
+**glance** and **tidy**: The `broom` package [@R-broom]
+provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nested"` model gives a one-line summary of the statistics
+for each dichotomy. The `tidy` method combines the coefficients for the sub-models, together with test
 statistics.
 
 ```{r}
@@ -313,7 +327,9 @@ tidy(wlf.nested)     # summarize the coefficients
 <!-- 2 full         104.         105   0.995 -->
 
 
-**update**: Does it make sense to include `region` of Canada in the model?  This can be tested
+**update**: Does it make sense to include `region` of Canada in the model?  
+
+This can be tested
 by adding it to the model formula, and comparing the new model with the original one using
 `anova()`. The significance tests here are for the additional contribution of `region` over
 the model that just includes main effects of `husincome` and `children`.
@@ -325,10 +341,10 @@ anova(wlf.nested, wlf.nested.1)
 ```
 
 Note that `anova()` with two or models tests these against one another, in the order specified.
-This assumes that the models compared are _nested_ (is this a pun?), in the sense that the
+This assumes that the models compared are _nested_ (an unintentional a pun), in the sense that the
 terms in the smaller model are a subset of those in the larger model.
 
-In a similar way, we could fit and test a larger scope of models. For example to add
+In a similar way, we could fit and test a _larger_ scope of models. For example to add
 an interaction between husband's income and children:
 
 ```{r more-models}
@@ -354,7 +370,8 @@ car::some(predict(wlf.nested))
 ```
 
 ## Plotting
-The `nestedLogit` package has a basic `plot()` method for `"nested"` models, but for better control
+The `nestedLogit` package has a basic `plot()` method for `"nested"` models, but to explain how this
+works, and for better control
 it is useful to describe how this can be done directly.
 
 To construct a plot, it is sufficient to calculate predicted probabilities over a grid of
@@ -374,7 +391,7 @@ Because the fitted values are in multiple columns, it is easiest to plot these u
 `matplot()`. We could plot these all in a single (messy) figure, but it is clearer
 to show separate panels for children `absent` and `present`.
 
-To do this the `plotdata` data set is subset within a loop over the values of `children`
+To do this, the `plotdata` data set is subset within a loop over the values of `children`
 and each subset is plotted by `matplot`. It is only necessary to include the legend
 in one panel. The plots are combined into a single figure using `par(mfrow())`.
 ```{r wlf-matplot}
