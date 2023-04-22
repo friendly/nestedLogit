@@ -15,10 +15,13 @@
 #' This method was introduced by Fienberg (1980),and subsequently illustrated by
 #' Fox(2016) and Friendly & Meyer (2016).
 #'
-#' @details A dichotomy for a categorical variable is a comparison of one subset
-#' of levels against another subset. A set of dichotomies is nested, if after
+#' \code{dichotomy} and \code{logits} are helper functions to construct the dichotomies.
+#'
+#' @details A \emph{dichotomy} for a categorical variable is a comparison of one subset
+#' of levels against another subset. A set of dichotomies is \emph{nested}, if after
 #' an initial dichotomy, all subsequent ones are \emph{within} the groups of levels
-#' lumped together in earlier ones.
+#' lumped together in earlier ones. Nested dichotomies correspond to a binary tree
+#' of the successive divisions.
 #'
 #' For example, for a 3-level response, a first
 #' dichotomy could be \code{ {A}, {B, C}} and then the second one would be
@@ -44,7 +47,8 @@
 #' @param formula a model formula with the polytomous response on the left-hand side
 #'        and the usual linear-model-like specification on the right-hand side.
 #' @param dichotomies specification of the logits for the nested dichotomies,
-#'        constructed by the \code{logits} and \code{dichotomy} functions. See Details.
+#'        constructed by the \code{logits} and \code{dichotomy} functions,
+#'        or \code{continuationLogits}. See Details.
 #' @param data a data frame with the data for the model; unlike in most statistical
 #'        modeling functions, the \code{data} argument is required. Cases with \code{NA}s
 #'        in any of the variables appearing in the model formula will be removed
@@ -57,10 +61,11 @@
 #'        for \code{logits}, definitions of the nested logits---with each named argument specifying
 #'        a dichotomy; for \code{dichotomy}, two character vectors giving the levels
 #'        defining the dichotomy.
-#' @param levels a character vector giving the ordered levels for a set of continuation dichotomies,
+#' @param levels for \code{continuationLogits}, a character vector giving the ordered levels for a set of continuation dichotomies,
 #'        or the number of levels, in which case the levels will be named \code{"A"}, \code{"B"}, \code{"C"}, etc.
 #' @param names an optional character vector of names for the continuation dichotomies; if absent,
 #'        names will be generated from the levels.
+#' @param prefix a character string (default: \code{"above_"}) used as a prefix to the names of the continuation dichotomies.
 #'
 #' @return \code{nestedLogit} returns an object of class \code{"nested"} containing
 #' the following elements:
@@ -251,7 +256,7 @@ dichotomy <- function(...) {
 
 #' Construct Continuation Logits for an Ordered Categorical Variable
 #'
-#' This function constructs a set of \eqn{m-1} logit comparisons, called
+#' \code{continuationLogits} constructs a set of \eqn{m-1} logit comparisons, called
 #' continuation logits,
 #' for an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
 #' considered low to high.
@@ -275,10 +280,10 @@ dichotomy <- function(...) {
 #'
 #'
 #  TODO:
-#  - add prefix = "above_" argument
+#  - add prefix = "above_" argument [DONE]
 #  - allow reverse = FALSE (default) argument to do continuations in reverse order ???
 
-continuationLogits <- function(levels, names){
+continuationLogits <- function(levels, names, prefix = "above_"){
   if (is.numeric(levels)){
     levels <- as.integer(levels)
     levels <- LETTERS[1L:levels]
@@ -289,7 +294,7 @@ continuationLogits <- function(levels, names){
   for (i in 1L:(nlevels - 1L)){
     logits[[i]] <- list(levels[i], levels[-(1L:i)])
   }
-  if (missing(names)) names <- paste0("above_", levels[1L:(nlevels - 1L)])
+  if (missing(names)) names <- paste0(prefix, levels[1L:(nlevels - 1L)])
   if (length(names) != nlevels - 1L)
     stop("number of names not equal to ", nlevels - 1L)
   nms <- make.names(names)

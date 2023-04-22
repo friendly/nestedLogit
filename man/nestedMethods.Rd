@@ -108,11 +108,15 @@ Most of these are the standard methods for a model-fitting function.
 }
 }
 \examples{
+# define continuation dichotomies for level of education
 cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool",
                                       "college", "graduate"))
 print(cont.dichots)
 as.matrix(cont.dichots)
 as.character(cont.dichots)
+
+# fit a nested model
+data(GSS)
 m <- nestedLogit(degree ~ parentdeg + year,
                  cont.dichots,
                  data=GSS)
@@ -121,17 +125,21 @@ summary(m)
 broom::glance(m)
 broom::tidy(m)
 car::Anova(m) # type-II (partial) tests
+
+# predicted probabilities and ploting
 head(predict(m)) # fitted probabilities for first few cases
 new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
                                "college", "graduate"),
                    year=c(1972, 2016))
 fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
-predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE) 
+predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 predictions
 predictions$above_l.t.highschool # on logit scale
 coef(m) # coefficient estimates
 sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
+
+# anova() and update() methods
 anova(m) # type-I (sequential) tests
 anova(update(m, . ~ . - year), m) # model comparison
 

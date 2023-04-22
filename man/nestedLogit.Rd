@@ -13,14 +13,15 @@ logits(...)
 
 dichotomy(...)
 
-continuationLogits(levels, names)
+continuationLogits(levels, names, prefix = "above_")
 }
 \arguments{
 \item{formula}{a model formula with the polytomous response on the left-hand side
 and the usual linear-model-like specification on the right-hand side.}
 
 \item{dichotomies}{specification of the logits for the nested dichotomies,
-constructed by the \code{logits} and \code{dichotomy} functions. See Details.}
+constructed by the \code{logits} and \code{dichotomy} functions,
+or \code{continuationLogits}. See Details.}
 
 \item{data}{a data frame with the data for the model; unlike in most statistical
 modeling functions, the \code{data} argument is required. Cases with \code{NA}s
@@ -44,6 +45,8 @@ use for the levels).}
 
 \item{names}{Names to be assigned to the dichotomies; if absent, names
 will be generated from the levels.}
+
+\item{prefix}{a character string (default: \code{"above_"}) used as a prefix to the names of the continuation dichotomies.}
 }
 \value{
 \code{nestedLogit} returns an object of class \code{"nested"} containing
@@ -79,7 +82,9 @@ and give overall tests for a model for the polytomy.
 This method was introduced by Fienberg (1980),and subsequently illustrated by
 Fox(2016) and Friendly & Meyer (2016).
 
-This function constructs a set of \eqn{m-1} logit comparisons, called
+\code{dichotomy} and \code{logits} are helper functions to construct the dichotomies.
+
+\code{continuationLogits} constructs a set of \eqn{m-1} logit comparisons, called
 continuation logits,
 for an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
 considered low to high.
@@ -88,10 +93,11 @@ The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
 The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
 }
 \details{
-A dichotomy for a categorical variable is a comparison of one subset
-of levels against another subset. A set of dichotomies is nested, if after
+A \emph{dichotomy} for a categorical variable is a comparison of one subset
+of levels against another subset. A set of dichotomies is \emph{nested}, if after
 an initial dichotomy, all subsequent ones are \emph{within} the groups of levels
-lumped together in earlier ones.
+lumped together in earlier ones. Nested dichotomies correspond to a binary tree
+of the successive divisions.
 
 For example, for a 3-level response, a first
 dichotomy could be \code{ {A}, {B, C}} and then the second one would be
