@@ -7,8 +7,8 @@
 augment.nested <- function(x,
                            data = NULL,
                            newdata = NULL,
-                           type.predict = c("link", "response"),
-                           type.residuals = c("deviance", "pearson"),
+                           type.predict = c("link", "probs"),
+#                           type.residuals = c("deviance", "pearson"),
                            se_fit = TRUE,    # it is FALSE in augment.glm()
                            ...)
 {
@@ -18,25 +18,39 @@ augment.nested <- function(x,
     newdata <- x$models[[1L]]$data
 
   type.predict <- match.arg(type.predict)
-  if (type.predict != "link") stop("type.predict = ", type.predict, " is not implemented.")
+  if (type.predict == "link") {
 
-  nms <- names(x$models)
-  result <- lapply(x$models, broom::augment,
-                   data=data,
-                   newdata=newdata,
-                   type.predict = type.predict,
-                   type.residuals = type.residuals,
-                   se_fit = se_fit,
-                   ...
-  )
+    nms <- names(x$models)
+    result <- lapply(x$models, broom::augment,
+                     data=data,
+                     newdata=newdata,
+                     type.predict = type.predict,
+#                     type.residuals = type.residuals,
+                     se_fit = se_fit,
+                     ...
+    )
 
-  cls <- class(result[[1L]])
-  for (i in seq_along(x$models)) {
-    result[[i]] <- cbind(response = nms[i], result[[i]])
+    cls <- class(result[[1L]])
+    for (i in seq_along(x$models)) {
+      result[[i]] <- cbind(response = nms[i], result[[i]])
+    }
+    result <- dplyr::bind_rows(result) |>
+      select(-..y)
+    class(result) <- cls
   }
-  result <- dplyr::bind_rows(result) |>
-    select(-..y)
-  class(result) <- cls
+  else {  #type.predict = "probs", as in multinom()
+    result <- predict(x, newdata = newdata)
+    resp.names <- colnames(result)
+    result <- dplyr::bind_cols(newdata, result) |>
+      select(-..y) |>
+      as_tibble()
+
+    result <- result |>
+      tidyr::pivot_longer(cols = all_of({{resp.names}}),
+                                  names_to = "response",
+                                  values_to = "prob")
+  }
+
   result
 
 }
@@ -64,6 +78,7 @@ broom::augment(wlf.nested$models[[1]], type.predict = "response", se_fit = TRUE)
 predict(wlf.nested) |> head()
 
 
+
 wlf.augmented <- lapply(wlf.nested$models, broom::augment)
 names(wlf.augmented)
 
@@ -73,6 +88,9 @@ wlf.aug <- augment(wlf.nested)
 names(wlf.aug)
 # why don't we get the other variables computed by broom::augment.glm?
 names(wlf.augmented[[1]])
+
+wlf.aug.probs <- augment(wlf.nested, type.predict = "probs")
+
 
 #' Make the plot
 wlf.aug <- wlf.aug |>
