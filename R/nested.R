@@ -82,7 +82,7 @@
 #'    \code{"NULL"} if the argument isn't specified.
 #'    \item \code{contrasts}, the \code{contrasts} argument or \code{NULL} if the argument
 #'    isn't specified.
-#'    \item{contrasts.print} a character representation of the \code{contrasts} argument or
+#'    \item{\code{contrasts.print} a character representation of the \code{contrasts} argument or
 #'    \code{"NULL"} if the argument isn't specified.
 #' }
 #'   \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}.
@@ -258,8 +258,8 @@ dichotomy <- function(...) {
 #'
 #' \code{continuationLogits} constructs a set of \eqn{m-1} logit comparisons, called
 #' continuation logits,
-#' for an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
-#' considered low to high.
+#' for an ordered response. With \eqn{m=4} levels, say, \code{A, B, C, D},
+#' considered low to high:
 #' The first contrasts \code{B, C, D} against \code{A}.
 #' The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
 #' The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
