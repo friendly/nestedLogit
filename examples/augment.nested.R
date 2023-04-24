@@ -1,15 +1,32 @@
-#' ---
-#' title: try broom::augment
-#' ---
+#' Augment data with information from a nested object
 #'
-
-# quick try at an augment function
+#' Augment accepts a model object and a dataset and adds information about each observation in the dataset,
+#' typically to assist in preparing plots of the model. The general scheme is to append columns to the
+#' data representing predicted values and other quantities (residuals, standard errors, ...) where available.
+#'
+#' A complication for nested dichotomies models is that there are at least two types of predicted values of
+#' interest: the fitted logits for the \eqn{m-1} dichotomies and the fitted probabilities of the \eqn{m}
+#' response categories.
+#'
+#' @param x       an object of class \code{"nested"} produced by \code{\link{nestedLogit}}.
+#' @param data    the data set used to fit the model. If not supplied, this is extracted from the model object.
+#' @param newdata a prediction data set containing values of all predictors used in the model
+#' @param type.predict a character string, either \code{"link"} to calculate predicted values on the logit scale
+#'                for each of the dichotomies, or \code{"probs"} to calulate fitted probabilities
+#' @param se_fit  Logical. For predicted logits, whether to return the standard errors.
+#' @param to_long Logical. For predicted probabilities, whether to convert these to long format.
+#' @param ...
+#'
+#' @return
+#' @export
+#'
+#' @examples
 augment.nested <- function(x,
                            data = NULL,
                            newdata = NULL,
                            type.predict = c("link", "probs"),
-#                           type.residuals = c("deviance", "pearson"),
                            se_fit = TRUE,    # it is FALSE in augment.glm()
+                           to_long = TRUE,
                            ...)
 {
   if (is.null(data))
@@ -25,10 +42,8 @@ augment.nested <- function(x,
                      data=data,
                      newdata=newdata,
                      type.predict = type.predict,
-#                     type.residuals = type.residuals,
                      se_fit = se_fit,
-                     ...
-    )
+                     ... )
 
     cls <- class(result[[1L]])
     for (i in seq_along(x$models)) {
@@ -39,85 +54,23 @@ augment.nested <- function(x,
     class(result) <- cls
   }
   else {  #type.predict = "probs", as in multinom()
-    result <- predict(x, newdata = newdata)
+    result <- predict(x, newdata = newdata, ...)
     resp.names <- colnames(result)
     result <- dplyr::bind_cols(newdata, result) |>
       select(-..y) |>
       as_tibble()
 
-    result <- result |>
+    if(isTRUE(to_long)) {
+      result <- result |>
       tidyr::pivot_longer(cols = all_of({{resp.names}}),
-                                  names_to = "response",
+                                  names_to = "response.level",
                                   values_to = "prob")
+    }
   }
 
   result
 
 }
 
-
-
-library(nestedLogit)
-library(dplyr)
-library(broom)
-library(ggplot2)
-data(Womenlf, package = "carData")
-
-wlf.nested <- nestedLogit(partic ~ hincome + children,
-                          logits(work=dichotomy("not.work", c("parttime", "fulltime")),
-                                 full=dichotomy("parttime", "fulltime")),
-                          data=Womenlf)
-
-# what does broom return?
-broom::augment(wlf.nested$models[[1]]) |> head()
-broom::augment(wlf.nested$models[[1]], se_fit = TRUE) |> head()
-
-broom::augment(wlf.nested$models[[1]], type.predict = "response") |> head()
-broom::augment(wlf.nested$models[[1]], type.predict = "response", se_fit = TRUE) |> head()
-
-predict(wlf.nested) |> head()
-
-
-
-wlf.augmented <- lapply(wlf.nested$models, broom::augment)
-names(wlf.augmented)
-
-# try our function
-wlf.aug <- augment(wlf.nested)
-
-names(wlf.aug)
-# why don't we get the other variables computed by broom::augment.glm?
-names(wlf.augmented[[1]])
-
-wlf.aug.probs <- augment(wlf.nested, type.predict = "probs")
-
-
-#' Make the plot
-wlf.aug <- wlf.aug |>
-  mutate(response = ordered(response, levels=c("work", "full")))
-
-gg <- ggplot(wlf.aug,
-       aes(x=hincome, y=.fitted, color=children)) +
-  geom_line(linewidth = 3) +
-  geom_point(size = 1.5, shape = 16, color = "black") +
-  scale_color_discrete() +
-  labs(x="Husband's Income", y= "Log Odds") +
-  facet_wrap(~ response, labeller = label_both) +
-  theme_bw(base_size = 14) +
-  theme(legend.position = c(.35, .85))
-
-#' add error bars
-gg + geom_errorbar(aes(ymin=.fitted-.se.fit, ymax=.fitted+.se.fit),
-              colour="black", width=.1)
-
-#' better: use a ribbon
-gg + geom_ribbon(aes(ymin=.fitted-.se.fit,
-                     ymax=.fitted+.se.fit,
-                     fill = children), alpha = 0.4)
-
-#' label the lines directly
-library(geomtextpath)
-gg + geom_textline(aes(label = children), vjust=-0.5, size=6) +
-  theme(legend.position = "none")
 
 
