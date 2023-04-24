@@ -1,3 +1,5 @@
+# FIXME: plot.nested fails if there is no `others`
+
 #' Plotting Nested Logit Models
 #' @aliases plot.nested
 #' @description A \code{\link{plot}} method for \code{"nested"} objects produced by the
