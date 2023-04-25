@@ -18,6 +18,10 @@
 #' @param ...
 #'
 #' @return
+#' @importFrom generics augment
+#' @importFrom broom augment.glm
+#' @importFrom dplyr bind_rows bind_cols
+#' @importFrom tidyr pivot_longer
 #' @export
 #'
 #' @examples
