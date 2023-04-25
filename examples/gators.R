@@ -1,5 +1,5 @@
 #' ---
-#' title: Food choice of aligators
+#' title: Food choice of alligators
 #' ---
 
 # from: https://data.library.virginia.edu/getting-started-with-multinomial-logit-models/

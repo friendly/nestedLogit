@@ -64,5 +64,6 @@ travel <- list(
 
 check_dichotomies(travel, lev)
 
+unlist(travel, names)
 
 }

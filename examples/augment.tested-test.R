@@ -24,7 +24,7 @@ broom::augment(wlf.nested$models[[1]], type.predict = "response", se_fit = TRUE)
 predict(wlf.nested) |> head()
 
 
-
+#' try getting augment directly on each submodel
 wlf.augmented <- lapply(wlf.nested$models, broom::augment)
 names(wlf.augmented)
 
@@ -36,6 +36,15 @@ names(wlf.aug)
 names(wlf.augmented[[1]])
 
 wlf.aug.probs <- augment(wlf.nested, type.predict = "probs")
+
+# try using new data
+new <- expand.grid(hincome = seq(0, 40, by = 5),
+                   children = c("absent", "present"))
+
+wlf.augmented.new <- lapply(wlf.nested$models, broom::augment, se_fit=TRUE, newdata=new)
+names(wlf.augmented.new[[1]])
+
+wlf.aug.new <- augment(wlf.nested, newdata = new)
 
 
 #' Make the plot

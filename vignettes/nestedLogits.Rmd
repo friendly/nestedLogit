@@ -397,7 +397,7 @@ in one panel. The plots are combined into a single figure using `par(mfrow())`.
 ```{r wlf-matplot}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "**matplot**: Predicted probabilities of working at all or workinn part time or full time"
+#| fig.cap = "**matplot**: Predicted probabilities of working at all or working part time or full time"
 op <- par(mfrow=c(1,2), mar=c(4,4,3,1)+.1)
 cols=c("blue", "magenta", "darkgreen")
 for ( kids in c("absent", "present") ) {
