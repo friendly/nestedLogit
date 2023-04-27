@@ -21,7 +21,9 @@
 #'             values from the model.
 #'             For \code{type.predict = "link"}, the dichotomies in the model are given as \code{response} and
 #'             the predicted log odds is given as \code{.fitted}, with standard error \code{.se.fit}. The number
-#'             of observations is
+#'             of observations is the sum of those not coded \code{NA} across all dichotomies.
+#'             For \code{type.predict = "probs"}, when \code{to_long=FALSE}, predicted probabilities appear as
+#'             code{m} columns corresponding to the levels of the response.
 #' @importFrom generics augment
 #' @importFrom broom augment.glm
 #' @importFrom dplyr bind_rows bind_cols
