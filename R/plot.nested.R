@@ -59,10 +59,14 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100,
   vars <- all.vars(formula(x)[-2])
   response <- setdiff(all.vars(formula(x)), vars)
   if (!(x.var %in% vars)) stop (x.var, " is not in the model")
-  other.x <- names(others)
-  check <- other.x %in% vars
-  if (any(!check)) stop("not in the model: ", paste(other.x[!check], collapse=", "))
-  values <- others
+  if (!missing(others)){
+    other.x <- names(others)
+    check <- other.x %in% vars
+    if (any(!check)) stop("not in the model: ", paste(other.x[!check], collapse=", "))
+    values <- others
+  } else {
+    values <- list()
+  }
   if (is.numeric(data[, x.var])){
     numeric.x <- TRUE
     range.x <- range(data[, x.var], na.rm=TRUE)
@@ -92,8 +96,15 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100,
     if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
            col=col, pch=pch, inset=legend.inset, xpd=TRUE)
   }
-  if (missing(main)) main <- paste(paste(other.x, "=", as.character(unlist(others))),
+  if (!missing(main)) {
+    title(main, cex.main=cex.main, font.main=font.main)
+  } else {
+    if (!missing(others)){
+      main <- paste(paste(other.x, "=", as.character(unlist(others))),
                                    collapse=", ")
-  title(main, cex.main=cex.main, font.main=font.main)
+      title(main, cex.main=cex.main, font.main=font.main)
+    }
+  }
+  return(invisible(NULL))
 }
 
