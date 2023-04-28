@@ -1,26 +1,26 @@
-#' Methods for \code{"nested"} and Related Objects
-#' @aliases nestedMethods print.nested summary.nested print.summary.nested Anova.nested
-#' print.Anova.nested update.nested predict.nested coef.nested vcov.nested print.dichotomies
+#' Methods for \code{"nestedLogit"} and Related Objects
+#' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit Anova.nestedLogit
+#' print.Anova.nestedLogit update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
 #' as.matrix.dichotomies
-#' @description Various methods for processing \code{"nested"} and related objects.
+#' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.
 #'
 #' \describe{
 #'   \item{\code{coef}, \code{vcov}}{return the coefficients and their variance-covariance matrix respectively.}
-#'   \item{\code{Anova}}{calculates type-II or type-III analysis-of-variance tables for \code{"nested"} objects.}
-#'   \item{\code{anova}}{computes analysis of variance (or deviance) tables for one or more fitted \code{"nested"}  objects.}
-#'   \item{\code{update}}{will re-fit a \code{"nested"} model with a change in any of the \code{formula}, \code{dichotomies},
-#'        \code{data}, \code{subset}, \code{contrasts}, ...}
-#'   \item{\code{predict}}{computes predicted values from a fitted \code{"nested"} model.}
+#'   \item{\code{Anova}}{calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects.}
+#'   \item{\code{anova}}{computes sequential analysis of variance (or deviance) tables for one or more fitted \code{"nestedLogit"}  objects.}
+#'   \item{\code{update}}{will re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
+#'        \code{data}, \code{subset}, or \code{contrasts}, arguments.}
+#'   \item{\code{predict}}{computes predicted values from a fitted \code{"nestedLogit"} model.}
 #' }
 #'
-#' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nested}}
+#' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}}
 #'
-#' @param x,object,object2,mod in most cases, an object of class \code{"nested"}.
+#' @param x,object,object2,mod in most cases, an object of class \code{"nestedLogit"}.
 #' @param newdata a data frame containing combinations of values of the predictors
 #'        at which fitted probabilities (or other quantities) are to be computed.
-#' @param model For the predict method, either \code{"nested"} (the default), in which case fitted probabilities
+#' @param model For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
 #' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
 #' dichotomies and a named list of the results is returned.
@@ -77,7 +77,7 @@
 #'
 #' @rdname nestedMethods
 #' @export
-print.nested <- function(x, ...) {
+print.nestedLogit <- function(x, ...) {
   cat("Nested logit models: ")
   print(x$formula)
   if (!is.null(x$subset)) cat("subset: ", x$subset, "\n")
@@ -88,12 +88,12 @@ print.nested <- function(x, ...) {
 
 #' @rdname nestedMethods
 #' @export
-summary.nested <- function(object, ...) {
+summary.nestedLogit <- function(object, ...) {
   result <- lapply(object$models, summary, ...)
   for (i in seq_along(result)) {
     result[[i]]$dichotomy <- object$models[[i]]$dichotomy
   }
-  class(result) <- "summary.nested"
+  class(result) <- "summary.nestedLogit"
   attr(result, "formula") <- object$formula
   attr(result, "subset") <- object$subset
   attr(result, "contrasts.print") <- object$contrasts.print
@@ -101,8 +101,8 @@ summary.nested <- function(object, ...) {
 }
 
 #' @rdname nestedMethods
-#' @exportS3Method print summary.nested
-print.summary.nested <- function(x, ...) {
+#' @exportS3Method print summary.nestedLogit
+print.summary.nestedLogit <- function(x, ...) {
   cat("Nested logit models: ")
   print(attr(x, "formula"))
   if (!is.null(subset <- attr(x, "subset"))){
@@ -117,22 +117,26 @@ print.summary.nested <- function(x, ...) {
     cat(paste0(
       "Response ",
       nms[i],
-      ": {",
+      ": ",
+      names(x[[i]]$dichotomy[1L]),
+      "{",
       paste(x[[i]]$dichotomy[[1L]], collapse = ", "),
-      "} vs. {",
+      "} vs. ",
+      names(x[[i]]$dichotomy[2L]),
+      "{",
       paste(x[[i]]$dichotomy[[2L]], collapse = ", "),
       "}"
     ))
     print(x[[i]], ...)
   }
-  invisible(return(x))
+  invisible(x)
 }
 
 #' @rdname nestedMethods
 #' @importFrom car Anova
-#' @exportS3Method car::Anova nested
+#' @exportS3Method car::Anova nestedLogit
 #' @export
-Anova.nested <- function(mod, ...) {
+Anova.nestedLogit <- function(mod, ...) {
   result <- lapply(mod$models, Anova)
   nms <- names(mod$models)
   heading <- attr(result[[1L]], "heading")[1L]
@@ -151,13 +155,13 @@ Anova.nested <- function(mod, ...) {
     )
   }
   attr(result, "heading") <- heading
-  class(result) <- "Anova.nested"
+  class(result) <- "Anova.nestedLogit"
   result
 }
 
 #' @rdname nestedMethods
-#' @exportS3Method print Anova.nested
-print.Anova.nested <- function(x, ...) {
+#' @exportS3Method print Anova.nestedLogit
+print.Anova.nestedLogit <- function(x, ...) {
   if (length(x) < 2L) {
     return(invisible(print(x[[1L]], ...)))
   }
@@ -182,9 +186,13 @@ print.dichotomies <- function(x, ...) {
   for (i in seq_along(x)) {
     cat(paste0(
       nms[i],
-      ": {",
+      ": ",
+      names(x[[i]][1L]),
+      "{",
       paste(x[[i]][[1L]], collapse = ", "),
-      "} vs. {",
+      "} vs. ",
+      names(x[[i]][2L]),
+      "{",
       paste(x[[i]][[2L]], collapse = ", "),
       "}\n"
     ))
@@ -192,10 +200,25 @@ print.dichotomies <- function(x, ...) {
   invisible(x)
 }
 
+# print.dichotomies <- function(x, ...) {
+#   nms <- names(x)
+#   for (i in seq_along(x)) {
+#     cat(paste0(
+#       nms[i],
+#       ": {",
+#       paste(x[[i]][[1L]], collapse = ", "),
+#       "} vs. {",
+#       paste(x[[i]][[2L]], collapse = ", "),
+#       "}\n"
+#     ))
+#   }
+#   invisible(x)
+# }
+
 #' @rdname nestedMethods
 #' @importFrom stats predict
 #' @export
-predict.nested <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
+predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
   model <- match.arg(model)
   if (model == "nested"){
     if (missing(newdata))
@@ -246,7 +269,7 @@ print.predictDichotomies <- function(x, ...){
 #' @rdname nestedMethods
 #' @importFrom stats coef
 #' @export
-coef.nested <- function(object, as.matrix=TRUE, ...) {
+coef.nestedLogit <- function(object, as.matrix=TRUE, ...) {
   result <- if(as.matrix) sapply(object$models, coef, ...)
   else lapply(object$models, coef, ...)
   result
@@ -254,7 +277,7 @@ coef.nested <- function(object, as.matrix=TRUE, ...) {
 
 #' @rdname nestedMethods
 #' @export
-vcov.nested <- function(object, as.matrix=FALSE, ...){
+vcov.nestedLogit <- function(object, as.matrix=FALSE, ...){
   vcovs <- lapply(object$models, vcov)
   if (!as.matrix) {
     return(vcovs)
@@ -274,7 +297,7 @@ vcov.nested <- function(object, as.matrix=FALSE, ...){
 
 #' @rdname nestedMethods
 #' @export
-anova.nested <- function(object, object2, ...){
+anova.nestedLogit <- function(object, object2, ...){
   if (missing(object2)){
     result <- lapply(object$models, anova, test="LRT")
     heading <- attr(result[[1L]], "heading")[1L]
@@ -282,8 +305,8 @@ anova.nested <- function(object, object2, ...){
     heading <- sub("\\.\\.y", as.character(object$formula[[2]]), heading)
     heading <- sub("binomial, link: logit", "Nested Logit", heading)
   } else {
-    if (!inherits(object2, "nested"))
-      stop(deparse(substitute(object2)), " is not of class 'nested'")
+    if (!inherits(object2, "nestedLogit"))
+      stop(deparse(substitute(object2)), " is not of class 'nestedLogit'")
     result <- mapply(anova, object$models, object2$models, MoreArgs=list(test="LRT"), SIMPLIFY=FALSE)
     heading <- attr(result[[1L]], "heading")
     heading <- sub("Table", "Tables", heading)
@@ -306,13 +329,13 @@ anova.nested <- function(object, object2, ...){
     )
   }
   attr(result, "heading") <- heading
-  class(result) <- "anova.nested"
+  class(result) <- "anova.nestedLogit"
   result
 }
 
 #' @rdname nestedMethods
-#' @exportS3Method print anova.nested
-print.anova.nested <- function(x, ...) {
+#' @exportS3Method print anova.nestedLogit
+print.anova.nestedLogit <- function(x, ...) {
   if (length(x) < 2L) {
     return(invisible(print(x[[1L]], ...)))
   }
@@ -332,7 +355,7 @@ print.anova.nested <- function(x, ...) {
 
 #' @rdname nestedMethods
 #' @export
-update.nested <- function(object, formula, dichotomies, data, subset, contrasts,...){
+update.nestedLogit <- function(object, formula, dichotomies, data, subset, contrasts,...){
   formula <- if (missing(formula)) {
     object$formula
   } else {
@@ -446,8 +469,8 @@ as.dichotomies.matrix <- function(x, ...) {
 
 #' @importFrom broom glance
 #' @rdname nestedMethods
-#' @exportS3Method broom::glance nested
-glance.nested <- function(x, ...){
+#' @exportS3Method broom::glance nestedLogit
+glance.nestedLogit <- function(x, ...){
   result <- dplyr::bind_rows(lapply(x$models, broom::glance))
   result <- dplyr::bind_cols(response = names(x$models), result)
   result
@@ -455,8 +478,8 @@ glance.nested <- function(x, ...){
 
 #' @importFrom broom tidy
 #' @rdname nestedMethods
-#' @exportS3Method broom::tidy nested
-tidy.nested <- function(x, ...){
+#' @exportS3Method broom::tidy nestedLogit
+tidy.nestedLogit <- function(x, ...){
   result <- dplyr::bind_rows(lapply(x$models, broom::tidy, ...))
   response <- rep(names(x$models), each = nrow(result)/length(x$models))
   result <- dplyr::bind_cols(response = response, result)

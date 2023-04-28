@@ -1,13 +1,13 @@
-# FIXME: plot.nested fails if there is no `others`
+# FIXME: plot.nestedLogit fails if there is no `others`
 
 #' Plotting Nested Logit Models
-#' @aliases plot.nested
-#' @description A \code{\link{plot}} method for \code{"nested"} objects produced by the
+#' @aliases plot.nestedLogit
+#' @description A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
 #' \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
 #' for each level of the polytomous response variable, with one of the explanatory variables
 #' on the horizontal axis and other explanatory variables fixed to particular values.
 #' @seealso \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
-#' @param x an object of \code{"nested"} produced by \code{\link{nestedLogit}}.
+#' @param x an object of \code{"nestedLogit"} produced by \code{\link{nestedLogit}}.
 #' @param x.var quoted name of the variable to appear on the x-axis.
 #' @param others a named list of values for the other variables in the model,
 #'        that is, other than \code{x.var}.
@@ -45,9 +45,9 @@
 #' @importFrom grDevices palette
 #' @importFrom graphics axis box matplot title
 #' @importFrom stats formula
-#' @rdname plot.nested
+#' @rdname plot.nestedLogit
 #' @export
-plot.nested <- function(x, x.var, others, n.x.values=100,
+plot.nestedLogit <- function(x, x.var, others, n.x.values=100,
                         xlab=x.var, ylab="Fitted Probability",
                         main, cex.main=1, font.main=1,
                         pch=1:length(response.levels),

@@ -21,7 +21,9 @@ and the usual linear-model-like specification on the right-hand side.}
 
 \item{dichotomies}{specification of the logits for the nested dichotomies,
 constructed by the \code{logits} and \code{dichotomy} functions,
-or \code{continuationLogits}. See Details.}
+or \code{continuationLogits}. Alternatively, the \code{dichotomies}
+can be specified as a nested (i.e., recursive) list, the elements of
+which can be given optional names. See Details.}
 
 \item{data}{a data frame with the data for the model; unlike in most statistical
 modeling functions, the \code{data} argument is required. Cases with \code{NA}s
@@ -37,7 +39,7 @@ model; see \code{\link{lm}} for details.}
 \item{\dots}{for \code{nestedLogit}, optional named arguments to be passed to \code{\link{glm}};
 for \code{logits}, definitions of the nested logits---with each named argument specifying
 a dichotomy; for \code{dichotomy}, two character vectors giving the levels
-defining the dichotomy.}
+defining the dichotomy; the vectors can optionally be named.}
 
 \item{levels}{A character vector of set of levels of the variables or a number
 specifying the numbers of levels (in which case, uppercase letters will be
@@ -49,10 +51,10 @@ will be generated from the levels.}
 \item{prefix}{a character string (default: \code{"above_"}) used as a prefix to the names of the continuation dichotomies.}
 }
 \value{
-\code{nestedLogit} returns an object of class \code{"nested"} containing
+\code{nestedLogit} returns an object of class \code{"nestedLogit"} containing
 the following elements:
 \itemize{
-\item \code{models}, A named list of (normally) \eqn{m - 1} \code{"glm"} objects,
+\item \code{models}, a named list of (normally) \eqn{m - 1} \code{"glm"} objects,
 each a binary logit model for one of the \eqn{m - 1} nested dichotomies representing
 the \eqn{m}-level response.
 \item \code{formula}, the model formula for the nested logit models.
@@ -64,12 +66,10 @@ for the model.
 \code{"NULL"} if the argument isn't specified.
 \item \code{contrasts}, the \code{contrasts} argument or \code{NULL} if the argument
 isn't specified.
-\item{\code{contrasts.print} a character representation of the \code{contrasts} argument or
+\item \code{contrasts.print} a character representation of the \code{contrasts} argument or
 \code{"NULL"} if the argument isn't specified.
 }
 \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}.
-
-an object of class \code{dichotomies}
 }
 \description{
 Fit a related set of binary logit models via the \code{\link{glm}}
@@ -107,7 +107,11 @@ with response \code{A} are treated as \code{NA}.
 The function \code{dichotomy} constructs a \emph{single} dichotomy in the required form,
 which is a list of length 2 containing two character vectors giving the levels
 defining the dichotomy. The function \code{logits} is used to create the
-set of dichotomies for a response factor.
+set of dichotomies for a response factor. Alternatively, the nested dichotomies can be
+specified more compactly as a nested (i.e., recursive) list with optionally named
+elements; for example,
+\code{list(air="plane", ground=list(public=list("train", "bus"), private="car"))}.
+
 The function \code{continuationLogits} provides a
 convenient way to generate all dichotomies for an ordered response.
 For an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
@@ -120,7 +124,8 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   data(Womenlf, package = "carData")
 
   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
-  comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+  comparisons <- logits(work=dichotomy("not.work", 
+                                       working=c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))
   print(comparisons)
 
@@ -130,6 +135,12 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   print(summary(m))
   print(car::Anova(m))
   coef(m)
+  
+  # equivalent;
+  nestedLogit(partic ~ hincome + children,
+              dichotomies = list("not.work", 
+                                 working=list("parttime", "fulltime")),
+              data=Womenlf)
 
   # get predicted values
   new <- expand.grid(hincome=seq(0, 45, length=10),
@@ -152,9 +163,12 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
 \references{
 S. Fienberg (1980). \emph{The Analysis of Cross-Classified Categorical Data},
 2nd Edition, MIT Press, Section 6.6.
+
 J. Fox (2016), \emph{Applied Linear Regression and Generalized Linear Models}, 3rd Edition, Sage,
 Section 14.2.2.
+
 J. Fox and S. Weisberg (2011), \emph{An R Companion to Applied Regression}, 2nd Edition, Sage, Section 5.8.
+
 M. Friendly and D. Meyers (2016), \emph{Discrete Data Analysis with R}, CRC Press,
 Section 8.2.
 }

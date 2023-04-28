@@ -1,5 +1,5 @@
 # Nested logit models
-# last modified 2023-04-16 by J. Fox
+# last modified 2023-04-28 by J. Fox
 # 2023-04-06 MF: add coef method
 # 2023-04-11 MF: add `dichotomies` attribute to result of nestedLogit
 
@@ -31,8 +31,11 @@
 #' The function \code{dichotomy} constructs a \emph{single} dichotomy in the required form,
 #' which is a list of length 2 containing two character vectors giving the levels
 #' defining the dichotomy. The function \code{logits} is used to create the
-#' set of dichotomies for a response factor.
-
+#' set of dichotomies for a response factor. Alternatively, the nested dichotomies can be
+#' specified more compactly as a nested (i.e., recursive) list with optionally named
+#' elements; for example,
+#' \code{list(air="plane", ground=list(public=list("train", "bus"), private="car"))}.
+#' 
 #' The function \code{continuationLogits} provides a
 #' convenient way to generate all dichotomies for an ordered response.
 #' For an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
@@ -48,7 +51,9 @@
 #'        and the usual linear-model-like specification on the right-hand side.
 #' @param dichotomies specification of the logits for the nested dichotomies,
 #'        constructed by the \code{logits} and \code{dichotomy} functions,
-#'        or \code{continuationLogits}. See Details.
+#'        or \code{continuationLogits}. Alternatively, the \code{dichotomies}
+#'        can be specified as a nested (i.e., recursive) list, the elements of
+#'        which can be given optional names. See Details.
 #' @param data a data frame with the data for the model; unlike in most statistical
 #'        modeling functions, the \code{data} argument is required. Cases with \code{NA}s
 #'        in any of the variables appearing in the model formula will be removed
@@ -60,17 +65,17 @@
 #' @param \dots for \code{nestedLogit}, optional named arguments to be passed to \code{\link{glm}};
 #'        for \code{logits}, definitions of the nested logits---with each named argument specifying
 #'        a dichotomy; for \code{dichotomy}, two character vectors giving the levels
-#'        defining the dichotomy.
+#'        defining the dichotomy; the vectors can optionally be named.
 #' @param levels for \code{continuationLogits}, a character vector giving the ordered levels for a set of continuation dichotomies,
 #'        or the number of levels, in which case the levels will be named \code{"A"}, \code{"B"}, \code{"C"}, etc.
 #' @param names an optional character vector of names for the continuation dichotomies; if absent,
 #'        names will be generated from the levels.
 #' @param prefix a character string (default: \code{"above_"}) used as a prefix to the names of the continuation dichotomies.
 #'
-#' @return \code{nestedLogit} returns an object of class \code{"nested"} containing
+#' @return \code{nestedLogit} returns an object of class \code{"nestedLogit"} containing
 #' the following elements:
 #' \itemize{
-#'    \item \code{models}, A named list of (normally) \eqn{m - 1} \code{"glm"} objects,
+#'    \item \code{models}, a named list of (normally) \eqn{m - 1} \code{"glm"} objects,
 #'    each a binary logit model for one of the \eqn{m - 1} nested dichotomies representing
 #'    the \eqn{m}-level response.
 #'    \item \code{formula}, the model formula for the nested logit models.
@@ -82,7 +87,7 @@
 #'    \code{"NULL"} if the argument isn't specified.
 #'    \item \code{contrasts}, the \code{contrasts} argument or \code{NULL} if the argument
 #'    isn't specified.
-#'    \item{\code{contrasts.print} a character representation of the \code{contrasts} argument or
+#'    \item \code{contrasts.print} a character representation of the \code{contrasts} argument or
 #'    \code{"NULL"} if the argument isn't specified.
 #' }
 #'   \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}.
@@ -91,9 +96,12 @@
 #' @references
 #' S. Fienberg (1980). \emph{The Analysis of Cross-Classified Categorical Data},
 #'       2nd Edition, MIT Press, Section 6.6.
+#'       
 #' J. Fox (2016), \emph{Applied Linear Regression and Generalized Linear Models}, 3rd Edition, Sage,
 #'       Section 14.2.2.
+#'       
 #' J. Fox and S. Weisberg (2011), \emph{An R Companion to Applied Regression}, 2nd Edition, Sage, Section 5.8.
+#' 
 #' M. Friendly and D. Meyers (2016), \emph{Discrete Data Analysis with R}, CRC Press,
 #'       Section 8.2.
 #' @seealso \code{\link{nestedMethods}}
@@ -103,7 +111,8 @@
 #'   data(Womenlf, package = "carData")
 #'
 #'   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
-#'   comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+#'   comparisons <- logits(work=dichotomy("not.work", 
+#'                                        working=c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime"))
 #'   print(comparisons)
 #'
@@ -113,6 +122,12 @@
 #'   print(summary(m))
 #'   print(car::Anova(m))
 #'   coef(m)
+#'   
+#'   # equivalent;
+#'   nestedLogit(partic ~ hincome + children,
+#'               dichotomies = list("not.work", 
+#'                                  working=list("parttime", "fulltime")),
+#'               data=Womenlf)
 #'
 #'   # get predicted values
 #'   new <- expand.grid(hincome=seq(0, 45, length=10),
@@ -141,8 +156,10 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
     responses
   }
 
-  if (!inherits(dichotomies, "dichotomies"))
-    stop("dichotomies must be of class 'dichotomies'")
+  # if (!inherits(dichotomies, "dichotomies"))
+  #   stop("dichotomies must be of class 'dichotomies'")
+  
+  dichotomies <- createDichtomies(dichotomies)
 
   data.name <- substitute(data)
   data.save <- data
@@ -187,7 +204,7 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
     contrasts = contrasts,
     contrasts.print = deparse(substitute(contrasts))
   )
-  class(result) <- "nested"
+  class(result) <- "nestedLogit"
   result
 }
 
@@ -270,7 +287,6 @@ dichotomy <- function(...) {
 #' @param names  Names to be assigned to the dichotomies; if absent, names
 #' will be generated from the levels.
 #'
-#' @return an object of class \code{dichotomies}
 #' @rdname nestedLogit
 #' @export
 #'
@@ -307,4 +323,43 @@ continuationLogits <- function(levels, names, prefix = "above_"){
   logits
 }
 
+# these functions not exported:
+
+createDichtomies <- function(x){
+  UseMethod("createDichtomies")
+}
+
+createDichtomies.dichotomies <- function(x) x
+
+createDichtomies.default <- function(x) 
+  stop("dichotomies argument must be of class 'dichotomies' or mode 'list'")
+
+createDichtomies.list <- function(x){
+  helper <- function(dichotomies, x){
+    if (length(x) != 2L || !is.list(x)) {
+      stop("ill-formed nested list of dichotomies: ",
+           paste("(length = ", length(x), "; is.list = ", is.list(x), ")"),
+           "\nEach dichotomy must be a list with exactly 2 sets of levels")
+    }
+    a <- x[[1L]]
+    b <- x[[2L]]
+    nm.a <- names(x[1L])
+    nm.b <- names(x[2L])
+    aa <- unlist(a, recursive=TRUE)
+    bb <- unlist(b, recursive=TRUE)
+    name <- make.names(
+      paste0(if (!is.null(nm.a) && nm.a != "") nm.a else paste(aa, collapse="."), 
+             "_v_", 
+             if (!is.null(nm.b) && nm.b != "") nm.b else paste(bb, collapse="."))
+    )
+    aa.bb <- list(aa, bb)
+    names(aa.bb) <- c(nm.a, nm.b)
+    dichotomies[[name]] <- do.call(dichotomy, aa.bb) 
+    if (length(a) > 1L) dichotomies <- helper(dichotomies, a)
+    if (length(b) > 1L) dichotomies <- helper(dichotomies, b)
+    dichotomies
+  }
+  dichotomies <- helper(list(), x)
+  do.call(logits, dichotomies)
+}
 
