@@ -1,7 +1,10 @@
 Analytics
 Anova
+carData
+continuationLogits
 CRC
 Fienberg
+gradeschool
 GSS
 Lifecycle
 McNulty
@@ -11,10 +14,12 @@ anova
 dichotomize
 frac
 fulltime
+highschool
 hincome
 mathbf
 nd
 operatorname
+partic
 parttime
 polytomy
 recoding
@@ -22,3 +27,4 @@ repo
 summarising
 widehat
 womens
+Womenlf
