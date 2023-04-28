@@ -11,16 +11,19 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The `nestedLogit` package provides functions for fitting nested
 dichotomy logistic regression models for a polytomous response. Nested
 dichotomies are statistically independent, and hence provide an additive
-decomposition of tests for the overall polytomous response.
+decomposition of tests for the overall polytomous response. When the
+dichotomies make sense substantively, this method can be a simpler
+alternative to the standard multinomial logistic model which compares
+response categories to a reference level.
 
 ## Installation
 
-This package has not yet been submitted to CRAN. This development version
-can be installed to your R library directly from the [GitHub
+This package has not yet been submitted to CRAN. This development
+version can be installed to your R library directly from the [GitHub
 repo](https://github.com/friendly/nestedLogit) via:
 
-     if (!require(remotes)) install.packages("remotes")
-     remotes::install_github("friendly/nestedLogit", build_vignettes = TRUE)
+    if (!require(remotes)) install.packages("remotes")
+    remotes::install_github("friendly/nestedLogit", build_vignettes = TRUE)
 
 ## Package overview
 
@@ -35,12 +38,25 @@ response with $m$ levels. These can be specified using helper functions,
 - `continuationLogits()`: provides a convenient way to generate all
   dichotomies for an ordered response.
 
-There are methods including `as.matrix.dichotomies()`,
+Alternatively, the nested dichotomies can be specified more compactly as
+a nested (i.e., recursive) list with optionally named elements. For
+example, where people might choose a method of transportation among the
+categories `plane`, `train`, `bus`, `car`, a sensible set of three
+dichotomies could be specified as:
+
+    list(
+      air = "plane",
+      ground = list(
+        public = list("train", "bus"),
+        private = "car"
+      ))
+
+There are also methods including `as.matrix.dichotomies()`,
 `as.character.dichotomies()` to facilitate working with `dichotomies`
 objects in other representations.
 
-The result of `nestedLogit()` is an object of class `nested`. It
-contains the set of $(m-1)$ `glm()` models fit to the dichotomies, …
+The result of `nestedLogit()` is an object of class `"nestedLogit"`. It
+contains the set of $(m-1)$ `glm()` models fit to the dichotomies.
 
 ### Methods
 
@@ -99,7 +115,7 @@ coef(m)
 #> childrenpresent -1.57564843 -2.6514557
 ```
 
-What the `"nested"` object contains:
+What the `"nestedLogit"` object contains:
 
 ``` r
 names(m)
@@ -143,7 +159,7 @@ car::Anova(m)
 ```
 
 A basic plot of predicted probabilities can be produced using the
-`plot()` method for `"nested"` objects.
+`plot()` method for `"nestedLogit"` objects.
 
 <!-- ```{r kludge, include=FALSE} -->
 <!-- #kludge - avoiding could not find function "plot.nested" -->
