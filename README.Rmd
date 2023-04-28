@@ -99,7 +99,7 @@ m <- nestedLogit(partic ~ hincome + children,
                  data=Womenlf)
 coef(m)
 ```
-What the `"nested"` object contains:
+What the `"nestedLogit"` object contains:
 
 ```{r}
 names(m)
@@ -113,7 +113,7 @@ names(m$models)
 car::Anova(m)
 ```
 A basic plot of predicted probabilities can be produced using
-the `plot()` method for `"nested"` objects.
+the `plot()` method for `"nestedLogit"` objects.
 
 <!-- ```{r kludge, include=FALSE} -->
 <!-- #kludge - avoiding could not find function "plot.nested" -->

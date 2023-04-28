@@ -306,7 +306,7 @@ Anova(wlf.nested)
 ```
 
 **glance** and **tidy**: The `broom` package [@R-broom]
-provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nested"` model gives a one-line summary of the statistics
+provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nestedLogit"` model gives a one-line summary of the statistics
 for each dichotomy. The `tidy` method combines the coefficients for the sub-models, together with test
 statistics.
 
@@ -359,7 +359,7 @@ either of the sub-models or the combined model for the three response categories
 
 ## Obtaining fitted values: `predict()` 
 
-By default, `predict()` for a `"nested"` model object returns the predicted probabilities
+By default, `predict()` for a `"nestedLogit"` model object returns the predicted probabilities
 (`type = "response"`) of
 each of the response categories for _all_ observations in the data set.
 Note that the computation is a bit tricky, because the probabilities of working full time
@@ -370,7 +370,7 @@ car::some(predict(wlf.nested))
 ```
 
 ## Plotting
-The `nestedLogit` package has a basic `plot()` method for `"nested"` models, but to explain how this
+The `nestedLogit` package has a basic `plot()` method for `"nestedLogit"` models, but to explain how this
 works, and for better control
 it is useful to describe how this can be done directly.
 

@@ -8,7 +8,7 @@
 #' interest: the fitted \emph{logits} for the \eqn{m-1} dichotomies and the fitted \emph{probabilities} of the \eqn{m}
 #' response categories.
 #'
-#' @param x       an object of class \code{"nested"} produced by \code{\link{nestedLogit}}.
+#' @param x       an object of class \code{"nestedLogit"} produced by \code{\link{nestedLogit}}.
 #' @param data    the data set used to fit the model. If not supplied, this is extracted from the model object.
 #' @param newdata a prediction data set containing values of all predictors used in the model
 #' @param type.predict a character string, either \code{"link"} to calculate predicted values on the logit scale
