@@ -1,6 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 examples/
+experimental/
 README.*
-
 ^cran-comments\.md$
