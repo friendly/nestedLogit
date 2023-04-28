@@ -11,7 +11,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100,
   response <- setdiff(all.vars(formula(x)), vars)
   if (missing(x.var)) {
     x.var <- setdiff(vars, response)[1]
-    message("Note: ", x.var, " will be used for the horizonal axis")
+    message("Note: ", x.var, " will be used for the horizontal axis")
   }
   if (!(x.var %in% vars)) stop (x.var, " is not in the model")
   if (!missing(others)){
