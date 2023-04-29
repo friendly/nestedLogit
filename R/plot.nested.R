@@ -83,7 +83,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   if (any(missing.xs)){
     missing.xs <- other.xs[missing.xs]
     for (missing.x in missing.xs){
-      xx <- x$data[, missing.x]
+      xx <- data[, missing.x]
       if (is.numeric(xx)){
         values[[missing.x]] <- signif(mean(xx, na.rm=TRUE))
         message("Note: missing predictor ", missing.x, " set to its mean, ", 
