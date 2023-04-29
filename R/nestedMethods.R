@@ -1,5 +1,6 @@
 #' Methods for \code{"nestedLogit"} and Related Objects
 #'
+#' @name nestedMethods
 #' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit Anova.nestedLogit
 #' print.Anova.nestedLogit update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
@@ -27,7 +28,7 @@
 #' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}}
 #'
 #' @param x,object,object2,mod in most cases, an object of class \code{"nestedLogit"}.
-#' @param newdata a data frame containing combinations of values of the predictors
+#' @param newdata For the \code{predict} method, a data frame containing combinations of values of the predictors
 #'        at which fitted probabilities (or other quantities) are to be computed.
 #' @param model For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
