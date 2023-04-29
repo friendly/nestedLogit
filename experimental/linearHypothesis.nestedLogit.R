@@ -43,8 +43,8 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   chisq <- table$Chisq[2]
   df <- table$Df[2]
   p <- pchisq(chisq, df, lower.tail=FALSE)
-  cat(paste0("\nCombined Responses\nChisq = ", round(chisq, 3), ", Df = ", df, ", p = ", 
-             format.pval(p)))
+  cat(paste0("\nCombined Responses\nChisq = ", round(chisq, 3), ", Df = ", df, 
+             ", Pr(>Chisq) = ", format.pval(p)))
   return(invisible(NULL))
 }
 
