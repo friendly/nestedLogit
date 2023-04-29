@@ -31,7 +31,29 @@ pred.logits
 pred.logits$work
 pred.logits$full
 
-# what predict should give:
-sapply(wlf.nested$models, predict, newdata=new)
+# what predict should give, when newdata is specified
+preds <- sapply(wlf.nested$models, predict, newdata=new)
+cbind(new, preds)
 
+#' ## predictions for observations (no newdata)
+#'
+
+obs.nested <- predict(wlf.nested, model = "nested")
+
+head(obs.nested)
+
+obs.logits <- predict(wlf.nested, model = "dichotomies")
+
+# print method not useful
+obs.logits
+
+# show predicted values
+str(obs.logits$work)
+str(obs.logits$full)
+
+# combine them into a data structure
+nms <- names(obs.logits)
+for (i in seq_along(obs.logits)) {
+  obs.logits[[i]] <- cbind(response = nms[[i]], obs.logits[[i]])
+}
 
