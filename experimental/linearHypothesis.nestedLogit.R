@@ -3,7 +3,7 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   h <- linearHypothesis(mod$models[[1L]], ...)
   formula <-  as.character(mod$formula)
   heading <- attr(h, "heading")
-  heading[4] <- paste("Model 1: restricted model\nModel 2:",
+  heading[length(heading) - 1] <- paste("Model 1: restricted model\nModel 2:",
                       paste(formula[2], formula[1], formula[3],
                             collapse = " "))
   for (line in heading){
@@ -51,5 +51,6 @@ if (FALSE){
   library(car)
   example("linearHypothesis")
   linearHypothesis(m, "hincome")
+  linearHypothesis(m, c("hincome", "childrenpresent"))
   linearHypothesis(m, "hincome = childrenpresent") # nonsense!
 }
