@@ -1,4 +1,5 @@
 #' Methods for \code{"nestedLogit"} and Related Objects
+#'
 #' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit Anova.nestedLogit
 #' print.Anova.nestedLogit update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
@@ -7,13 +8,21 @@
 #' Most of these are the standard methods for a model-fitting function.
 #'
 #' \describe{
-#'   \item{\code{coef}, \code{vcov}}{return the coefficients and their variance-covariance matrix respectively.}
-#'   \item{\code{Anova}}{calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects.}
-#'   \item{\code{anova}}{computes sequential analysis of variance (or deviance) tables for one or more fitted \code{"nestedLogit"}  objects.}
-#'   \item{\code{update}}{will re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
+#'   \item{\code{coef}, \code{vcov}}{Return the coefficients and their variance-covariance matrix respectively.}
+#'   \item{\code{Anova}}{Calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects.}
+#'   \item{\code{anova}}{Computes sequential analysis of variance (or deviance) tables for one or more fitted \code{"nestedLogit"}  objects.}
+#'   \item{\code{update}}{Re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
 #'        \code{data}, \code{subset}, or \code{contrasts}, arguments.}
-#'   \item{\code{predict}}{computes predicted values from a fitted \code{"nestedLogit"} model.}
+#'   \item{\code{predict}}{Computes predicted values from a fitted \code{"nestedLogit"} model.}
+#'   \item{\code{glance}}{Construct a single row summaries for the dichotomies \code{"nestedLogit"} model.}
+#'   \item{\code{tidy}}{Summarizes the terms in \code{"nestedLogit"} model.}
 #' }
+#'
+#' @details
+#' The \code{predict} method provides predicted values for two representations of the model.
+#' \code{model = "nested"} gives the fitted probabilities for each of the response categories.
+#' \code{model = "dichotomies"} gives the fitted log odds for each binary logit models in the
+#' dichotomies.
 #'
 #' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}}
 #'
@@ -41,22 +50,38 @@
 #' @keywords regression
 #' @examples
 #' # define continuation dichotomies for level of education
-#' cont.dichots <- continuationLogits(c("l.t.highschool",  "highschool",
-#'                                       "college", "graduate"))
+#' cont.dichots <- continuationLogits(c("l.t.highschool",
+#'                                      "highschool",
+#'                                      "college",
+#'                                      "graduate"))
+#'
+#' # Show dichotomies in various forms
 #' print(cont.dichots)
 #' as.matrix(cont.dichots)
 #' as.character(cont.dichots)
 #'
-#' # fit a nested model
+#' # fit a nested model for the GSS data examining education degree in relation to parent & year
 #' data(GSS)
 #' m <- nestedLogit(degree ~ parentdeg + year,
 #'                  cont.dichots,
 #'                  data=GSS)
+#'
+#' coef(m)                             # coefficient estimates
+#' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
+
 #' print(m)
 #' summary(m)
+#'
+#' # broom methods
 #' broom::glance(m)
 #' broom::tidy(m)
+#'
+#' # Anova tests
 #' car::Anova(m) # type-II (partial) tests
+#'
+#' # anova() and update() methods
+#' anova(m) # type-I (sequential) tests
+#' anova(update(m, . ~ . - year), m) # model comparison
 #'
 #' # predicted probabilities and ploting
 #' head(predict(m)) # fitted probabilities for first few cases
@@ -68,12 +93,6 @@
 #' predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 #' predictions
 #' predictions$above_l.t.highschool # on logit scale
-#' coef(m) # coefficient estimates
-#' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
-#'
-#' # anova() and update() methods
-#' anova(m) # type-I (sequential) tests
-#' anova(update(m, . ~ . - year), m) # model comparison
 #'
 #' @rdname nestedMethods
 #' @export
@@ -433,15 +452,12 @@ as.matrix.continuationDichotomies <- function(x, ...){
 
 
 #'
-#  TODO: Check whether each row defines a dichotomy [DONE]
-#        Check whether dichotomies are nested
-#        Why doesn't this work as a method for class `matrix`?  -- Need to call it as `as.dichotomies.matrix()`
-
 #' @rdname nestedMethods
 #' @export
 as.dichotomies <- function(x, ...){
   UseMethod("as.dichtomies")
 }
+#'
 #' @rdname nestedMethods
 #' @exportS3Method as.dichotomies matrix
 as.dichotomies.matrix <- function(x, ...) {
@@ -466,6 +482,9 @@ as.dichotomies.matrix <- function(x, ...) {
 
   logits
 }
+
+# broom related methods
+# [TODO] It seems these have to be called as broom::glance(). Why?
 
 #' @importFrom broom glance
 #' @rdname nestedMethods
