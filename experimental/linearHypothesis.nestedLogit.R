@@ -14,6 +14,7 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   printResponse(nms[1L], mod$models[[1L]]$dichotomy)
   print(h)
   for (i in 2L:length(nms)) {
+    cat("\n")
     printResponse(nms[i], mod$models[[i]]$dichotomy)
     h <- linearHypothesis(mod$models[[i]], ...)
     attr(h, "heading") <- NULL
