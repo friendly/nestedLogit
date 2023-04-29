@@ -3,7 +3,9 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Last
+Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https://github.com/friendly/nestedLogit)
 <!-- badges: end -->
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
