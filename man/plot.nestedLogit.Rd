@@ -8,16 +8,16 @@
   x,
   x.var,
   others,
-  n.x.values = 100,
+  n.x.values = 100L,
   xlab = x.var,
   ylab = "Fitted Probability",
   main,
   cex.main = 1,
-  font.main = 1,
-  pch = 1:length(response.levels),
+  font.main = 1L,
+  pch = 1L:length(response.levels),
   lwd = 3,
-  lty = 1:length(response.levels),
-  col = palette()[1:length(response.levels)],
+  lty = 1L:length(response.levels),
+  col = palette()[1L:length(response.levels)],
   legend = TRUE,
   legend.inset = 0.01,
   legend.location = "topleft",
@@ -27,10 +27,14 @@
 \arguments{
 \item{x}{an object of \code{"nestedLogit"} produced by \code{\link{nestedLogit}}.}
 
-\item{x.var}{quoted name of the variable to appear on the x-axis.}
+\item{x.var}{quoted name of the variable to appear on the x-axis; if omitted, the first
+predictor in the model is used.}
 
 \item{others}{a named list of values for the other variables in the model,
-that is, other than \code{x.var}.}
+that is, other than \code{x.var}; if any other predictor is omitted, it is set
+to an arbitrary value---the mean for a numeric predictor or the first level or
+value of a factor, character, or logical predictor; only one value may be
+specified for each variable in \code{others}.}
 
 \item{n.x.values}{the number of evenly spaced values of \code{x.var} at which
 to evaluate fitted probabilities to be plotted (default \code{100}).}
@@ -76,6 +80,7 @@ m <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                         data=Womenlf)
+plot(m)
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
