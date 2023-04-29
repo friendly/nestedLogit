@@ -77,10 +77,12 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   } else {
     if (length(values) != 0L){
       which.main <- !(x.var == names(values))
-      main <- paste(paste(names(values[which.main]), "=", 
-                          as.character(unlist(values[which.main]))),
-                    collapse=", ")
-      title(main, cex.main=cex.main, font.main=font.main)
+      if (any(which.main)){
+        main <- paste(paste(names(values[which.main]), "=", 
+                            as.character(unlist(values[which.main]))),
+                      collapse=", ")
+        title(main, cex.main=cex.main, font.main=font.main)
+      }
     }
   }
   return(invisible(NULL))
