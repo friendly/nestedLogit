@@ -12,10 +12,12 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   attr(h, "heading") <- NULL
   table <- h
   printResponse(nms[1L], mod$models[[1L]]$dichotomy)
+  cat("\n")
   print(h)
   for (i in 2L:length(nms)) {
     cat("\n")
     printResponse(nms[i], mod$models[[i]]$dichotomy)
+    cat("\n")
     h <- linearHypothesis(mod$models[[i]], ...)
     attr(h, "heading") <- NULL
     print(h)
@@ -50,7 +52,7 @@ printResponse <- function(nm, dichotomy){
 if (FALSE){
   library(nestedLogit)
   library(car)
-  example("linearHypothesis")
+  example("nestedLogit")
   linearHypothesis(m, "hincome")
   linearHypothesis(m, c("hincome", "childrenpresent"))
   linearHypothesis(m, "hincome = childrenpresent") # nonsense!
