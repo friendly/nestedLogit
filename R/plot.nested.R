@@ -1,4 +1,3 @@
-# FIXME: plot.nestedLogit fails if there is no `others`
 
 #' Plotting Nested Logit Models
 #' @aliases plot.nestedLogit
