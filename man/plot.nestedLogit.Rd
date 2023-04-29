@@ -66,7 +66,7 @@ response levels to the graph.}
 \item{legend.location}{position of the legend (default \code{"topleft"},
 see \code{\link{legend}}).}
 
-\item{\dots}{arguments to be passed to \code{plot}.}
+\item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }
 \description{
 A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the

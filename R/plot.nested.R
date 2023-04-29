@@ -32,7 +32,7 @@
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
-#' @param \dots arguments to be passed to \code{plot}.
+#' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
 #' data(Womenlf, package = "carData")
@@ -115,13 +115,13 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   response.levels <- levels(data[[response]])
   if (numeric.x){
     matplot(new[, x.var], new[, response.levels], type="l", lwd=lwd,
-            col=col, xlab=xlab, ylab=ylab)
+            col=col, xlab=xlab, ylab=ylab, ...)
     if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
                        col=col, inset=legend.inset, xpd=TRUE)
   } else {
     n.x.levels <- nrow(new)
     matplot(1L:n.x.levels, new[, response.levels], type="b", lwd=lwd,
-            pch=pch, col=col, xlab=xlab, ylab=ylab, axes=FALSE)
+            pch=pch, col=col, xlab=xlab, ylab=ylab, axes=FALSE, ...)
     box()
     axis(2L)
     axis(1L, at=1L:n.x.levels, labels=new[, x.var])
