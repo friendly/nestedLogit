@@ -69,7 +69,7 @@ as.dichotomies(x, ...)
 
 \item{\dots}{arguments to be passed down.}
 
-\item{newdata}{a data frame containing combinations of values of the predictors
+\item{newdata}{For the \code{predict} method, a data frame containing combinations of values of the predictors
 at which fitted probabilities (or other quantities) are to be computed.}
 
 \item{model}{For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
