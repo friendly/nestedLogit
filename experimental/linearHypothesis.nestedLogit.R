@@ -11,30 +11,10 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   }
   attr(h, "heading") <- NULL
   table <- h
-  cat(paste0(
-    "\nResponse ",
-    nms[1L],
-    ": {",
-    paste(mod$models[[1L]]$dichotomy[[1L]], collapse =
-            ", "),
-    "} vs. {",
-    paste(mod$models[[1L]]$dichotomy[[2L]],
-          collapse = ", "),
-    "}\n\n"
-  ))
+  printResponse(nms[1L], mod$models[[1L]]$dichotomy)
   print(h)
   for (i in 2L:length(nms)) {
-   cat(paste0(
-      "\nResponse ",
-      nms[i],
-      ": {",
-      paste(mod$models[[i]]$dichotomy[[1L]], collapse =
-              ", "),
-      "} vs. {",
-      paste(mod$models[[i]]$dichotomy[[2L]],
-            collapse = ", "),
-      "}\n\n"
-    ))
+    printResponse(nms[i], mod$models[[i]]$dichotomy)
     h <- linearHypothesis(mod$models[[i]], ...)
     attr(h, "heading") <- NULL
     print(h)
@@ -46,6 +26,23 @@ linearHypothesis.nestedLogit <- function(mod, ...) {
   cat(paste0("\nCombined Responses\nChisq = ", round(chisq, 3), ", Df = ", df, 
              ", Pr(>Chisq) = ", format.pval(p)))
   return(invisible(NULL))
+}
+
+# this can also be used for other functions to simplify code:
+printResponse <- function(nm, dichotomy){
+    cat(paste0(
+    "Response ",
+    nm,
+    ": ",
+    names(dichotomy[1L]),
+    "{",
+    paste(dichotomy[[1L]], collapse = ", "),
+    "} vs. ",
+    names(dichotomy[2L]),
+    "{",
+    paste(dichotomy[[2L]], collapse = ", "),
+    "}"
+  ))
 }
 
 
