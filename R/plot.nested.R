@@ -64,7 +64,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
   if (missing(x.var)) {
-    x.var <- setdiff(vars, response)[1L]
+    x.var <- vars[1L]
     message("Note: ", x.var, " will be used for the horizontal axis")
   }
   if (!(x.var %in% vars)) stop (x.var, " is not in the model")
@@ -78,7 +78,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   } else {
     values <- list()
   }
-  other.xs <- setdiff(vars, c(response, x.var))
+  other.xs <- setdiff(vars, x.var)
   missing.xs <- !(other.xs %in% names(values))
   if (any(missing.xs)){
     missing.xs <- other.xs[missing.xs]
