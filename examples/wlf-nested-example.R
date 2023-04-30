@@ -3,10 +3,11 @@
 #' ---
 
 #' This file generates errors, warnings, but errors are allowed here
-#' 
+#'
 
 
 library(car)
+data(Womenlf, package = "carData")
 
 logits(work=dichotomy("not.work", c("parttime", "fulltime")),
        full=dichotomy("parttime", "fulltime"))
@@ -15,7 +16,7 @@ as.matrix(logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                  full=dichotomy("parttime", "fulltime")))
 
 #' ## not properly nested:
-#' 
+#'
 #+ error=TRUE
 logits(work=dichotomy("not.work", c("parttime", "fulltime")),
        full=dichotomy("not.work", "fulltime"))
@@ -41,7 +42,7 @@ logits(better = dichotomy("None", c("Some", "Marked")),
        v.better = dichotomy("Some", "Marked"))
 
 
-m <- nestedLogit(partic ~ hincome + children, 
+m <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                  data=Womenlf)
@@ -49,7 +50,7 @@ m
 summary(m)
 Anova(m)
 
-m1 <- nestedLogit(partic ~ hincome + children, 
+m1 <- nestedLogit(partic ~ hincome + children,
                   logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                          full=dichotomy("parttime", "fulltime")),
                   contrasts=list(children=contr.sum),
@@ -57,7 +58,7 @@ m1 <- nestedLogit(partic ~ hincome + children,
                   data=Womenlf)
 m1
 
-m2 <- nestedLogit(partic ~ log(hincome)*children, 
+m2 <- nestedLogit(partic ~ log(hincome)*children,
                   logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                          full=dichotomy("parttime", "fulltime")),
                   data=Womenlf)
@@ -91,7 +92,7 @@ with(plotdata, lines(spline(hincome[11:20], not.work[11:20]), col="darkcyan", lw
 
 continuationLogits(3)
 continuationLogits(c("low", "medium", "high", "very.high"))
-continuationLogits(c("gradeschool", "some highschool", "highschool grad", 
+continuationLogits(c("gradeschool", "some highschool", "highschool grad",
                      "some univ", "univ grad" ),
                    names=c("some.highschool.or.more", "highschool.grad.or.more",
                            "some.univ.or.more", "univ.grad"))
