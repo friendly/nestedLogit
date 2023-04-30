@@ -16,6 +16,7 @@
 \alias{as.matrix.continuationDichotomies}
 \alias{as.character.dichotomies}
 \alias{as.matrix.dichotomies}
+\alias{linearHypothesis.nestedLogit}
 \alias{print.predictDichotomies}
 \alias{anova.nestedLogit}
 \alias{print.anova.nestedLogit}
@@ -33,6 +34,8 @@
 \method{Anova}{nestedLogit}(mod, ...)
 
 \method{print}{Anova.nestedLogit}(x, ...)
+
+\method{linearHypothesis}{nestedLogit}(model, ...)
 
 \method{print}{dichotomies}(x, ...)
 
@@ -67,15 +70,18 @@ as.dichotomies(x, ...)
 \arguments{
 \item{x, object, object2, mod}{in most cases, an object of class \code{"nestedLogit"}.}
 
-\item{\dots}{arguments to be passed down.}
-
-\item{newdata}{For the \code{predict} method, a data frame containing combinations of values of the predictors
-at which fitted probabilities (or other quantities) are to be computed.}
+\item{\dots}{arguments to be passed down. In the case of \code{linearHypothesis},
+the second argument is typically the \code{hypothesis.matrix}. See the
+Details section of \code{\link[car]{linearHypothesis}}}
 
 \item{model}{For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
 under the nested logit model are returned, or \code{"dichotomies"}, in which case
 \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
-dichotomies and a named list of the results is returned.}
+dichotomies and a named list of the results is returned;
+for \code{linearHypothesis}, an object of class \code{"nestedLogit"}.}
+
+\item{newdata}{For the \code{predict} method, a data frame containing combinations of values of the predictors
+at which fitted probabilities (or other quantities) are to be computed.}
 
 \item{as.matrix}{if \code{TRUE} (the default for \code{coef}) return coefficients
 as a matrix with one column for each nested dichotomy,
@@ -97,11 +103,11 @@ with one element for each dichotomy.}
 \description{
 Various methods for processing \code{"nestedLogit"} and related objects.
 Most of these are the standard methods for a model-fitting function.
-
 \describe{
 \item{\code{coef}, \code{vcov}}{Return the coefficients and their variance-covariance matrix respectively.}
 \item{\code{Anova}}{Calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects.}
 \item{\code{anova}}{Computes sequential analysis of variance (or deviance) tables for one or more fitted \code{"nestedLogit"}  objects.}
+\item{\code{linearHypothesis}}{Computes Wald tests for linear hypotheses.}
 \item{\code{update}}{Re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
 \code{data}, \code{subset}, or \code{contrasts}, arguments.}
 \item{\code{predict}}{Computes predicted values from a fitted \code{"nestedLogit"} model.}
@@ -148,6 +154,10 @@ car::Anova(m) # type-II (partial) tests
 # anova() and update() methods
 anova(m) # type-I (sequential) tests
 anova(update(m, . ~ . - year), m) # model comparison
+
+# Wald test
+car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege", 
+                           "parentdeggraduate"))
 
 # predicted probabilities and ploting
 head(predict(m)) # fitted probabilities for first few cases
