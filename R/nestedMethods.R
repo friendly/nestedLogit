@@ -4,14 +4,15 @@
 #' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit Anova.nestedLogit
 #' print.Anova.nestedLogit update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
-#' as.matrix.dichotomies
+#' as.matrix.dichotomies linearHypothesis.nestedLogit
+#' 
 #' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.
-#'
 #' \describe{
 #'   \item{\code{coef}, \code{vcov}}{Return the coefficients and their variance-covariance matrix respectively.}
 #'   \item{\code{Anova}}{Calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects.}
 #'   \item{\code{anova}}{Computes sequential analysis of variance (or deviance) tables for one or more fitted \code{"nestedLogit"}  objects.}
+#'   \item{\code{linearHypothesis}}{Computes Wald tests for linear hypotheses.}
 #'   \item{\code{update}}{Re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
 #'        \code{data}, \code{subset}, or \code{contrasts}, arguments.}
 #'   \item{\code{predict}}{Computes predicted values from a fitted \code{"nestedLogit"} model.}
@@ -33,7 +34,8 @@
 #' @param model For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
 #' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
-#' dichotomies and a named list of the results is returned.
+#' dichotomies and a named list of the results is returned; 
+#' for \code{linearHypothesis}, an object of class \code{"nestedLogit"}.
 #' @param as.matrix if \code{TRUE} (the default for \code{coef}) return coefficients
 #'        as a matrix with one column for each nested dichotomy,
 #'        or coefficient covariances as a matrix with one row and column for each
@@ -45,7 +47,9 @@
 #' @param data optional updated data argument
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
-#' @param \dots arguments to be passed down.
+#' @param \dots arguments to be passed down. In the case of \code{linearHypothesis}, 
+#'        the second argument is typically the \code{hypothesis.matrix}. See the
+#'        Details section of \code{\link[car]{linearHypothesis}}
 #'
 #' @author John Fox and Michael Friendly
 #' @keywords regression
@@ -84,6 +88,10 @@
 #' anova(m) # type-I (sequential) tests
 #' anova(update(m, . ~ . - year), m) # model comparison
 #'
+#' # Wald test
+#' car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege", 
+#'                            "parentdeggraduate"))
+#' 
 #' # predicted probabilities and ploting
 #' head(predict(m)) # fitted probabilities for first few cases
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
@@ -134,19 +142,20 @@ print.summary.nestedLogit <- function(x, ...) {
   cat("\n")
   nms <- names(x)
   for (i in seq(along = x)) {
-    cat(paste0(
-      "Response ",
-      nms[i],
-      ": ",
-      names(x[[i]]$dichotomy[1L]),
-      "{",
-      paste(x[[i]]$dichotomy[[1L]], collapse = ", "),
-      "} vs. ",
-      names(x[[i]]$dichotomy[2L]),
-      "{",
-      paste(x[[i]]$dichotomy[[2L]], collapse = ", "),
-      "}"
-    ))
+    # cat(paste0(
+    #   "Response ",
+    #   nms[i],
+    #   ": ",
+    #   names(x[[i]]$dichotomy[1L]),
+    #   "{",
+    #   paste(x[[i]]$dichotomy[[1L]], collapse = ", "),
+    #   "} vs. ",
+    #   names(x[[i]]$dichotomy[2L]),
+    #   "{",
+    #   paste(x[[i]]$dichotomy[[2L]], collapse = ", "),
+    #   "}"
+    # ))
+    cat(composeResponse(nms[i], x[[i]]$dichotomy))
     print(x[[i]], ...)
   }
   invisible(x)
@@ -162,17 +171,18 @@ Anova.nestedLogit <- function(mod, ...) {
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- paste0(
-      "Response ",
-      nms[i],
-      ": {",
-      paste(mod$models[[i]]$dichotomy[[1L]], collapse =
-              ", "),
-      "} vs. {",
-      paste(mod$models[[i]]$dichotomy[[2L]],
-            collapse = ", "),
-      "}"
-    )
+    attr(result[[i]], "heading") <- composeResponse(nms[i], mod$models[[i]]$dichotomy)
+    # <- paste0(
+    #   "Response ",
+    #   nms[i],
+    #   ": {",
+    #   paste(mod$models[[i]]$dichotomy[[1L]], collapse =
+    #           ", "),
+    #   "} vs. {",
+    #   paste(mod$models[[i]]$dichotomy[[2L]],
+    #         collapse = ", "),
+    #   "}"
+    # )
   }
   attr(result, "heading") <- heading
   class(result) <- "Anova.nestedLogit"
@@ -197,6 +207,40 @@ print.Anova.nestedLogit <- function(x, ...) {
   cat("\n\n")
   print(table)
   invisible(x)
+}
+
+#' @rdname nestedMethods
+#' @importFrom car linearHypothesis
+#' @exportS3Method car::linearHypothesis nestedLogit
+#' @export
+linearHypothesis.nestedLogit <- function(model, ...) {
+  nms <- names(model$models)
+  h <- car::linearHypothesis(model$models[[1L]], ...)
+  formula <-  as.character(model$formula)
+  heading <- attr(h, "heading")
+  heading[length(heading) - 1] <- paste("Model 1: restricted model\nModel 2:",
+                                        paste(formula[2], formula[1], formula[3],
+                                              collapse = " "))
+  for (line in heading){
+    cat(paste(line, "\n"))
+  }
+  attr(h, "heading") <- NULL
+  table <- h
+  cat(composeResponse(nms[1L], model$models[[1L]]$dichotomy), "\n")
+  print(h)
+  for (i in 2L:length(nms)) {
+    cat("\n", composeResponse(nms[i], model$models[[i]]$dichotomy), "\n", sep="")
+    h <- car::linearHypothesis(model$models[[i]], ...)
+    attr(h, "heading") <- NULL
+    print(h)
+    table <- table + h
+  }
+  chisq <- table$Chisq[2]
+  df <- table$Df[2]
+  p <- pchisq(chisq, df, lower.tail=FALSE)
+  cat(paste0("\nCombined Responses\nChisq = ", round(chisq, 3), ", Df = ", df,
+             ", Pr(>Chisq) = ", format.pval(p)))
+  return(invisible(NULL))
 }
 
 #' @rdname nestedMethods
@@ -336,17 +380,18 @@ anova.nestedLogit <- function(object, object2, ...){
   }
   nms <- names(object$models)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- paste0(
-      "Response ",
-      nms[i],
-      ": {",
-      paste(object$models[[i]]$dichotomy[[1L]], collapse =
-              ", "),
-      "} vs. {",
-      paste(object$models[[i]]$dichotomy[[2L]],
-            collapse = ", "),
-      "}"
-    )
+    attr(result[[i]], "heading") <- composeResponse(nms[i], object$models[[i]]$dichotomy)
+    # <- paste0(
+    #   "Response ",
+    #   nms[i],
+    #   ": {",
+    #   paste(object$models[[i]]$dichotomy[[1L]], collapse =
+    #           ", "),
+    #   "} vs. {",
+    #   paste(object$models[[i]]$dichotomy[[2L]],
+    #         collapse = ", "),
+    #   "}"
+    # )
   }
   attr(result, "heading") <- heading
   class(result) <- "anova.nestedLogit"
@@ -506,4 +551,20 @@ tidy.nestedLogit <- function(x, ...){
   result
 }
 
+# the following utility function isn't exported:
 
+composeResponse <- function(name, dichotomy){
+  paste0(
+    "Response ",
+    name,
+    ": ",
+    names(dichotomy[1L]),
+    "{",
+    paste(dichotomy[[1L]], collapse = ", "),
+    "} vs. ",
+    names(dichotomy[2L]),
+    "{",
+    paste(dichotomy[[2L]], collapse = ", "),
+    "}"
+  )
+}

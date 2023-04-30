@@ -32,13 +32,10 @@ linearHypothesis.nestedLogit <- function(model, ...) {
   }
   attr(h, "heading") <- NULL
   table <- h
-  printResponse(nms[1L], model$models[[1L]]$dichotomy)
-  cat("\n")
+  cat(composeResponse(nms[1L], model$models[[1L]]$dichotomy), "\n")
   print(h)
   for (i in 2L:length(nms)) {
-    cat("\n")
-    printResponse(nms[i], model$models[[i]]$dichotomy)
-    cat("\n")
+    cat("\n", composeResponse(nms[i], model$models[[i]]$dichotomy), "\n", sep="")
     h <- linearHypothesis(model$models[[i]], ...)
     attr(h, "heading") <- NULL
     print(h)
@@ -53,10 +50,10 @@ linearHypothesis.nestedLogit <- function(model, ...) {
 }
 
 # this can also be used for other functions to simplify code:
-printResponse <- function(nm, dichotomy){
-    cat(paste0(
+composeResponse <- function(name, dichotomy){
+  paste0(
     "Response ",
-    nm,
+    name,
     ": ",
     names(dichotomy[1L]),
     "{",
@@ -66,7 +63,7 @@ printResponse <- function(nm, dichotomy){
     "{",
     paste(dichotomy[[2L]], collapse = ", "),
     "}"
-  ))
+  )
 }
 
 
