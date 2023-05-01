@@ -1,8 +1,8 @@
-models <- function(model, select){
+models <- function(model, select, as.list=FALSE){
   UseMethod("models")
 }
 
-models.nestedLogit <- function(model, select){
+models.nestedLogit <- function(model, select, as.list=FALSE){
   if (missing(select)) return(model$models)
   if (is.numeric(select)){
     model.nos <- seq(along=model$models)
@@ -18,7 +18,7 @@ models.nestedLogit <- function(model, select){
     }
   }
   result <- model$models[select]
-  if (length(result) > 1) return(result) else return(result[[1]])
+  if (length(result) > 1 || as.list) return(result) else return(result[[1]])
 }
 
 
@@ -35,6 +35,7 @@ if (FALSE){
   models(m)
   models(m, 2:1)
   models(m, 1)
+  models(m, 1, as.list=TRUE)
   models(m, c("work", "full"))
   models(m, "full")
 
