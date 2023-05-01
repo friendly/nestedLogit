@@ -63,25 +63,40 @@ contains the set of $(m-1)$ `glm()` models fit to the dichotomies.
 ### Methods
 
 As befits a model-fitting function, the package defines a nearly
-complete set of methods for class `nested` objects:
+complete set of methods for class `nestedLogit` objects:
 
-- `print()`, `summary()`
+- `print()`, `summary()`: prints the results for each of the submodels
 - `update()` re-fits a model, allowing changes in the model `formula`,
   `data`, `subset`, and `contrasts`.
 - `coef()` returns the coefficients for the predictors in each dichotomy
 - `vcov()` returns the variance-covariance matrix of the predictors
 - `anova()` provides ANOVA Type I (sequential) tests for each dichotomy
-  and for the combined model. When given a sequence of objects,
-  `anova()` tests the models against one another in the order specified.
+  and for the combined model. When given a sequence of objects, anova
+  tests the models against one another in the order specified.
 - `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests
   for each dichotomy and for the combined model.
+- `anova()` provides ANOVA analysis of deviance tables for one or more
+  fitted model objects.
+- `linearHypothesis()` gives Wald tests for hypotheses about
+  coefficients or their linear combinations
 - `predict()` obtains predicted probabilities for the response
   categories, useful for producing plots to aid interpretation.
 - `glance()`, `tidy()` are extensions of `broom::glance.glm()` and
-  `broom::tidy.glm()` to obtain compact summaries of a `nested` model
-  object\`.
+  `broom::tidy.glm()` to obtain compact summaries of a `nestedLogit`
+  model object\`.
 - `plot()` provides basic plots of the predicted probabilities over a
   range of values of the predictor variables.
+
+<!-- As befits a model-fitting function, the package defines a nearly complete set of methods for class `nested` objects: -->
+<!-- * `print()`, `summary()` -->
+<!-- * `update()` re-fits a model, allowing changes in the model `formula`, `data`, `subset`, and `contrasts`. -->
+<!-- * `coef()` returns the coefficients for the predictors in each dichotomy -->
+<!-- * `vcov()` returns the variance-covariance matrix of the predictors -->
+<!-- * `anova()` provides ANOVA Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of objects, `anova()` tests the models against one another in the order specified. -->
+<!-- * `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model. -->
+<!-- * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation. -->
+<!-- * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`. -->
+<!-- * `plot()` provides basic plots of the predicted probabilities over a range of values of the predictor variables. -->
 
 ## Examples
 
@@ -160,6 +175,8 @@ car::Anova(m)
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+### Plots
+
 A basic plot of predicted probabilities can be produced using the
 `plot()` method for `"nestedLogit"` objects.
 
@@ -177,6 +194,10 @@ plot(m, "hincome", list(children="present"),
 ```
 
 <img src="man/figures/README-wlf-plot-1.png" width="100%" />
+
+A variety of other plots can be produced using base graphics
+(`matplot()`) and `ggplot2`, as described in the vignette,
+`vignette("nestedLogits", package="nestedLogit")`.
 
 ## Authors
 

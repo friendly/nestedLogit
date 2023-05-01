@@ -5,7 +5,7 @@
 #' print.Anova.nestedLogit update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
 #' as.matrix.dichotomies linearHypothesis.nestedLogit
-#' 
+#'
 #' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.
 #' \describe{
@@ -34,7 +34,7 @@
 #' @param model For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
 #' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
-#' dichotomies and a named list of the results is returned; 
+#' dichotomies and a named list of the results is returned;
 #' for \code{linearHypothesis}, an object of class \code{"nestedLogit"}.
 #' @param as.matrix if \code{TRUE} (the default for \code{coef}) return coefficients
 #'        as a matrix with one column for each nested dichotomy,
@@ -47,7 +47,7 @@
 #' @param data optional updated data argument
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
-#' @param \dots arguments to be passed down. In the case of \code{linearHypothesis}, 
+#' @param \dots arguments to be passed down. In the case of \code{linearHypothesis},
 #'        the second argument is typically the \code{hypothesis.matrix}. See the
 #'        Details section of \code{\link[car]{linearHypothesis}}
 #'
@@ -89,9 +89,9 @@
 #' anova(update(m, . ~ . - year), m) # model comparison
 #'
 #' # Wald test
-#' car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege", 
+#' car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege",
 #'                            "parentdeggraduate"))
-#' 
+#'
 #' # predicted probabilities and ploting
 #' head(predict(m)) # fitted probabilities for first few cases
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
@@ -99,6 +99,8 @@
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
 #' cbind(new, fit) # fitted probabilities at specific values of predictors
+#'
+#' # predicted logits
 #' predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 #' predictions
 #' predictions$above_l.t.highschool # on logit scale

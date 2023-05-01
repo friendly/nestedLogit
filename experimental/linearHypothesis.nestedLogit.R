@@ -9,15 +9,20 @@
 #'
 #' @param model the fitted model
 #' @param ...   arguments to pass down. The second argument is typically the \code{hypothesis.matrix}. See the
-#'              Details section of \code{\link{[car]{linearHypothesis}}}.
+#'              Details section of \code{\link[car]{linearHypothesis}}.
 #'
 #' @return      NULL
-#' @seealso \code{\link{[car]{linearHypothesis}}}
+#' @seealso \code{\link[car]{linearHypothesis}}
 #' @export
 #'
 #' @examples
-#' linearHypothesis(m, "hincome")
-#' linearHypothesis(m, c("hincome", "childrenpresent"))
+#' wlf.nested <- nestedLogit(partic ~ hincome + children,
+#'                          logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+#'                                 full=dichotomy("parttime", "fulltime")),
+#'                          data=Womenlf)
+#'
+#' linearHypothesis(wlf.nested, "hincome")
+#' linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
 
 linearHypothesis.nestedLogit <- function(model, ...) {
   nms <- names(model$models)
