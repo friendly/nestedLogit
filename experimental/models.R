@@ -6,16 +6,14 @@ models.nestedLogit <- function(model, select, as.list=FALSE){
   if (missing(select)) return(model$models)
   if (is.numeric(select)){
     model.nos <- seq(along=model$models)
-    if (any(which <- !(select %in% model.nos))){
-      stop("the following models are not available:\n",
-           paste(select[which], collapse=", "))
-    }
+    which <- !(select %in% model.nos)
   } else {
     model.names <- names(model$models)
-    if (any(which <- !(select %in% model.names))){
-      stop("the following models are not available:\n",
-           paste(select[which], collapse=", "))
-    }
+    which <- !(select %in% model.names)
+  }
+  if (any(which)){
+    stop("the following model", if (sum(which) > 1) "s are " else " is ",  
+         "not available:\n", paste(select[which], collapse=", "))
   }
   result <- model$models[select]
   if (length(result) > 1 || as.list) return(result) else return(result[[1]])
