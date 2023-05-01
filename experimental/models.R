@@ -7,13 +7,13 @@ models.nestedLogit <- function(model, select){
   if (is.numeric(select)){
     model.nos <- seq(along=model$models)
     if (any(which <- !(select %in% model.nos))){
-      stop("the following models are not available:\n", 
+      stop("the following models are not available:\n",
            paste(select[which], collapse=", "))
     }
   } else {
     model.names <- names(model$models)
     if (any(which <- !(select %in% model.names))){
-      stop("the following models are not available:\n", 
+      stop("the following models are not available:\n",
            paste(select[which], collapse=", "))
     }
   }
@@ -26,13 +26,18 @@ if (FALSE){
   library(nestedLogit)
   library(car)
   example("nestedLogit")
-  
+
   models(m)
   models(m, 2:1)
   models(m, 1)
   models(m, c("work", "full"))
   models(m, "full")
-  
+
   models(m, "foo") # error
   models(m, 3:4) # error
+
+  # plot one model -- gives the 'regression quartet for a glm()
+  op <- par(mfrow = c(2,2))
+  plot(models(m, 1))
+  par(op)
 }
