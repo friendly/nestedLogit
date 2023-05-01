@@ -25,7 +25,12 @@ models.nestedLogit <- function(model, select){
 if (FALSE){
   library(nestedLogit)
   library(car)
-  example("nestedLogit")
+#  example("nestedLogit")
+
+  m <-  nestedLogit(partic ~ hincome + children,
+                dichotomies = logits(work=dichotomy("not.work",  working=c("parttime", "fulltime")),
+                                     full=dichotomy("parttime", "fulltime")),
+                data=Womenlf)
 
   models(m)
   models(m, 2:1)
