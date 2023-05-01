@@ -77,13 +77,18 @@ The standard implementation of this model is `multinom()` in the
 ### Nested logit model
 A sometimes simpler approach, called _nested dichotomies_, is to fit a collection of $m-1$ 
 separate models for each of a hierarchically nested set of binary comparisons among the
-response categories.  This is simpler, because it uses the familiar logistic regression model
-for each of the dichotomies. Taken together, this set of $m-1$ models comprises a complete
+response categories.  This is simpler, 
+
+* because it uses the familiar logistic regression model for each of the dichotomies, where standard methods
+for model summaries and tests are widely available.
+* Taken together, this set of $m-1$ models comprises a complete
 model for the polytomous response, just as does the multinomial logit model.
+
+
 This approach stems from @Fienberg:80 and
 is described in @Fox:2016:ARA, \S 14.2.2 and @FriendlyMeyer:2016:DDAR, \S 8.2.
 
-However, by the construction of **nested** dichotomies, the submodels are 
+Moreover, by the construction of **nested** dichotomies, the submodels are 
 `r colorize("statistically independent", "blue")` 
 (because the likelihood for the polytomous response is the product of the likelihoods for
 the dichotomies),
@@ -92,8 +97,13 @@ individual coefficients can be added to give overall tests for the full polytomy
 In this way, the $m-1$ dichotomies are analogous to $m-1$
 `r colorize("orthogonal", "blue")` contrasts for a for an $m$-level factor in an ANOVA design.
 
+Thus, when applicable, nested logit models give the best of two worlds: 
 
-This is illustrated in the figure below, where response categories $Y = \{1, 2, 3, 4\}$
+* **dichotomy models**: Think about, analyze, plot the separate model for each contrast among the response categories
+* **overall model**: Summarize, analyze, plot the overall model comprising all categories.
+
+
+Dichotomies are illustrated in the figure below, where response categories $Y = \{1, 2, 3, 4\}$
 can be divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these dichotomies can be
 divided as $\{1\}$ vs. $\{2\}$ and then $\{3\}$ vs. $\{4\}$.
 Alternatively, as shown in the right side of the figure, the response categories
@@ -308,6 +318,21 @@ Having young children also decreases the odds of both.
 Anova(wlf.nested)
 ```
 
+**linearHypothesis**: For a given model, `car::linearHypothesis()` provides a very general method for
+testing specific hypotheses about individual coefficients in a model or their linear combinations.
+This is extended here in the `linearHypothesis` method for `"nestedLogit"` models.
+
+For example, the following call tests the hypothesis that the coefficients for `hincome` and
+`children` are simultaneously all equal to zero. This is equivalent to the test of the global
+null model, $H_0 : \mathbf{B} = 0$ against an alternative that one or more coefficients $\beta_{ij} \ne 0$.
+
+`linearHypothesis()` gives these tests for each of the submodels, `work`, `full` as well as for the combined model.
+
+```{r linearHyp}
+linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
+```
+
+
 **glance** and **tidy**: The `broom` package [@R-broom]
 provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nestedLogit"` model gives a one-line summary of the statistics
 for each dichotomy. The `tidy` method combines the coefficients for the sub-models, together with test
@@ -321,17 +346,41 @@ tidy(wlf.nested)     # summarize the coefficients
 
 <!-- TODO: ??? -->
 <!--   illustrate how the result of glance can be manipulated to produce a custom table -->
-<!-- > gl <- glance(wlf.nested) -->
-<!-- > gl |> select(response, deviance, df.residual) |> mutate(`G2/df` = deviance / df.residual) -->
-<!-- # A tibble: 2 × 4 -->
-<!--   response deviance df.residual `G2/df` -->
-<!--   <chr>       <dbl>       <int>   <dbl> -->
-<!-- 1 work         320.         260   1.23  -->
-<!-- 2 full         104.         105   0.995 -->
+<!-- gl <- glance(wlf.nested) -->
+<!-- gl |>  -->
+<!--   select(response, deviance, df.residual) |>  -->
+<!--   bind_rows(summarise(   across(where(is.numeric), sum), -->
+<!--                          across(where(is.character), ~'Combined'))) > -->
+<!-- or -->
+  <!-- bind_rows(response = "Combined", deviance=sum(deviance), df.residual = sum(df.residual)) |> -->
+  <!-- tibble::add_row("Combined", sum(deviance), sum(df.residual)) |> -->
+
+<!--   mutate( -->
+<!--     `P-value` = pchisq(deviance, df.residual, lower.tail = FALSE), -->
+<!--     `G^2/df` = deviance / df.residual) |> -->
+<!--   rename(`G^2` = deviance, -->
+<!--          df = df.residual) -->
 
 
-**update**: Does it make sense to include `region` of Canada in the model?  
+These functions make it easy to construct custom tables. For example, to extract the likelihood ratio
+`deviance` ($G^2$) goodness-of fit tests and compute ($G^2 / df$), you could do:
+```{r}
+gl <- glance(wlf.nested)
+gl |> 
+  select(response, deviance, df.residual) |> 
+  mutate(
+    `P-value` = pchisq(deviance, df.residual, lower.tail = FALSE),
+    `G^2/df` = deviance / df.residual) |>
+  rename(`G^2` = deviance,
+         df = df.residual) |>
+  knitr::kable()
+```
 
+
+**update**: Makes it easy to create a new model from an old one, by adding/subtracting terms from the
+model formula or changing the observations used or contrasts for factors.
+
+For example: You might ask: "_Does it make sense to include `region` of Canada in the model?_"  
 This can be tested
 by adding it to the model formula, and comparing the new model with the original one using
 `anova()`. The significance tests here are for the additional contribution of `region` over

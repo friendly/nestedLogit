@@ -3,9 +3,11 @@ Anova
 carData
 continuationLogits
 CRC
+df
 Fienberg
 gradeschool
 GSS
+ij
 Lifecycle
 McNulty
 NORC
@@ -16,8 +18,10 @@ frac
 fulltime
 highschool
 hincome
+linearHypothesis
 mathbf
 nd
+ne
 operatorname
 partic
 parttime
