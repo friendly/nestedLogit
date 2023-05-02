@@ -24,8 +24,8 @@
 #' broom::tidy(m)
 #'
 glance.nestedLogit <- function(x, ...){
-  result <- dplyr::bind_rows(lapply(x$models, broom::glance))
-  result <- dplyr::bind_cols(response = names(x$models), result)
+  result <- dplyr::bind_rows(lapply(models(x), broom::glance))
+  result <- dplyr::bind_cols(response = names(models(x)), result)
   result
 }
 
@@ -33,8 +33,8 @@ glance.nestedLogit <- function(x, ...){
 #' @rdname broomMethods
 #' @exportS3Method broom::tidy nestedLogit
 tidy.nestedLogit <- function(x, ...){
-  result <- dplyr::bind_rows(lapply(x$models, broom::tidy, ...))
-  response <- rep(names(x$models), each = nrow(result)/length(x$models))
+  result <- dplyr::bind_rows(lapply(models(x), broom::tidy, ...))
+  response <- rep(names(models(x)), each = nrow(result)/length(models(x)))
   result <- dplyr::bind_cols(response = response, result)
   result
 }

@@ -113,16 +113,16 @@ print.nestedLogit <- function(x, ...) {
   print(x$formula)
   if (!is.null(x$subset)) cat("subset: ", x$subset, "\n")
   if ("NULL" != x$contrasts.print) cat("contrasts: ", x$contrasts.print, "\n")
-  lapply(x$models, print, ...)
+  lapply(models(x), print, ...)
   invisible(x)
 }
 
 #' @rdname nestedMethods
 #' @export
 summary.nestedLogit <- function(object, ...) {
-  result <- lapply(object$models, summary, ...)
+  result <- lapply(models(object), summary, ...)
   for (i in seq_along(result)) {
-    result[[i]]$dichotomy <- object$models[[i]]$dichotomy
+    result[[i]]$dichotomy <- models(object, i)$dichotomy # object$models[[i]]$dichotomy
   }
   class(result) <- "summary.nestedLogit"
   attr(result, "formula") <- object$formula
@@ -169,23 +169,12 @@ print.summary.nestedLogit <- function(x, ...) {
 #' @exportS3Method car::Anova nestedLogit
 #' @export
 Anova.nestedLogit <- function(mod, ...) {
-  result <- lapply(mod$models, Anova)
-  nms <- names(mod$models)
+  result <- lapply(models(mod), Anova)
+  nms <- names(models(mod))
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], mod$models[[i]]$dichotomy)
-    # <- paste0(
-    #   "Response ",
-    #   nms[i],
-    #   ": {",
-    #   paste(mod$models[[i]]$dichotomy[[1L]], collapse =
-    #           ", "),
-    #   "} vs. {",
-    #   paste(mod$models[[i]]$dichotomy[[2L]],
-    #         collapse = ", "),
-    #   "}"
-    # )
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichtomy)  # mod$models[[i]]$dichotomy)
   }
   attr(result, "heading") <- heading
   class(result) <- "Anova.nestedLogit"
@@ -217,8 +206,8 @@ print.Anova.nestedLogit <- function(x, ...) {
 #' @exportS3Method car::linearHypothesis nestedLogit
 #' @export
 linearHypothesis.nestedLogit <- function(model, ...) {
-  nms <- names(model$models)
-  h <- car::linearHypothesis(model$models[[1L]], ...)
+  nms <- names(models(model))
+  h <- car::linearHypothesis(models(model, 1L), ...)  # (model$models[[1L]], ...)
   formula <-  as.character(model$formula)
   heading <- attr(h, "heading")
   heading[length(heading) - 1] <- paste("Model 1: restricted model\nModel 2:",
@@ -229,11 +218,11 @@ linearHypothesis.nestedLogit <- function(model, ...) {
   }
   attr(h, "heading") <- NULL
   table <- h
-  cat(composeResponse(nms[1L], model$models[[1L]]$dichotomy), "\n")
+  cat(composeResponse(nms[1L], models(model, 1L)$dichotomy), "\n")  # model$models[[1L]]$dichotomy), "\n")
   print(h)
   for (i in 2L:length(nms)) {
-    cat("\n", composeResponse(nms[i], model$models[[i]]$dichotomy), "\n", sep="")
-    h <- car::linearHypothesis(model$models[[i]], ...)
+    cat("\n", composeResponse(nms[i], models(model, i)$dichotomy), "\n", sep="")  # model$models[[i]]$dichotomy), "\n", sep="")
+    h <- car::linearHypothesis(models(model, i), ...)
     attr(h, "heading") <- NULL
     print(h)
     table <- table + h
@@ -289,15 +278,15 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
   model <- match.arg(model)
   if (model == "nested"){
     if (missing(newdata))
-      newdata <- object$models[[1L]]$data
-    ndichot <- length(object$models)
+      newdata <- models(object, 1)$data
+    ndichot <- length(models(object))
     if (ndichot < 2L)
       stop("there are fewer than 2 nested dichotomies")
     fitted <- vector(ndichot, mode = "list")
-    for (i in seq_along(object$models)) {
-      p <- predict(object$models[[i]], newdata = newdata, type = "response")
+    for (i in seq_along(models(object))) {
+      p <- predict(models(object, i), newdata = newdata, type = "response")
       p <- cbind(1 - p, p)
-      attr(p, "columns") <- object$models[[i]]$dichotomy
+      attr(p, "columns") <- models(object, i)$dichotomy # object$models[[i]]$dichotomy
       fitted[[i]] <- p
     }
     response.levels <-
@@ -306,8 +295,8 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     p <- matrix(1, nrow(newdata), length(response.levels))
     colnames(p) <- response.levels
     for (level in response.levels) {
-      for (i in seq_along(object$models)) {
-        which <- sapply(object$models[[i]]$dichotomy, function(x)
+      for (i in seq_along(models(object))) {
+        which <- sapply(models(object, i)$dichotomy, function(x)  # sapply(object$models[[i]]$dichotomy, function(x)
           level %in% x)
         if (!any(which))
           next
@@ -317,7 +306,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     rownames(p) <- rownames(newdata)
     return(p)
   } else {
-    result <- lapply(object$models, predict, newdata=newdata, ...)
+    result <- lapply(models(object), predict, newdata=newdata, ...)
     attr(result, "model") <- deparse(substitute(object))
     class(result) <- "predictDichotomies"
     return(result)
@@ -337,21 +326,21 @@ print.predictDichotomies <- function(x, ...){
 #' @importFrom stats coef
 #' @export
 coef.nestedLogit <- function(object, as.matrix=TRUE, ...) {
-  result <- if(as.matrix) sapply(object$models, coef, ...)
-  else lapply(object$models, coef, ...)
+  result <- if(as.matrix) sapply(models(object), coef, ...)
+  else lapply(models(object), coef, ...)
   result
 }
 
 #' @rdname nestedMethods
 #' @export
 vcov.nestedLogit <- function(object, as.matrix=FALSE, ...){
-  vcovs <- lapply(object$models, vcov)
+  vcovs <- lapply(models(object), vcov)
   if (!as.matrix) {
     return(vcovs)
   }
-  n.models <- length(object$models)
+  n.models <- length(models(object))
   n.coefs <- nrow(vcovs[[1]])
-  nms <- expand.grid(names(coef(object$models[[1]])), names(object$models))
+  nms <- expand.grid(names(coef(models(object, 1L))), names(models(object)))
   nms <- paste0(nms[, 2], ".", nms[, 1])
   vcov <- matrix(0, n.models*n.coefs, n.models*n.coefs)
   rownames(vcov) <- colnames(vcov) <- nms
@@ -366,7 +355,7 @@ vcov.nestedLogit <- function(object, as.matrix=FALSE, ...){
 #' @export
 anova.nestedLogit <- function(object, object2, ...){
   if (missing(object2)){
-    result <- lapply(object$models, anova, test="LRT")
+    result <- lapply(models(object), anova, test="LRT")
     heading <- attr(result[[1L]], "heading")[1L]
     heading <- sub("Table", "Tables", heading)
     heading <- sub("\\.\\.y", as.character(object$formula[[2]]), heading)
@@ -374,27 +363,16 @@ anova.nestedLogit <- function(object, object2, ...){
   } else {
     if (!inherits(object2, "nestedLogit"))
       stop(deparse(substitute(object2)), " is not of class 'nestedLogit'")
-    result <- mapply(anova, object$models, object2$models, MoreArgs=list(test="LRT"), SIMPLIFY=FALSE)
+    result <- mapply(anova, models(object), models(object2), MoreArgs=list(test="LRT"), SIMPLIFY=FALSE)
     heading <- attr(result[[1L]], "heading")
     heading <- sub("Table", "Tables", heading)
     heading <- gsub("\\.\\.y", as.character(object$formula[[2]]), heading)
     heading <- sub("Model 2", " Model 2", heading)
     heading <- c(heading, "\n")
   }
-  nms <- names(object$models)
+  nms <- names(models(object))
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], object$models[[i]]$dichotomy)
-    # <- paste0(
-    #   "Response ",
-    #   nms[i],
-    #   ": {",
-    #   paste(object$models[[i]]$dichotomy[[1L]], collapse =
-    #           ", "),
-    #   "} vs. {",
-    #   paste(object$models[[i]]$dichotomy[[2L]],
-    #         collapse = ", "),
-    #   "}"
-    # )
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(object, i)$dichotomy) # object$models[[i]]$dichotomy)
   }
   attr(result, "heading") <- heading
   class(result) <- "anova.nestedLogit"
@@ -446,8 +424,8 @@ update.nestedLogit <- function(object, formula, dichotomies, data, subset, contr
   result <- nestedLogit(formula, dichotomies=dichotomies, data=data,
                         subset=subset, contrasts=contrasts)
   result$data.name <- data.name
-  for (i in seq_along(result$models)){
-    result$models[[i]]$call$data <- as.symbol(data.name)
+  for (i in seq_along(models(result))){
+   result$models[[i]]$call$data <- as.symbol(data.name)
   }
   if (missing(contrasts)){
     result$contrasts <- object$contrasts

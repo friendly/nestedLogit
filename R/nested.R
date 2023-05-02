@@ -1,5 +1,5 @@
 # Nested logit models
-# last modified 2023-04-28 by J. Fox
+# last modified 2023-05-02 by J. Fox
 # 2023-04-06 MF: add coef method
 # 2023-04-11 MF: add `dichotomies` attribute to result of nestedLogit
 
@@ -43,7 +43,7 @@
 #' The dichotomy first contrasts \code{B, C, D} against \code{A}.
 #' The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
 #' The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
-
+#' 
 #'
 #' @aliases nestedLogit logits dichotomy continuationLogits
 #'
@@ -323,6 +323,7 @@ continuationLogits <- function(levels, names, prefix = "above_"){
   logits
 }
 
+
 # these functions not exported:
 
 createDichtomies <- function(x){
@@ -362,4 +363,3 @@ createDichtomies.list <- function(x){
   dichotomies <- helper(list(), x)
   do.call(logits, dichotomies)
 }
-

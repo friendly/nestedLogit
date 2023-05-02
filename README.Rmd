@@ -125,7 +125,7 @@ What the `"nestedLogit"` object contains:
 
 ```{r}
 names(m)
-names(m$models)
+names(m$models) # equivalently, names(models(m))
 ```
 
 `Anova()` produces analysis of variance deviance tests for the terms in this model for each of the submodels, as well as for the combined responses of the polytomy.
