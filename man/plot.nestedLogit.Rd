@@ -21,7 +21,7 @@
   legend = TRUE,
   legend.inset = 0.01,
   legend.location = "topleft",
-  bty = "n",
+  legend.bty = "n",
   ...
 )
 }
@@ -67,7 +67,7 @@ response levels to the graph.}
 \item{legend.location}{position of the legend (default \code{"topleft"},
 see \code{\link{legend}}).}
 
-\item{bty}{the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".}
+\item{legend.bty}{the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".}
 
 \item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }
@@ -83,7 +83,7 @@ m <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
                         data=Womenlf)
-plot(m)
+plot(m, legend.location="top")
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)

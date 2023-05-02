@@ -32,7 +32,7 @@
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
-#' @param bty  the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".
+#' @param legend.bty  the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
@@ -41,7 +41,7 @@
 #'                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime")),
 #'                         data=Womenlf)
-#' plot(m)
+#' plot(m, legend.location="top")
 #' op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 #' plot(m, "hincome", list(children="absent"),
 #'      xlab="Husband's Income", legend=FALSE)
@@ -61,7 +61,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              col=palette()[1L:length(response.levels)],
                              legend=TRUE, legend.inset=0.01,
                              legend.location="topleft",
-                             bty = "n", ...){
+                             legend.bty = "n", ...){
   data <- x$data
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
@@ -121,7 +121,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
     if (legend) legend(legend.location, legend=response.levels,
                        lty=lty, lwd=lwd,
                        col=col, inset=legend.inset,
-                       bty = bty,
+                       bty = legend.bty,
                        xpd=TRUE)
   } else {
     n.x.levels <- nrow(new)
@@ -134,7 +134,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                        lty=lty, lwd=lwd,
                        col=col, pch=pch,
                        inset=legend.inset,
-                       bty = bty,
+                       bty = legend.bty,
                        xpd=TRUE)
   }
   if (!missing(main)) {

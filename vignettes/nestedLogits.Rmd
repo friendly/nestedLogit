@@ -272,7 +272,7 @@ above as `mod.work` and `mod.full`.
 #| collapse = FALSE
 names(wlf.nested)
 
-names(wlf.nested$models)
+names(wlf.nested$models) # equivalent: names(models(wlf.models))
 ```
 
 
@@ -317,7 +317,7 @@ null model, $H_0 : \mathbf{B} = 0$ against an alternative that one or more coeff
 `linearHypothesis()` gives these tests for each of the submodels, `work`, `full` as well as for the combined model.
 
 ```{r linearHyp}
-# linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
+linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
 ```
 
 
@@ -408,9 +408,9 @@ levels of other variables, and compose these into a single figure using `par()`
 #| fig.cap = "**plot method**: Predicted probabilities of working at all or working part time or full time"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(wlf.nested, "hincome", list(children="absent"),
-     xlab="Husband's Income", legend=FALSE)
+     xlab="Husband's Income", legend.location="top")
 plot(wlf.nested, "hincome", list(children="present"),
-     xlab="Husband's Income")
+     xlab="Husband's Income", legend=FALSE)
 ```
 
 
@@ -538,7 +538,7 @@ These values can be calculated by calling `predict.glm()` directly for the
 `models` component of `wlf.nested`, specifying `type = "link"`:
 
 ```{r}
-pred.logits <- sapply(wlf.nested$models, predict, newdata=new, type = "link")
+pred.logits <- sapply(models(wlf.nested), predict, newdata=new, type = "link")
 plotdatal <- cbind(new, pred.logits)
 head(plotdatal)
 ```
