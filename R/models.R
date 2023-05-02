@@ -2,11 +2,11 @@
 #'
 #' @name models
 #' @aliases models models.nestedLogit
-#' 
+#'
 #' @description
 #' \code{models} is used to extract \code{"glm"} objects representing binary logit
 #' models from a \code{"nestedLogit"} object.
-#' 
+#'
 #' @param model a \code{"nestedLogit"} model.
 #' @param select a numeric or character vector giving the number(s) or names(s)
 #'        of one or more
@@ -18,17 +18,20 @@
 #'        when more than one binary
 #'        logit model is selected, the corresponding \code{"glm"} objects are \emph{always}
 #'        returned as a named list.
-#'        
+#'
 #' @examples
 #'   data(Womenlf, package = "carData")
 #'
-#'   comparisons <- logits(work=dichotomy("not.work", 
+#'   comparisons <- logits(work=dichotomy("not.work",
 #'                                        working=c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime"))
 #'   m <- nestedLogit(partic ~ hincome + children,
 #'                    dichotomies = comparisons,
 #'                    data=Womenlf)
+#'
 #'   # extract a binomial logit model
+#'   models(m, "work")
+#'   # use that to plot residuals
 #'   plot(density(residuals(models(m, "work"))))
 #' @export
 models <- function(model, select, as.list=FALSE){

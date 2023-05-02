@@ -31,12 +31,15 @@ models from a \code{"nestedLogit"} object.
 \examples{
   data(Womenlf, package = "carData")
 
-  comparisons <- logits(work=dichotomy("not.work", 
+  comparisons <- logits(work=dichotomy("not.work",
                                        working=c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))
   m <- nestedLogit(partic ~ hincome + children,
                    dichotomies = comparisons,
                    data=Womenlf)
+
   # extract a binomial logit model
+  models(m, "work")
+  # use that to plot residuals
   plot(density(residuals(models(m, "work"))))
 }
