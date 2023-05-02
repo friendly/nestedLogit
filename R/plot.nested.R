@@ -1,10 +1,11 @@
-
 #' Plotting Nested Logit Models
-#' @aliases plot.nestedLogit
+#'
 #' @description A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
 #' \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
 #' for each level of the polytomous response variable, with one of the explanatory variables
 #' on the horizontal axis and other explanatory variables fixed to particular values.
+#'
+#' @aliases plot.nestedLogit
 #' @seealso \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
 #' @param x an object of \code{"nestedLogit"} produced by \code{\link{nestedLogit}}.
 #' @param x.var quoted name of the variable to appear on the x-axis; if omitted, the first
@@ -31,6 +32,7 @@
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
+#' @param bty  the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
@@ -58,7 +60,8 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              lwd=3, lty=1L:length(response.levels),
                              col=palette()[1L:length(response.levels)],
                              legend=TRUE, legend.inset=0.01,
-                             legend.location="topleft", ...){
+                             legend.location="topleft",
+                             bty = "n", ...){
   data <- x$data
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
@@ -68,7 +71,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   }
   if (!(x.var %in% vars)) stop (x.var, " is not in the model")
   if (!missing(others)){
-    if (any(sapply(others, length) > 1)) 
+    if (any(sapply(others, length) > 1))
       stop("more than one value specified for one or more variables in others")
     other.x <- names(others)
     check <- other.x %in% vars
@@ -85,15 +88,15 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
       xx <- data[, missing.x]
       if (is.numeric(xx)){
         values[[missing.x]] <- signif(mean(xx, na.rm=TRUE))
-        message("Note: missing predictor ", missing.x, " set to its mean, ", 
+        message("Note: missing predictor ", missing.x, " set to its mean, ",
                 values[[missing.x]])
       } else if (is.factor(xx)){
         values[[missing.x]] <- levels(xx)[1L]
-        message("Note: missing predictor ", missing.x, " set to its first level, '", 
+        message("Note: missing predictor ", missing.x, " set to its first level, '",
                 values[[missing.x]], "'")
       } else {
         values[[missing.x]] <-  (sort(unique(xx)))[1L]
-        message("Note: missing predictor ", missing.x, " set to its first value, '", 
+        message("Note: missing predictor ", missing.x, " set to its first value, '",
                 values[[missing.x]], "'")
       }
     }
@@ -115,8 +118,11 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   if (numeric.x){
     matplot(new[, x.var], new[, response.levels], type="l", lwd=lwd,
             col=col, xlab=xlab, ylab=ylab, ...)
-    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
-                       col=col, inset=legend.inset, xpd=TRUE)
+    if (legend) legend(legend.location, legend=response.levels,
+                       lty=lty, lwd=lwd,
+                       col=col, inset=legend.inset,
+                       bty = bty,
+                       xpd=TRUE)
   } else {
     n.x.levels <- nrow(new)
     matplot(1L:n.x.levels, new[, response.levels], type="b", lwd=lwd,
@@ -124,8 +130,12 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
     box()
     axis(2L)
     axis(1L, at=1L:n.x.levels, labels=new[, x.var])
-    if (legend) legend(legend.location, legend=response.levels, lty=lty, lwd=lwd,
-                       col=col, pch=pch, inset=legend.inset, xpd=TRUE)
+    if (legend) legend(legend.location, legend=response.levels,
+                       lty=lty, lwd=lwd,
+                       col=col, pch=pch,
+                       inset=legend.inset,
+                       bty = bty,
+                       xpd=TRUE)
   }
   if (!missing(main)) {
     title(main, cex.main=cex.main, font.main=font.main)
@@ -133,7 +143,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
     if (length(values) != 0L){
       which.main <- !(x.var == names(values))
       if (any(which.main)){
-        main <- paste(paste(names(values[which.main]), "=", 
+        main <- paste(paste(names(values[which.main]), "=",
                             as.character(unlist(values[which.main]))),
                       collapse=", ")
         title(main, cex.main=cex.main, font.main=font.main)

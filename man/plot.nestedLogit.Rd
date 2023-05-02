@@ -21,6 +21,7 @@
   legend = TRUE,
   legend.inset = 0.01,
   legend.location = "topleft",
+  bty = "n",
   ...
 )
 }
@@ -65,6 +66,8 @@ response levels to the graph.}
 
 \item{legend.location}{position of the legend (default \code{"topleft"},
 see \code{\link{legend}}).}
+
+\item{bty}{the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".}
 
 \item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }
