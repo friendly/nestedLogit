@@ -21,8 +21,6 @@
 \alias{anova.nestedLogit}
 \alias{print.anova.nestedLogit}
 \alias{as.dichotomies}
-\alias{glance.nestedLogit}
-\alias{tidy.nestedLogit}
 \title{Methods for \code{"nestedLogit"} and Related Objects}
 \usage{
 \method{print}{nestedLogit}(x, ...)
@@ -62,10 +60,6 @@
 as.dichotomies(x, ...)
 
 \method{as.dichotomies}{matrix}(x, ...)
-
-\method{glance}{nestedLogit}(x, ...)
-
-\method{tidy}{nestedLogit}(x, ...)
 }
 \arguments{
 \item{x, object, object2, mod}{in most cases, an object of class \code{"nestedLogit"}.}
@@ -156,7 +150,7 @@ anova(m) # type-I (sequential) tests
 anova(update(m, . ~ . - year), m) # model comparison
 
 # Wald test
-car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege", 
+car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege",
                            "parentdeggraduate"))
 
 # predicted probabilities and ploting
@@ -166,13 +160,16 @@ new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
                    year=c(1972, 2016))
 fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
+
+# predicted logits
 predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 predictions
 predictions$above_l.t.highschool # on logit scale
 
 }
 \seealso{
-\code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}}
+\code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}},
+\code{\link{glance.nestedLogit}}, \code{\link{tidy.nestedLogit}}
 }
 \author{
 John Fox and Michael Friendly

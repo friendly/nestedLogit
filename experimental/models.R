@@ -1,6 +1,8 @@
+#' Extract glm() objects from a nestedLogit object
+#'
 #' \code{models} is used to extract \code{"glm"} objects representing binary logit
 #' models from a \code{"nestedLogit"} object.
-
+#'
 #' @export
 models <- function(model, select, as.list=FALSE){
   UseMethod("models")
@@ -17,7 +19,7 @@ models.nestedLogit <- function(model, select, as.list=FALSE){
     which <- !(select %in% model.names)
   }
   if (any(which)){
-    stop("the following model", if (sum(which) > 1) "s are " else " is ",  
+    stop("the following model", if (sum(which) > 1) "s are " else " is ",
          "not available:\n", paste(select[which], collapse=", "))
   }
   result <- model$models[select]
@@ -25,13 +27,13 @@ models.nestedLogit <- function(model, select, as.list=FALSE){
 }
 
 #' @param model a \code{"nestedLogit"} model.
-#' @param select a numeric or character vector giving the number(s) or names(s) 
+#' @param select a numeric or character vector giving the number(s) or names(s)
 #'        of one or more
-#'        binary logit models to be extracted from \code{model}; if absent, a list of 
+#'        binary logit models to be extracted from \code{model}; if absent, a list of
 #'        all of the binary logits models in \code{model} is returned.
 #' @param as.list if \code{TRUE} (the default is \code{FALSE}) and one binary logit
 #'        model is selected, return the \code{"glm"} object in a one-element named list;
-#'        otherwise a single model is returned directly as a \code{"glm"} object; 
+#'        otherwise a single model is returned directly as a \code{"glm"} object;
 #'        when more than one binary
 #'        logit model is selected, the corresponding \code{"glm"} objects are \emph{always}
 #'        returned as a named list.

@@ -26,7 +26,8 @@
 #' \code{model = "dichotomies"} gives the fitted log odds for each binary logit models in the
 #' dichotomies.
 #'
-#' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}}
+#' @seealso \code{\link{nestedLogit}}, \code{\link{plot.nestedLogit}},
+#'          \code{\link{glance.nestedLogit}}, \code{\link{tidy.nestedLogit}}
 #'
 #' @param x,object,object2,mod in most cases, an object of class \code{"nestedLogit"}.
 #' @param newdata For the \code{predict} method, a data frame containing combinations of values of the predictors
@@ -531,27 +532,6 @@ as.dichotomies.matrix <- function(x, ...) {
   logits
 }
 
-# broom related methods
-# [TODO] It seems these have to be called as broom::glance(). Why?
-
-#' @importFrom broom glance
-#' @rdname nestedMethods
-#' @exportS3Method broom::glance nestedLogit
-glance.nestedLogit <- function(x, ...){
-  result <- dplyr::bind_rows(lapply(x$models, broom::glance))
-  result <- dplyr::bind_cols(response = names(x$models), result)
-  result
-}
-
-#' @importFrom broom tidy
-#' @rdname nestedMethods
-#' @exportS3Method broom::tidy nestedLogit
-tidy.nestedLogit <- function(x, ...){
-  result <- dplyr::bind_rows(lapply(x$models, broom::tidy, ...))
-  response <- rep(names(x$models), each = nrow(result)/length(x$models))
-  result <- dplyr::bind_cols(response = response, result)
-  result
-}
 
 # the following utility function isn't exported:
 
