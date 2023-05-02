@@ -27,7 +27,7 @@ data(Womenlf, package = "carData")
 m <-  nestedLogit(partic ~ hincome + children,
                   dichotomies = logits(work=dichotomy("not.work",
                                                       working=c("parttime", "fulltime")),
-                  full=dichotomy("parttime", "fulltime")),
+                                       full=dichotomy("parttime", "fulltime")),
                   data=Womenlf)
 broom::glance(m)
 broom::tidy(m)
