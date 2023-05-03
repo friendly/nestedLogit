@@ -47,7 +47,7 @@ set.seed(47)
 options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("car", "broom", "ggplot2", "directlabels")
+to.cite <- c("car", "broom", "ggplot2", "geomtextpath")
 ```
 
 Load the packages we'll use here:
@@ -56,9 +56,9 @@ library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
 library(knitr)          # A General-Purpose Package for Dynamic Report Generation in R
 library(car)            # Companion to Applied Regression
 library(broom)          # Convert Statistical Objects into Tidy Tibbles
-library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
-library(directlabels)   # Direct Labels for Multicolor Plots
 library(dplyr)          # A Grammar of Data Manipulation
+library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(geomtextpath)   # Curved Text in 'ggplot2'
 ```
 
 ## Models for polytomous responses
@@ -301,7 +301,8 @@ exp(coef(wlf.nested))
 Thus, the odds of both working and working full time decrease with husband's income.
 Having young children also decreases the odds of both.
 
-**Anova**: Gives Type II tests for each term in the model. Note that the `LR` $\chi^2$ and `df` for the `Combined Responses` is the sum of their values for the separate dichotomies.
+**Anova**: Extends `Anova()` from the `car` package [@R-car],
+It gives Type II tests for each term in the model. Note that the `LR` $\chi^2$ and `df` for the `Combined Responses` is the sum of their values for the separate dichotomies.
 ```{r Anova}
 Anova(wlf.nested)
 ```
@@ -323,8 +324,7 @@ linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
 
 **glance** and **tidy**: The `broom` package [@R-broom]
 provides some methods for giving compact and tidy summaries of fitted models. The `glance` method for a `"nestedLogit"` model gives a one-line summary of the statistics
-for each dichotomy. The `tidy` method combines the coefficients for the sub-models, together with test
-statistics.
+for each dichotomy. The `tidy` method combines the coefficients for the sub-models, together with test statistics.
 
 ```{r}
 glance(wlf.nested)   # summarize the sub-models
@@ -397,7 +397,7 @@ car::some(predict(wlf.nested))
 The `nestedLogit` package has a basic `plot()` method for `"nestedLogit"` models.
 It calculates fitted probabilities for the response categories and plots these
 against a single explanatory variable
-on the horizontal axis and other explanatory variables fixed to particular values.
+on the horizontal axis and `other` explanatory variables fixed to particular values.
 To produce multi-panel plots, it is necessary to call this repeatedly for
 levels of other variables, and compose these into a single figure using `par()`
 (or `knitr` chunk options):
@@ -502,16 +502,34 @@ gg
 ### Direct labels
 
 It's usually nicer to label the curves directly than to rely on a legend.
-The `directlabels` package [@R-directlabels]
-can take a `ggplot` object, remove the legend and
-place labels along the curves. It is a little fiddly, and we haven't tried
-to make it avoid clipping some of the labels.
+<!-- The `directlabels` package [@R-directlabels] -->
+<!-- can take a `ggplot` object, remove the legend and -->
+<!-- place labels along the curves. It is a little fiddly, and we haven't tried -->
+<!-- to make it avoid clipping some of the labels. -->
 
-```{r wlf-directlabels}
+<!-- ```{r wlf-directlabels} -->
+<!-- #| out.width = "100%", -->
+<!-- #| fig.height = 4, -->
+<!-- #| fig.cap = "**direct labels**: Predicted probabilities, with labels on the curves" -->
+<!-- direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2))) -->
+<!-- ``` -->
+The `geomtextpath` [@R-geomtextpath] package offers `geom_textline()` as an alternative
+to `geom_line()` that adds a text label to a curve.
+
+```{r wlf-geomtextpath}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "**direct labels**: Predicted probabilities, with labels on the curves"
-direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
+#| fig.cap = "**geomtextpath**: Predicted probabilities, with labels on the curves"
+ggplot(plotlong,
+       aes(x=hincome, y=Probability, color=Working)) +
+  geom_textline(aes(label = Working),
+                linewidth = 2, size = 5, 
+                hjust = 0.9, vjust = 0.2) +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Probability") +
+  facet_wrap(~ children, labeller = label_both) +
+  theme_bw(base_size = 14) +
+  theme(legend.position = "none")
 ```
 
 

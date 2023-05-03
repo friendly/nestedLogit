@@ -101,13 +101,13 @@ par(op)
 plotlong <- plotdata |>
   tidyr::pivot_longer(fulltime : not.work,
                       names_to = "Working",
-                      values_to = "prob") |>
+                      values_to = "Probability") |>
   mutate(Working = ordered(Working,
                            levels = c("not.work", "parttime", "fulltime")) )
 
 
 ggplot(plotlong,
-       aes(x=hincome, y=prob, color=Working)) +
+       aes(x=hincome, y=Probability, color=Working)) +
   geom_line(linewidth = 2) +
   scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
@@ -120,7 +120,7 @@ ggplot(plotlong,
 
 library(directlabels)
 gg <- ggplot(plotlong,
-             aes(x=hincome, y=prob, color=Working)) +
+             aes(x=hincome, y=Probability, color=Working)) +
   geom_line(linewidth = 2) +
   scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
@@ -131,11 +131,13 @@ direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 # use geomtextpath
 library(geomtextpath)
 ggplot(plotlong,
-       aes(x=hincome, y=prob, color=Working)) +
-  geom_textline(aes(label = Working), linewidth = 2, size = 5, hjust = 0.9) +
+       aes(x=hincome, y=Probability, color=Working)) +
+  geom_textline(aes(label = Working),
+                linewidth = 2, size = 5, hjust = 0.9, vjust=0.2) +
   scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
   facet_wrap(~ children, labeller = label_both) +
+  theme_bw(base_size = 14) +
   theme(legend.position = "none")
 
 
@@ -149,12 +151,12 @@ plotobs <- cbind(Womenlf[, c("hincome", "children")], pred.obs)
 plotlobs <- plotobs |>
   tidyr::pivot_longer(fulltime : not.work,
                       names_to = "Working",
-                      values_to = "prob") |>
+                      values_to = "Probability") |>
   mutate(Working = ordered(Working,
                            levels = c("not.work", "parttime", "fulltime")) )
 
 ggplot(plotlobs,
-       aes(x=hincome, y=prob, color=Working)) +
+       aes(x=hincome, y=Probability, color=Working)) +
   geom_line(linewidth = 3) +
   geom_point(size = 1.5, shape = 16, color = "black") +
   scale_color_discrete() +
