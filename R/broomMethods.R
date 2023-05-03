@@ -23,9 +23,9 @@
 #'                   data=Womenlf)
 #'
 #' # one-line summaries
-#' glance(m)
+#' broom::glance(m)
 #' # coefficients and tests
-#' tidy(m)
+#' broom::tidy(m)
 #'
 glance.nestedLogit <- function(x, ...){
   result <- dplyr::bind_rows(lapply(models(x), broom::glance))
