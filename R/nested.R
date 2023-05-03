@@ -159,7 +159,7 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
   # if (!inherits(dichotomies, "dichotomies"))
   #   stop("dichotomies must be of class 'dichotomies'")
   
-  dichotomies <- createDichtomies(dichotomies)
+  dichotomies <- createDichotomies(dichotomies)
 
   data.name <- substitute(data)
   data.save <- data
@@ -326,16 +326,16 @@ continuationLogits <- function(levels, names, prefix = "above_"){
 
 # these functions not exported:
 
-createDichtomies <- function(x){
-  UseMethod("createDichtomies")
+createDichotomies <- function(x){
+  UseMethod("createDichotomies")
 }
 
-createDichtomies.dichotomies <- function(x) x
+createDichotomies.dichotomies <- function(x) x
 
-createDichtomies.default <- function(x) 
+createDichotomies.default <- function(x) 
   stop("dichotomies argument must be of class 'dichotomies' or mode 'list'")
 
-createDichtomies.list <- function(x){
+createDichotomies.list <- function(x){
   helper <- function(dichotomies, x){
     if (length(x) != 2L || !is.list(x)) {
       stop("ill-formed nested list of dichotomies: ",
