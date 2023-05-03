@@ -47,7 +47,7 @@ set.seed(47)
 options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("car", "broom", "ggplot2", "geomtextpath")
+to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
 ```
 
 Load the packages we'll use here:
@@ -62,16 +62,36 @@ library(geomtextpath)   # Curved Text in 'ggplot2'
 ```
 
 ## Models for polytomous responses
+The familiar logistic regression model applies when there is a binary ("_dichotomous_")
+response, such as "survived" vs. "died", or voted "yes" vs. "no" on a referendum.
+However, often the response variable is multi-category ("_polytomous_"),
+taking on $m > 2$ discrete values.
+For example, 
+
+* Respondents in the U.S. General Social Survey are classified
+by their level of education, taking values `<highschool`, `highschool`, `college` and
+`graduate`.
+
+* Women's labor force participation might be classified as (a) not working outside the home; (b) working parttime; or (c) working fulltime.
+
+There are several different ways to model the response probabilities.
+Let \(\pi_{ij} \equiv \pi_j \,  ( \vec{x}_i )\) 
+be the probability of response $j$ for case
+or group $i$, given the predictors $\vec{x}_i$.
+Because \(\sum_j \,  \pi_{ij} = 1\), only \(m - 1\) of
+these probabilities are independent.  The essential idea is to
+construct a model for the polytomous 
+response composed of $m-1$
+logit comparisons among the response categories in a similar way
+to how factors are treated in the predictor variables.
 
 ### Multinomial model
-For a categorical ("_polytomous_") response variable with more than two response categories, 
-one natural extension of the standard logistic regression _logit_ model is the _multinomial logit_ 
-(or, _generalized logit_) model.
+One natural generalization of the the standard logistic regression _logit_ model is the _multinomial logit_ (or, _generalized logit_) model.
 When the polytomous response has $m$ levels, the multinomial logit model is comprised of
 $m-1$ log odds comparisons with a reference level, typically the last, as described in
 @Fox:2016:ARA, \S 14.2.1 and @FriendlyMeyer:2016:DDAR, \S 8.3.
 The standard implementation of this model is `multinom()` in the
-`nnet` package.
+`nnet` package [@R-nnet].
 <!-- TODO: reference R packages -->
 
 ### Nested logit model
@@ -621,7 +641,8 @@ ggplot(plotlongl,
 
 ```{r write-bib}
 # write a packages.bib file of the packages (.packages()) that have been used here
-knitr::write_bib(file = here::here("vignettes", "packages.bib"))
+pkgs <- unique(c(to.cite, .packages()))
+knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
 ```
 
 ## References
