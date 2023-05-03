@@ -482,7 +482,7 @@ as.matrix.continuationDichotomies <- function(x, ...){
 #' @rdname nestedMethods
 #' @export
 as.dichotomies <- function(x, ...){
-  UseMethod("as.dichtomies")
+  UseMethod("as.dichotomies")
 }
 #'
 #' @rdname nestedMethods
