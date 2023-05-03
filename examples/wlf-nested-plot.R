@@ -128,6 +128,17 @@ gg <- ggplot(plotlong,
 
 direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 
+# use geomtextpath
+library(geomtextpath)
+ggplot(plotlong,
+       aes(x=hincome, y=prob, color=Working)) +
+  geom_textline(aes(label = Working), linewidth = 2, size = 5, hjust = 0.9) +
+  scale_color_discrete() +
+  labs(x="Husband's Income", y= "Probability") +
+  facet_wrap(~ children, labeller = label_both) +
+  theme(legend.position = "none")
+
+
 #' ## Try plotting individual observations
 #' This will give an indication of where the observations actually are
 #'

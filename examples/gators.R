@@ -42,7 +42,7 @@ gator.nested <- nestedLogit(food ~ length,
                             dichotomies = dichot,
                             data = gators)
 
-# [BUG] plot.nested doesn't work, because there are no 'others' variables
+# use the plot method
 plot(gator.nested, x.var = "length")
 
 new <- data.frame(length = seq(1, 4, by = 0.25))

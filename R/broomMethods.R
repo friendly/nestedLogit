@@ -12,6 +12,7 @@
 #' @param \dots arguments to be passed down.
 #' @importFrom broom glance
 #' @rdname broomMethods
+#' @seealso \code{\link{nestedMethods}}
 #' @exportS3Method broom::glance nestedLogit
 #' @examples
 #' data(Womenlf, package = "carData")
@@ -20,8 +21,11 @@
 #'                                                       working=c("parttime", "fulltime")),
 #'                                        full=dichotomy("parttime", "fulltime")),
 #'                   data=Womenlf)
-#' broom::glance(m)
-#' broom::tidy(m)
+#'
+#' # one-line summaries
+#' glance(m)
+#' # coefficients and tests
+#' tidy(m)
 #'
 glance.nestedLogit <- function(x, ...){
   result <- dplyr::bind_rows(lapply(models(x), broom::glance))
