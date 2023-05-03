@@ -174,7 +174,7 @@ Anova.nestedLogit <- function(mod, ...) {
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichtomy)  # mod$models[[i]]$dichotomy)
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichotomy)  # mod$models[[i]]$dichotomy)
   }
   attr(result, "heading") <- heading
   class(result) <- "Anova.nestedLogit"
