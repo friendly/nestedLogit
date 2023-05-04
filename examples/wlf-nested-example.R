@@ -113,6 +113,10 @@ all.equal(pred.fulltime, p[, "fulltime"])
 # -----
 # alternative specifications
 
+library(nestedLogit)
+library(nnet)
+data(Womenlf, package="carData")
+
 m1 <- nestedLogit(partic ~ hincome + children,
                   logits(work=dichotomy("not.work", working=c("parttime", "fulltime")),
                          full=dichotomy("parttime", "fulltime")),
@@ -124,6 +128,9 @@ m2 <- nestedLogit(partic ~ hincome + children,
                          part=dichotomy("not.work", "parttime")),
                   data=Womenlf)
 summary(m2)
+
+m3 <- multinom(partic ~ hincome + children, data=Womenlf)
+summary(m3)
 
 par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 
@@ -137,9 +144,32 @@ plot(m2, "hincome", list(children="absent"),
 plot(m2, "hincome", list(children="present"),
      xlab="Husband's Income")
 
+new <- expand.grid(hincome=seq(0, 45, length=10),
+                   children=c("absent", "present"))
+new <- cbind(new, predict(m3, new, type='probs'))
+cols = palette()[2:4]
+for ( kids in c("absent", "present") ) {
+  data <- subset(new, children == kids)
+  matplot(data[, "hincome"], data[, c("not.work", "parttime", "fulltime")],
+          type = "l", lwd=3, lty = 1:3, col = cols,
+          xlab="Husband's Income",
+          ylab='Fitted Probability',
+          main = paste("Children", kids),
+          cex.lab = 1.1)
+  if (kids=="absent") {
+    legend("topright", lty=1:3, lwd=3, col=cols, bty = "n",
+           legend=c("not.work", "parttime", "fulltime"))
+  }
+}
+
+
 fit1 <- predict(m1)
 fit2 <- predict(m2)
+fit3 <- predict(m3, type="probs")[, c("not.work", "parttime", "fulltime")]
 diag(cor(fit1, fit2))
+diag(cor(fit1, fit3))
+diag(cor(fit2, fit3))
 
 logLik(m1)
 logLik(m2)
+logLik(m3)
