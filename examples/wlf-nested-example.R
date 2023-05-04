@@ -108,3 +108,38 @@ pred.parttime <- p.m2.1*(1 - p.m2.2 )
 all.equal(pred.parttime, p[, "parttime"])
 pred.fulltime <- p.m2.1*p.m2.2
 all.equal(pred.fulltime, p[, "fulltime"])
+
+
+# -----
+# alternative specifications
+
+m1 <- nestedLogit(partic ~ hincome + children,
+                  logits(work=dichotomy("not.work", working=c("parttime", "fulltime")),
+                         full=dichotomy("parttime", "fulltime")),
+                  data=Womenlf)
+summary(m1)
+
+m2 <- nestedLogit(partic ~ hincome + children,
+                  logits(work=dichotomy(nonfulltime=c("not.work", "parttime"), "fulltime"),
+                         full=dichotomy("not.work", "parttime")),
+                  data=Womenlf)
+summary(m2)
+
+par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
+
+plot(m1, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend=FALSE)
+plot(m1, "hincome", list(children="present"),
+     xlab="Husband's Income")
+
+plot(m2, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend=FALSE)
+plot(m2, "hincome", list(children="present"),
+     xlab="Husband's Income")
+
+fit1 <- predict(m1)
+fit2 <- predict(m2)
+diag(cor(fit1, fit2))
+
+logLik(m1)
+logLik(m2)
