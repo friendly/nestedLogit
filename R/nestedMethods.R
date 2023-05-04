@@ -74,7 +74,6 @@
 #'
 #' coef(m)                             # coefficient estimates
 #' sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
-
 #' print(m)
 #' summary(m)
 #'
@@ -122,7 +121,7 @@ print.nestedLogit <- function(x, ...) {
 summary.nestedLogit <- function(object, ...) {
   result <- lapply(models(object), summary, ...)
   for (i in seq_along(result)) {
-    result[[i]]$dichotomy <- models(object, i)$dichotomy # object$models[[i]]$dichotomy
+    result[[i]]$dichotomy <- models(object, i)$dichotomy 
   }
   class(result) <- "summary.nestedLogit"
   attr(result, "formula") <- object$formula
@@ -145,19 +144,6 @@ print.summary.nestedLogit <- function(x, ...) {
   cat("\n")
   nms <- names(x)
   for (i in seq(along = x)) {
-    # cat(paste0(
-    #   "Response ",
-    #   nms[i],
-    #   ": ",
-    #   names(x[[i]]$dichotomy[1L]),
-    #   "{",
-    #   paste(x[[i]]$dichotomy[[1L]], collapse = ", "),
-    #   "} vs. ",
-    #   names(x[[i]]$dichotomy[2L]),
-    #   "{",
-    #   paste(x[[i]]$dichotomy[[2L]], collapse = ", "),
-    #   "}"
-    # ))
     cat(composeResponse(nms[i], x[[i]]$dichotomy))
     print(x[[i]], ...)
   }
@@ -174,7 +160,7 @@ Anova.nestedLogit <- function(mod, ...) {
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichotomy)  # mod$models[[i]]$dichotomy)
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichotomy)  
   }
   attr(result, "heading") <- heading
   class(result) <- "Anova.nestedLogit"
@@ -207,7 +193,7 @@ print.Anova.nestedLogit <- function(x, ...) {
 #' @export
 linearHypothesis.nestedLogit <- function(model, ...) {
   nms <- names(models(model))
-  h <- car::linearHypothesis(models(model, 1L), ...)  # (model$models[[1L]], ...)
+  h <- car::linearHypothesis(models(model, 1L), ...)  
   formula <-  as.character(model$formula)
   heading <- attr(h, "heading")
   heading[length(heading) - 1] <- paste("Model 1: restricted model\nModel 2:",
@@ -218,10 +204,10 @@ linearHypothesis.nestedLogit <- function(model, ...) {
   }
   attr(h, "heading") <- NULL
   table <- h
-  cat(composeResponse(nms[1L], models(model, 1L)$dichotomy), "\n")  # model$models[[1L]]$dichotomy), "\n")
+  cat(composeResponse(nms[1L], models(model, 1L)$dichotomy), "\n") 
   print(h)
   for (i in 2L:length(nms)) {
-    cat("\n", composeResponse(nms[i], models(model, i)$dichotomy), "\n", sep="")  # model$models[[i]]$dichotomy), "\n", sep="")
+    cat("\n", composeResponse(nms[i], models(model, i)$dichotomy), "\n", sep="")  
     h <- car::linearHypothesis(models(model, i), ...)
     attr(h, "heading") <- NULL
     print(h)
@@ -256,20 +242,6 @@ print.dichotomies <- function(x, ...) {
   invisible(x)
 }
 
-# print.dichotomies <- function(x, ...) {
-#   nms <- names(x)
-#   for (i in seq_along(x)) {
-#     cat(paste0(
-#       nms[i],
-#       ": {",
-#       paste(x[[i]][[1L]], collapse = ", "),
-#       "} vs. {",
-#       paste(x[[i]][[2L]], collapse = ", "),
-#       "}\n"
-#     ))
-#   }
-#   invisible(x)
-# }
 
 #' @rdname nestedMethods
 #' @importFrom stats predict
@@ -286,7 +258,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     for (i in seq_along(models(object))) {
       p <- predict(models(object, i), newdata = newdata, type = "response")
       p <- cbind(1 - p, p)
-      attr(p, "columns") <- models(object, i)$dichotomy # object$models[[i]]$dichotomy
+      attr(p, "columns") <- models(object, i)$dichotomy 
       fitted[[i]] <- p
     }
     response.levels <-
@@ -296,7 +268,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     colnames(p) <- response.levels
     for (level in response.levels) {
       for (i in seq_along(models(object))) {
-        which <- sapply(models(object, i)$dichotomy, function(x)  # sapply(object$models[[i]]$dichotomy, function(x)
+        which <- sapply(models(object, i)$dichotomy, function(x)  
           level %in% x)
         if (!any(which))
           next
@@ -372,7 +344,7 @@ anova.nestedLogit <- function(object, object2, ...){
   }
   nms <- names(models(object))
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], models(object, i)$dichotomy) # object$models[[i]]$dichotomy)
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(object, i)$dichotomy) 
   }
   attr(result, "heading") <- heading
   class(result) <- "anova.nestedLogit"

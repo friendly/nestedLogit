@@ -156,10 +156,7 @@ nestedLogit <- function(formula, dichotomies, data, subset=NULL,
     responses
   }
 
-  # if (!inherits(dichotomies, "dichotomies"))
-  #   stop("dichotomies must be of class 'dichotomies'")
-  
-  dichotomies <- createDichotomies(dichotomies)
+ dichotomies <- createDichotomies(dichotomies)
 
   data.name <- substitute(data)
   data.save <- data
