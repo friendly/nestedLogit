@@ -120,8 +120,8 @@ m1 <- nestedLogit(partic ~ hincome + children,
 summary(m1)
 
 m2 <- nestedLogit(partic ~ hincome + children,
-                  logits(work=dichotomy(nonfulltime=c("not.work", "parttime"), "fulltime"),
-                         full=dichotomy("not.work", "parttime")),
+                  logits(full=dichotomy(nonfulltime=c("not.work", "parttime"), "fulltime"),
+                         part=dichotomy("not.work", "parttime")),
                   data=Womenlf)
 summary(m2)
 

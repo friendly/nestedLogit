@@ -29,7 +29,13 @@ m <-  nestedLogit(partic ~ hincome + children,
                                                       working=c("parttime", "fulltime")),
                                        full=dichotomy("parttime", "fulltime")),
                   data=Womenlf)
+
+# one-line summaries
 broom::glance(m)
+# coefficients and tests
 broom::tidy(m)
 
+}
+\seealso{
+\code{\link{nestedMethods}}
 }
