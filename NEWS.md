@@ -3,9 +3,11 @@
 * Now allow dichotomies to be specified by a nested (recursive) of binary splits of the categories [suggestion of Achim Zeileis]
 * The model object is now of class "nestedLogit" for uniformity.
 * A basic `plot()` method now operational
-* Added a linearHypothesis method to give Wald tests for hypotheses about coefficients or their linear combinations.
+* Added a `linearHypothesis()` method to give Wald tests for hypotheses about coefficients or their linear combinations.
 * Expanded vignette to illustrate some other methods.
 * Added a `models()` generic and method to extract separate models from the `"nestedLogit"` object
+* Added a `logLike()` method, and through it, gets `AIC()` and `BIC()`
+* Reorganized documentation to separate nested hypothesis methods.
 
 # nestedLogit 0.1.0
 
