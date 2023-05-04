@@ -70,15 +70,6 @@ complete set of methods for class `nestedLogit` objects:
   `data`, `subset`, and `contrasts`.
 - `coef()` returns the coefficients for the predictors in each dichotomy
 - `vcov()` returns the variance-covariance matrix of the predictors
-- `anova()` provides ANOVA Type I (sequential) tests for each dichotomy
-  and for the combined model. When given a sequence of objects, anova
-  tests the models against one another in the order specified.
-- `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests
-  for each dichotomy and for the combined model.
-- `anova()` provides ANOVA analysis of deviance tables for one or more
-  fitted model objects.
-- `linearHypothesis()` gives Wald tests for hypotheses about
-  coefficients or their linear combinations
 - `predict()` obtains predicted probabilities for the response
   categories, useful for producing plots to aid interpretation.
 - `glance()`, `tidy()` are extensions of `broom::glance.glm()` and
@@ -86,28 +77,35 @@ complete set of methods for class `nestedLogit` objects:
   model object\`.
 - `plot()` provides basic plots of the predicted probabilities over a
   range of values of the predictor variables.
+- `models()` is an extractor function to extract the separate models
+  binary logit models from the `"nestedLogit"` object
 
-<!-- As befits a model-fitting function, the package defines a nearly complete set of methods for class `nested` objects: -->
-<!-- * `print()`, `summary()` -->
-<!-- * `update()` re-fits a model, allowing changes in the model `formula`, `data`, `subset`, and `contrasts`. -->
-<!-- * `coef()` returns the coefficients for the predictors in each dichotomy -->
-<!-- * `vcov()` returns the variance-covariance matrix of the predictors -->
-<!-- * `anova()` provides ANOVA Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of objects, `anova()` tests the models against one another in the order specified. -->
-<!-- * `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model. -->
-<!-- * `predict()` obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation. -->
-<!-- * `glance()`, `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `nested` model object`. -->
-<!-- * `plot()` provides basic plots of the predicted probabilities over a range of values of the predictor variables. -->
+These are supplemented by various methods for testing hypotheses about
+nested logit models:
+
+- `anova()` provides ANOVA Type I (sequential) tests for each dichotomy
+  and for the combined model. When given a sequence of objects,
+  `anova()` tests the models against one another in the order specified.
+- `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests
+  for each dichotomy and for the combined model.
+- `linearHypothesis()` gives Wald tests for hypotheses about
+  coefficients or their linear combinations
+- `logLike()` returns the log-likelihood and degrees of freedom for the
+  nested-dichotomies model;
+- through the last, `AIC()` and `BIC()` provide model-comparison
+  statistics.
 
 ## Examples
 
 This example uses data on women’s labor force participation to fit a
 nested logit model for the response, `partic`, representing categories
-`not.work`, `parttime` and
-`fulltime for 263 women from a 1977 survey in Canada. This dataset is explored in more detail in the package vignette,`vignette(“nestedLogits”,
-package = “nestedLogit”)\`.
+`not.work`, `parttime` and `fulltime` for 263 women from a 1977 survey
+in Canada. This dataset is explored in more detail in the package
+vignette, `vignette("nestedLogits", package = "nestedLogit")`.
 
 A model for the complete polytomy can be specified as two nested
-dichotomies, using helper functions `dichotomy()` and `logits()`:
+dichotomies, using helper functions `dichotomy()` and `logits()`, as
+shown in the example that follows:
 
 - `work`: {not.work} vs. {parttime, fulltime}
 - `full`: {parttime} vs. {fulltime}, but only for those working
@@ -138,13 +136,20 @@ What the `"nestedLogit"` object contains:
 names(m)
 #> [1] "models"          "formula"         "dichotomies"     "data"           
 #> [5] "data.name"       "subset"          "contrasts"       "contrasts.print"
-names(m$models)
+```
+
+The separate models for the `work` and `full` dichotomies can be
+extracted via `models()`:
+
+``` r
+names(models(m))   # same as names(m$models)
 #> [1] "work" "full"
 ```
 
 `Anova()` produces analysis of variance deviance tests for the terms in
 this model for each of the submodels, as well as for the combined
-responses of the polytomy.
+responses of the polytomy. The `LR Chisq` and `df` for terms in the
+combined model are the sums of those for the submodels.
 
 ``` r
 car::Anova(m)
@@ -179,11 +184,6 @@ car::Anova(m)
 
 A basic plot of predicted probabilities can be produced using the
 `plot()` method for `"nestedLogit"` objects.
-
-<!-- ```{r kludge, include=FALSE} -->
-<!-- #kludge - avoiding could not find function "plot.nested" -->
-<!-- plot <- nestedLogit:::plot.nested -->
-<!-- ``` -->
 
 ``` r
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
