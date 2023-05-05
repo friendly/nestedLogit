@@ -117,7 +117,8 @@ regression models via `glm(..., family = binomial)`
 data(Womenlf, package = "carData")
 
 # Use `logits()` and `dichotomy()` to specify the comparisons of interest
-comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+comparisons <- logits(work=dichotomy("not.work", 
+                                     working=c("parttime", "fulltime")),
                       full=dichotomy("parttime", "fulltime"))
 
 m <- nestedLogit(partic ~ hincome + children,
@@ -156,28 +157,22 @@ car::Anova(m)
 #> 
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
-#> Response work: {not.work} vs. {parttime, fulltime}
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome    4.8264  1    0.02803 *  
-#> children  31.3229  1  2.185e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Response work: {not.work} vs. working{parttime, fulltime}
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome    4.8264  1    0.02803
+#> children  31.3229  1  2.185e-08
 #> 
 #> 
 #> Response full: {parttime} vs. {fulltime}
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome     8.981  1   0.002728 ** 
-#> children   32.136  1  1.437e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome     8.981  1   0.002728
+#> children   32.136  1  1.437e-08
 #> 
 #> 
 #> Combined Responses
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome    13.808  2   0.001004 ** 
-#> children   63.459  2   1.66e-14 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome    13.808  2   0.001004
+#> children   63.459  2   1.66e-14
 ```
 
 ### Plots
@@ -194,6 +189,10 @@ plot(m, "hincome", list(children="present"),
 ```
 
 <img src="man/figures/README-wlf-plot-1.png" width="100%" />
+
+``` r
+par(op)
+```
 
 A variety of other plots can be produced using base graphics
 (`matplot()`) and `ggplot2`, as described in the vignette,

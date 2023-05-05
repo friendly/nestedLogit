@@ -100,7 +100,8 @@ as logistic regression models via `glm(..., family = binomial)`
 data(Womenlf, package = "carData")
 
 # Use `logits()` and `dichotomy()` to specify the comparisons of interest
-comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
+comparisons <- logits(work=dichotomy("not.work", 
+                                     working=c("parttime", "fulltime")),
                       full=dichotomy("parttime", "fulltime"))
 
 m <- nestedLogit(partic ~ hincome + children,
@@ -140,6 +141,7 @@ plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
 plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
+par(op)
 ```
 
 A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot2`, as described in the vignette,
