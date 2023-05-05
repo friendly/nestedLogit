@@ -1,0 +1,42 @@
+url: http://friendly.github.io/nestedLogit
+template:
+  bootstrap: 5
+
+reference:
+
+  - title: Fitting
+    desc: Specifying and fitting nestedLogit models
+    contents:
+      - nestedLogit
+      - dichotomy
+      - logits
+      - continuationLogits
+
+  - title: Methods
+    desc: Standard model methods
+    contents:
+      - coef
+      - summary
+      - update
+      - vcov
+      - predict
+      - glance
+      - tidy
+      - plot
+      - models
+
+  - title: Hypothesis-testing
+    desc: Testing hypotheses for nestedLogit models
+    contents:
+      - anova
+      - Anova
+      - linearHypothesis
+      - logLike
+
+
+  - title: Data
+    desc: Some small data sets used in examples
+    contents:
+      - GSS
+      - HealthInsurance
+
