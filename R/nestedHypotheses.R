@@ -56,7 +56,7 @@
 #' @exportS3Method car::Anova nestedLogit
 #' @export
 Anova.nestedLogit <- function(mod, ...) {
-  result <- lapply(models(mod), Anova)
+  result <- lapply(models(mod), Anova, ...)
   nms <- names(models(mod))
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
