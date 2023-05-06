@@ -58,6 +58,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/nestedLogit-2.html">Nested dichotomies logistic regression models (revised)</a>
     <a class="dropdown-item" href="articles/nestedLogits.html">Nested dichotomies logistic regression models</a>
   </div>
 </li>
@@ -138,36 +139,36 @@
 <div class="section level3">
 <h3 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
 </h3>
-<p>As befits a model-fitting function, the package defines a nearly complete set of methods for class <code>nestedLogit</code> objects:</p>
+<p>As befits a model-fitting function, the package defines a nearly complete set of methods for <code>"nestedLogit"</code> objects:</p>
 <ul>
 <li>
-<code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>: prints the results for each of the submodels</li>
+<code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> print the results for each of the submodels.</li>
 <li>
-<code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code> re-fits a model, allowing changes in the model <code>formula</code>, <code>data</code>, <code>subset</code>, and <code>contrasts</code>.</li>
+<code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code> re-fits the model, allowing changes to the model <code>formula</code>, <code>data</code>, <code>subset</code>, and <code>contrasts</code> arguments.</li>
 <li>
-<code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> returns the coefficients for the predictors in each dichotomy</li>
+<code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> returns the coefficients for the predictors in each dichotomy.</li>
 <li>
-<code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> returns the variance-covariance matrix of the predictors</li>
+<code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> returns the variance-covariance matrix of the predictors.</li>
 <li>
-<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> obtains predicted probabilities for the response categories, useful for producing plots to aid interpretation.</li>
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> computes predicted probabilities for the response categories, either for the cases in the data or for arbitrary combinations of the predictors; the latter is useful for producing plots to aid interpretation.</li>
 <li>
-<code>glance()</code>, <code>tidy()</code> are extensions of <code><a href="https://broom.tidymodels.org/reference/glance.glm.html" class="external-link">broom::glance.glm()</a></code> and <code><a href="https://broom.tidymodels.org/reference/tidy.glm.html" class="external-link">broom::tidy.glm()</a></code> to obtain compact summaries of a <code>nestedLogit</code> model object`.</li>
+<code>glance()</code> and <code>tidy()</code> are extensions of <code><a href="https://broom.tidymodels.org/reference/glance.glm.html" class="external-link">broom::glance.glm()</a></code> and <code><a href="https://broom.tidymodels.org/reference/tidy.glm.html" class="external-link">broom::tidy.glm()</a></code> to obtain compact summaries of a <code>"nestedLogit"</code> model object.</li>
 <li>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> provides basic plots of the predicted probabilities over a range of values of the predictor variables.</li>
 <li>
-<code><a href="reference/models.html">models()</a></code> is an extractor function to extract the separate models binary logit models from the <code>"nestedLogit"</code> object</li>
+<code><a href="reference/models.html">models()</a></code> is an extractor function for the binary logit models in the <code>"nestedLogit"</code> object</li>
 </ul>
-<p>These are supplemented by various methods for testing hypotheses about nested logit models:</p>
+<p>These are supplemented by various methods for testing hypotheses about and comparing nested logit models:</p>
 <ul>
 <li>
-<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> provides ANOVA Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of objects, <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> tests the models against one another in the order specified.</li>
+<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> provides analysis-of-deviance Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of model objects, <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> tests the models against one another in the order specified.</li>
 <li>
-<code>Anova()</code> uses <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">car::Anova()</a></code> to provide ANOVA Type II (partial) tests for each dichotomy and for the combined model.</li>
+<code>Anova()</code> uses <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">car::Anova()</a></code> to provide analysis-of-deviance Type II or III (partial) tests for each dichotomy and for the combined model.</li>
 <li>
-<code>linearHypothesis()</code> gives Wald tests for hypotheses about coefficients or their linear combinations</li>
+<code>linearHypothesis()</code> computes Wald tests for hypotheses about coefficients or their linear combinations.</li>
 <li>
-<code>logLike()</code> returns the log-likelihood and degrees of freedom for the nested-dichotomies model;</li>
-<li>through the last, <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> provide model-comparison statistics.</li>
+<code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code> returns the log-likelihood and degrees of freedom for the nested-dichotomies logit model.</li>
+<li>Through <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code>, the <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> functions compute the Akaike and Bayesian information criteria model-comparison statistics.</li>
 </ul>
 </div>
 </div>

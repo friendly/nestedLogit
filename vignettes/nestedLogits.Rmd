@@ -298,7 +298,7 @@ names(wlf.nested$models) # equivalent: names(models(wlf.models))
 
 ### Methods
 
-```{r child="partials/methods.Rmd"}
+```{r child="../man/partials/methods.Rmd"}
 ```
 
 
