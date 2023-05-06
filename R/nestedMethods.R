@@ -293,9 +293,14 @@ as.character.dichotomies <- function(x, ...) {
   result <- ""
   for (i in seq_along(x)) {
     result <- paste0(result,
-                     "{{",
+                     names(x[i]), " = ",
+                     "{", 
+                     names(x[[i]][1L]),
+                     "{",
                      paste(x[[i]][[1L]], collapse = " "),
-                     "}} {{",
+                     "}} {",
+                     names(x[[i]][2L]),
+                     "{",
                      paste(x[[i]][[2L]], collapse = " "),
                      "}}; "
     )
