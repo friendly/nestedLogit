@@ -41,7 +41,8 @@ Suggests:
     ggplot2,
     directlabels,
     geomtextpath,
-    spelling
+    spelling,
+    nnet
 LazyData: TRUE
 License: GPL (>=2)
 Encoding: UTF-8
