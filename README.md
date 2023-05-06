@@ -40,6 +40,22 @@ response with $m$ levels. These can be specified using helper functions,
 - `continuationLogits()`: provides a convenient way to generate all
   dichotomies for an ordered response.
 
+For instance, a 4-category response, with levels A, B, C, D, and
+successive binary splits for the dichotomies of interest could be
+specified as:
+
+``` r
+(ABCD <-
+  logits(AB.CD = dichotomy(c("A", "B"), c("C", "D")),
+           A.B = dichotomy("A", "B"),
+           C.D = dichotomy("C", "D")
+         )
+)
+#> AB.CD: {A, B} vs. {C, D}
+#> A.B: {A} vs. {B}
+#> C.D: {C} vs. {D}
+```
+
 Alternatively, the nested dichotomies can be specified more compactly as
 a nested (i.e., recursive) list with optionally named elements. For
 example, where people might choose a method of transportation among the
@@ -55,7 +71,17 @@ dichotomies could be specified as:
 
 There are also methods including `as.matrix.dichotomies()`,
 `as.character.dichotomies()` to facilitate working with `dichotomies`
-objects in other representations.
+objects in other representations. The `ABCD` example above corresponds
+to the matrix below, whose rows represent the dichotomies and columns
+are the response levels:
+
+``` r
+as.matrix(ABCD)
+#>        A  B  C  D
+#> AB.CD  0  0  1  1
+#> A.B    0  1 NA NA
+#> C.D   NA NA  0  1
+```
 
 The result of `nestedLogit()` is an object of class `"nestedLogit"`. It
 contains the set of $(m-1)$ `glm()` models fit to the dichotomies.
@@ -158,21 +184,27 @@ car::Anova(m)
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
 #> Response work: {not.work} vs. working{parttime, fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    4.8264  1    0.02803
-#> children  31.3229  1  2.185e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    4.8264  1    0.02803 *  
+#> children  31.3229  1  2.185e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Response full: {parttime} vs. {fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome     8.981  1   0.002728
-#> children   32.136  1  1.437e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome     8.981  1   0.002728 ** 
+#> children   32.136  1  1.437e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Combined Responses
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    13.808  2   0.001004
-#> children   63.459  2   1.66e-14
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    13.808  2   0.001004 ** 
+#> children   63.459  2   1.66e-14 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Plots
@@ -195,7 +227,7 @@ par(op)
 ```
 
 A variety of other plots can be produced using base graphics
-(`matplot()`) and `ggplot2`, as described in the vignette,
+(`matplot()`) and `ggplot()`, as described in the vignette,
 `vignette("nestedLogits", package="nestedLogit")`.
 
 ## Authors
