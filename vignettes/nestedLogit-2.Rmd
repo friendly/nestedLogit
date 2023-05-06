@@ -6,7 +6,7 @@ package: nestedLogit
 output: 
   rmarkdown::html_vignette:
   fig_caption: yes
-bibliography: ["references-2.bib", "packages.bib"]
+bibliography: ["references.bib", "packages.bib"]
 csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Nested dichotomies logistic regression models (revised)}
@@ -306,7 +306,7 @@ lapply(models(wlf.nested), I)
 
 ### Methods for `"nestedLogit"` objects
 
-```{r child="partials/methods-2.Rmd"}
+```{r child="../man/partials/methods.Rmd"}
 ```
 
 
