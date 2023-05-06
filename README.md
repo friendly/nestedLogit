@@ -40,6 +40,22 @@ response with $m$ levels. These can be specified using helper functions,
 - `continuationLogits()`: provides a convenient way to generate all
   dichotomies for an ordered response.
 
+For instance, a 4-category response, with levels A, B, C, D, and
+successive binary splits for the dichotomies of interest could be
+specified as:
+
+``` r
+(ABCD <-
+  logits(AB.CD = dichotomy(c("A", "B"), c("C", "D")),
+           A.B = dichotomy("A", "B"),
+           C.D = dichotomy("C", "D")
+         )
+)
+#> AB.CD: {A, B} vs. {C, D}
+#> A.B: {A} vs. {B}
+#> C.D: {C} vs. {D}
+```
+
 Alternatively, the nested dichotomies can be specified more compactly as
 a nested (i.e., recursive) list with optionally named elements. For
 example, where people might choose a method of transportation among the
@@ -55,7 +71,17 @@ dichotomies could be specified as:
 
 There are also methods including `as.matrix.dichotomies()`,
 `as.character.dichotomies()` to facilitate working with `dichotomies`
-objects in other representations.
+objects in other representations. The `ABCD` example above corresponds
+to the matrix below, whose rows represent the dichotomies and columns
+are the response levels:
+
+``` r
+as.matrix(ABCD)
+#>        A  B  C  D
+#> AB.CD  0  0  1  1
+#> A.B    0  1 NA NA
+#> C.D   NA NA  0  1
+```
 
 The result of `nestedLogit()` is an object of class `"nestedLogit"`. It
 contains the set of $(m-1)$ `glm()` models fit to the dichotomies.
@@ -63,37 +89,41 @@ contains the set of $(m-1)$ `glm()` models fit to the dichotomies.
 ### Methods
 
 As befits a model-fitting function, the package defines a nearly
-complete set of methods for class `nestedLogit` objects:
+complete set of methods for `"nestedLogit"` objects:
 
-- `print()`, `summary()`: prints the results for each of the submodels
-- `update()` re-fits a model, allowing changes in the model `formula`,
-  `data`, `subset`, and `contrasts`.
-- `coef()` returns the coefficients for the predictors in each dichotomy
-- `vcov()` returns the variance-covariance matrix of the predictors
-- `predict()` obtains predicted probabilities for the response
-  categories, useful for producing plots to aid interpretation.
-- `glance()`, `tidy()` are extensions of `broom::glance.glm()` and
-  `broom::tidy.glm()` to obtain compact summaries of a `nestedLogit`
-  model object\`.
+- `print()` and `summary()` print the results for each of the submodels.
+- `update()` re-fits the model, allowing changes to the model `formula`,
+  `data`, `subset`, and `contrasts` arguments.
+- `coef()` returns the coefficients for the predictors in each
+  dichotomy.
+- `vcov()` returns the variance-covariance matrix of the predictors.
+- `predict()` computes predicted probabilities for the response
+  categories, either for the cases in the data or for arbitrary
+  combinations of the predictors; the latter is useful for producing
+  plots to aid interpretation.
+- `glance()` and `tidy()` are extensions of `broom::glance.glm()` and
+  `broom::tidy.glm()` to obtain compact summaries of a `"nestedLogit"`
+  model object.
 - `plot()` provides basic plots of the predicted probabilities over a
   range of values of the predictor variables.
-- `models()` is an extractor function to extract the separate models
-  binary logit models from the `"nestedLogit"` object
+- `models()` is an extractor function for the binary logit models in the
+  `"nestedLogit"` object
 
 These are supplemented by various methods for testing hypotheses about
-nested logit models:
+and comparing nested logit models:
 
-- `anova()` provides ANOVA Type I (sequential) tests for each dichotomy
-  and for the combined model. When given a sequence of objects,
-  `anova()` tests the models against one another in the order specified.
-- `Anova()` uses `car::Anova()` to provide ANOVA Type II (partial) tests
-  for each dichotomy and for the combined model.
-- `linearHypothesis()` gives Wald tests for hypotheses about
-  coefficients or their linear combinations
-- `logLike()` returns the log-likelihood and degrees of freedom for the
-  nested-dichotomies model;
-- through the last, `AIC()` and `BIC()` provide model-comparison
-  statistics.
+- `anova()` provides analysis-of-deviance Type I (sequential) tests for
+  each dichotomy and for the combined model. When given a sequence of
+  model objects, `anova()` tests the models against one another in the
+  order specified.
+- `Anova()` uses `car::Anova()` to provide analysis-of-deviance Type II
+  or III (partial) tests for each dichotomy and for the combined model.
+- `linearHypothesis()` computes Wald tests for hypotheses about
+  coefficients or their linear combinations.
+- `logLik()` returns the log-likelihood and degrees of freedom for the
+  nested-dichotomies logit model.
+- Through `logLik()`, the `AIC()` and `BIC()` functions compute the
+  Akaike and Bayesian information criteria model-comparison statistics.
 
 ## Examples
 
@@ -158,21 +188,27 @@ car::Anova(m)
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
 #> Response work: {not.work} vs. working{parttime, fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    4.8264  1    0.02803
-#> children  31.3229  1  2.185e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    4.8264  1    0.02803 *  
+#> children  31.3229  1  2.185e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Response full: {parttime} vs. {fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome     8.981  1   0.002728
-#> children   32.136  1  1.437e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome     8.981  1   0.002728 ** 
+#> children   32.136  1  1.437e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Combined Responses
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    13.808  2   0.001004
-#> children   63.459  2   1.66e-14
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    13.808  2   0.001004 ** 
+#> children   63.459  2   1.66e-14 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Plots
@@ -195,7 +231,7 @@ par(op)
 ```
 
 A variety of other plots can be produced using base graphics
-(`matplot()`) and `ggplot2`, as described in the vignette,
+(`matplot()`) and `ggplot()`, as described in the vignette,
 `vignette("nestedLogits", package="nestedLogit")`.
 
 ## Authors

@@ -52,6 +52,21 @@ These can be specified using helper functions,
 * `logits()`: creates the set of dichotomies, typically using `dichotomy()` for each.
 * `continuationLogits()`: provides a convenient way to generate all dichotomies for an ordered response.
 
+For instance, a 4-category response, with levels `r LETTERS[1:4]`, and successive binary splits
+for the dichotomies of interest
+could be specified as:
+
+
+```{r}
+(ABCD <-
+  logits(AB.CD = dichotomy(c("A", "B"), c("C", "D")),
+           A.B = dichotomy("A", "B"),
+           C.D = dichotomy("C", "D")
+         )
+)
+```
+
+
 Alternatively, the nested dichotomies can be specified more compactly as a nested (i.e., recursive) list 
 with optionally named elements. For example, where people might choose a method of transportation
 among the categories `plane`, `train`, `bus`, `car`, a sensible set of three dichotomies could
@@ -68,14 +83,21 @@ list(
 
 
 There are also methods including `as.matrix.dichotomies()`, `as.character.dichotomies()`
-to facilitate working with `dichotomies` objects in other representations.
+to facilitate working with `dichotomies` objects in other representations. The `ABCD` example
+above corresponds to the matrix below, whose rows represent the dichotomies and columns
+are the response levels:
+
+```{r}
+as.matrix(ABCD)
+```
+
 
 The result of `nestedLogit()` is an object of class `"nestedLogit"`. It contains
 the set of $(m-1)$ `glm()` models fit to the dichotomies.
 
 ### Methods
 
-```{r child="vignettes/partials/methods.Rmd"}
+```{r child="man/partials/methods.Rmd"}
 ```
 
 
@@ -144,7 +166,7 @@ plot(m, "hincome", list(children="present"),
 par(op)
 ```
 
-A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot2`, as described in the vignette,
+A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette,
 `vignette("nestedLogits", package="nestedLogit")`.
 
 
