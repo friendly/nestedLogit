@@ -1,5 +1,5 @@
 ---
-title: "Nested-dichotomies logistic-regression models (revised)"
+title: "Nested-dichotomies logistic-regression models"
 author: "Michael Friendly and John Fox"
 date: "`r Sys.Date()`"
 package: nestedLogit
@@ -71,9 +71,9 @@ For example,
 * Respondents to a social survey are classified
 by their highest completed level of education, taking on the values (1) less than highschool, (2) highschool graduate, (3) some post-secondary, or (4) post-secondary degree.
 
-* Women's labor force participation is classified as (1) not working outside the home, (2) working parttime, or (3) working fulltime.
+* Women's labor-force participation is classified as (1) not working outside the home, (2) working parttime, or (3) working fulltime.
 
-* Vote in Quebec in a Canadian national election, (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party, (4) Bloc Quebecois.
+* Voters in Quebec in a Canadian national election choose one of the (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party, or (4) Bloc Quebecois.
 
 The numbers in these examples, (1), (2), etc., are category labels, and the categories may be ordered (as in the first two examples) or may not (as in the third).
 
@@ -90,13 +90,12 @@ to the treatment of factors in the predictor variables. There are also more rest
 
 ### Multinomial logit model
 
-One natural generalization of the the standard logistic regression (or _logit_) model is the _multinomial logit_ (or _generalized logit_) model.
+One natural generalization of the the standard logistic-regression (or _logit_) model is the _multinomial logit_ (or _generalized logit_) model.
 When the polytomous response has $m$ levels, the multinomial logit model comprises
 $m-1$ log-odds comparisons with a reference level, typically the first or last, as described in
 @Fox:2016:ARA [sec. 14.2.1] and @FriendlyMeyer:2016:DDAR [sec. 8.3]. This is an inessential choice, in that the likelihood under the model and the fitted response probabilities that it produces are unaffected by choice of reference level, much as choice of reference level for dummy regressors created from a factor predictor doesn't affect the fit of a regression model.
 The standard implementation of this model in R is `multinom()` in the
 **nnet** package [@nnet2002], which takes the first level of the response as the omitted reference category.
-<!-- TODO: reference R packages -->
 
 ### Nested-dichotomies logit model
 
@@ -118,12 +117,6 @@ so test statistics, such as likelihood ratio ($G^2$) and Wald chi-square tests f
 regression coefficients can be summed to give overall tests for the full polytomy.
 In this way, the $m-1$ dichotomies are analogous to $m-1$
 orthogonal contrasts for an $m$-level factor in a balanced ANOVA design.
-
-<!-- When applicable, therefore, nested logit models give the best of two worlds:  -->
-
-<!-- * *dichotomous sub-models*: We can think about, analyze, and plot the separate model for each contrast among the response categories. -->
-
-<!-- * *an overall model*: We can summarize, analyze, and plot the overall model for all response categories. -->
 
 Alternative sets of nested dichotomies are illustrated in the figure below, for a four-category polytomous response response $Y = \{1, 2, 3, 4\}$. In the case shown at the left of the figure, the response categories
 are divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these compound categories are subdivided
@@ -148,16 +141,14 @@ knitr::include_graphics("nested.jpg")
 This example makes clear that nested dichotomies are not unique and that alternative sets of nested dichotomies are
 not equivalent: Different choices have different interpretations. Moreover, and more fundamentally, fitted probabilities and hence the likelihood for the nested-dichotomies model depend on how the nested dichotomies are defined. 
 
-The nested-dichotomies model is consequently most compelling when there is a natural and unique way to define the dichotomies, such as a process that proceeds through an orderly sequence of stages. Consider the set of nested dichotomies at the right of the figure above, and the previously mentioned four-level educational response variable with categories (1) less than highschool, (2) highschool graduate, (3) some post-secondary, and (4) post-secondary degree. In the vast majority of cases, individuals proceed through these educational stages in sequence. The first dichotomy, $\{1\}$ vs. $\{2, 3, 4\}$ therefore represents highschool graduation; the second, $\{2\}$ vs. $\{3, 4\}$, enrollment in post-secondary education; and the third, $\{3\}$ vs. $\{4\}$, completion of a post-secondary degree. This scheme for generating the a nested-dichotomies logit model is termed _continuation logits_.
+The nested-dichotomies model is consequently most compelling when there is a natural and unique way to define the dichotomies, such as a process that proceeds through an orderly sequence of stages. Consider the set of nested dichotomies at the right of the figure above, and the previously mentioned four-level educational response variable with categories (1) less than highschool, (2) highschool graduate, (3) some post-secondary, and (4) post-secondary degree. In the vast majority of cases, individuals proceed through these educational stages in sequence. The first dichotomy, $\{1\}$ vs. $\{2, 3, 4\}$, therefore represents highschool graduation; the second, $\{2\}$ vs. $\{3, 4\}$, enrollment in post-secondary education; and the third, $\{3\}$ vs. $\{4\}$, completion of a post-secondary degree. This scheme for generating the a nested-dichotomies logit model is termed _continuation logits_.
 
 To take another example, the figure below shows the classification of psychiatric patients
 into four diagnostic categories.  These might be naturally dichotomized by contrasting the normal individuals to the groups of patients, and then dividing the patient groups into
 a comparison of depressed and manic patients vs. schizophrenics, followed by
 a comparison of depressed vs. manic patients. A model predicting
-diagnosis can be interpreted in terms of the probabilities of being classified
+diagnosis can be interpreted in terms of the probabilities of classification
 into each of the response categories. 
-<!-- Because of independence, analysis-of-deviance and coefficient tests for the  -->
-<!-- full multi-category response are based on sums over the three dichotomies. -->
 
 ```{r}
 #| nested-psychiatric,
@@ -168,22 +159,22 @@ knitr::include_graphics("nested-psychiatric.png")
 ```
 <!-- knitr::include_graphics(here::here("vignettes", "fig", "nested-psychiatric.png")) -->
 
-## Example: Women's labor force participation
+## Example: Women's labor-force participation
 
-For a principal example, we consider the data set `Womenlf` from the **carData package** [@R-car].
+For a principal example, we consider the data set `Womenlf` from the **carData** package [@R-carData].
 The data give the responses of 263 young married women, 21--30 years old, drawn from a 1977 survey carried out by
 the York University Institute for Social Research
 [@Atkinson-etal:1984]. This example was originally developed by @Fox:1984:LSM [sec. 5.1.5].
 The variables in the model are:
 
 * `partic`: labor force participation, the response, with levels:
-  + `fulltime`: working full-time
-  + `not.work`: not working outside the home
-  + `parttime` : working part-time.
+  + `"fulltime"`: working full-time
+  + `"not.work"`: not working outside the home
+  + `"parttime"` : working part-time.
 
 * `hincome`: Husband's income, in \$1,000s.
-* `children`: Presence of children in the home, `absent` or `present`.
-* `region`: Region of Canada (`r paste(levels(Womenlf$region), collapse=", ")`).
+* `children`: Presence of children in the home, `"absent"` or `"present"`.
+* `region`: Region of Canada (`r paste(paste0('"', levels(Womenlf$region), '"'), collapse=", ")`).
 
 The response, `partic` is a factor, but the levels are ordered
 alphabetically. To facilitate interpretation, we reorder the levels of `partic`:
@@ -204,7 +195,7 @@ xtabs(~ partic, data=Womenlf)
 
 ### Defining nested dichotomies
 
-How can we understand these womens' labor-force participation choices in terms of the explanatory variables? We'll consider three polytomous logit models for the `Womenlf` data, two of which entail different choices of nested dichotomies and the multinomial logit model. The example will illustrate the potential pitfalls and advantages of the nested-dichotomies approach in a context where there isn't a compelling choice of nested dichotomies.
+How can we understand these womens' labor-force participation choices in terms of the explanatory variables? We'll consider three polytomous logit models for the `Womenlf` data, two of which entail different choices of nested dichotomies, and the multinomial logit model. The example will illustrate the potential pitfalls and advantages of the nested-dichotomies approach in a context where there isn't a compelling choice of nested dichotomies.
 
 It is at least arguable to construe a woman's labor-force choice as first involving
 a dichotomy (let's call it `work`) between women who are not working outside the home vs. those who are working
@@ -294,7 +285,7 @@ wlf.nested <- nestedLogit(partic ~ hincome + children,
                           data=Womenlf)
 ```
 
-The result, `wlf.nested`, is a an object of class `"nestedLogit"` encapsulating the details of the model for the nested
+The result, `wlf.nested`, is a an object of class `"nestedLogit"`, encapsulating the details of the model for the nested
 dichotomies. The `models` component of the object contains essentially the same `"glm"` model objects as we constructed directly as `mod.work` and `mod.full` above, here named `work` and `full`.
 
 ```{r names-etc}
@@ -314,7 +305,7 @@ We illustrate the application of some of these methods:
 
 **Coefficients**: By default, `coef()` returns a matrix whose rows are the regressors in the model and
 whose columns represent the nested dichotomies.
-In the `Womenlf` example, coefficients $\widehat{\beta}_{j1}$ gives the estimated change in the
+In the `Womenlf` example, the coefficients $\widehat{\beta}_{j1}$ give the estimated change in the
 log-odds of working vs. not working associated with a \$1,000 increase
 in husband's income and with having children present vs. absent, each holding the other constant.
 The coefficients $\widehat{\beta}_{j2}$ are similar for the log-odds of working fulltime vs. parttime
@@ -327,7 +318,7 @@ coef(wlf.nested)
 exp(coef(wlf.nested))
 ```
 Thus, the odds of both working and working fulltime decrease with husband's income, by about 4% and 10% respectively per $1000.
-Having young children also decreases the odds of both, by about 79% and 93% respectively.
+Having young children also decreases the odds of both working and working fulltime, by about 79% and 93% respectively.
 
 **Analysis of deviance**: A method for the `Anova()` function from the **car** package [@car2019]
 computes Type II or III likelihood-ratio or Wald tests for each term in the model. Note that the likelihood-ratio or Wald $\chi^2$ and degrees of freedom for the `Combined Responses` is the sum of their values for the separate dichotomies:
@@ -337,7 +328,6 @@ Anova(wlf.nested)
 
 **Linear hypotheses**: The `linearHypothesis()` function in the **car** package provides a very general method for
 computing Wald tests of specific hypotheses about individual coefficients in a model or their linear combinations.
-<!-- The `linearHypothesis` function is extended by a  method for `"nestedLogit"` models. -->
 
 For example, the following command tests the hypothesis that the coefficients for `hincome` and
 `children` are simultaneously all equal to zero. This is equivalent to the test of the global
@@ -360,7 +350,7 @@ tidy(wlf.nested)     # summarize the coefficients
 ```
 
 
-These functions make it easy to construct custom tables. For example, to extract the likelihood-ratio difference-in-deviance ($G^2$)  tests and compute ($G^2 / df$):
+These functions facilitate the construction of custom tables. For example, to extract the likelihood-ratio difference-in-deviance ($G^2$)  tests and compute ($G^2 / df$):
 ```{r}
 gl <- glance(wlf.nested)
 gl |> 
@@ -373,8 +363,6 @@ gl |>
          df = df.residual) |>
   knitr::kable(digits = 3)
 ```
-
-<!-- Michael: Does G^2/df have any real use here, other than to compare to expectation under H_0? That is, is there any added information beyond what's already in the p-value? -->
 
 
 **Model updating**: The `update()` function makes it easy to create a new model from an old one, by adding or subtracting terms from the
@@ -422,7 +410,7 @@ car::some(predict(wlf.nested))
 
 ### Plotting `"nestedLogit"` objects
 
-The `nestedLogit` package includes a basic `plot()` method for `"nestedLogit"` models,
+The **nestedLogit** package includes a basic `plot()` method for `"nestedLogit"` models,
 which calculates fitted probabilities for the response categories and plots these
 against a single explanatory variable
 on the horizontal axis, while `other` explanatory variables are fixed to particular values.
