@@ -12,7 +12,7 @@
 #'   \item{\code{coef}, \code{vcov}}{Return the coefficients and their variance-covariance matrix respectively.}
 #'   \item{\code{update}}{Re-fit a \code{"nestedLogit"} model with a change in any of the \code{formula}, \code{dichotomies},
 #'        \code{data}, \code{subset}, or \code{contrasts}, arguments.}
-#'   \item{\code{predict}}{Computes predicted values from a fitted \code{"nestedLogit"} model.}
+#'   \item{\code{predict}, \code{fitted}}{Computes predicted values from a fitted \code{"nestedLogit"} model.}
 #'   \item{\code{glance}}{Construct a single row summaries for the dichotomies \code{"nestedLogit"} model.}
 #'   \item{\code{tidy}}{Summarizes the terms in \code{"nestedLogit"} model.}
 #' }
@@ -29,7 +29,7 @@
 #' @param x,object in most cases, an object of class \code{"nestedLogit"}.
 #' @param newdata For the \code{predict} method, a data frame containing combinations of values of the predictors
 #'        at which fitted probabilities (or other quantities) are to be computed.
-#' @param model For the \code{predict} method, either \code{"nested"} (the default), in which case fitted probabilities
+#' @param model For the \code{predict} and \code{fitted} methods, either \code{"nested"} (the default), in which case fitted probabilities
 #' under the nested logit model are returned, or \code{"dichotomies"}, in which case
 #' \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
 #' dichotomies and a named list of the results is returned.
@@ -75,7 +75,8 @@
 #' broom::tidy(m)
 #'
 #' # predicted probabilities and ploting
-#' head(predict(m)) # fitted probabilities for first few cases
+#' head(predict(m)) # fitted probabilities for first few cases; 
+#'                  # equivalent to head(fitted(m))
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
@@ -203,6 +204,13 @@ print.predictDichotomies <- function(x, ...){
       attr(x, "model"))
   cat("\n for responses:", paste(names(x), sep=", "))
   cat(paste0("\n access via $", names(x)[1], " etc."))
+}
+
+#' @rdname nestedMethods
+#' @importFrom stats fitted
+#' @export
+fitted.nestedLogit <- function(object, model=c("nested", "dichotomies"), ...){
+  predict(object, model=model)
 }
 
 #' @rdname nestedMethods
