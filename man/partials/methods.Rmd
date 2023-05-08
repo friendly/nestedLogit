@@ -9,7 +9,7 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `plot()` provides basic plots of the predicted probabilities over a range of values of the predictor variables.
 * `models()` is an extractor function for the binary logit models in the `"nestedLogit"` object
 
-These are supplemented by various methods for testing hypotheses about and comparing nested logit models:
+These function are supplemented by various methods for testing hypotheses about and comparing nested-logit models:
 
 * `anova()` provides analysis-of-deviance Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of model objects, `anova()` tests the models against one another in the order specified.
 * `Anova()` uses `car::Anova()` to provide analysis-of-deviance Type II or III (partial) tests for each dichotomy and for the combined model.
