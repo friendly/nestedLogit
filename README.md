@@ -226,13 +226,9 @@ plot(m, "hincome", list(children="present"),
 
 <img src="man/figures/README-wlf-plot-1.png" width="100%" />
 
-``` r
-par(op)
-```
-
 A variety of other plots can be produced using base graphics
 (`matplot()`) and `ggplot()`, as described in the vignette,
-`vignette("nestedLogits", package="nestedLogit")`.
+`vignette("plotting", package="nestedLogit")`.
 
 ## Authors
 

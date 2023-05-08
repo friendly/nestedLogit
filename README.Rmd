@@ -163,11 +163,10 @@ plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
 plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
-par(op)
 ```
 
 A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette,
-`vignette("nestedLogits", package="nestedLogit")`.
+`vignette("plotting", package="nestedLogit")`.
 
 
 ## Authors
