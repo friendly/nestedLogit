@@ -50,14 +50,16 @@ The second ignores A, B and contrasts D against C."><meta property="og:image" co
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item">
+      <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/nestedLogit.html">Get started</a>
+</li>
+<li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/nestedLogit-2.html">Nested dichotomies logistic regression models (revised)</a>
-    <a class="dropdown-item" href="../articles/nestedLogits.html">Nested dichotomies logistic regression models</a>
+    <a class="dropdown-item" href="../articles/plotting.html">Plotting nestedLogit models</a>
   </div>
 </li>
 <li class="nav-item">
@@ -252,7 +254,7 @@ Section 8.2.</p>
 <span class="r-in"><span>                   data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: partic ~ hincome + children</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002bc8f811b28&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001c2724b7560&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response work: {not.work} vs. working{parttime, fulltime}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -343,7 +345,7 @@ Section 8.2.</p>
 <span class="r-in"><span>                                 working<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: partic ~ hincome + children</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002bc8f811b28&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001c2724b7560&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = not.work_v_working ~ hincome + children, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = Womenlf, contrasts = contrasts)</span>

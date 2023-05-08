@@ -53,13 +53,15 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
+  <a class="nav-link" href="articles/nestedLogit.html">Get started</a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/nestedLogit-2.html">Nested dichotomies logistic regression models (revised)</a>
-    <a class="dropdown-item" href="articles/nestedLogits.html">Nested dichotomies logistic regression models</a>
+    <a class="dropdown-item" href="articles/plotting.html">Plotting nestedLogit models</a>
   </div>
 </li>
 <li class="nav-item">
@@ -175,7 +177,7 @@
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
-<p>This example uses data on women’s labor force participation to fit a nested logit model for the response, <code>partic</code>, representing categories <code>not.work</code>, <code>parttime</code> and <code>fulltime</code> for 263 women from a 1977 survey in Canada. This dataset is explored in more detail in the package vignette, <code><a href="articles/nestedLogits.html">vignette("nestedLogits", package = "nestedLogit")</a></code>.</p>
+<p>This example uses data on women’s labor force participation to fit a nested logit model for the response, <code>partic</code>, representing categories <code>not.work</code>, <code>parttime</code> and <code>fulltime</code> for 263 women from a 1977 survey in Canada. This dataset is explored in more detail in the package vignette, <code>vignette("nestedLogits", package = "nestedLogit")</code>.</p>
 <p>A model for the complete polytomy can be specified as two nested dichotomies, using helper functions <code><a href="reference/nestedLogit.html">dichotomy()</a></code> and <code><a href="reference/nestedLogit.html">logits()</a></code>, as shown in the example that follows:</p>
 <ul>
 <li>
@@ -250,7 +252,7 @@
 <p><img src="reference/figures/README-wlf-plot-1.png" width="100%"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
-<p>A variety of other plots can be produced using base graphics (<code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot()</a></code>) and <code>ggplot()</code>, as described in the vignette, <code><a href="articles/nestedLogits.html">vignette("nestedLogits", package="nestedLogit")</a></code>.</p>
+<p>A variety of other plots can be produced using base graphics (<code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot()</a></code>) and <code>ggplot()</code>, as described in the vignette, <code>vignette("nestedLogits", package="nestedLogit")</code>.</p>
 </div>
 </div>
 <div class="section level2">

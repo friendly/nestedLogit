@@ -96,11 +96,11 @@ complete set of methods for `"nestedLogit"` objects:
   `data`, `subset`, and `contrasts` arguments.
 - `coef()` returns the coefficients for the predictors in each
   dichotomy.
-- `vcov()` returns the variance-covariance matrix of the predictors.
+- `vcov()` returns the variance-covariance matrix of the coefficients
 - `predict()` computes predicted probabilities for the response
-  categories, either for the cases in the data or for arbitrary
-  combinations of the predictors; the latter is useful for producing
-  plots to aid interpretation.
+  categories, either for the cases in the data, which is equivalent to
+  `fitted()`, or for arbitrary combinations of the predictors; the
+  latter is useful for producing plots to aid interpretation.
 - `glance()` and `tidy()` are extensions of `broom::glance.glm()` and
   `broom::tidy.glm()` to obtain compact summaries of a `"nestedLogit"`
   model object.
@@ -109,8 +109,8 @@ complete set of methods for `"nestedLogit"` objects:
 - `models()` is an extractor function for the binary logit models in the
   `"nestedLogit"` object
 
-These are supplemented by various methods for testing hypotheses about
-and comparing nested logit models:
+These functions are supplemented by various methods for testing
+hypotheses about and comparing nested-logit models:
 
 - `anova()` provides analysis-of-deviance Type I (sequential) tests for
   each dichotomy and for the combined model. When given a sequence of

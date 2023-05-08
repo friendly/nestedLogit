@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="nestedLogit">
-<title>Nested dichotomies logistic regression models (revised) • nestedLogit</title>
+<title>Nested-dichotomies logistic regression models • nestedLogit</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nested dichotomies logistic regression models (revised)">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nested-dichotomies logistic regression models">
 <meta property="og:description" content="nestedLogit">
 <meta property="og:image" content="http://friendly.github.io/nestedLogit/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -42,14 +42,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/nestedLogit.html">Get started</a>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/nestedLogit-2.html">Nested dichotomies logistic regression models (revised)</a>
-    <a class="dropdown-item" href="../articles/nestedLogits.html">Nested dichotomies logistic regression models</a>
+    <a class="dropdown-item" href="../articles/plotting.html">Plotting nestedLogit models</a>
   </div>
 </li>
 <li class="nav-item">
@@ -79,14 +81,14 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Nested dichotomies logistic regression models (revised)</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Nested-dichotomies logistic regression models</h1>
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-06</h4>
+            <h4 data-toc-skip class="date">2023-05-08</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit-2.Rmd" class="external-link"><code>vignettes/nestedLogit-2.Rmd</code></a></small>
-      <div class="d-none name"><code>nestedLogit-2.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit.Rmd" class="external-link"><code>vignettes/nestedLogit.Rmd</code></a></small>
+      <div class="d-none name"><code>nestedLogit.Rmd</code></div>
     </div>
 
     
@@ -98,26 +100,30 @@ Friendly and John Fox</h4>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/" class="external-link">car</a></span><span class="op">)</span>            <span class="co"># Companion to Applied Regression</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">nnet</a></span><span class="op">)</span>           <span class="co"># Feed-Forward Neural Networks and Multinomial Log-Linear Models</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span>          <span class="co"># Convert Statistical Objects into Tidy Tibbles</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>          <span class="co"># A Grammar of Data Manipulation</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>        <span class="co"># Create Elegant Data Visualisations Using the Grammar of Graphics</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allancameron.github.io/geomtextpath/" class="external-link">geomtextpath</a></span><span class="op">)</span>   <span class="co"># Curved Text in 'ggplot2'</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>          <span class="co"># A Grammar of Data Manipulation</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="models-for-polytomous-responses">Models for polytomous responses<a class="anchor" aria-label="anchor" href="#models-for-polytomous-responses"></a>
 </h2>
-<p>The familiar logistic regression model applies when there is a binary
+<p>The familiar logistic-regression model applies when there is a binary
 (“<em>dichotomous</em>”) response, such as “survived” vs. “died”, or
 voted “yes” vs. “no” on a referendum. Often, however, the response
 variable is multi-category (“<em>polytomous</em>”), taking on <span class="math inline">\(m &gt; 2\)</span> discrete values. For
 example,</p>
 <ul>
 <li><p>Respondents to a social survey are classified by their highest
-completed level of education, taking on the values (a) less than
-highschool, (b) highschool graduate, (c) some post-secondary, or (d)
+completed level of education, taking on the values (1) less than
+highschool, (2) highschool graduate, (3) some post-secondary, or (4)
 post-secondary degree.</p></li>
-<li><p>Women’s labor force participation is classified as (a) not
-working outside the home, (b) working parttime, or (c) working
+<li><p>Women’s labor-force participation is classified as (1) not
+working outside the home, (2) working parttime, or (3) working
 fulltime.</p></li>
+<li><p>Voters in Quebec in a Canadian national election choose one of
+the (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party,
+or (4) Bloc Quebecois.</p></li>
 </ul>
+<p>The numbers in these examples, (1), (2), etc., are category labels,
+and the categories may be ordered (as in the first two examples) or may
+not (as in the third).</p>
 <p>There are several different ways to model the category probabilities
 for a polytomous response. Let <span class="math inline">\(\phi_{ij}
 \equiv \phi_j \, ( \vec{x}_i )\)</span> be the probability of response
@@ -126,11 +132,13 @@ last; for example, <span class="math inline">\(\phi_{im} = 1 - \sum_{j =
 1}^{m - 1} \, \phi_{ij}\)</span>. The essential idea is to construct a
 model for the polytomous response composed of <span class="math inline">\(m-1\)</span> logit comparisons among the response
 categories in a manner analogous to to the treatment of factors in the
-predictor variables.</p>
+predictor variables. There are also more restrictive models specifically
+for ordered categorical responses, but we will not consider them
+here.</p>
 <div class="section level3">
 <h3 id="multinomial-logit-model">Multinomial logit model<a class="anchor" aria-label="anchor" href="#multinomial-logit-model"></a>
 </h3>
-<p>One natural generalization of the the standard logistic regression
+<p>One natural generalization of the the standard logistic-regression
 (or <em>logit</em>) model is the <em>multinomial logit</em> (or
 <em>generalized logit</em>) model. When the polytomous response has
 <span class="math inline">\(m\)</span> levels, the multinomial logit
@@ -142,10 +150,9 @@ This is an inessential choice, in that the likelihood under the model
 and the fitted response probabilities that it produces are unaffected by
 choice of reference level, much as choice of reference level for dummy
 regressors created from a factor predictor doesn’t affect the fit of a
-regression model. The standard implementation of this model is
-<code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom()</a></code> in the <code>nnet</code> package <span class="citation">(Venables &amp; Ripley, 2002)</span>, which takes the
-first level of the response as the omitted reference category.
-<!-- TODO: reference R packages --></p>
+regression model. The standard implementation of this model in R is
+<code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom()</a></code> in the <strong>nnet</strong> package <span class="citation">(Venables &amp; Ripley, 2002)</span>, which takes the
+first level of the response as the omitted reference category.</p>
 </div>
 <div class="section level3">
 <h3 id="nested-dichotomies-logit-model">Nested-dichotomies logit model<a class="anchor" aria-label="anchor" href="#nested-dichotomies-logit-model"></a>
@@ -166,27 +173,18 @@ sec. 8.2)</span>.</p>
 model-matrix with <span class="math inline">\(p\)</span> regressors,
 both the nested-dichotomies logit model and the multinomial logit model
 have <span class="math inline">\(p \times (m - 1)\)</span> parameters.
-The models are not equivalent, however, in that they generally have
+The models are not equivalent, however, in that they generally produce
 different sets of fitted category probabilities and hence different
 likelihoods.</p>
-<p>By the construction of <em>nested</em> dichotomies, the submodels are
-<em>statistically independent</em> (because the likelihood for the
-polytomous response is the product of the likelihoods for the
-dichotomies), so test statistics, such as likelihood ratio <span class="math inline">\(G^2\)</span> tests and Wald chi-square tests for
-individual coefficients can be summed to give overall tests for the full
+<p>By the construction of nested dichotomies, the submodels are
+statistically independent (because the likelihood for the polytomous
+response is the product of the likelihoods for the dichotomies), so test
+statistics, such as likelihood ratio (<span class="math inline">\(G^2\)</span>) and Wald chi-square tests for
+regression coefficients can be summed to give overall tests for the full
 polytomy. In this way, the <span class="math inline">\(m-1\)</span>
 dichotomies are analogous to <span class="math inline">\(m-1\)</span>
 orthogonal contrasts for an <span class="math inline">\(m\)</span>-level
-factor in an ANOVA design.</p>
-<p>When applicable, therefore, nested logit models give the best of two
-worlds:</p>
-<ul>
-<li><p><em>dichotomous sub-models</em>: We can think about, analyze, and
-plot the separate model for each contrast among the response
-categories.</p></li>
-<li><p><em>an overall model</em>: We can summarize, analyze, and plot
-the overall model for all response categories.</p></li>
-</ul>
+factor in a balanced ANOVA design.</p>
 <p>Alternative sets of nested dichotomies are illustrated in the figure
 below, for a four-category polytomous response response <span class="math inline">\(Y = \{1, 2, 3, 4\}\)</span>. In the case shown at
 the left of the figure, the response categories are divided first as
@@ -202,9 +200,9 @@ four-category response can be represented as three nested dichotomies.
 </div>
 <!-- knitr::include_graphics(here::here("vignettes", "fig", "nested.jpg")) -->
 <p>This example makes clear that nested dichotomies are not unique and
-tat alternative sets of nested dichotomies are not equivalent: Different
-choices have different interpretations. Moreover, and more
-fundamentally, fitted probabilities and the likelihood for the
+that alternative sets of nested dichotomies are not equivalent:
+Different choices have different interpretations. Moreover, and more
+fundamentally, fitted probabilities and hence the likelihood for the
 nested-dichotomies model depend on how the nested dichotomies are
 defined.</p>
 <p>The nested-dichotomies model is consequently most compelling when
@@ -216,12 +214,12 @@ categories (1) less than highschool, (2) highschool graduate, (3) some
 post-secondary, and (4) post-secondary degree. In the vast majority of
 cases, individuals proceed through these educational stages in sequence.
 The first dichotomy, <span class="math inline">\(\{1\}\)</span>
-vs. <span class="math inline">\(\{2, 3, 4\}\)</span> therefore
-represents highschool graduation; the second, <span class="math inline">\(\{2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>, enrollment in post=secondary
+vs. <span class="math inline">\(\{2, 3, 4\}\)</span>, therefore
+represents highschool graduation; the second, <span class="math inline">\(\{2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>, enrollment in post-secondary
 education; and the third, <span class="math inline">\(\{3\}\)</span>
 vs. <span class="math inline">\(\{4\}\)</span>, completion of a
 post-secondary degree. This scheme for generating the a
-nested-dichotomies logit model is often termed <em>continuation
+nested-dichotomies logit model is termed <em>continuation
 logits</em>.</p>
 <p>To take another example, the figure below shows the classification of
 psychiatric patients into four diagnostic categories. These might be
@@ -229,10 +227,8 @@ naturally dichotomized by contrasting the normal individuals to the
 groups of patients, and then dividing the patient groups into a
 comparison of depressed and manic patients vs. schizophrenics, followed
 by a comparison of depressed vs. manic patients. A model predicting
-diagnosis can be interpreted in terms of the probabilities of being
-classed into each of the response categories. Because of independence,
-analysis-of-deviance and coefficient tests for the full multi-category
-response are based on sums over the three dichotomies.</p>
+diagnosis can be interpreted in terms of the probabilities of
+classification into each of the response categories.</p>
 <div class="figure" style="text-align: center">
 <img src="nested-psychiatric.png" alt="**Psychiatric classification**: The figure shows how four diagnostic categories might be represented by nested dichotomies." width="70%"><p class="caption">
 <strong>Psychiatric classification</strong>: The figure shows how four
@@ -243,48 +239,49 @@ diagnostic categories might be represented by nested dichotomies.
 </div>
 </div>
 <div class="section level2">
-<h2 id="example-womens-labor-force-participation">Example: Women’s labor force participation<a class="anchor" aria-label="anchor" href="#example-womens-labor-force-participation"></a>
+<h2 id="example-womens-labor-force-participation">Example: Women’s labor-force participation<a class="anchor" aria-label="anchor" href="#example-womens-labor-force-participation"></a>
 </h2>
 <p>For a principal example, we consider the data set
-<code>Womenlf</code> from the <code>carData</code> package. these data
-give the responses of 263 young married women, 21–30 years old, from a
-1977 survey carried out by the York University Institute for Social
-Research <span class="citation">(Atkinson, Blishen, Ornstein, &amp;
-Stevenson, 1984)</span>. This example was originally developed by <span class="citation">Fox (1984, sec. 5.1.5)</span>. The variables in the
-model are:</p>
+<code>Womenlf</code> from the <strong>carData</strong> package <span class="citation">(Fox, Weisberg, &amp; Price, 2022)</span>. The data
+give the responses of 263 young married women, 21–30 years old, drawn
+from a 1977 survey carried out by the York University Institute for
+Social Research <span class="citation">(Atkinson, Blishen, Ornstein,
+&amp; Stevenson, 1984)</span>. This example was originally developed by
+<span class="citation">Fox (1984, sec. 5.1.5)</span>. The variables in
+the model are:</p>
 <ul>
 <li>
 <code>partic</code>: labor force participation, the response, with
 levels:
 <ul>
 <li>
-<code>fulltime</code>: working full-time</li>
+<code>"fulltime"</code>: working full-time</li>
 <li>
-<code>not.work</code>: not working outside the home</li>
+<code>"not.work"</code>: not working outside the home</li>
 <li>
-<code>parttime</code> : working part-time.</li>
+<code>"parttime"</code> : working part-time.</li>
 </ul>
 </li>
 <li>
 <code>hincome</code>: Husband’s income, in $1,000s.</li>
 <li>
 <code>children</code>: Presence of children in the home,
-<code>absent</code> or <code>present</code>.</li>
+<code>"absent"</code> or <code>"present"</code>.</li>
 <li>
-<code>region</code>: Region of Canada (Atlantic, BC, Ontario,
-Prairie, Quebec).</li>
+<code>region</code>: Region of Canada (“Atlantic”, “BC”, “Ontario”,
+“Prairie”, “Quebec”).</li>
 </ul>
 <p>The response, <code>partic</code> is a factor, but the levels are
 ordered alphabetically. To facilitate interpretation, we reorder the
-levels of <code>partic</code>.</p>
+levels of <code>partic</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Womenlf</span>, package <span class="op">=</span> <span class="st">"carData"</span><span class="op">)</span></span>
 <span><span class="va">Womenlf</span><span class="op">$</span><span class="va">partic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">Womenlf</span>, </span>
 <span>                       <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">partic</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>At the time of the survey, the majority of the 263 women in the
-sample were not working outside the home:</p>
+<p>In 1977, the majority of the 263 women in the sample were not working
+outside the home:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span><span class="va">partic</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">partic</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; partic</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
 <span><span class="co">#&gt;      155       42       66</span></span></code></pre></div>
@@ -294,37 +291,39 @@ sample were not working outside the home:</p>
 <p>How can we understand these womens’ labor-force participation choices
 in terms of the explanatory variables? We’ll consider three polytomous
 logit models for the <code>Womenlf</code> data, two of which entail
-different choices of nested dichotomies and the multinomial logit model.
-The example will illustrate the potential pitfalls and advantages of the
-nested-dichotomies approach in a context where there isn’t a compelling
-choice of nested dichotomies.</p>
-<p>It is at least arguable to consider a woman’s labor choice as first
-involving a dichotomy (<code>work</code>) between women who are not
-working outside the home vs. those who are working (either parttime or
-fulltime). A second dichotomy (<code>full</code>) contrasts those who
-work fulltime time vs. parttime, but among only those who work.</p>
-<p>The two binary variables can be created by recoding
-<code>partic</code> as follows.</p>
+different choices of nested dichotomies, and the multinomial logit
+model. The example will illustrate the potential pitfalls and advantages
+of the nested-dichotomies approach in a context where there isn’t a
+compelling choice of nested dichotomies.</p>
+<p>It is at least arguable to construe a woman’s labor-force choice as
+first involving a dichotomy (let’s call it <code>work</code>) between
+women who are not working outside the home vs. those who are working
+(either parttime or fulltime). A second dichotomy (<code>full</code>)
+contrasts those who work fulltime time vs. parttime, but among only
+those who work.</p>
+<p>The two binary variables for the nested dichotomies can be created by
+recoding <code>partic</code> as follows.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Womenlf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">within</a></span><span class="op">(</span><span class="va">Womenlf</span>, <span class="op">{</span></span>
 <span>  <span class="va">work</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">==</span> <span class="st">"not.work"</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="va">full</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">==</span> <span class="st">"fulltime"</span>,  <span class="fl">1</span>,</span>
 <span>                <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">==</span> <span class="st">"parttime"</span>, <span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the full sample of 263 cases is available for the
-<code>work</code> dichotomy, while only 108 cases are involved in the
-distinction between part time and full time work:</p>
+<p>Note that the complete sample of 263 cases is available for the
+<code>work</code> dichotomy, while only 108 cases—excluding those not
+working outside the home—are available for the <code>full</code>
+dichotomy:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span><span class="va">work</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">work</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; work</span></span>
 <span><span class="co">#&gt;   0   1 </span></span>
 <span><span class="co">#&gt; 155 108</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span><span class="va">full</span>, data<span class="op">=</span><span class="va">Womenlf</span>, addNA<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">full</span>, data<span class="op">=</span><span class="va">Womenlf</span>, addNA<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; full</span></span>
 <span><span class="co">#&gt;    0    1 &lt;NA&gt; </span></span>
 <span><span class="co">#&gt;   42   66  155</span></span></code></pre></div>
-<p>The relationship of <code>partic</code> to these dichotomies is as
-follows:</p>
+<p>The relationship of the response variable <code>partic</code> to the
+two nested dichotomies is as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="op">~</span> <span class="va">partic</span> <span class="op">+</span> <span class="va">work</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           work</span></span>
@@ -338,12 +337,15 @@ follows:</p>
 <span><span class="co">#&gt;   not.work   0   0  155</span></span>
 <span><span class="co">#&gt;   parttime  42   0    0</span></span>
 <span><span class="co">#&gt;   fulltime   0  66    0</span></span></code></pre></div>
-<p>We can then fit the separate models for the two nested dichotomies
-directly:</p>
+<p>We can then fit separate binary logit models to the two nested
+dichotomies directly:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod.work</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">work</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, family<span class="op">=</span><span class="va">binomial</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="va">mod.full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">full</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, family<span class="op">=</span><span class="va">binomial</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></code></pre></div>
-<p>The two log-odds models are:
+<p>In equation form, the two log-odds models are shown below. (Model
+equations are conveniently rendered in markdown/LaTeX using the
+<code>equatiomatic</code> package <span class="citation">(Anderson,
+Heiss, &amp; Sumners, 2023)</span>.)
 <!-- equatiomatic::extract_eq(mod.work) -->
 <!-- equatiomatic::extract_eq(mod.work) --></p>
 <p><span class="math display">\[
@@ -390,14 +392,12 @@ so forth.</p>
 <h3 id="using-dichotomy-and-logits-to-define-the-response">Using <code>dichotomy()</code> and <code>logits()</code> to define
 the response<a class="anchor" aria-label="anchor" href="#using-dichotomy-and-logits-to-define-the-response"></a>
 </h3>
-<p>Instead, the <code>nestedLogit</code> package provides tools to
+<p>Instead, the <strong>nestedLogit</strong> package provides tools to
 specify and manipulate the nested-logit model. The
-<code><a href="../reference/nestedLogit.html">dichotomy()</a></code> function creates a list of length two defining
-a single dichotomy. The <code><a href="../reference/nestedLogit.html">logits()</a></code> function uses <span class="math inline">\(m-1\)</span> calls to <code><a href="../reference/nestedLogit.html">dichotomy()</a></code> to
-create an object of class <code>dichotomies</code> containing the
-symbolic representation of these contrasts among the response
-categories.</p>
-<p>For example:</p>
+<code><a href="../reference/nestedLogit.html">dichotomy()</a></code> function defines a single dichotomy, and the
+<code><a href="../reference/nestedLogit.html">logits()</a></code> function uses <span class="math inline">\(m-1\)</span> calls to <code><a href="../reference/nestedLogit.html">dichotomy()</a></code> to
+create a <code>"dichotomies"</code> object representing the nested
+dichotomies. For example:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">comparisons</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span>work<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, working<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                      full<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span></span>
@@ -405,10 +405,11 @@ categories.</p>
 <span><span class="va">comparisons</span></span>
 <span><span class="co">#&gt; work: {not.work} vs. working{parttime, fulltime}</span></span>
 <span><span class="co">#&gt; full: {parttime} vs. {fulltime}</span></span></code></pre></div>
-<p>It is mandatory to name the dichotomies, and we can optionally name
-the elements of each dichotomy, an option that is particularly useful
-for a compound category, such as
-<code>working=c("parttime", "fulltime")</code> in the example.</p>
+<p>It is mandatory to name the dichotomies (here <code>work</code> and
+<code>full</code>), and we can optionally name the elements of each
+dichotomy, an option that is particularly useful for a compound
+category, such as <code>working=c("parttime", "fulltime")</code> in the
+example.</p>
 <p>There are coercion functions to convert the set of nested dichotomies
 to a matrix or to a character string, representing the tree structure of
 the dichotomies:</p>
@@ -419,39 +420,41 @@ the dichotomies:</p>
 <span><span class="co">#&gt; full       NA        0        1</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">comparisons</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {{not.work}} {{parttime fulltime}}; {{parttime}} {{fulltime}}</span></span></code></pre></div>
+<span><span class="co">#&gt; work = {{not.work}} {working{parttime fulltime}}; full = {{parttime}} {{fulltime}}</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="using-nestedlogit-to-fit-the-model">Using <code>nestedLogit</code> to fit the model<a class="anchor" aria-label="anchor" href="#using-nestedlogit-to-fit-the-model"></a>
+<h3 id="using-nestedlogit-to-fit-the-model">Using <code>nestedLogit()</code> to fit the model<a class="anchor" aria-label="anchor" href="#using-nestedlogit-to-fit-the-model"></a>
 </h3>
 <p>To fit the model, we supply <code>comparisons</code> as the
-<code>dichotomies</code> argument to the <code>nestedLogit</code>
+<code>dichotomies</code> argument to the <code><a href="../reference/nestedLogit.html">nestedLogit()</a></code>
 function. The model <code>formula</code> argument,
 <code>partic ~ hincome + children</code> specifies a main-effects model
 for husband’s income and presence of young children; aside from the
 <code>dichotomies</code> argument, the general format of the function
 call is typical for an R statistical modeling function (with optional
 <code>subset</code> and <code>contrasts</code> arguments not shown in
-this example). An atypical feature of <code>nestedLogit</code> is that
+this example). An atypical feature of <code><a href="../reference/nestedLogit.html">nestedLogit()</a></code> is that
 the <code>data</code> argument is required.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, </span>
 <span>                          dichotomies <span class="op">=</span> <span class="va">comparisons</span>,</span>
 <span>                          data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></code></pre></div>
-<p>The result, <code>wlf.nested</code> is a an object of class
-<code>"nestedLogit"</code> encapsulating the details of the model for
+<p>The result, <code>wlf.nested</code>, is a an object of class
+<code>"nestedLogit"</code>, encapsulating the details of the model for
 the nested dichotomies. The <code>models</code> component of the object
 contains essentially the same <code>"glm"</code> model objects as we
 constructed directly as <code>mod.work</code> and <code>mod.full</code>
-above.</p>
+above, here named <code>work</code> and <code>full</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "models"          "formula"         "dichotomies"     "data"           </span></span>
 <span><span class="co">#&gt; [5] "data.name"       "subset"          "contrasts"       "contrasts.print"</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">$</span><span class="va">models</span><span class="op">)</span> <span class="co"># equivalent: names(models(wlf.models))</span></span>
 <span><span class="co">#&gt; [1] "work" "full"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span>, <span class="va">I</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $work</span></span>
+<span></span>
+<span><span class="co"># view the separate models; same as lapply(models(wlf.nested), I)</span></span>
+<span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="fl">1</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:  glm(formula = work ~ hincome + children, family = binomial, data = Womenlf, </span></span>
 <span><span class="co">#&gt;     contrasts = contrasts)</span></span>
@@ -463,8 +466,8 @@ above.</p>
 <span><span class="co">#&gt; Degrees of Freedom: 262 Total (i.e. Null);  260 Residual</span></span>
 <span><span class="co">#&gt; Null Deviance:       356 </span></span>
 <span><span class="co">#&gt; Residual Deviance: 320   AIC: 326</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $full</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:  glm(formula = full ~ hincome + children, family = binomial, data = Womenlf, </span></span>
 <span><span class="co">#&gt;     contrasts = contrasts)</span></span>
@@ -496,12 +499,13 @@ model <code>formula</code>, <code>data</code>, <code>subset</code>, and
 each dichotomy.</li>
 <li>
 <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> returns the variance-covariance matrix of the
-predictors.</li>
+coefficients</li>
 <li>
 <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> computes predicted probabilities for the
-response categories, either for the cases in the data or for arbitrary
-combinations of the predictors; the latter is useful for producing plots
-to aid interpretation.</li>
+response categories, either for the cases in the data, which is
+equivalent to <code><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted()</a></code>, or for arbitrary combinations of
+the predictors; the latter is useful for producing plots to aid
+interpretation.</li>
 <li>
 <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> and <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> are extensions of
 <code><a href="https://broom.tidymodels.org/reference/glance.glm.html" class="external-link">broom::glance.glm()</a></code> and <code><a href="https://broom.tidymodels.org/reference/tidy.glm.html" class="external-link">broom::tidy.glm()</a></code> to
@@ -514,8 +518,8 @@ probabilities over a range of values of the predictor variables.</li>
 <code><a href="../reference/models.html">models()</a></code> is an extractor function for the binary logit
 models in the <code>"nestedLogit"</code> object</li>
 </ul>
-<p>These are supplemented by various methods for testing hypotheses
-about and comparing nested logit models:</p>
+<p>These functions are supplemented by various methods for testing
+hypotheses about and comparing nested-logit models:</p>
 <ul>
 <li>
 <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> provides analysis-of-deviance Type I
@@ -539,12 +543,13 @@ criteria model-comparison statistics.</li>
 <p>We illustrate the application of some of these methods:</p>
 <p><strong>Coefficients</strong>: By default, <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code>
 returns a matrix whose rows are the regressors in the model and whose
-columns represent the nested dichotomies. The coefficients <span class="math inline">\(\widehat{\beta}_{j1}\)</span> gives the estimated
-change in the log odds of working vs. not working associated with a
+columns represent the nested dichotomies. In the <code>Womenlf</code>
+example, the coefficients <span class="math inline">\(\widehat{\beta}_{j1}\)</span> give the estimated
+change in the log-odds of working vs. not working associated with a
 $1,000 increase in husband’s income and with having children present
 vs. absent, each holding the other constant. The coefficients <span class="math inline">\(\widehat{\beta}_{j2}\)</span> are similar for the
-log odds of working fulltime vs. parttime among those who are working
-outside the home. <span class="math inline">\(e^{\widehat{\beta}_{jk}}\)</span> give
+log-odds of working fulltime vs. parttime among those who are working
+outside the home. The exponentiated coefficients <span class="math inline">\(e^{\widehat{\beta}_{jk}}\)</span> give
 multiplicative effects on the odds for these comparisons.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
@@ -560,14 +565,16 @@ multiplicative effects on the odds for these comparisons.</p>
 <span><span class="co">#&gt; hincome         0.9586  0.89829</span></span>
 <span><span class="co">#&gt; childrenpresent 0.2069  0.07055</span></span></code></pre></div>
 <p>Thus, the odds of both working and working fulltime decrease with
-husband’s income. Having young children also decreases the odds of
-both.</p>
-<p><strong>Anova</strong>: A method for the <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code>
-function from the <strong>car</strong> package <span class="citation">(Fox &amp; Weisberg, 2019)</span> computes Type II or
-III likelihood-ratio or Wald tests for each term in the model. Note that
-the likelihood-ratio or Wald <span class="math inline">\(\chi^2\)</span>
-and degrees of freedom for the <code>Combined Responses</code> is the
-sum of their values for the separate dichotomies; for the example:</p>
+husband’s income, by about 4% and 10% respectively per $1000. Having
+young children also decreases the odds of both working and working
+fulltime, by about 79% and 93% respectively.</p>
+<p><strong>Analysis of deviance</strong>: A method for the
+<code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code> function from the <strong>car</strong> package
+<span class="citation">(Fox &amp; Weisberg, 2019)</span> computes Type
+II or III likelihood-ratio or Wald tests for each term in the model.
+Note that the likelihood-ratio or Wald <span class="math inline">\(\chi^2\)</span> and degrees of freedom for the
+<code>Combined Responses</code> is the sum of their values for the
+separate dichotomies:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -595,19 +602,18 @@ sum of their values for the separate dichotomies; for the example:</p>
 <span><span class="co">#&gt; children     63.5  2    1.7e-14 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div>
-<p><strong>linearHypothesis</strong>: The
+<p><strong>Linear hypotheses</strong>: The
 <code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> function in the <strong>car</strong>
 package provides a very general method for computing Wald tests of
 specific hypotheses about individual coefficients in a model or their
-linear combinations. The <code>linearHypothesis</code> function is
-extended by a method for <code>"nestedLogit"</code> models.</p>
+linear combinations.</p>
 <p>For example, the following command tests the hypothesis that the
 coefficients for <code>hincome</code> and <code>children</code> are
 simultaneously all equal to zero. This is equivalent to the test of the
 global null model, <span class="math inline">\(H_0\)</span>: all <span class="math inline">\(\beta_{jk} = 0\)</span> for <span class="math inline">\(j = 1,2; k=1,2\)</span> against an alternative
 that one or more coefficients <span class="math inline">\(\beta_{jk} \ne
 0\)</span>.</p>
-<p><code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> reports these tests for each of the
+<p><code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> reports this test for each of the
 submodels for the dichotomies <code>work</code> and <code>full</code>,
 as well as for the combined model:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -637,13 +643,13 @@ as well as for the combined model:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Combined Responses</span></span>
 <span><span class="co">#&gt; Chisq = 57.813, Df = 4, Pr(&gt;Chisq) = 8.4e-12</span></span></code></pre></div>
-<p><strong>glance</strong> and <strong>tidy</strong>: The
-<strong>broom</strong> package <span class="citation">(Robinson, Hayes,
-&amp; Couch, 2023)</span> provides functions for compact and tidy
-summaries of fitted models. The <code>glance</code> method for a
-<code>"nestedLogit"</code> model produces a one-line summary of the
-statistics for each dichotomy. The <code>tidy</code> method combines the
-coefficients for the sub-models, together with test statistics:</p>
+<p><strong>Tidy summaries</strong>: The <strong>broom</strong> package
+<span class="citation">(Robinson, Hayes, &amp; Couch, 2023)</span>
+provides functions for compact and tidy summaries of fitted models. The
+<code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> method for a <code>"nestedLogit"</code> model
+produces a one-line summary of the statistics for each dichotomy. The
+<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> method combines the coefficients for the sub-models,
+together with test statistics:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span>   <span class="co"># summarize the sub-models</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 9</span></span></span>
@@ -662,9 +668,8 @@ coefficients for the sub-models, together with test statistics:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> full     (Intercept)       3.48      0.767       4.53 0.000<span style="text-decoration: underline;">005</span>80  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> full     hincome          -<span style="color: #BB0000;">0.107</span>     0.039<span style="text-decoration: underline;">2</span>     -<span style="color: #BB0000;">2.74</span> 0.006<span style="text-decoration: underline;">15</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> full     childrenpresent  -<span style="color: #BB0000;">2.65</span>      0.541      -<span style="color: #BB0000;">4.90</span> 0.000<span style="text-decoration: underline;">000</span>957</span></span></code></pre></div>
-<p>These functions make it easy to construct custom tables. For example,
-to extract the likelihood-ratio difference-in-<code>deviance</code>
-(<span class="math inline">\(G^2\)</span>) tests and compute (<span class="math inline">\(G^2 / df\)</span>), you could do:</p>
+<p>These functions facilitate the construction of custom tables. For
+example, to extract the likelihood-ratio difference-in-deviance (<span class="math inline">\(G^2\)</span>) tests and compute (<span class="math inline">\(G^2 / df\)</span>):</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
 <span><span class="va">gl</span> <span class="op">|&gt;</span> </span>
@@ -709,16 +714,16 @@ to extract the likelihood-ratio difference-in-<code>deviance</code>
 </tr>
 </tbody>
 </table>
-<!-- Michael: Does G^2/df have any real use here, other than to compare to expectation under H_0? That is, is there any added information beyond what's already in the p-value? --><p><strong>update</strong>: The <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code> function makes it
-easy to create a new model from an old one, by adding or subtracting
-terms from the model formula, specifying a new formula, or changing the
-observations used or contrasts for factors.</p>
-<p>For example, you might ask, “<em>Does it make sense to include
-<code>region</code> of Canada in the model?</em>” This question can be
-answered by adding <code>region</code> to the model formula, and
-comparing the new model to the original one using <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code>.
-The tests here are for the additional contribution of
-<code>region</code> over and above the main effects of
+<p><strong>Model updating</strong>: The <code><a href="https://rdrr.io/r/stats/update.html" class="external-link">update()</a></code> function
+makes it easy to create a new model from an old one, by adding or
+subtracting terms from the model formula, specifying a new formula, or
+changing the observations used or contrasts for factors.</p>
+<p>For example, you might ask, “<em>Does it make sense to include region
+of Canada in the model for the <code>Womenlf</code> data?</em>” This
+question can be answered by adding <code>region</code> to the model
+formula, and comparing the new model to the original one using
+<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code>. The tests here are for the additional contribution
+of <code>region</code> over and above the main effects of
 <code>hincome</code> and <code>children</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">wlf.nested</span>, formula <span class="op">=</span> <span class="va">.</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="va">region</span><span class="op">)</span></span>
@@ -755,6 +760,7 @@ models. For example to add an interaction between husband’s income and
 children and then test the interaction term:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">wlf.nested</span>, formula <span class="op">=</span> <span class="va">.</span> <span class="op">~</span> <span class="va">.</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="va">wlf.nested.2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Analysis of Deviance Tables</span></span>
@@ -777,9 +783,11 @@ children and then test the interaction term:</p>
 <span><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
 <span><span class="co">#&gt; 1       365        424                     </span></span>
 <span><span class="co">#&gt; 2       363        423  2    0.864     0.65</span></span></code></pre></div>
-<p>We can see that neither <code>region</code> nor the interaction make
-a difference to the fit either of the sub-models or of the combined
-model for the three response categories.</p>
+<p>We can see that neither <code>region</code> nor the
+<code>hincome</code> <span class="math inline">\(\times\)</span>
+<code>children</code> interaction make a difference to the fit either of
+the sub-models or of the combined model for the three response
+categories.</p>
 </div>
 <div class="section level3">
 <h3 id="obtaining-fitted-values-predict">Obtaining fitted values: <code>predict()</code><a class="anchor" aria-label="anchor" href="#obtaining-fitted-values-predict"></a>
@@ -787,9 +795,10 @@ model for the three response categories.</p>
 <p>By default, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> for a <code>"nestedLogit"</code>
 model object returns the predicted probabilities
 (<code>type = "response"</code>) of each of the response categories for
-<em>all</em> observations in the data set. Note that the computation is
-a bit tricky, because the probabilities of working full time or part
-time are conditional on working outside the home.</p>
+<em>all</em> observations in the data set: The computation is a bit
+tricky, because the probabilities of working full time or part time are
+conditional on working outside the home, but <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>
+takes care of the details.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/some.html" class="external-link">some</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     not.work parttime fulltime</span></span>
@@ -807,13 +816,13 @@ time are conditional on working outside the home.</p>
 <div class="section level3">
 <h3 id="plotting-nestedlogit-objects">Plotting <code>"nestedLogit"</code> objects<a class="anchor" aria-label="anchor" href="#plotting-nestedlogit-objects"></a>
 </h3>
-<p>The <code>nestedLogit</code> package has a basic <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
-method for <code>"nestedLogit"</code> models, which calculates fitted
-probabilities for the response categories and plots these against a
-single explanatory variable on the horizontal axis, while
-<code>other</code> explanatory variables are fixed to particular values.
-To produce multi-panel plots, it is necessary to call the
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function repeatedly for various levels of the other
+<p>The <strong>nestedLogit</strong> package includes a basic
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> models, which
+calculates fitted probabilities for the response categories and plots
+these against a single explanatory variable on the horizontal axis,
+while <code>other</code> explanatory variables are fixed to particular
+values. To produce multi-panel plots, it is necessary to call
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> repeatedly for various levels of the other
 predictors, and to compose these into a single figure, for example using
 <code>par("mfcol")</code>:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -828,8 +837,8 @@ predictors, and to compose these into a single figure, for example using
 or working part time or full time
 </p>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span> <span class="co"># restore par()</span></span></code></pre></div>
+<p>We provide a separate vignette on constructing custom graphs of
+<code>"nestedLogit"</code> objects.</p>
 </div>
 <div class="section level3">
 <h3 id="alternative-models-for-the-womenlf-data">Alternative models for the <code>Womenlf</code> data<a class="anchor" aria-label="anchor" href="#alternative-models-for-the-womenlf-data"></a>
@@ -843,12 +852,17 @@ working} vs. {part time}. The rationale is that the real hurdle for
 young married women to enter the paid labor force is to combine fulltime
 work outside the home with housework. This alternative
 nested-dichotomies model proves enlightening:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>,</span>
 <span>                              <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span>full<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span>nonfulltime<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span>, <span class="st">"fulltime"</span><span class="op">)</span>,</span>
 <span>                                     part<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
+<span>                              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></code></pre></div>
+<p>The <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for this model
+show that the effects of husband’s income and children are significant
+for the <code>full</code> model but not for the <code>part</code>
+model:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
 <span><span class="co">#&gt;  </span></span>
@@ -872,6 +886,7 @@ nested-dichotomies model proves enlightening:</p>
 <span><span class="co">#&gt; children     63.6  2    1.6e-14 ***</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Nested logit models: partic ~ hincome + children</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -970,15 +985,13 @@ model.</p>
 Predicted probabilities for the alternative nested-dichotomies model
 </p>
 </div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span> <span class="co"># restore par()</span></span></code></pre></div>
 <p>Compare this to the previous graph for the original
 specification.</p>
 <p>It’s also of interest to compare the nested-dichotomies models to the
 multinomial logit model, which, as we explained, treats the response
 categories symmetrically:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">wlf.multinom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wlf.multinom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, data <span class="op">=</span> <span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # weights:  12 (6 variable)</span></span>
 <span><span class="co">#&gt; initial  value 288.935032 </span></span>
 <span><span class="co">#&gt; iter  10 value 211.454772</span></span>
@@ -1001,8 +1014,10 @@ categories symmetrically:</p>
 <span><span class="co">#&gt; Residual Deviance: 422.9 </span></span>
 <span><span class="co">#&gt; AIC: 434.9</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.multinom</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'log Lik.' -211.4 (df=6)</span></span>
-<span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.multinom</span>, type<span class="op">=</span><span class="st">"probs"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 'log Lik.' -211.4 (df=6)</span></span></code></pre></div>
+<p>Check the correlation between fitted probabilities:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.multinom</span>, type<span class="op">=</span><span class="st">"probs"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="va">fit3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
 <span><span class="co">#&gt;        1        1        1</span></span></code></pre></div>
@@ -1011,263 +1026,19 @@ nested-dichotomies model produce nearly identical fits with similar
 simple interpretations.</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="more-on-constructing-plots-of-nestedlogit-objects">More on constructing plots of <code>"nestedLogit"</code>
-objects<a class="anchor" aria-label="anchor" href="#more-on-constructing-plots-of-nestedlogit-objects"></a>
-</h2>
-<p>To explain plotting nested-dichotomies models works, and for better
-control of the details, it is useful to describe how graphs can be
-constructed directly directly.</p>
-<p>To draw a plot, it is sufficient to calculate predicted probabilities
-over a grid of values of the predictor variables. Here, we select a
-range of 0 - 45 in steps of 5, combined with the two values of
-<code>children</code>.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>hincome<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, </span>
-<span>                   children<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absent"</span>, <span class="st">"present"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">pred.nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span>, newdata <span class="op">=</span> <span class="va">new</span><span class="op">)</span></span>
-<span><span class="va">plotdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">new</span>, <span class="va">pred.nested</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">plotdata</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   hincome children not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1       0   absent   0.2082  0.02372   0.7681</span></span>
-<span><span class="co">#&gt; 2       5   absent   0.2452  0.03785   0.7169</span></span>
-<span><span class="co">#&gt; 3      10   absent   0.2864  0.05907   0.6545</span></span>
-<span><span class="co">#&gt; 4      15   absent   0.3315  0.08936   0.5791</span></span>
-<span><span class="co">#&gt; 5      20   absent   0.3800  0.12944   0.4906</span></span>
-<span><span class="co">#&gt; 6      25   absent   0.4309  0.17691   0.3922</span></span></code></pre></div>
-<p>Because the fitted values are in multiple columns, it is easiest to
-plot these using <code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot()</a></code>. We could plot these all in a
-single (messy) figure, but it is clearer to show separate panels for
-children <code>absent</code> and <code>present</code>.</p>
-<p>To do this, the <code>plotdata</code> data set is subset within a
-loop over the values of <code>children</code> and each subset is plotted
-by <code>matplot</code>. It is only necessary to include the legend in
-one panel. The plots are combined into a single figure using
-<code>par(mfrow())</code>.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">+</span><span class="fl">.1</span><span class="op">)</span></span>
-<span><span class="va">cols</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"magenta"</span>, <span class="st">"darkgreen"</span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span> <span class="va">kids</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absent"</span>, <span class="st">"present"</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">plotdata</span>, <span class="va">children</span><span class="op">==</span><span class="va">kids</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="st">"hincome"</span><span class="op">]</span>, <span class="va">data</span><span class="op">[</span>, <span class="fl">5</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, </span>
-<span>          type <span class="op">=</span> <span class="st">"l"</span>, lwd<span class="op">=</span><span class="fl">3</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, col <span class="op">=</span> <span class="va">cols</span>,</span>
-<span>          xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, </span>
-<span>          ylab<span class="op">=</span><span class="st">'Fitted Probability'</span>,</span>
-<span>          main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Children"</span>, <span class="va">kids</span><span class="op">)</span>,</span>
-<span>          cex.lab <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">kids</span><span class="op">==</span><span class="st">"absent"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, lwd<span class="op">=</span><span class="fl">3</span>, col<span class="op">=</span><span class="va">cols</span>, bty <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span>           legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fulltime"</span>, <span class="st">"parttime"</span>, <span class="st">"not working"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="fig/wlf-matplot-1.png" alt="**matplot**: Predicted probabilities of working at all or working part time or full time" width="100%"><p class="caption">
-<strong>matplot</strong>: Predicted probabilities of working at all or
-working part time or full time
-</p>
-</div>
-<div class="section level3">
-<h3 id="using-ggplot">Using <code>ggplot</code><a class="anchor" aria-label="anchor" href="#using-ggplot"></a>
-</h3>
-<p>More control, and perhaps a more aesthetically pleasing figure can be
-produced using <code>ggplot</code> <span class="citation">(Wickham et
-al., 2023)</span>. However, <code>ggplot</code> wants the data in long
-format. That makes it easy to plot probability against one predictor and
-use <code>color</code> to distinguish the levels of <code>partic</code>
-and facet the plot by <code>children</code>.
-<!-- (The result of `tidyr::pivot_longer()` doesn't recognize an ordered nature of `"Working"`, -->
-<!-- so this must be done in a separate step.) --></p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plotlong</span> <span class="op">&lt;-</span> <span class="va">plotdata</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">fulltime</span> <span class="op">:</span> <span class="va">not.work</span>,</span>
-<span>                      names_to <span class="op">=</span> <span class="st">"Working"</span>,</span>
-<span>                      values_to <span class="op">=</span> <span class="st">"Probability"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Working <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="va">Working</span>, </span>
-<span>                           levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">plotlong</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">#&gt;   hincome children Working  Probability</span></span>
-<span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       0 absent   fulltime      0.768 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>       0 absent   parttime      0.023<span style="text-decoration: underline;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>       0 absent   not.work      0.208 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>       5 absent   fulltime      0.717 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>       5 absent   parttime      0.037<span style="text-decoration: underline;">8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>       5 absent   not.work      0.245</span></span></code></pre></div>
-<p>Then, one call to <code>ggplot</code> produces both panels. To sort
-the levels of <code>Working</code> appropriately, we made this an
-ordered factor in the step above, but assign the colors with a discrete
-scale.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotlong</span>,</span>
-<span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">hincome</span>, y<span class="op">=</span><span class="va">Probability</span>, color<span class="op">=</span><span class="va">Working</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Husband's Income"</span>, y<span class="op">=</span> <span class="st">"Probability"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">children</span>, labeller <span class="op">=</span> <span class="va">label_both</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.3</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">gg</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="fig/wlf-ggplot-1.png" alt="**ggplot**: Predicted probabilities of working at all or working part time or full time" width="100%"><p class="caption">
-<strong>ggplot</strong>: Predicted probabilities of working at all or
-working part time or full time
-</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="direct-labels">Direct labels<a class="anchor" aria-label="anchor" href="#direct-labels"></a>
-</h3>
-<p>It’s usually nicer to label the curves directly than to rely on a
-legend. <!-- The `directlabels` package [@R-directlabels] -->
-<!-- can take a `ggplot` object, remove the legend and -->
-<!-- place labels along the curves. It is a little fiddly, and we haven't tried -->
-<!-- to make it avoid clipping some of the labels. --></p>
-<!-- ```{r wlf-directlabels} -->
-<!-- #| out.width = "100%", -->
-<!-- #| fig.height = 4, -->
-<!-- #| fig.cap = "**direct labels**: Predicted probabilities, with labels on the curves" -->
-<!-- direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2))) -->
-<!-- ``` -->
-<p>The <code>geomtextpath</code> <span class="citation">(Cameron &amp;
-van den Brand, 2022)</span> package offers <code><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html" class="external-link">geom_textline()</a></code>
-as an alternative to <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line()</a></code> that adds a text label to
-a curve.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotlong</span>,</span>
-<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">hincome</span>, y<span class="op">=</span><span class="va">Probability</span>, color<span class="op">=</span><span class="va">Working</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://allancameron.github.io/geomtextpath/reference/geom_textpath.html" class="external-link">geom_textline</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">Working</span><span class="op">)</span>,</span>
-<span>                linewidth <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">5</span>, </span>
-<span>                hjust <span class="op">=</span> <span class="fl">0.9</span>, vjust <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Husband's Income"</span>, y<span class="op">=</span> <span class="st">"Probability"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">children</span>, labeller <span class="op">=</span> <span class="va">label_both</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="fig/wlf-geomtextpath-1.png" alt="**geomtextpath**: Predicted probabilities, with labels on the curves" width="100%"><p class="caption">
-<strong>geomtextpath</strong>: Predicted probabilities, with labels on
-the curves
-</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="plotting-fitted-log-odds">Plotting fitted log odds<a class="anchor" aria-label="anchor" href="#plotting-fitted-log-odds"></a>
-</h3>
-<!-- Michael: Maybe move this to a separate vignette? -->
-<p>It is sometimes easier to interpret logistic regression models by
-plotting the linear predictors on the <strong>log odds</strong> scale,
-because these appear as straight lines. That is, from the estimated
-coefficients in the model, the predicted log odds of <code>work</code>
-and <code>full</code> are given by</p>
-<!-- equatiomatic::extract_eq(wlf.nested$models[[1]], use_coefs = TRUE) -->
-<!-- equatiomatic::extract_eq(wlf.nested$models[[2]], use_coefs = TRUE) -->
-<p><span class="math display">\[
-L_1 =\log\left[ \frac { \widehat{P( \operatorname{work} =
-\operatorname{1} )} }{ 1 - \widehat{P( \operatorname{work} =
-\operatorname{1} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) -
-1.58(\operatorname{children}_{\operatorname{present}})
-\]</span></p>
-<p><span class="math display">\[
-L_2 =\log\left[ \frac { \widehat{P( \operatorname{full} =
-\operatorname{1})} }{ 1 - \widehat{P( \operatorname{full} =
-\operatorname{1})} } \right] = 3.48 - 0.11(\operatorname{hincome}) -
-2.65(\operatorname{children}_{\operatorname{present}})
-\]</span> Here, <span class="math inline">\(\operatorname{children}_{\operatorname{present}}\)</span>
-is either 0 or 1, so this amounts to a shift in the intercept when
-children are present.</p>
-<p>These values can be calculated by calling <code><a href="https://rdrr.io/r/stats/predict.glm.html" class="external-link">predict.glm()</a></code>
-directly for the <code>models</code> component of
-<code>wlf.nested</code>, specifying <code>type = "link"</code>:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pred.logits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span>, <span class="va">predict</span>, newdata<span class="op">=</span><span class="va">new</span>, type <span class="op">=</span> <span class="st">"link"</span><span class="op">)</span></span>
-<span><span class="va">plotdatal</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">new</span>, <span class="va">pred.logits</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">plotdatal</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   hincome children   work   full</span></span>
-<span><span class="co">#&gt; 1       0   absent 1.3358 3.4778</span></span>
-<span><span class="co">#&gt; 2       5   absent 1.1243 2.9414</span></span>
-<span><span class="co">#&gt; 3      10   absent 0.9127 2.4051</span></span>
-<span><span class="co">#&gt; 4      15   absent 0.7012 1.8688</span></span>
-<span><span class="co">#&gt; 5      20   absent 0.4897 1.3324</span></span>
-<span><span class="co">#&gt; 6      25   absent 0.2781 0.7961</span></span></code></pre></div>
-<p>Then we plot these more or less as before:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cols</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">+</span><span class="fl">.1</span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span> <span class="va">kids</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absent"</span>, <span class="st">"present"</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">plotdatal</span>, <span class="va">children</span><span class="op">==</span><span class="va">kids</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span>, <span class="st">"hincome"</span><span class="op">]</span>, <span class="va">data</span><span class="op">[</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>,</span>
-<span>          type <span class="op">=</span> <span class="st">"l"</span>, lwd<span class="op">=</span><span class="fl">3</span>, lty <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="va">cols</span>,</span>
-<span>          xlab<span class="op">=</span><span class="st">"Husband's Income"</span>,</span>
-<span>          ylab<span class="op">=</span><span class="st">'Predicted Log Odds'</span>,</span>
-<span>          main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Children"</span>, <span class="va">kids</span><span class="op">)</span>,</span>
-<span>          cex.lab <span class="op">=</span> <span class="fl">1.1</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">kids</span><span class="op">==</span><span class="st">"absent"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, lty<span class="op">=</span><span class="fl">1</span>, lwd<span class="op">=</span><span class="fl">3</span>, col<span class="op">=</span><span class="va">cols</span>, bty <span class="op">=</span> <span class="st">"n"</span>,</span>
-<span>           title <span class="op">=</span> <span class="st">"Dichotomy"</span>,</span>
-<span>           legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"work"</span>, <span class="st">"full"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="fig/wlf-logits-1.png" alt="**log odds**: Predicted logits of the  `work` and `full` dichotomies" width="100%"><p class="caption">
-<strong>log odds</strong>: Predicted logits of the <code>work</code> and
-<code>full</code> dichotomies
-</p>
-</div>
-<p>Finally, we can use <code>ggplot</code> as before to plot the fitted
-logits, first transforming the long format.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plotlongl</span> <span class="op">&lt;-</span> <span class="va">plotdatal</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">work</span> <span class="op">:</span> <span class="va">full</span>,</span>
-<span>                      names_to <span class="op">=</span> <span class="st">"Dichotomy"</span>,</span>
-<span>                      values_to <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Dichotomy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="va">Dichotomy</span>,</span>
-<span>                         levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"work"</span>, <span class="st">"full"</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
-<p>Doing this gives the flexibility that we can facet the plot either by
-<code>children</code> (as before) or <code>Dichotomy</code>. The latter
-nicely shows that the additive model has equal slopes for husband’s
-income within both panels: increasing husband’s income decreases the log
-odds of working, but at a faster rate for the <code>full</code>
-dichotomy. Having young children decreases the log odds of working
-either at all or working fulltime as compared to parttime.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotlongl</span>,</span>
-<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">hincome</span>, y<span class="op">=</span><span class="va">logit</span>, color<span class="op">=</span><span class="va">children</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span>, shape <span class="op">=</span> <span class="fl">16</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html" class="external-link">scale_color_discrete</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x<span class="op">=</span><span class="st">"Husband's Income"</span>, y<span class="op">=</span> <span class="st">"Log Odds"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">Dichotomy</span>, labeller <span class="op">=</span> <span class="va">label_both</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.35</span>, <span class="fl">.82</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="fig/wlf-gglogits-1.png" alt="**log odds**: Predicted logits of the  `work` and `full` dichotomies" width="100%"><p class="caption">
-<strong>log odds</strong>: Predicted logits of the <code>work</code> and
-<code>full</code> dichotomies
-</p>
-</div>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># write a packages.bib file of the packages (.packages()) that have been used here</span></span>
-<span><span class="va">pkgs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">to.cite</span>, <span class="fu"><a href="https://rdrr.io/r/base/zpackages.html" class="external-link">.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/write_bib.html" class="external-link">write_bib</a></span><span class="op">(</span><span class="va">pkgs</span>, file <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"vignettes"</span>, <span class="st">"packages.bib"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-R-equatiomatic" class="csl-entry">
+Anderson, D., Heiss, A., &amp; Sumners, J. (2023). <em>Equatiomatic:
+Transform models into LaTeX equations</em>.
+</div>
 <div id="ref-Atkinson-etal:1984" class="csl-entry">
 Atkinson, T., Blishen, B. R., Ornstein, M. D., &amp; Stevenson, H. M.
 (1984). <span class="nocase">Quality of Canadian Life: Social Change in
 Canada</span>, 1977. ICPSR - Interuniversity Consortium for Political;
 Social Research. http://doi.org/<a href="https://doi.org/10.3886/ICPSR07879.V1" class="external-link">10.3886/ICPSR07879.V1</a>
-</div>
-<div id="ref-R-geomtextpath" class="csl-entry">
-Cameron, A., &amp; van den Brand, T. (2022). <em>Geomtextpath: Curved
-text in ggplot2</em>. Retrieved from <a href="https://allancameron.github.io/geomtextpath/" class="external-link">https://allancameron.github.io/geomtextpath/</a>
 </div>
 <div id="ref-Fienberg:80" class="csl-entry">
 Fienberg, S. E. (1980). <em>The analysis of cross-classified categorical
@@ -1286,6 +1057,10 @@ Fox, J., &amp; Weisberg, S. (2019). <em>An <span>R</span> companion to
 applied regression</em> (Third). Thousand Oaks <span>CA</span>: Sage.
 Retrieved from <a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/" class="external-link">https://socialsciences.mcmaster.ca/jfox/Books/Companion/</a>
 </div>
+<div id="ref-R-carData" class="csl-entry">
+Fox, J., Weisberg, S., &amp; Price, B. (2022). <em>carData: Companion to
+applied regression data sets</em>. Retrieved from <a href="https://CRAN.R-project.org/package=carData" class="external-link">https://CRAN.R-project.org/package=carData</a>
+</div>
 <div id="ref-FriendlyMeyer:2016:DDAR" class="csl-entry">
 Friendly, M., &amp; Meyer, D. (2016). <em>Discrete data analysis with
 <span>R</span>: Visualization and modeling techniques for categorical
@@ -1298,11 +1073,6 @@ statistical objects into tidy tibbles</em>. Retrieved from <a href="https://CRAN
 <div id="ref-nnet2002" class="csl-entry">
 Venables, W. N., &amp; Ripley, B. D. (2002). <em>Modern applied
 statistics with s</em> (Fourth). New York: Springer. Retrieved from <a href="https://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">https://www.stats.ox.ac.uk/pub/MASS4/</a>
-</div>
-<div id="ref-R-ggplot2" class="csl-entry">
-Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K.,
-Wilke, C., … Dunnington, D. (2023). <em>ggplot2: Create elegant data
-visualisations using the grammar of graphics</em>. Retrieved from <a href="https://CRAN.R-project.org/package=ggplot2" class="external-link">https://CRAN.R-project.org/package=ggplot2</a>
 </div>
 </div>
 </div>

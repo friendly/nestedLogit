@@ -8,7 +8,7 @@ update
 Re-fit a "nestedLogit" model with a change in any of the formula, dichotomies,
 data, subset, or contrasts, arguments.
 
-predict
+predict, fitted
 Computes predicted values from a fitted "nestedLogit" model.
 
 glance
@@ -28,7 +28,7 @@ update
 Re-fit a "nestedLogit" model with a change in any of the formula, dichotomies,
 data, subset, or contrasts, arguments.
 
-predict
+predict, fitted
 Computes predicted values from a fitted "nestedLogit" model.
 
 glance
@@ -58,14 +58,16 @@ Summarizes the terms in "nestedLogit" model.
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item">
+      <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/nestedLogit.html">Get started</a>
+</li>
+<li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/nestedLogit-2.html">Nested dichotomies logistic regression models (revised)</a>
-    <a class="dropdown-item" href="../articles/nestedLogits.html">Nested dichotomies logistic regression models</a>
+    <a class="dropdown-item" href="../articles/plotting.html">Plotting nestedLogit models</a>
   </div>
 </li>
 <li class="nav-item">
@@ -101,7 +103,7 @@ Most of these are the standard methods for a model-fitting function.</p><dl><dt>
 <dd><p>Re-fit a <code>"nestedLogit"</code> model with a change in any of the <code>formula</code>, <code>dichotomies</code>,
 <code>data</code>, <code>subset</code>, or <code>contrasts</code>, arguments.</p></dd>
 
-<dt><code>predict</code></dt>
+<dt><code>predict</code>, <code>fitted</code></dt>
 <dd><p>Computes predicted values from a fitted <code>"nestedLogit"</code> model.</p></dd>
 
 <dt><code>glance</code></dt>
@@ -132,6 +134,9 @@ Most of these are the standard methods for a model-fitting function.</p><dl><dt>
 <span></span>
 <span><span class="co"># S3 method for predictDichotomies</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for nestedLogit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">object</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nested"</span>, <span class="st">"dichotomies"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for nestedLogit</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">object</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -173,7 +178,7 @@ at which fitted probabilities (or other quantities) are to be computed.</p></dd>
 
 
 <dt>model</dt>
-<dd><p>For the <code>predict</code> method, either <code>"nested"</code> (the default), in which case fitted probabilities
+<dd><p>For the <code>predict</code> and <code>fitted</code> methods, either <code>"nested"</code> (the default), in which case fitted probabilities
 under the nested logit model are returned, or <code>"dichotomies"</code>, in which case
 <code><a href="https://rdrr.io/r/stats/predict.glm.html" class="external-link">predict.glm</a></code> is invoked for each binary logit model fit to the nested
 dichotomies and a named list of the results is returned.</p></dd>
@@ -244,7 +249,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> above_highschool                 NA          0       1        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> above_college                    NA         NA       0        1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cont.dichots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{{l.t.highschool}} {{highschool college graduate}}; {{highschool}} {{college graduate}}; {{college}} {{graduate}}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "above_l.t.highschool = {{l.t.highschool}} {{highschool college graduate}}; above_highschool = {{highschool}} {{college graduate}}; above_college = {{college}} {{graduate}}"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit a nested model for the GSS data examining education degree in relation to parent &amp; year</span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">degree</span> <span class="op">~</span> <span class="va">parentdeg</span> <span class="op">+</span> <span class="va">year</span>,</span></span>
@@ -291,7 +296,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0016570885 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002bc8f6868a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001c271f8be80&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
@@ -335,7 +340,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual Deviance: 14050 	AIC: 14060</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002bc8f6868a0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001c271f8be80&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -451,7 +456,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> above_college        year               8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.001<span style="text-decoration: underline;">66</span>       5.38 7.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predicted probabilities and ploting</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span> <span class="co"># fitted probabilities for first few cases</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span> <span class="co"># fitted probabilities for first few cases; </span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   l.t.highschool highschool    college   graduate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.48669496  0.4481946 0.04326738 0.02184305</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.48669496  0.4481946 0.04326738 0.02184305</span>
@@ -459,6 +464,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.48669496  0.4481946 0.04326738 0.02184305</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6     0.03215663  0.4161182 0.34830386 0.20342132</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7     0.04093763  0.5328723 0.31960957 0.10658049</span>
+<span class="r-in"><span>                 <span class="co"># equivalent to head(fitted(m))</span></span></span>
 <span class="r-in"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>parentdeg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l.t.highschool"</span>,  <span class="st">"highschool"</span>,</span></span>
 <span class="r-in"><span>                               <span class="st">"college"</span>, <span class="st">"graduate"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   year<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1972</span>, <span class="fl">2016</span><span class="op">)</span><span class="op">)</span></span></span>
