@@ -291,8 +291,13 @@ dichotomies. The `models` component of the object contains essentially the same 
 
 ```{r names-etc}
 names(wlf.nested)
+
 names(wlf.nested$models) # equivalent: names(models(wlf.models))
-lapply(models(wlf.nested), I)
+
+# view the separate models; same as lapply(models(wlf.nested), I)
+models(wlf.nested, 1) 
+
+models(wlf.nested, 2)
 ```
 
 
