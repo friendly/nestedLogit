@@ -54,10 +54,8 @@ Load the packages we'll use here:
 ```{r setup}
 library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
 library(knitr)          # A General-Purpose Package for Dynamic Report Generation in R
-library(car)            # Companion to Applied Regression
-library(nnet)           # Feed-Forward Neural Networks and Multinomial Log-Linear Models
-library(broom)          # Convert Statistical Objects into Tidy Tibbles
 library(dplyr)          # A Grammar of Data Manipulation
+library(tidyr)          # Tidy Messy Data
 library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
 library(geomtextpath)   # Curved Text in 'ggplot2'
 ```
@@ -165,7 +163,8 @@ gg
 
 It's usually nicer to label the curves directly than to rely on a legend.
 The `geomtextpath` [@R-geomtextpath] package offers `geom_textline()` as an alternative
-to `geom_line()` that adds a text label to a curve.
+to `geom_line()` that adds a text label to a curve. `hjust` and `vjust` position the labels
+along the curve.
 
 ```{r wlf-geomtextpath}
 #| out.width = "100%",
@@ -219,7 +218,7 @@ Then we plot these more or less as before:
 #| out.width = "100%",
 #| fig.height = 4,
 #| fig.cap = "**log odds**: Predicted logits of the  `work` and `full` dichotomies, by `children`"
-cols=c("blue", "red")
+cols <- c("blue", "red")
 
 op <- par(mfrow=c(1,2), mar=c(4,4,3,1)+.1)
 for ( kids in c("absent", "present") ) {
