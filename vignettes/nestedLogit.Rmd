@@ -1,5 +1,5 @@
 ---
-title: "Nested-dichotomies logistic-regression models"
+title: "Nested-dichotomies logistic regression models"
 author: "Michael Friendly and John Fox"
 date: "`r Sys.Date()`"
 package: nestedLogit
@@ -9,7 +9,7 @@ output:
 bibliography: ["references.bib", "packages.bib"]
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Nested dichotomies logistic regression models (revised)}
+  %\VignetteIndexEntry{Nested-dichotomies logistic regression models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -47,7 +47,7 @@ set.seed(47)
 options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2")
+to.cite <- c("nnet", "car", "broom", "ggplot2", "equatiomatic")
 ```
 
 Load the packages we'll use here:
@@ -233,7 +233,8 @@ mod.work <- glm(work ~ hincome + children, family=binomial, data=Womenlf)
 mod.full <- glm(full ~ hincome + children, family=binomial, data=Womenlf)
 ```
 
-In equation form, the two log-odds models are:
+In equation form, the two log-odds models are shown below.
+(Model equations are conveniently rendered in markdown/LaTeX using the `equatiomatic` package [@R-equatiomatic].)
 <!-- equatiomatic::extract_eq(mod.work) -->
 <!-- equatiomatic::extract_eq(mod.work) -->
 
@@ -389,6 +390,7 @@ an interaction between husband's income and children and then test the interacti
 ```{r more-models}
 #| eval = TRUE
 wlf.nested.2 <- update(wlf.nested, formula = . ~ .^2)
+
 anova(wlf.nested, wlf.nested.2)
 ```
 
@@ -426,7 +428,6 @@ plot(wlf.nested, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
 plot(wlf.nested, "hincome", list(children="present"), # right panel
      xlab="Husband's Income", legend=FALSE)
-par(op) # restore par()
 ```
 
 We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects.
@@ -439,9 +440,16 @@ wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               logits(full=dichotomy(nonfulltime=c("not.work", "parttime"), "fulltime"),
                                      part=dichotomy("not.work", "parttime")),
                               data=Womenlf)
+```
+
+The `Anova()` and `summary()` for this model show that the effects of husband's income and children are
+significant for the `full` model but not for the `part` model:
+```{r alt-anova}
 Anova(wlf.nested.alt)
+
 summary(wlf.nested.alt)
 ```
+
 It's apparent that the alternative model produces a simpler description of the data: The predictors husband's income and presence of children affect the decision to work fulltime, but not the decision to work parttime among those who aren't engaged in fulltime work.
 
 But do the fits of the two models to the data differ? We can compare fitted probabilities under the two specifications:
@@ -473,19 +481,28 @@ plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
 plot(wlf.nested.alt, "hincome", list(children="present"), # right panel
      xlab="Husband's Income", legend=FALSE)
-par(op) # restore par()
 ```
 Compare this to the previous graph for the original specification.
 
 It's also of interest to compare the nested-dichotomies models to the multinomial logit model, which, as we explained, treats the response categories symmetrically:
 ```{r}
-wlf.multinom <- multinom(partic ~ hincome + children, data=Womenlf)
+wlf.multinom <- multinom(partic ~ hincome + children, data = Womenlf)
 summary(wlf.multinom)
 logLik(wlf.multinom)
+```
+
+Check the correlation between fitted probabilities:
+```{r check-corr}
 fit3 <- predict(wlf.multinom, type="probs")[, c("not.work", "parttime", "fulltime")]
 diag(cor(fit2, fit3))
 ```
 As it turns out, the multinomial logit model and the alternative nested-dichotomies model produce nearly identical fits with similar simple interpretations.
+
+```{r write-bib, echo = FALSE}
+# write a packages.bib file of the packages (.packages()) that have been used here
+pkgs <- unique(c(to.cite, .packages()))
+knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
 
 
 ## References
