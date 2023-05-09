@@ -1,6 +1,8 @@
 ## Test environments
 * local Windows 10, R version 4.2.2 (2022-10-31 ucrt)
 * win-builder R version 4.3.0 RC (2023-04-18 r84287 ucrt)
+* Rhub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
+* Rhub: Windows Server 2022, R-devel, 64 bit
 
 ## R CMD check results
 
@@ -15,7 +17,9 @@ This version has now advanced from experimental to stable with the recent enhanc
 * Now allow dichotomies to be specified by a nested (recursive) of binary splits of the categories [suggestion of Achim Zeileis]
 * The model object is now of class "nestedLogit" for uniformity.
 * A basic `plot()` method now operational
-* Added a linearHypothesis method to give Wald tests for hypotheses about coefficients or their linear combinations.
+* Added a `linearHypothesis()` method to give Wald tests for hypotheses about coefficients or their linear combinations.
 * Expanded vignette to illustrate some other methods.
 * Added a `models()` generic and method to extract separate models from the `"nestedLogit"` object
+* Added a `logLike()` method, and through it, gets `AIC()` and `BIC()`
+* Reorganized documentation to separate nested hypothesis methods.
 
