@@ -21,6 +21,8 @@ library(nestedLogit)
 <!-- badges: start -->
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Last Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https://github.com/friendly/nestedLogit)
+[![CRAN status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-project.org/package=nestedLogit)
+
 <!-- badges: end -->
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
@@ -33,7 +35,7 @@ which compares response categories to a reference level.
 
 ## Installation
 
-This package has not yet been submitted to CRAN.
+The package has not yet been submitted to CRAN.
 This development version can be installed to your R library directly from the [GitHub repo](https://github.com/friendly/nestedLogit) via:
 
 ```
@@ -165,7 +167,12 @@ plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 ```
 
-A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette,
+## Vignettes
+
+* A more general discussion of nested dichotomies logistic regression and detailed examples can be found in 
+`vignette("nestedLogit", package="nestedLogit")`
+
+* A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette,
 `vignette("plotting", package="nestedLogit")`.
 
 
