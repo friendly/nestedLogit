@@ -2,54 +2,52 @@ Package: nestedLogit
 Title: Nested Dichotomy Logistic Regression Models
 Version: 0.2.1
 Authors@R: c(
-    person(given = "John", family = "Fox", 
-           email = "jfox@mcmaster.ca", 
-           role = c("aut"),
+    person("John", "Fox", , "jfox@mcmaster.ca", role = "aut",
            comment = c(ORCID = "0000-0002-1196-8012")),
-    person(given = "Michael", 
-           family="Friendly",
-           email = "friendly@yorku.ca", 
-           role = c("aut", "cre"),
+    person("Michael", "Friendly", , "friendly@yorku.ca", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3237-0941")),
-    person(given = "Achim", 
-           family="Zeileis",
-           email = "Achim.Zeileis@uibk.ac.at", 
-           role = c("ctb"),
-           comment = c(ORCID = "0000-0003-0918-3766") )
+    person("Achim", "Zeileis", , "Achim.Zeileis@uibk.ac.at", role = "ctb",
+           comment = c(ORCID = "0000-0003-0918-3766"))
   )
-Description: Provides functions for specifying and fitting nested dichotomy logistic regression models
-     for a multi-category response and methods for summarising those models.
-     Nested dichotomies are statistically independent, and hence provide an
-     additive decomposition of tests for the overall 'polytomous' response.
-     When the dichotomies make sense substantively, this method can be a simpler alternative 
-     to the standard 'multinomial' logistic model which compares response categories to a reference level.
-     See: J. Fox (2016), "Applied Regression Analysis and Generalized Linear Models", 3rd Ed., ISBN 1452205663.
-Depends: R (>= 3.5.0),
-Imports: 
-  car,
-  dplyr,
-  broom,
-  graphics,
-  grDevices,
-  stats
-Suggests:
-    carData,
-    knitr,
-    rmarkdown,
-    testthat,
-    here,
-    tidyr,
-    ggplot2,
-    directlabels,
-    geomtextpath,
-    spelling,
-    nnet
-LazyData: TRUE
+Description: Provides functions for specifying and fitting nested
+    dichotomy logistic regression models for a multi-category response and
+    methods for summarising those models.  Nested dichotomies are
+    statistically independent, and hence provide an additive decomposition
+    of tests for the overall 'polytomous' response.  When the dichotomies
+    make sense substantively, this method can be a simpler alternative to
+    the standard 'multinomial' logistic model which compares response
+    categories to a reference level.  See: J. Fox (2016), "Applied
+    Regression Analysis and Generalized Linear Models", 3rd Ed., ISBN
+    1452205663.
 License: GPL (>=2)
-Encoding: UTF-8
-Language: en-US
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-VignetteBuilder: knitr, rmarkdown
 URL: https://github.com/friendly/nestedLogit
 BugReports: https://github.com/friendly/nestedLogit/issues
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    broom,
+    car,
+    dplyr,
+    graphics,
+    grDevices,
+    stats
+Suggests:
+    carData,
+    directlabels,
+    geomtextpath,
+    ggplot2,
+    here,
+    knitr,
+    nnet,
+    rmarkdown,
+    spelling,
+    testthat,
+    tidyr
+VignetteBuilder: 
+    knitr,
+    rmarkdown
+Encoding: UTF-8
+Language: en-US
+LazyData: TRUE
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
