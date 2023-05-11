@@ -19,7 +19,7 @@ code{2016}.}
 }
 \source{
 General Social Survey, NORC, The University of Chicago
-\url{https://www.norc.org/Research/Projects/Pages/general-social-survey.aspx}.
+https://www.norc.org/Research/Projects/Pages/general-social-survey.aspx.
 }
 \usage{
 data("GSS", package = "nestedLogit")
@@ -30,8 +30,8 @@ between 1972 and 2016.
 }
 \examples{
 round(100*with(GSS, prop.table(table(degree, parentdeg), 2)))
-m.GSS <- nestedLogit(degree ~ parentdeg*year, 
-                     continuationLogits(c("l.t.highschool",  "highschool", 
+m.GSS <- nestedLogit(degree ~ parentdeg*year,
+                     continuationLogits(c("l.t.highschool",  "highschool",
                                            "college", "graduate")),
                      data=GSS)
 car::Anova(m.GSS)
