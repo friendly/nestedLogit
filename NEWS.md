@@ -3,6 +3,7 @@
 * Reset all `par()` and `options()` calls so as to not alter user's workspace. 
 * now document all return values. 
 * added a reference to DESCRIPTION. It is a book, so no doi:, url, etc.
+* fixed one URL that win-builder (spuriously) complains about.
 
 
 # nestedLogit 0.2.0

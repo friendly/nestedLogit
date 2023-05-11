@@ -18,4 +18,5 @@ This is a patch release, correcting minor problems noted by a CRAN reviewer
 * Reset all `par()` and `options()` calls so as to not alter user's workspace. 
 * Now document all return values. 
 * Added a reference to DESCRIPTION. It is to a book (with an ISBN), so no doi:, url, is appropriate.
+* fixed one URL that win-builder (spuriously) complains about.
 
