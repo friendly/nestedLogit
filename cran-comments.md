@@ -13,10 +13,13 @@
 
 # nestedLogit 0.2.1
 
-This is a patch release, correcting minor problems noted by a CRAN reviewer
+This is a patch release, correcting all minor problems noted by a CRAN reviewer, as follows:
 
 * Reset all `par()` and `options()` calls so as to not alter user's workspace. 
 * Now document all return values. 
-* Added a reference to DESCRIPTION. It is to a book (with an ISBN), so no doi:, url, is appropriate.
+* Added a reference to DESCRIPTION. It is to a printed book (with an ISBN), so no 'doi:', 'arXiv:', or 'https:' reference is appropriate.
 * fixed one URL that win-builder (spuriously) complains about.
+
+Because of these changes, we bumped the version number from 0.2.0 (for the original submission) to 0.2.1.
+
 
