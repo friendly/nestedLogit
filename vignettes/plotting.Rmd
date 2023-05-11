@@ -117,6 +117,7 @@ for ( kids in c("absent", "present") ) {
            legend=c("fulltime", "parttime", "not working"))
   }
 }
+par(op)
 ```
 
 ### Using `ggplot()`
@@ -235,6 +236,7 @@ for ( kids in c("absent", "present") ) {
            legend=c("work", "full"))
   }
 }
+par(op)
 ```
 
 Finally, we can use `ggplot` as before to plot the fitted logits, first transforming the long format.

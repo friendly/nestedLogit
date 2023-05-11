@@ -433,6 +433,7 @@ plot(wlf.nested, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
 plot(wlf.nested, "hincome", list(children="present"), # right panel
      xlab="Husband's Income", legend=FALSE)
+par(op)
 ```
 
 We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects.
@@ -486,6 +487,7 @@ plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
 plot(wlf.nested.alt, "hincome", list(children="present"), # right panel
      xlab="Husband's Income", legend=FALSE)
+par(op)
 ```
 Compare this to the previous graph for the original specification.
 
