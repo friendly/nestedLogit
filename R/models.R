@@ -18,6 +18,9 @@
 #'        when more than one binary
 #'        logit model is selected, the corresponding \code{"glm"} objects are \emph{always}
 #'        returned as a named list.
+#'        
+#' @return \code{model} returns either a single \code{"glm"} object (see \code{\link{glm}}) or a
+#'   list of \code{"glm"} objects, each representing a binary logit model.
 #'
 #' @examples
 #'   data(Womenlf, package = "carData")

@@ -30,6 +30,17 @@ additional sequential \code{"nestedLogit"} models.}
 
 \item{x, object, object2, mod, model}{in most cases, an object of class \code{"nestedLogit"}.}
 }
+\value{
+\itemize{
+\item The \code{Anova} and \code{anova} methods return objects
+of class \code{"Anova.nestedLogit"} and \code{"anova.nestedLogit"}, respectively,
+each of which contains a list of \code{"anova"} objects (see \code{\link{anova}})
+and is usually printed.
+\item The \code{linearHypothesis} method is called for its side effect, printing
+the result of linear hypothesis tests, and invisibly returns \code{NULL}.
+\item The \code{logLik} method returns an object of class \code{"logLik"} (see \code{\link{logLik}}).
+}
+}
 \description{
 Various methods for testing hypotheses about nested logit models.
 \describe{

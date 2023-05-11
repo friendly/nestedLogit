@@ -44,7 +44,7 @@ colorize <- function(x, color) {
 
 
 set.seed(47)
-options(digits = 4)
+.opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
 to.cite <- c("ggplot2", "geomtextpath", "equatiomatic")
@@ -278,6 +278,10 @@ ggplot(plotlongl,
 # write a packages.bib file of the packages (.packages()) that have been used here
 #pkgs <- unique(c(to.cite, .packages()))
 #knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
+
+```{r, include = FALSE}
+options(.opts)
 ```
 
 ## References

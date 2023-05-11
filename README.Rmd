@@ -165,6 +165,7 @@ plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
 plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
+par(op)
 ```
 
 ## Vignettes

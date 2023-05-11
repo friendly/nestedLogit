@@ -20,7 +20,16 @@
 #'        the second argument is typically the \code{hypothesis.matrix}. See the
 #'        Details section of \code{\link[car]{linearHypothesis}}. In the case of \code{anova},
 #'        additional sequential \code{"nestedLogit"} models.
-#'
+#'        
+#' @return \itemize{
+#'    \item The \code{Anova} and \code{anova} methods return objects
+#'     of class \code{"Anova.nestedLogit"} and \code{"anova.nestedLogit"}, respectively,
+#'    each of which contains a list of \code{"anova"} objects (see \code{\link{anova}}) 
+#'    and is usually printed.
+#'    \item The \code{linearHypothesis} method is called for its side effect, printing
+#'    the result of linear hypothesis tests, and invisibly returns \code{NULL}.
+#'    \item The \code{logLik} method returns an object of class \code{"logLik"} (see \code{\link{logLik}}).
+#' }
 #' @seealso \code{\link[car]{Anova}}, \code{\link{anova}}, 
 #' \code{\link[car]{linearHypothesis}}, \code{\link{logLik}}, \code{\link{AIC}},
 #' \code{\link{BIC}}

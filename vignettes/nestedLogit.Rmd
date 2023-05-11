@@ -44,7 +44,7 @@ colorize <- function(x, color) {
 
 
 set.seed(47)
-options(digits = 4)
+.opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
 to.cite <- c("nnet", "car", "broom", "ggplot2", "equatiomatic")
@@ -511,6 +511,9 @@ pkgs <- unique(c(to.cite, .packages()))
 knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
 ```
 
+```{r, include = FALSE}
+options(.opts)
+```
 
 ## References
 

@@ -69,7 +69,10 @@ isn't specified.
 \item \code{contrasts.print} a character representation of the \code{contrasts} argument or
 \code{"NULL"} if the argument isn't specified.
 }
-\code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}.
+\code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}
+and \code{c("continuationDichotomies" "dichotomies")}, respectively, which are two-elements lists,
+each element containing a list of two character vectors representing a dichotomy.
+\code{dichotomy} returns a list of two character vectors representing a dichotomy.
 }
 \description{
 Fit a related set of binary logit models via the \code{\link{glm}}

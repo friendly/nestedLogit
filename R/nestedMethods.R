@@ -45,6 +45,23 @@
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
 #' @param \dots arguments to be passed down.
+#' 
+#' @return  \itemize{
+#'    \item The \code{coef} and \code{vcov} methods return either matrices or lists of regression
+#'    coefficients and their covariances, respectively.
+#'    \item The \code{update} method returns an object of class \code{"nestedLogit"} (see \code{\link{nestedLogit}})
+#'    derived from the original nested-logit model.
+#'    \item The \code{predict} and \code{fitted} methods return either a matrix of predicted probabilities or an
+#'    object of class \code{"predictDichotomies"}, which is a named list with predicted logits for
+#'    each nested-dichotomy model.
+#'    \item The \code{glance} and \code{tidy} methods return 'tibbles' containing model summaries.
+#'    \item The \code{summary} method returns an object of class \code{"summary.nestedLogit"}, which is
+#'    a list of summaries of the \code{\link{glm}} objects that comprise the nested-dichotomies model; the
+#'    object is normally printed.
+#'    \item The methods for \code{as.matrix}, \code{as.character}, and \code{as.dichotomies} coerce
+#'    various objects to matrices, character vectors, and dichotomies objects.
+#'    \item The various \code{print} methods invisibly return their \code{x} arguments.
+#'    }
 #'
 #' @author John Fox and Michael Friendly
 #' @keywords regression
