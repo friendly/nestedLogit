@@ -13,6 +13,8 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
 
+**Version 0.2.1**
+
 The `nestedLogit` package provides functions for fitting nested
 dichotomy logistic regression models for a polytomous response. Nested
 dichotomies are statistically independent, and hence provide an additive
