@@ -229,6 +229,10 @@ plot(m, "hincome", list(children="present"),
 
 <img src="man/figures/README-wlf-plot-1.png" width="100%" />
 
+``` r
+par(op)
+```
+
 ## Vignettes
 
 - A more general discussion of nested dichotomies logistic regression
