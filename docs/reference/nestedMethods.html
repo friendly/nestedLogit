@@ -50,7 +50,7 @@ Summarizes the terms in "nestedLogit" model.
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -214,6 +214,25 @@ with one element for each dichotomy.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<ul><li><p>The <code>coef</code> and <code>vcov</code> methods return either matrices or lists of regression
+coefficients and their covariances, respectively.</p></li>
+<li><p>The <code>update</code> method returns an object of class <code>"nestedLogit"</code> (see <code><a href="nestedLogit.html">nestedLogit</a></code>)
+derived from the original nested-logit model.</p></li>
+<li><p>The <code>predict</code> and <code>fitted</code> methods return either a matrix of predicted probabilities or an
+object of class <code>"predictDichotomies"</code>, which is a named list with predicted logits for
+each nested-dichotomy model.</p></li>
+<li><p>The <code>glance</code> and <code>tidy</code> methods return 'tibbles' containing model summaries.</p></li>
+<li><p>The <code>summary</code> method returns an object of class <code>"summary.nestedLogit"</code>, which is
+a list of summaries of the <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code> objects that comprise the nested-dichotomies model; the
+object is normally printed.</p></li>
+<li><p>The methods for <code>as.matrix</code>, <code>as.character</code>, and <code>as.dichotomies</code> coerce
+various objects to matrices, character vectors, and dichotomies objects.</p></li>
+<li><p>The various <code>print</code> methods invisibly return their <code>x</code> arguments.</p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The <code>predict</code> method provides predicted values for two representations of the model.
 <code>model = "nested"</code> gives the fitted probabilities for each of the response categories.
@@ -296,7 +315,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0016570885 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002176cb56be8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001d7830ffc58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
@@ -340,7 +359,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual Deviance: 14050 	AIC: 14060</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002176cb56be8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001d7830ffc58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>

@@ -48,7 +48,7 @@ Returns the log-likelihood and degrees of freedom for the nested-dichotomies mod
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,6 +146,18 @@ additional sequential <code>"nestedLogit"</code> models.</p></dd>
 <dd><p>in most cases, an object of class <code>"nestedLogit"</code>.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<ul><li><p>The <code>Anova</code> and <code>anova</code> methods return objects
+of class <code>"Anova.nestedLogit"</code> and <code>"anova.nestedLogit"</code>, respectively,
+each of which contains a list of <code>"anova"</code> objects (see <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></code>)
+and is usually printed.</p></li>
+<li><p>The <code>linearHypothesis</code> method is called for its side effect, printing
+the result of linear hypothesis tests, and invisibly returns <code>NULL</code>.</p></li>
+<li><p>The <code>logLik</code> method returns an object of class <code>"logLik"</code> (see <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></code>).</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></code>, <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></code>,
