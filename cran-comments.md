@@ -13,6 +13,7 @@
 
 # nestedLogit 0.2.1
 
+[Fixed two remaining `\value` problems noted by reviewer.]
 This is a patch release, correcting all minor problems noted by a CRAN reviewer, as follows:
 
 * Reset all `par()` and `options()` calls so as to not alter user's workspace. 
