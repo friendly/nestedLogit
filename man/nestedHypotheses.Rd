@@ -64,7 +64,7 @@ cont.dichots <- continuationLogits(c("l.t.highschool",
 m <- nestedLogit(degree ~ parentdeg + year,
                  cont.dichots,
                  data=GSS)
-                 
+
 # Anova and anova tests
 car::Anova(m) # type-II (partial) tests
 

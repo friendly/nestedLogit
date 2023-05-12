@@ -52,6 +52,7 @@
 #' @importFrom graphics axis box matplot title
 #' @importFrom stats formula
 #' @rdname plot.nestedLogit
+#' @return NULL Used for its side-effect of producing a plot
 #' @export
 plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              xlab=x.var, ylab="Fitted Probability",

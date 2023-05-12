@@ -12,8 +12,14 @@
 #' @param \dots arguments to be passed down.
 #' @importFrom broom glance
 #' @rdname broomMethods
-#' @seealso \code{\link{nestedMethods}}
+#' @seealso \code{\link{nestedMethods}}, \code{\link[broom]{glance}}, \code{\link[broom]{tidy}}
 #' @exportS3Method broom::glance nestedLogit
+#' @return \itemize{
+#'    \item \code{glance} returns a \code{tibble} containing one row of fit statistics for each dichotomy,
+#'          labeled \code{response}. See \code{\link[broom]{glance}} for details.
+#'    \item \code{tidy} returns a \code{tibble} containing coefficient estimates and test statistics for
+#'          the combinations of \code{response} and \code{term}. See \code{\link[broom]{tidy}} for details.
+#' }
 #' @examples
 #' data(Womenlf, package = "carData")
 #' m <-  nestedLogit(partic ~ hincome + children,

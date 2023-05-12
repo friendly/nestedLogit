@@ -1,14 +1,14 @@
 #' Hypothesis-Testing and Related Methods for \code{"nestedLogit"} Objects
 #'
 #' @name nestedHypotheses
-#' @aliases nestedHypotheses Anova.nestedLogit print.Anova.nestedLogit 
+#' @aliases nestedHypotheses Anova.nestedLogit print.Anova.nestedLogit
 #' anova.nestedLogit print.anova.nestedLogit logLik.nestedLogit
 #'
 #' @description Various methods for testing hypotheses about nested logit models.
 #' \describe{
 #'   \item{\code{Anova}}{Calculates type-II or type-III analysis-of-variance tables for \code{"nestedLogit"} objects;
 #'   see \code{\link[car]{Anova}} in the \pkg{car} package.}
-#'   \item{\code{anova}}{Computes sequential analysis of variance (or deviance) tables for one or more fitted 
+#'   \item{\code{anova}}{Computes sequential analysis of variance (or deviance) tables for one or more fitted
 #'   \code{"nestedLogit"}  objects; see \code{\link{anova}}.}
 #'   \item{\code{linearHypothesis}}{Computes Wald tests for linear hypotheses;
 #'   see \code{\link[car]{linearHypothesis}} in the \pkg{car} package.}
@@ -20,17 +20,17 @@
 #'        the second argument is typically the \code{hypothesis.matrix}. See the
 #'        Details section of \code{\link[car]{linearHypothesis}}. In the case of \code{anova},
 #'        additional sequential \code{"nestedLogit"} models.
-#'        
+#'
 #' @return \itemize{
 #'    \item The \code{Anova} and \code{anova} methods return objects
-#'     of class \code{"Anova.nestedLogit"} and \code{"anova.nestedLogit"}, respectively,
-#'    each of which contains a list of \code{"anova"} objects (see \code{\link{anova}}) 
-#'    and is usually printed.
+#'          of class \code{"Anova.nestedLogit"} and \code{"anova.nestedLogit"}, respectively,
+#'          each of which contains a list of \code{"anova"} objects (see \code{\link{anova}})
+#'          and is usually printed.
 #'    \item The \code{linearHypothesis} method is called for its side effect, printing
-#'    the result of linear hypothesis tests, and invisibly returns \code{NULL}.
+#'          the result of linear hypothesis tests, and invisibly returns \code{NULL}.
 #'    \item The \code{logLik} method returns an object of class \code{"logLik"} (see \code{\link{logLik}}).
 #' }
-#' @seealso \code{\link[car]{Anova}}, \code{\link{anova}}, 
+#' @seealso \code{\link[car]{Anova}}, \code{\link{anova}},
 #' \code{\link[car]{linearHypothesis}}, \code{\link{logLik}}, \code{\link{AIC}},
 #' \code{\link{BIC}}
 #' @author John Fox
@@ -45,7 +45,7 @@
 #' m <- nestedLogit(degree ~ parentdeg + year,
 #'                  cont.dichots,
 #'                  data=GSS)
-#'                  
+#'
 #' # Anova and anova tests
 #' car::Anova(m) # type-II (partial) tests
 #'
@@ -70,7 +70,7 @@ Anova.nestedLogit <- function(mod, ...) {
   heading <- attr(result[[1L]], "heading")[1L]
   heading <- sub("Table", "Tables", heading)
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichotomy)  
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(mod, i)$dichotomy)
   }
   attr(result, "heading") <- heading
   class(result) <- "Anova.nestedLogit"
@@ -103,7 +103,7 @@ print.Anova.nestedLogit <- function(x, ...) {
 #' @export
 linearHypothesis.nestedLogit <- function(model, ...) {
   nms <- names(models(model))
-  h <- car::linearHypothesis(models(model, 1L), ...)  
+  h <- car::linearHypothesis(models(model, 1L), ...)
   formula <-  as.character(model$formula)
   heading <- attr(h, "heading")
   heading[length(heading) - 1] <- paste("Model 1: restricted model\nModel 2:",
@@ -114,10 +114,10 @@ linearHypothesis.nestedLogit <- function(model, ...) {
   }
   attr(h, "heading") <- NULL
   table <- h
-  cat(composeResponse(nms[1L], models(model, 1L)$dichotomy), "\n") 
+  cat(composeResponse(nms[1L], models(model, 1L)$dichotomy), "\n")
   print(h)
   for (i in 2L:length(nms)) {
-    cat("\n", composeResponse(nms[i], models(model, i)$dichotomy), "\n", sep="")  
+    cat("\n", composeResponse(nms[i], models(model, i)$dichotomy), "\n", sep="")
     h <- car::linearHypothesis(models(model, i), ...)
     attr(h, "heading") <- NULL
     print(h)
@@ -152,7 +152,7 @@ anova.nestedLogit <- function(object, object2, ...){
   }
   nms <- names(models(object))
   for (i in seq(along = result)) {
-    attr(result[[i]], "heading") <- composeResponse(nms[i], models(object, i)$dichotomy) 
+    attr(result[[i]], "heading") <- composeResponse(nms[i], models(object, i)$dichotomy)
   }
   attr(result, "heading") <- heading
   class(result) <- "anova.nestedLogit"

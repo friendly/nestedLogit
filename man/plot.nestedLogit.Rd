@@ -71,6 +71,9 @@ see \code{\link{legend}}).}
 
 \item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }
+\value{
+NULL Used for its side-effect of producing a plot
+}
 \description{
 A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
 \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
