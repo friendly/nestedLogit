@@ -45,7 +45,7 @@
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
 #' @param \dots arguments to be passed down.
-#' 
+#'
 #' @return  \itemize{
 #'    \item The \code{coef} and \code{vcov} methods return either matrices or lists of regression
 #'    coefficients and their covariances, respectively.
@@ -54,7 +54,6 @@
 #'    \item The \code{predict} and \code{fitted} methods return either a matrix of predicted probabilities or an
 #'    object of class \code{"predictDichotomies"}, which is a named list with predicted logits for
 #'    each nested-dichotomy model.
-#'    \item The \code{glance} and \code{tidy} methods return 'tibbles' containing model summaries.
 #'    \item The \code{summary} method returns an object of class \code{"summary.nestedLogit"}, which is
 #'    a list of summaries of the \code{\link{glm}} objects that comprise the nested-dichotomies model; the
 #'    object is normally printed.
@@ -92,7 +91,7 @@
 #' broom::tidy(m)
 #'
 #' # predicted probabilities and ploting
-#' head(predict(m)) # fitted probabilities for first few cases; 
+#' head(predict(m)) # fitted probabilities for first few cases;
 #'                  # equivalent to head(fitted(m))
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
 #'                                "college", "graduate"),
@@ -121,7 +120,7 @@ print.nestedLogit <- function(x, ...) {
 summary.nestedLogit <- function(object, ...) {
   result <- lapply(models(object), summary, ...)
   for (i in seq_along(result)) {
-    result[[i]]$dichotomy <- models(object, i)$dichotomy 
+    result[[i]]$dichotomy <- models(object, i)$dichotomy
   }
   class(result) <- "summary.nestedLogit"
   attr(result, "formula") <- object$formula
@@ -187,7 +186,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     for (i in seq_along(models(object))) {
       p <- predict(models(object, i), newdata = newdata, type = "response")
       p <- cbind(1 - p, p)
-      attr(p, "columns") <- models(object, i)$dichotomy 
+      attr(p, "columns") <- models(object, i)$dichotomy
       fitted[[i]] <- p
     }
     response.levels <-
@@ -197,7 +196,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     colnames(p) <- response.levels
     for (level in response.levels) {
       for (i in seq_along(models(object))) {
-        which <- sapply(models(object, i)$dichotomy, function(x)  
+        which <- sapply(models(object, i)$dichotomy, function(x)
           level %in% x)
         if (!any(which))
           next
@@ -319,7 +318,7 @@ as.character.dichotomies <- function(x, ...) {
   for (i in seq_along(x)) {
     result <- paste0(result,
                      names(x[i]), " = ",
-                     "{", 
+                     "{",
                      names(x[[i]][1L]),
                      "{",
                      paste(x[[i]][[1L]], collapse = " "),
