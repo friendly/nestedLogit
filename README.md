@@ -25,10 +25,13 @@ response categories to a reference level.
 
 ## Installation
 
-The package has not yet been submitted to CRAN. This development version
-can be installed to your R library directly from the [GitHub
+The package is now available on CRAN. This development version can be
+installed to your R library directly from the [GitHub
 repo](https://github.com/friendly/nestedLogit) via:
 
+    install.packages("nestedLogit")
+
+    # or, devel version
     if (!require(remotes)) install.packages("remotes")
     remotes::install_github("friendly/nestedLogit", build_vignettes = TRUE)
 
