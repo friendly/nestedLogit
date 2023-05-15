@@ -8,6 +8,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https://github.com/friendly/nestedLogit)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-project.org/package=nestedLogit)
+[![Downloads](https://cranlogs.r-pkg.org/badges/nestedLogit?color=brightgreen)](https://www.r-pkg.org:443/pkg/nestedLogit)
 
 <!-- badges: end -->
 
