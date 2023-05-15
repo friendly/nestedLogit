@@ -1,3 +1,8 @@
+# nestedLogit 0.2.2
+
+* add example of `lobstr::tree()` to print nested lists
+* clean up plot code to omit final `par(op)`
+
 # nestedLogit 0.2.1
 
 * Reset all `par()` and `options()` calls so as to not alter user's workspace. 

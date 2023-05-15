@@ -1,6 +1,6 @@
 Package: nestedLogit
 Title: Nested Dichotomy Logistic Regression Models
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(
     person("John", "Fox", , "jfox@mcmaster.ca", role = "aut",
            comment = c(ORCID = "0000-0002-1196-8012")),
@@ -37,6 +37,7 @@ Suggests:
     geomtextpath,
     ggplot2,
     here,
+    lobstr,
     knitr,
     nnet,
     rmarkdown,

@@ -65,18 +65,46 @@ specified as:
 #> C.D: {C} vs. {D}
 ```
 
+These dichotomies are effectively a tree structure of lists, which can
+be displayed simply using `lobstr::tree()`.
+
+``` r
+lobstr::tree(ABCD)
+#> S3<dichotomies>
+#> ├─AB.CD: <list>
+#> │ ├─<chr [2]>"A", "B"
+#> │ └─<chr [2]>"C", "D"
+#> ├─A.B: <list>
+#> │ ├─"A"
+#> │ └─"B"
+#> └─C.D: <list>
+#>   ├─"C"
+#>   └─"D"
+```
+
 Alternatively, the nested dichotomies can be specified more compactly as
 a nested (i.e., recursive) list with optionally named elements. For
 example, where people might choose a method of transportation among the
 categories `plane`, `train`, `bus`, `car`, a sensible set of three
 dichotomies could be specified as:
 
-    list(
-      air = "plane",
-      ground = list(
-        public = list("train", "bus"),
-        private = "car"
-      ))
+``` r
+transport <- list(
+  air = "plane",
+  ground = list(
+    public = list("train", "bus"),
+    private = "car"
+  ))
+
+lobstr::tree(transport)
+#> <list>
+#> ├─air: "plane"
+#> └─ground: <list>
+#>   ├─public: <list>
+#>   │ ├─"train"
+#>   │ └─"bus"
+#>   └─private: "car"
+```
 
 There are also methods including `as.matrix.dichotomies()`,
 `as.character.dichotomies()` to facilitate working with `dichotomies`
@@ -90,6 +118,9 @@ as.matrix(ABCD)
 #> AB.CD  0  0  1  1
 #> A.B    0  1 NA NA
 #> C.D   NA NA  0  1
+
+as.character(ABCD)
+#> [1] "AB.CD = {{A B}} {{C D}}; A.B = {{A}} {{B}}; C.D = {{C}} {{D}}"
 ```
 
 The result of `nestedLogit()` is an object of class `"nestedLogit"`. It
@@ -170,20 +201,30 @@ coef(m)
 #> childrenpresent -1.57564843 -2.6514557
 ```
 
-What the `"nestedLogit"` object contains:
+The `"nestedLogit"` object contains the components of the fitted model.
+The structure can be shown nicely using `lobstr::tree()`:
 
 ``` r
-names(m)
-#> [1] "models"          "formula"         "dichotomies"     "data"           
-#> [5] "data.name"       "subset"          "contrasts"       "contrasts.print"
+m |> lobstr::tree(max_depth=1)
+#> S3<nestedLogit>
+#> ├─models: <list>...
+#> ├─formula: S3<formula> partic ~ hincome + children...
+#> ├─dichotomies: S3<dichotomies>...
+#> ├─data: S3<data.frame>...
+#> ├─data.name: <symbol> Womenlf
+#> ├─subset: <NULL>
+#> ├─contrasts: <NULL>
+#> └─contrasts.print: "NULL"
 ```
 
 The separate models for the `work` and `full` dichotomies can be
-extracted via `models()`:
+extracted via `models()`. These are the binomial `glm()` models.
 
 ``` r
-names(models(m))   # same as names(m$models)
-#> [1] "work" "full"
+models(m) |> lobstr::tree(max_depth = 1)
+#> <list>
+#> ├─work: S3<glm/lm>...
+#> └─full: S3<glm/lm>...
 ```
 
 `Anova()` produces analysis of variance deviance tests for the terms in
@@ -223,7 +264,8 @@ car::Anova(m)
 ### Plots
 
 A basic plot of predicted probabilities can be produced using the
-`plot()` method for `"nestedLogit"` objects.
+`plot()` method for `"nestedLogit"` objects. It can be called several
+times to give multi-panel plots.
 
 ``` r
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
@@ -234,10 +276,6 @@ plot(m, "hincome", list(children="present"),
 ```
 
 <img src="man/figures/README-wlf-plot-1.png" width="100%" />
-
-``` r
-par(op)
-```
 
 ## Vignettes
 

@@ -73,19 +73,28 @@ could be specified as:
 )
 ```
 
+These dichotomies are effectively a tree structure of lists, which can be displayed simply using
+`lobstr::tree()`.
+
+```{r tree}
+lobstr::tree(ABCD)
+```
+
 
 Alternatively, the nested dichotomies can be specified more compactly as a nested (i.e., recursive) list 
 with optionally named elements. For example, where people might choose a method of transportation
 among the categories `plane`, `train`, `bus`, `car`, a sensible set of three dichotomies could
 be specified as:
 
-```
-list(
+```{r transport}
+transport <- list(
   air = "plane",
   ground = list(
     public = list("train", "bus"),
     private = "car"
   ))
+
+lobstr::tree(transport)
 ```
 
 
@@ -96,6 +105,8 @@ are the response levels:
 
 ```{r}
 as.matrix(ABCD)
+
+as.character(ABCD)
 ```
 
 
@@ -138,15 +149,17 @@ m <- nestedLogit(partic ~ hincome + children,
                  data=Womenlf)
 coef(m)
 ```
-What the `"nestedLogit"` object contains:
+The `"nestedLogit"` object contains the components of the fitted model. The structure can be shown nicely
+using `lobstr::tree()`:
 
 ```{r}
-names(m)
+m |> lobstr::tree(max_depth=1)
 ```
 
-The separate models for the `work` and `full` dichotomies can be extracted via `models()`:
+The separate models for the `work` and `full` dichotomies can be extracted via `models()`. These
+are the binomial `glm()` models.
 ```{r}
-names(models(m))   # same as names(m$models)
+models(m) |> lobstr::tree(max_depth = 1)
 ```
 
 `Anova()` produces analysis of variance deviance tests for the terms in this model for each of the submodels, as well as for the combined responses of the polytomy. The `LR Chisq` and `df` for terms in the combined model are the sums of those for
@@ -160,11 +173,12 @@ car::Anova(m)
 ### Plots
 A basic plot of predicted probabilities can be produced using
 the `plot()` method for `"nestedLogit"` objects.
-
+It can be called several times to give multi-panel plots.
 
 ```{r wlf-plot}
 #| out.width = "100%",
-#| fig.height = 4
+#| fig.height = 4,
+#| echo = 1:3
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
