@@ -1,7 +1,7 @@
 # nestedLogit 0.2.2
 
 * add example of `lobstr::tree()` to print nested lists
-* clean up plot code to omit final `par(op)`
+* use fig.show="hold" to keep `par(op)` with the code
 
 # nestedLogit 0.2.1
 
