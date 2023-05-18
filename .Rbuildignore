@@ -8,3 +8,5 @@ README.*
 ^docs$
 ^pkgdown$
 ^CRAN-SUBMISSION$
+Makefile
+
