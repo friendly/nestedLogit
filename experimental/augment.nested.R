@@ -40,16 +40,16 @@ augment.nested <- function(x,
                            ...)
 {
   if (is.null(data))
-    data <- model.frame(x$models[[1L]])
+    data <- model.frame(models(x)[[1L]])
   if (missing(newdata))
-    newdata <- x$models[[1L]]$data
+    newdata <- models(x)[[1L]]$data
 
   type.predict <- match.arg(type.predict)
 
   if (type.predict == "link") {
 
-    nms <- names(x$models)
-    result <- lapply(x$models, broom::augment,
+    nms <- names(models(x))
+    result <- lapply(models(x), broom::augment,
                      data=data,
                      newdata=newdata,
                      type.predict = type.predict,
@@ -57,7 +57,7 @@ augment.nested <- function(x,
                      ... )
 
     cls <- class(result[[1L]])
-    for (i in seq_along(x$models)) {
+    for (i in seq_along(models(x))) {
       result[[i]] <- cbind(response = nms[i], result[[i]])
     }
     result <- dplyr::bind_rows(result) |>

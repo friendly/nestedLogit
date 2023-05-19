@@ -29,7 +29,7 @@ wlf.augmented <- lapply(wlf.nested$models, broom::augment)
 names(wlf.augmented)
 
 # try our function
-wlf.aug <- augment(wlf.nested)
+wlf.aug <- augment.nested(wlf.nested)
 
 names(wlf.aug)
 # why don't we get the other variables computed by broom::augment.glm?
@@ -72,7 +72,11 @@ gg + geom_ribbon(aes(ymin=.fitted-.se.fit,
 
 #' label the lines directly
 library(geomtextpath)
-gg + geom_textline(aes(label = children), vjust=-0.5, size=6) +
+gg +
+  geom_ribbon(aes(ymin=.fitted-.se.fit,
+                  ymax=.fitted+.se.fit,
+                  fill = children), alpha = 0.4) +
+  geom_textline(aes(label = children), vjust=-0.5, size=6) +
   theme(legend.position = "none")
 
 
