@@ -3,10 +3,11 @@
 #'
 #' @param x         a predictNestedLogit object
 #' @param row.names row.names for result (not currently used)
-#' @param newdata   the `newdata` data.frame used to generate predicted values
-#' @param ...
+#' @param newdata   the \code{newdata} data.frame used to generate predicted values
+#' @param ...       other arguments (unused)
 #'
-#' @return
+#' @return A data frame containing the newdata values of predictors along with the columns
+#'         \code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}
 #' @export
 #'
 #' @examples
