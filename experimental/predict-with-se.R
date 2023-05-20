@@ -1,9 +1,11 @@
 predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
   model <- match.arg(model)
+  
+  if (missing(newdata))
+    newdata <- models(object, 1)$data
+  
   if (model == "nested"){
-    
-    if (missing(newdata))
-      newdata <- models(object, 1)$data
+  
     ndichot <- length(models(object))
     if (ndichot < 2L)
       stop("there are fewer than 2 nested dichotomies")
@@ -63,7 +65,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     
   } else {
     
-    result <- lapply(models(object), function(x) as.data.frame(predict(x,  newdata=newdata, ...)))
+    result <- lapply(models(object), function(x) as.data.frame(predict(x, newdata=newdata, ...)))
     attr(result, "model") <- deparse(substitute(object))
     class(result) <- "predictDichotomies"
     return(result)
