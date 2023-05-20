@@ -2,6 +2,8 @@
 
 * add example of `lobstr::tree()` to print nested lists
 * use fig.show="hold" to keep `par(op)` with the code
+* `predict()` method now computes standard errors for probabilities and logits using the delta method.
+* added a `confint()` method for predicted probabilities and logits
 
 # nestedLogit 0.2.1
 

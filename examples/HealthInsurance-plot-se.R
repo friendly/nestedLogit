@@ -43,7 +43,7 @@ plotdata |>
   geom_ribbon(aes(ymin=p - se.p,
                   ymax=p + se.p,
                   fill = response), alpha = 0.3) +
-  geom_textline(aes(label = response), hjust = -0.01, vjust=-0.5, size=5) +
+#  geom_textline(aes(label = response), hjust = -0.01, vjust=-0.5, size=5) +
   theme(legend.position = "none")
 
 
