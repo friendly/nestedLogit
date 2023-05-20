@@ -1,5 +1,6 @@
 library(nestedLogit)
 source("./experimental/predict-with-se.R")
+source("./experimental/plot.nested--with-conf-limits.R")
 
 data(Womenlf, package="carData")
 
@@ -20,3 +21,24 @@ print(pred.nested, object=TRUE)
 confint(pred.nested)
 confint(pred.nested, parm="logit")
 confint(pred.nested, conf.limits.logit=FALSE) # note some limits < 0 and > 1
+
+plot(wlf.nested, "hincome", list(children="absent"),
+  xlab="Husband's Income", legend.location="top")
+
+plot(wlf.nested, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top", conf.alpha=0.1)
+
+plot(wlf.nested, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top", conf.level=0.5)
+
+plot(wlf.nested, "children", list(hincome=round(mean(Womenlf$hincome))),
+     legend.location="top")
+
+plot(wlf.nested, "children", list(hincome=round(mean(Womenlf$hincome))),
+     legend.location="top", conf.level=0.5)
+
+plot(wlf.nested, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top", conf.level=NULL)
+
+plot(wlf.nested, "children", list(hincome=round(mean(Womenlf$hincome))),
+     legend.location="top", conf.level=NULL)

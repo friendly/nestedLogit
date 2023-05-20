@@ -56,13 +56,14 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     logit <- log(p/(1 - p))
     v.logit <- (1/(p*(1 - p)))^2 * v
     rownames(v.logit) <- rownames(v) <- rownames(logit) <- rownames(p) <- rownames(newdata)
-    result <- list(p = p, logit = logit, se.p = sqrt(v), se.logit = sqrt(v.logit))
+    result <- list(p = as.data.frame(p), logit = as.data.frame(logit), 
+                   se.p = as.data.frame(sqrt(v)), se.logit = as.data.frame(sqrt(v.logit)))
     class(result) <- "predictNestedLogit"
     return(result)
     
   } else {
     
-    result <- lapply(models(object), predict, newdata=newdata, ...)
+    result <- lapply(models(object), function(x) as.data.frame(predict(x,  newdata=newdata, ...)))
     attr(result, "model") <- deparse(substitute(object))
     class(result) <- "predictDichotomies"
     return(result)
@@ -115,7 +116,7 @@ confint.predictNestedLogit <- function (object, parm=c("prob", "logit"),
                   round(1 - (1 - level)/2, 4))
     cnames <- paste0(cnames.1, ".", rep(cnames.2, each=ncol(logit)))
     colnames(result) <- cnames
-    return(result)
+    return(as.data.frame(result))
   } else {
     if (conf.limits.logit){
       p <- object$"p"
@@ -137,6 +138,6 @@ confint.predictNestedLogit <- function (object, parm=c("prob", "logit"),
                   round(1 - (1 - level)/2, 4))
     cnames <- paste0(cnames.1, ".", rep(cnames.2, each=ncol(p)))
     colnames(result) <- cnames
-    return(result)  
+    return(as.data.frame(result))
   }
 }

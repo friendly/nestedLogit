@@ -3,6 +3,7 @@ library(dplyr, warn.conflicts = FALSE)
 library(tidyr)
 library(ggplot2)
 library(geomtextpath)
+source("./experimental/predict-with-se.R")
 
 data(Womenlf, package="carData")
 
@@ -43,7 +44,7 @@ pred.nested.df <-lapply(pred.nested.df, cbind, new)
 prob  <- pred.nested.df$p  |> relocate(hincome, children)
 
 se.prob <- pred.nested.df$se.p |> relocate(hincome, children)
-resp.names <- colnames(p)
+resp.names <- colnames(pred.nested.df$p)
 
 p_long <- prob |>
   tidyr::pivot_longer(cols = not.work:fulltime,
@@ -77,7 +78,7 @@ ggplot(plotprob,
 logit  <- pred.nested.df$logit  |> relocate(hincome, children)
 
 se.logit <- pred.nested.df$se.logit |> relocate(hincome, children)
-resp.names <- colnames(p)
+resp.names <- colnames(pred.nested.df$p)
 
 p_long <- logit |>
   tidyr::pivot_longer(cols = not.work:fulltime,
