@@ -3,7 +3,7 @@
 #'
 #' @param x         a predictNestedLogit object
 #' @param row.names row.names for result (not currently used)
-#' @param newdata   the \code{newdata} data.frame used to generate predicted values
+#' @param newdata   the (optional)  \code{newdata} data.frame used to generate predicted values
 #' @param ...       other arguments (unused)
 #'
 #' @return A data frame containing the newdata values of predictors along with the columns
@@ -12,19 +12,20 @@
 #'
 #' @examples
 as.data.frame.predictNestedLogit <- function(x, row.names = NULL, newdata, ...){
-  if(missing(newdata)) stop("`newdata` is required.")
   resp.names <- colnames(x$p)
 
-  idx <- rep(seq_len(nrow(newdata)), each = length(resp.names))
-  result <- newdata[idx, ]
-  result <- cbind(
-    result,
+  result <- data.frame(
     response = rep(resp.names, nrow(x$p)),
     p        = as.vector(t(x$p)),
     se.p     = as.vector(t(x$se.p)),
     logit    = as.vector(t(x$logit)),
     se.logit = as.vector(t(x$se.logit))
   )
+  if(!missing(newdata)) {
+    idx <- rep(seq_len(nrow(newdata)), each = length(resp.names))
+    result <- cbind(newdata[idx, ], result)
+  }
+
   rownames(result) <- NULL
   result
 }
