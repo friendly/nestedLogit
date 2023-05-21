@@ -99,7 +99,7 @@ print.predictNestedLogit <- function(x, object=FALSE, n, ...){
     cat("\n predictions for nested-dichotomies logit model",
         attr(x, "model"))
     cat(paste0("\n\n access via:", 
-               "\n   $p for predicted response-category probabilties",
+               "\n   $p for predicted response-category probabilities",
                "\n   $logit for predicted response-category logits",
                "\n   $se.p for predicted probabilities standard errors",
                "\n   $se.logit for predicted logits standard errors"))
