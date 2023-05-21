@@ -1,9 +1,11 @@
 # nestedLogit 0.2.2
 
-* add example of `lobstr::tree()` to print nested lists
-* use fig.show="hold" to keep `par(op)` with the code
-* `predict()` method now computes standard errors for probabilities and logits using the delta method.
-* added a `confint()` method for predicted probabilities and logits
+* Added an example of `lobstr::tree()` to print nested lists
+* No use fig.show="hold" to keep `par(op)` with the code.
+* The `predict()` method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dischotomies.
+* An `as.data.frame()` method for predicted probabilities converts these to a data frame in long format, handy for using `ggplot()`.
+* Added a `confint()` method for predicted probabilities and logits
+* The `plot()` method now plots confidence intervales 
 
 # nestedLogit 0.2.1
 
