@@ -65,20 +65,24 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     
   } else {
     
-    result <- lapply(models(object), function(x) as.data.frame(predict(x, newdata=newdata, ...)))
-    attr(result, "model") <- deparse(substitute(object))
-    class(result) <- "predictDichotomies"
+    # result <- lapply(models(object), function(x) as.data.frame(predict(x, newdata=newdata, ...)))
+    # attr(result, "model") <- deparse(substitute(object))
+    # class(result) <- "predictDichotomies"
+    
+    result <- lapply(models(object), function(x) predict(x, newdata=newdata, ...))
+    result <- as.data.frame(do.call(cbind, result))
+    colnames(result) <- names(object$models)
     return(result)
   }
 }
 
-print.predictDichotomies <- function(x, ...){
-  cat("\n predictions for binary logit models from nested logit model:",
-      attr(x, "model"))
-  cat("\n for responses:", paste(names(x), sep=", "))
-  cat(paste0("\n access via $", names(x)[1], " etc."))
-  invisible(x)
-}
+# print.predictDichotomies <- function(x, ...){
+#   cat("\n predictions for binary logit models from nested logit model:",
+#       attr(x, "model"))
+#   cat("\n for responses:", paste(names(x), sep=", "))
+#   cat(paste0("\n access via $", names(x)[1], " etc."))
+#   invisible(x)
+# }
 
 print.predictNestedLogit <- function(x, object=FALSE, n, ...){
   if (object){

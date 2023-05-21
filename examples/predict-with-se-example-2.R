@@ -42,3 +42,12 @@ plot(wlf.nested, "hincome", list(children="absent"),
 
 plot(wlf.nested, "children", list(hincome=round(mean(Womenlf$hincome))),
      legend.location="top", conf.level=NULL)
+
+pred.dichotomies <- predict(wlf.nested, model="dichotomies", newdata=new)
+pred.dichotomies
+str(pred.dichotomies)
+
+pred.dichotomies <- predict(wlf.nested, model="dichotomies")
+head(pred.dichotomies)
+tail(pred.dichotomies)
+str(pred.dichotomies)
