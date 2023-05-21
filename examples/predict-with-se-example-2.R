@@ -51,3 +51,74 @@ pred.dichotomies <- predict(wlf.nested, model="dichotomies")
 head(pred.dichotomies)
 tail(pred.dichotomies)
 str(pred.dichotomies)
+
+# compare to multinomial logit model
+
+library(nnet)
+library(effects)
+
+m <- multinom(partic ~ hincome + children, data=Womenlf)
+plot(Effect(c("hincome", "children"), m))
+
+comparisons <- logits(full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                      part=dichotomy("not.work", "parttime"))
+
+n <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+
+plot(n, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top")
+
+library(nnet)
+library(effects)
+
+m <- multinom(partic ~ hincome + children, data=Womenlf)
+plot(Effect(c("hincome", "children"), m))
+
+comparisons <- logits(full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                      part=dichotomy("not.work", "parttime"))
+
+n <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+
+plot(n, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top")
+
+library(nnet)
+library(effects)
+
+m <- multinom(partic ~ hincome + children, data=Womenlf)
+plot(Effect(c("hincome", "children"), m))
+
+comparisons <- logits(full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                      part=dichotomy("not.work", "parttime"))
+
+n <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+
+plot(n, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top")
+
+library(nnet)
+library(effects)
+
+m <- multinom(partic ~ hincome + children, data=Womenlf)
+plot(Effect(c("hincome", "children"), m))
+
+comparisons <- logits(full=dichotomy(c("not.work", "parttime"), "fulltime"),
+                      part=dichotomy("not.work", "parttime"))
+
+n <- nestedLogit(partic ~ hincome + children,
+                 dichotomies = comparisons,
+                 data=Womenlf)
+
+plot(n, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend.location="top")
+
+head(predict(m, type="probs")[, c("not.work", "parttime", "fulltime")])
+head(predict(n)$p)
+diag(cor(predict(m, type="probs")[, c("not.work", "parttime", "fulltime")], predict(n)$p))
+apply(abs(predict(m, type="probs")[, c("not.work", "parttime", "fulltime")] - predict(n)$p), 2, mean)
