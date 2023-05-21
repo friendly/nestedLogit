@@ -63,7 +63,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              legend=TRUE, legend.inset=0.01,
                              legend.location="topleft",
                              legend.bty = "n", conf.level=0.95, 
-                             conf.alpha=0.5, ...){
+                             conf.alpha=0.3, ...){
   data <- x$data
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
