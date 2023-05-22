@@ -16,7 +16,6 @@ new <- expand.grid(hincome=seq(0, 45, length=4),
 
 pred.nested <- predict(wlf.nested, new)
 pred.nested
-print(pred.nested, object=TRUE)
 
 confint(pred.nested)
 confint(pred.nested, parm="logit")
