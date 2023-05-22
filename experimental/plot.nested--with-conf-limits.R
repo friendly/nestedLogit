@@ -22,6 +22,7 @@
 #' @param main main title for the graph (if missing, constructed from the variables and
 #'        values in \code{others}).
 #' @param cex.main size of main title (see \code{\link{par}}).
+#' @param digits.main number of digits to retain when rounding values for the main title.
 #' @param font.main font for main title (see \code{\link{par}}).
 #' @param pch plotting characters (see \code{\link{par}}).
 #' @param lwd line width (see \code{\link{par}}).
@@ -33,6 +34,9 @@
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
 #' @param legend.bty  the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".
+#' @param conf.level the level for pointwise confidence envelopes around the predicted response probabilities; 
+#' the default is \code{.0.95}. If \code{NULL}, the confidence envelopes are suppressed.
+#' @param conf.alpha the opacity of the confidence envelopes; the default is \code{0.3}.
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
