@@ -52,7 +52,7 @@
 #' @param conf.limits.logit \code{TRUE} (the default) or \code{FALSE}; when computing confidence limits for predicted probabilities,
 #'        do the computation on the logit scale and transform to the probability scale.
 #' @param n the number of rows of the data frames of predicted probabilities, logits, and their
-#'        standard errors to print; the default is the smaller of 20 and the number of rows in 
+#'        standard errors to print; the default is the smaller of 10 and the number of rows in 
 #'        these data frames; set to \code{Inf} or \code{"all"} to print all rows.
 #' @param \dots arguments to be passed down.
 #'
@@ -103,8 +103,8 @@
 #' broom::tidy(m)
 #'
 #' # predicted probabilities and ploting
-#' print(predict(m), object=TRUE, n=5) # fitted probabilities for first 5 cases;
-#'                  # equivalent to print(fitted(m), object=TRUE, n=5)
+#' print(predict(m)) # fitted probabilities for first 10 cases;
+#'                  # equivalent to print(fitted(m))
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
@@ -206,7 +206,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
 
 #' @rdname nestedMethods
 #' @export
-print.predictNestedLogit <- function(x, n=min(20L, nrow(x$p)), ...){
+print.predictNestedLogit <- function(x, n=min(10L, nrow(x$p)), ...){
   if (n == "all") n <- nrow(x$p)
   if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst 20 of ", nrow(x$p), " rows:\n"))
     cat("\npredicted response-category probabilties\n")
