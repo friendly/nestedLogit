@@ -74,7 +74,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   }
   if (!(x.var %in% vars)) stop (x.var, " is not in the model")
   if (!missing(others)){
-    if (any(sapply(others, length) > 1))
+    if (any(sapply(others, length) > 1L))
       stop("more than one value specified for one or more variables in others")
     other.x <- names(others)
     check <- other.x %in% vars
@@ -118,15 +118,15 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   new <- do.call(expand.grid, values)
   predictions <- predict(x, newdata=new)
   response.levels <- levels(data[[response]])
-  lower.upper <- paste0(".", c(round((1 - conf.level)/2, 4), 
-                                round(1 - (1 - conf.level)/2, 4)))
+  lower.upper <- paste0(".", c(round((1 - conf.level)/2, 4L), 
+                                round(1 - (1 - conf.level)/2, 4L)))
   if (!is.null(conf.level)){
     ci <- confint(predictions, level=conf.level)
     new <- cbind(new, ci[, paste0(response.levels, ".p")], 
-                 ci[, paste0(response.levels, lower.upper[1])], 
-                 ci[, paste0(response.levels, lower.upper[2])])
-    ymin <- min(new[, paste0(response.levels, lower.upper[1])])
-    ymax <- max(new[, paste0(response.levels, lower.upper[2])])
+                 ci[, paste0(response.levels, lower.upper[1L])], 
+                 ci[, paste0(response.levels, lower.upper[2L])])
+    ymin <- min(new[, paste0(response.levels, lower.upper[1L])])
+    ymax <- max(new[, paste0(response.levels, lower.upper[2L])])
   } else {
     new <- cbind(new, predictions$p)
   }
@@ -141,8 +141,8 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
       for (i in seq_along(response.levels)){
         level <- response.levels[i]
         polygon(c(new[, x.var], rev(new[, x.var])), 
-                c(new[, paste0(level, lower.upper[1])], 
-                  rev(new[, paste0(level, lower.upper[2])])),
+                c(new[, paste0(level, lower.upper[1L])], 
+                  rev(new[, paste0(level, lower.upper[2L])])),
                 col=adjustcolor(col[i], alpha.f=conf.alpha), border=NA)
       }
     }
@@ -168,9 +168,9 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
       for (i in 1L:n.x.levels){
         for (j in seq_along(response.levels)){
           level <- response.levels[j]
-          arrows(x0=i, y0=new[i, paste0(level, lower.upper[1])], 
-                 y1=new[i, paste0(level, lower.upper[2])],
-                 angle=90, col=j, lwd=3, code=3, length=0.1)
+          arrows(x0=i, y0=new[i, paste0(level, lower.upper[1L])], 
+                 y1=new[i, paste0(level, lower.upper[2L])],
+                 angle=90, col=j, lwd=3, code=3L, length=0.1)
         }
       }
     }
