@@ -51,11 +51,9 @@
 #' @param level confidence level; the default is \code{0.95}
 #' @param conf.limits.logit \code{TRUE} (the default) or \code{FALSE}; when computing confidence limits for predicted probabilities,
 #'        do the computation on the logit scale and transform to the probability scale.
-#' @param object \code{TRUE} or \code{FALSE} (the drault); if \code{TRUE}, when printing predicted values,
-#'        print the predicted probabilities, logits, and their standard errors, or if \code{FALSE},
-#'        print a message how to extract these values.
-#' @param n the number of rows of the data frames of predicted probabilites, logits, and their
-#'        standard errors tp print; if missing, all of the rows will be printed.
+#' @param n the number of rows of the data frames of predicted probabilities, logits, and their
+#'        standard errors to print; the default is the smaller of 20 and the number of rows in 
+#'        these data frames; set to \code{Inf} or \code{"all"} to print all rows.
 #' @param \dots arguments to be passed down.
 #'
 #' @return  \itemize{
@@ -208,26 +206,21 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
 
 #' @rdname nestedMethods
 #' @export
-print.predictNestedLogit <- function(x, object=FALSE, n, ...){
-  if (object){
-    if (missing(n)) n <- nrow(x$p)
+print.predictNestedLogit <- function(x, n=min(20L, nrow(x$p)), ...){
+  if (n == "all") n <- nrow(x$p)
+  if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst 20 of ", nrow(x$p), " rows:\n"))
     cat("\npredicted response-category probabilties\n")
     print(x$p[1:n, ], ...)
+    if (truncate) cat("  . . .\n")
     cat("\npredicted response-category logits\n")
     print(x$logit[1:n, ], ...)
+    if (truncate) cat("  . . .\n")
     cat("\nstandard errors of predicted probabilities\n")
     print(x$se.p[1:n, ], ...)
+    if (truncate) cat("  . . .\n")
     cat("\nstandard errors of predicted logits\n")
     print(x$se.logit[1:n, ], ...)
-  } else {
-    cat("\n predictions for nested-dichotomies logit model",
-        attr(x, "model"))
-    cat(paste0("\n\n access via:", 
-               "\n   $p for predicted response-category probabilities",
-               "\n   $logit for predicted response-category logits",
-               "\n   $se.p for predicted probabilities standard errors",
-               "\n   $se.logit for predicted logits standard errors"))
-    }
+    if (truncate) cat("  . . .\n")
   invisible(x)
 }
 
