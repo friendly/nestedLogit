@@ -56,7 +56,8 @@
 #' @export
 plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              xlab=x.var, ylab="Fitted Probability",
-                             main, cex.main=1, font.main=1L,
+                             main, cex.main=1, digits.main=getOption("digits") - 2L,
+                             font.main=1L,
                              pch=1L:length(response.levels),
                              lwd=3, lty=1L:length(response.levels),
                              col=palette()[1L:length(response.levels)],
@@ -186,6 +187,7 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
     if (length(values) != 0L){
       which.main <- !(x.var == names(values))
       if (any(which.main)){
+        values <- lapply(values, function(x) if (is.numeric(x)) signif(x, digits.main) else x)
         main <- paste(paste(names(values[which.main]), "=",
                             as.character(unlist(values[which.main]))),
                       collapse=", ")
