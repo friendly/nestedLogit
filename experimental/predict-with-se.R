@@ -192,16 +192,16 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
       deriv <- rep(1, nrow(newdata))
       
       for (j in seq_along(models(object))) {
-        which <- sapply(models(object, j)$dichotomy, function(x) k %in% x)
-        if (!any(which)) next
+        which.j <- sapply(models(object, j)$dichotomy, function(x) k %in% x)
+        if (!any(which.j)) next
 
         for (jp in seq_along(models(object))){
-          which2 <- sapply(models(object, jp)$dichotomy, function(x) k %in% x)
-          if (j == jp || !any(which2)) next
-          deriv <- deriv * fitted[[jp]][, which2]
+          which.jp <- sapply(models(object, jp)$dichotomy, function(x) k %in% x)
+          if (j == jp || !any(which.jp)) next
+          deriv <- deriv * fitted[[jp]][, which.jp]
         }
         
-        p[, k] <- p[, k] * fitted[[j]][, which]
+        p[, k] <- p[, k] * fitted[[j]][, which.j]
         v[, k] <- v[, k] + deriv^2 * var.fitted[[j]]
       }
     }
