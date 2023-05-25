@@ -130,19 +130,6 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     if (ndichot < 2L)
       stop("there are fewer than 2 nested dichotomies")
     
-    # var.fitted <- fitted <- vector(ndichot, mode = "list")
-    # for (j in seq_along(models(object))) {
-    #   p <- predict(models(object, j), newdata = newdata, type = "response")
-    #   p <- cbind(1 - p, p)
-    #   attr(p, "columns") <- models(object, j)$dichotomy
-    #   fitted[[j]] <- p
-    #   fit <- predict(models(object, j), newdata = newdata, type = "link", 
-    #                  se.fit=TRUE)
-    #   lambda <- fit$fit
-    #   var <- (fit$se.fit)^2
-    #   var.fitted[[j]] <- ((exp(lambda)/((1 + exp(lambda))^2))^2) * var
-    # }
-    
     var.fitted <- fitted <- vector(ndichot, mode = "list")
     for (j in seq_along(models(object))) {
       pred <- predict(models(object, j), newdata = newdata, type = "response",
@@ -166,32 +153,12 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     #     of the response
     #  jp: like j, but also excludes current value of j
 
-    
-    # for (k in response.levels) {
-    #   
-    #   dev <- rep(1, nrow(newdata))
-    #   
-    #   for (j in seq_along(models(object))) {
-    #     which <- sapply(models(object, j)$dichotomy, function(x) k %in% x)
-    #     if (!any(which)) next
-    #     
-    #     for (jp in seq_along(models(object))){
-    #       if (!any(which) || j == jp) next
-    #       dev <- dev * fitted[[jp]][, which]
-    #     }
-    #     
-    #     p[, k] <- p[, k] * fitted[[j]][, which]
-    #     v[, k] <- v[, k] + dev^2 * var.fitted[[j]]
-    #   }
-    # }
-    
-   # browser()
-    
     for (k in response.levels) {
       
-      deriv <- rep(1, nrow(newdata))
-      
       for (j in seq_along(models(object))) {
+        
+        deriv <- rep(1, nrow(newdata))
+        
         which.j <- sapply(models(object, j)$dichotomy, function(x) k %in% x)
         if (!any(which.j)) next
 
