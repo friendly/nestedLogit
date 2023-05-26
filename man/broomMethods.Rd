@@ -31,7 +31,7 @@ These functions give compact summaries of a \code{"nestedLogit"} object
 }
 }
 \examples{
-data(Womenlf, package = "carData")
+data("Womenlf", package = "carData")
 m <-  nestedLogit(partic ~ hincome + children,
                   dichotomies = logits(work=dichotomy("not.work",
                                                       working=c("parttime", "fulltime")),

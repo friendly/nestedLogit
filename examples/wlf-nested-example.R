@@ -75,20 +75,20 @@ all(abs(rowSums(p2) - 1) < .Machine$double.eps)
 
 plotdata <- cbind(new, p)
 
-par(mfrow=c(1, 2))
-plot(c(1, 45), 0:1, type="n", xlab="Husband's Income", ylab="Probability",
-     main="Children Absent")
-with(plotdata, lines(spline(hincome[1:10], fulltime[1:10]), col="blue", lwd=2))
-with(plotdata, lines(spline(hincome[1:10], parttime[1:10]), col="magenta", lwd=2))
-with(plotdata, lines(spline(hincome[1:10], not.work[1:10]), col="darkcyan", lwd=2))
-legend("topright", inset=.02, lwd=2, col=c("blue", "magenta", "darkcyan"),
-       legend=c("Full Time", "Part Time", "Not Working"))
-
-plot(c(1, 45), 0:1, type="n", xlab="Husband's Income", ylab="Probability",
-     main="Children Present")
-with(plotdata, lines(spline(hincome[11:20], fulltime[11:20]), col="blue", lwd=2))
-with(plotdata, lines(spline(hincome[11:20], parttime[11:20]), col="magenta", lwd=2))
-with(plotdata, lines(spline(hincome[11:20], not.work[11:20]), col="darkcyan", lwd=2))
+# par(mfrow=c(1, 2))
+# plot(c(1, 45), 0:1, type="n", xlab="Husband's Income", ylab="Probability",
+#      main="Children Absent")
+# with(plotdata, lines(spline(hincome[1:10], fulltime[1:10]), col="blue", lwd=2))
+# with(plotdata, lines(spline(hincome[1:10], parttime[1:10]), col="magenta", lwd=2))
+# with(plotdata, lines(spline(hincome[1:10], not.work[1:10]), col="darkcyan", lwd=2))
+# legend("topright", inset=.02, lwd=2, col=c("blue", "magenta", "darkcyan"),
+#        legend=c("Full Time", "Part Time", "Not Working"))
+#
+# plot(c(1, 45), 0:1, type="n", xlab="Husband's Income", ylab="Probability",
+#      main="Children Present")
+# with(plotdata, lines(spline(hincome[11:20], fulltime[11:20]), col="blue", lwd=2))
+# with(plotdata, lines(spline(hincome[11:20], parttime[11:20]), col="magenta", lwd=2))
+# with(plotdata, lines(spline(hincome[11:20], not.work[11:20]), col="darkcyan", lwd=2))
 
 continuationLogits(3)
 continuationLogits(c("low", "medium", "high", "very.high"))

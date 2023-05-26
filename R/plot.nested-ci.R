@@ -40,7 +40,7 @@
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
-#' data(Womenlf, package = "carData")
+#' data("Womenlf", package = "carData")
 #' m <- nestedLogit(partic ~ hincome + children,
 #'                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime")),
@@ -52,6 +52,7 @@
 #' plot(m, "hincome", list(children="present"),
 #'      xlab="Husband's Income")
 #' par(op)
+#'
 #' @importFrom grDevices palette adjustcolor
 #' @importFrom graphics axis box matplot title arrows polygon
 #' @importFrom stats formula

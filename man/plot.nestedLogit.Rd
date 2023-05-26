@@ -91,7 +91,7 @@ for each level of the polytomous response variable, with one of the explanatory 
 on the horizontal axis and other explanatory variables fixed to particular values.
 }
 \examples{
-data(Womenlf, package = "carData")
+data("Womenlf", package = "carData")
 m <- nestedLogit(partic ~ hincome + children,
                  logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime")),
@@ -103,6 +103,7 @@ plot(m, "hincome", list(children="absent"),
 plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 par(op)
+
 }
 \seealso{
 \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}

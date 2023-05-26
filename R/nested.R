@@ -35,7 +35,7 @@
 #' specified more compactly as a nested (i.e., recursive) list with optionally named
 #' elements; for example,
 #' \code{list(air="plane", ground=list(public=list("train", "bus"), private="car"))}.
-#' 
+#'
 #' The function \code{continuationLogits} provides a
 #' convenient way to generate all dichotomies for an ordered response.
 #' For an ordered response with \eqn{m=4} levels, say, \code{A, B, C, D},
@@ -43,7 +43,7 @@
 #' The dichotomy first contrasts \code{B, C, D} against \code{A}.
 #' The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
 #' The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
-#' 
+#'
 #'
 #' @aliases nestedLogit logits dichotomy continuationLogits
 #'
@@ -90,7 +90,7 @@
 #'    \item \code{contrasts.print} a character representation of the \code{contrasts} argument or
 #'    \code{"NULL"} if the argument isn't specified.
 #' }
-#'   \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"} 
+#'   \code{logits} and \code{continuationLogits} return objects of class \code{"dichotomies"}
 #'   and \code{c("continuationDichotomies" "dichotomies")}, respectively, which are two-elements lists,
 #'   each element containing a list of two character vectors representing a dichotomy.
 #'   \code{dichotomy} returns a list of two character vectors representing a dichotomy.
@@ -99,22 +99,22 @@
 #' @references
 #' S. Fienberg (1980). \emph{The Analysis of Cross-Classified Categorical Data},
 #'       2nd Edition, MIT Press, Section 6.6.
-#'       
+#'
 #' J. Fox (2016), \emph{Applied Linear Regression and Generalized Linear Models}, 3rd Edition, Sage,
 #'       Section 14.2.2.
-#'       
+#'
 #' J. Fox and S. Weisberg (2011), \emph{An R Companion to Applied Regression}, 2nd Edition, Sage, Section 5.8.
-#' 
+#'
 #' M. Friendly and D. Meyers (2016), \emph{Discrete Data Analysis with R}, CRC Press,
 #'       Section 8.2.
 #' @seealso \code{\link{nestedMethods}}
 #' @author John Fox
 #' @keywords regression
 #' @examples
-#'   data(Womenlf, package = "carData")
+#' data("Womenlf", package = "carData")
 #'
 #'   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
-#'   comparisons <- logits(work=dichotomy("not.work", 
+#'   comparisons <- logits(work=dichotomy("not.work",
 #'                                        working=c("parttime", "fulltime")),
 #'                         full=dichotomy("parttime", "fulltime"))
 #'   print(comparisons)
@@ -125,10 +125,10 @@
 #'   print(summary(m))
 #'   print(car::Anova(m))
 #'   coef(m)
-#'   
+#'
 #'   # equivalent;
 #'   nestedLogit(partic ~ hincome + children,
-#'               dichotomies = list("not.work", 
+#'               dichotomies = list("not.work",
 #'                                  working=list("parttime", "fulltime")),
 #'               data=Womenlf)
 #'
@@ -144,6 +144,7 @@
 #'   plot(m, "hincome", list(children="present"),
 #'        xlab="Husband's Income")
 #'   par(op)
+#'
 #'
 #' @export
 nestedLogit <- function(formula, dichotomies, data, subset=NULL,
@@ -332,7 +333,7 @@ createDichotomies <- function(x){
 
 createDichotomies.dichotomies <- function(x) x
 
-createDichotomies.default <- function(x) 
+createDichotomies.default <- function(x)
   stop("dichotomies argument must be of class 'dichotomies' or mode 'list'")
 
 createDichotomies.list <- function(x){
@@ -349,13 +350,13 @@ createDichotomies.list <- function(x){
     aa <- unlist(a, recursive=TRUE)
     bb <- unlist(b, recursive=TRUE)
     name <- make.names(
-      paste0(if (!is.null(nm.a) && nm.a != "") nm.a else paste(aa, collapse="."), 
-             "_v_", 
+      paste0(if (!is.null(nm.a) && nm.a != "") nm.a else paste(aa, collapse="."),
+             "_v_",
              if (!is.null(nm.b) && nm.b != "") nm.b else paste(bb, collapse="."))
     )
     aa.bb <- list(aa, bb)
     names(aa.bb) <- c(nm.a, nm.b)
-    dichotomies[[name]] <- do.call(dichotomy, aa.bb) 
+    dichotomies[[name]] <- do.call(dichotomy, aa.bb)
     if (length(a) > 1L) dichotomies <- helper(dichotomies, a)
     if (length(b) > 1L) dichotomies <- helper(dichotomies, b)
     dichotomies

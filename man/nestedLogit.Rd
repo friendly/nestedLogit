@@ -124,10 +124,10 @@ The second ignores \code{A} and contrasts \code{C, D} against \code{B}.
 The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
 }
 \examples{
-  data(Womenlf, package = "carData")
+data("Womenlf", package = "carData")
 
   #' Use `logits()` and `dichotomy()` to specify the comparisons of interest
-  comparisons <- logits(work=dichotomy("not.work", 
+  comparisons <- logits(work=dichotomy("not.work",
                                        working=c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))
   print(comparisons)
@@ -138,10 +138,10 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   print(summary(m))
   print(car::Anova(m))
   coef(m)
-  
+
   # equivalent;
   nestedLogit(partic ~ hincome + children,
-              dichotomies = list("not.work", 
+              dichotomies = list("not.work",
                                  working=list("parttime", "fulltime")),
               data=Womenlf)
 
@@ -157,6 +157,7 @@ The second ignores \code{A, B} and contrasts \code{D} against \code{C}.
   plot(m, "hincome", list(children="present"),
        xlab="Husband's Income")
   par(op)
+
 
   continuationLogits(c("none", "gradeschool", "highschool", "college"))
   continuationLogits(4)

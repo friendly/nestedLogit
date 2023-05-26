@@ -7,7 +7,7 @@
 \method{as.data.frame}{predictNestedLogit}(x, row.names = NULL, optional = FALSE, newdata, ...)
 }
 \arguments{
-\item{x}{a \code{predictNestedLogit} object}
+\item{x}{a \code{"predictNestedLogit"} object}
 
 \item{row.names}{row.names for result (for conformity with generic; not currently used)}
 
@@ -27,7 +27,7 @@ A data frame containing the newdata values of predictors along with the columns
 Convert a predictNestedLogit object to a data.frame
 }
 \examples{
-data("Womenlf", package="carData")
+data("Womenlf", package = "carData")
 comparisons <- logits(work=dichotomy("not.work", c("parttime", "fulltime")),
                      full=dichotomy("parttime", "fulltime"))
 

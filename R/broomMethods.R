@@ -21,7 +21,7 @@
 #'          the combinations of \code{response} and \code{term}. See \code{\link[broom]{tidy}} for details.
 #' }
 #' @examples
-#' data(Womenlf, package = "carData")
+#' data("Womenlf", package = "carData")
 #' m <-  nestedLogit(partic ~ hincome + children,
 #'                   dichotomies = logits(work=dichotomy("not.work",
 #'                                                       working=c("parttime", "fulltime")),

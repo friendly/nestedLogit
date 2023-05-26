@@ -33,8 +33,7 @@ list of \code{"glm"} objects, each representing a binary logit model.
 models from a \code{"nestedLogit"} object.
 }
 \examples{
-  data(Womenlf, package = "carData")
-
+  data("Womenlf", package = "carData")
   comparisons <- logits(work=dichotomy("not.work",
                                        working=c("parttime", "fulltime")),
                         full=dichotomy("parttime", "fulltime"))

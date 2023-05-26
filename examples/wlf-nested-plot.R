@@ -17,7 +17,7 @@
 #' * graphics::plot()
 #' * graphics::matplot()
 #' * ggplot
-#' * ggplot + directlabels
+#' * ggplot + geomtextpath
 #' * plotting individual observations with the fitted curves
 #'
 #'
@@ -25,7 +25,8 @@
 library(nestedLogit)
 library(ggplot2)
 library(dplyr)
-library(directlabels)
+#library(directlabels)
+library(geomtextpath)
 
 
 data(Womenlf, package = "carData")
@@ -45,7 +46,15 @@ new <- expand.grid(hincome=seq(0, 45, length=10),
 
 pred.nested <- predict(wlf.nested, new)
 
-plotdata <- cbind(new, pred.nested)
+plotdata <- cbind(new, pred.nested$p)
+
+#' ## package plot method
+op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
+plot(m, "hincome", list(children="absent"),
+     xlab="Husband's Income", legend=FALSE)
+plot(m, "hincome", list(children="present"),
+     xlab="Husband's Income")
+par(op)
 
 
 #' ## Basic plotting
@@ -98,43 +107,56 @@ par(op)
 #' against one predictor and use `color` to distinguish the levels of
 #' `partic`.
 #'
-plotlong <- plotdata |>
-  tidyr::pivot_longer(fulltime : not.work,
-                      names_to = "Working",
-                      values_to = "Probability") |>
-  mutate(Working = ordered(Working,
-                           levels = c("not.work", "parttime", "fulltime")) )
+#' This is no longer required with the new as.data.frame method
+# plotlong <- plotdata |>
+#   tidyr::pivot_longer(fulltime : not.work,
+#                       names_to = "Working",
+#                       values_to = "Probability") |>
+#   mutate(Working = ordered(Working,
+#                            levels = c("not.work", "parttime", "fulltime")) )
+
+plotlong <- as.data.frame(pred.nested, newdata=new)
+str(plotdata)
 
 
+#' ## Plot with confidence band
+plt <-
 ggplot(plotlong,
-       aes(x=hincome, y=Probability, color=Working)) +
+       aes(x=hincome, y=p, color=response, fill = response)) +
   geom_line(linewidth = 2) +
-  scale_color_discrete() +
+  geom_ribbon(aes(ymin = p - se.p,
+                  ymax = p + se.p),
+              alpha = 1/4) +
   labs(x="Husband's Income", y= "Probability") +
   facet_wrap(~ children, labeller = label_both) +
   theme_bw(base_size = 14) +
   theme(legend.position = c(.3, .85))
 
+#' ## add labels to curves
+plt +
+  geom_textline(aes(label = response),
+                linewidth = 2, size = 5, hjust = 0.9, vjust=-1) +
+  theme(legend.position = "none")
+
 #' ## Try using direct labels
 #' It's nicer to label the curves directly
 
-library(directlabels)
-gg <- ggplot(plotlong,
-             aes(x=hincome, y=Probability, color=Working)) +
-  geom_line(linewidth = 2) +
-  scale_color_discrete() +
-  labs(x="Husband's Income", y= "Probability") +
-  facet_wrap(~ children, labeller = label_both)
-
-direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
+# library(directlabels)
+# gg <- ggplot(plotlong,
+#              aes(x=hincome, y=Probability, color=Working)) +
+#   geom_line(linewidth = 2) +
+#   scale_color_discrete() +
+#   labs(x="Husband's Income", y= "Probability") +
+#   facet_wrap(~ children, labeller = label_both)
+#
+# direct.label(gg, list("top.bumptwice", dl.trans(y = y + 0.2)))
 
 # use geomtextpath
 library(geomtextpath)
 ggplot(plotlong,
-       aes(x=hincome, y=Probability, color=Working)) +
-  geom_textline(aes(label = Working),
+       aes(x=hincome, y=p, color=response)) +
+  geom_textline(aes(label = response),
                 linewidth = 2, size = 5, hjust = 0.9, vjust=0.2) +
-  scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
   facet_wrap(~ children, labeller = label_both) +
   theme_bw(base_size = 14) +
@@ -145,18 +167,21 @@ ggplot(plotlong,
 #' This will give an indication of where the observations actually are
 #'
 
-pred.obs <- predict(wlf.nested)
-plotobs <- cbind(Womenlf[, c("hincome", "children")], pred.obs)
+# pred.obs <- predict(wlf.nested)
+# plotobs <- cbind(Womenlf[, c("hincome", "children")], pred.obs)
 
-plotlobs <- plotobs |>
-  tidyr::pivot_longer(fulltime : not.work,
-                      names_to = "Working",
-                      values_to = "Probability") |>
-  mutate(Working = ordered(Working,
-                           levels = c("not.work", "parttime", "fulltime")) )
+plotobs <- as.data.frame(pred.nested)
+str(plotobs)
 
-ggplot(plotlobs,
-       aes(x=hincome, y=Probability, color=Working)) +
+# plotlobs <- plotobs |>
+#   tidyr::pivot_longer(fulltime : not.work,
+#                       names_to = "Working",
+#                       values_to = "Probability") |>
+#   mutate(Working = ordered(Working,
+#                            levels = c("not.work", "parttime", "fulltime")) )
+
+ggplot(plotobs,
+       aes(x=hincome, y=, color=response)) +
   geom_line(linewidth = 3) +
   geom_point(size = 1.5, shape = 16, color = "black") +
   scale_color_discrete() +
