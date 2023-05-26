@@ -4,7 +4,8 @@
 #' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit
 #' update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
-#' as.matrix.dichotomies
+#' as.matrix.dichotomies print.predictNestedLogit confint.predictNestedLogit
+#' fitted.nestedLogit as.dichotomies
 #'
 #' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.

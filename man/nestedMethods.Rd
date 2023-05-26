@@ -16,9 +16,9 @@
 \alias{as.matrix.dichotomies}
 \alias{print.predictNestedLogit}
 \alias{confint.predictNestedLogit}
-\alias{print.predictDichotomies}
 \alias{fitted.nestedLogit}
 \alias{as.dichotomies}
+\alias{print.predictDichotomies}
 \title{Methods for \code{"nestedLogit"} and Related Objects}
 \usage{
 \method{print}{nestedLogit}(x, ...)
