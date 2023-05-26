@@ -18,7 +18,6 @@
 \alias{confint.predictNestedLogit}
 \alias{fitted.nestedLogit}
 \alias{as.dichotomies}
-\alias{print.predictDichotomies}
 \title{Methods for \code{"nestedLogit"} and Related Objects}
 \usage{
 \method{print}{nestedLogit}(x, ...)
@@ -40,8 +39,6 @@
   conf.limits.logit = TRUE,
   ...
 )
-
-\method{print}{predictDichotomies}(x, ...)
 
 \method{fitted}{nestedLogit}(object, model = c("nested", "dichotomies"), ...)
 
@@ -178,7 +175,6 @@ cbind(new, fit) # fitted probabilities at specific values of predictors
 # predicted logits for dichotomies
 predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 predictions
-predictions$above_l.t.highschool # on logit scale
 
 }
 \seealso{
