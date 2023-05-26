@@ -16,7 +16,6 @@
 \alias{as.matrix.dichotomies}
 \alias{print.predictNestedLogit}
 \alias{confint.predictNestedLogit}
-\alias{print.predictDichotomies}
 \alias{fitted.nestedLogit}
 \alias{as.dichotomies}
 \title{Methods for \code{"nestedLogit"} and Related Objects}
@@ -40,8 +39,6 @@
   conf.limits.logit = TRUE,
   ...
 )
-
-\method{print}{predictDichotomies}(x, ...)
 
 \method{fitted}{nestedLogit}(object, model = c("nested", "dichotomies"), ...)
 
@@ -167,18 +164,17 @@ broom::glance(m)
 broom::tidy(m)
 
 # predicted probabilities and ploting
-head(predict(m)) # fitted probabilities for first few cases;
-                 # equivalent to head(fitted(m))
+predict(m) # fitted probabilities for first few cases;
+
 new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
                                "college", "graduate"),
                    year=c(1972, 2016))
 fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
 
-# predicted logits
+# predicted logits for dichotomies
 predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 predictions
-predictions$above_l.t.highschool # on logit scale
 
 }
 \seealso{
