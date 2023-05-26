@@ -461,8 +461,8 @@ It's apparent that the alternative model produces a simpler description of the d
 
 But do the fits of the two models to the data differ? We can compare fitted probabilities under the two specifications:
 ```{r fit-correlations}
-fit1 <- predict(wlf.nested)
-fit2 <- predict(wlf.nested.alt)
+fit1 <- predict(wlf.nested)$p
+fit2 <- predict(wlf.nested.alt)$p
 diag(cor(fit1, fit2))
 ```
 The correlations of the fitted probabilities are high but far from perfect. 

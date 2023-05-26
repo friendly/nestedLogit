@@ -9,4 +9,4 @@ README.*
 ^pkgdown$
 ^CRAN-SUBMISSION$
 Makefile
-
+old/
