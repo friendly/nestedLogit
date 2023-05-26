@@ -405,15 +405,43 @@ either of the sub-models or of the combined model for the three response categor
 
 ### Obtaining fitted values: `predict()` 
 
-By default, `predict()` for a `"nestedLogit"` model object returns the predicted probabilities
-(`type = "response"`) of
-each of the response categories for _all_ observations in the data set:
+By default, `predict()` for a `"nestedLogit"` model object returns a `"predictNestedLogit"`
+object, which is a named list of four data
+frames whose columns are the response categories:
+
+* `p` : predicted response-category probabilities
+* `logit` : the predicted probabilities transformed to the log-odds (logit) scale, `logit = log(p / 1-p)`
+* `se.p` standard errors of the predicted probabilities
+* `se.logit` standard errors of the logits
+
 The computation is a bit tricky, because the probabilities of working full time
 or part time are conditional on working outside the home, but `predict()` takes care of the details.
 
 ```{r}
-car::some(predict(wlf.nested))
+wlf.pred <- predict(wlf.nested)
+
+head(wlf.pred[["p"]])
+head(wlf.pred[["se.p"]])
 ```
+By default, these are provided for _all_ the observations in the data set. You can
+provide a `newdata` data.frame containing arbitrary combinations of predicted values,
+for example to obtain a grid of predicted values for custom plots or other purposes.
+
+```{r}
+new <- expand.grid(hincome=seq(0, 45, length=4),
+                   children=c("absent", "present"))
+
+wlf.new <- predict(wlf.nested, new)
+```
+
+
+For greater flexibility, the `as.data.frame()` method for `"predictNestedLogit"`
+converts the components to long format.
+
+```{r}
+as.data.frame(wlf.new, newdata = new) 
+```
+
 
 ### Plotting `"nestedLogit"` objects
 

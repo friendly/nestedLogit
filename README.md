@@ -265,13 +265,17 @@ car::Anova(m)
 
 A basic plot of predicted probabilities can be produced using the
 `plot()` method for `"nestedLogit"` objects. It can be called several
-times to give multi-panel plots.
+times to give multi-panel plots. By default, a 95% pointwise confidence
+envelope is added to the plot. Here, they are plotted with
+`conf.level = 0.68` to give $\pm 1$ std. error bounds.
 
 ``` r
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
+     conf.level = 0.68,
      xlab="Husband's Income", legend=FALSE)
 plot(m, "hincome", list(children="present"),
+     conf.level = 0.68,
      xlab="Husband's Income")
 ```
 

@@ -4,6 +4,7 @@
 #' \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
 #' for each level of the polytomous response variable, with one of the explanatory variables
 #' on the horizontal axis and other explanatory variables fixed to particular values.
+#' By default, a 95% pointwise confidence envelope is added to the plot.
 #'
 #' @aliases plot.nestedLogit
 #' @seealso \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
