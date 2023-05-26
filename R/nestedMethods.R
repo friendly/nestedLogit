@@ -102,18 +102,17 @@
 #' broom::tidy(m)
 #'
 #' # predicted probabilities and ploting
-#' head(predict(m)) # fitted probabilities for first few cases;
-#'                  # equivalent to head(fitted(m))
+#' predict(m) # fitted probabilities for first few cases;
+#'
 #' new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
 #' cbind(new, fit) # fitted probabilities at specific values of predictors
 #'
-#' # predicted logits
+#' # predicted logits for dichotomies
 #' predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
 #' predictions
-#' predictions$above_l.t.highschool # on logit scale
 #'
 #' @rdname nestedMethods
 #' @export
@@ -261,19 +260,11 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
   }
 }
 
-# print.predictDichotomies <- function(x, ...){
-#   cat("\n predictions for binary logit models from nested logit model:",
-#       attr(x, "model"))
-#   cat("\n for responses:", paste(names(x), sep=", "))
-#   cat(paste0("\n access via $", names(x)[1], " etc."))
-#   invisible(x)
-# }
-
 #' @rdname nestedMethods
 #' @export
 print.predictNestedLogit <- function(x, n=min(10L, nrow(x$p)), ...){
   if (n == "all") n <- nrow(x$p)
-  if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst 20 of ", nrow(x$p), " rows:\n"))
+  if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst 10 of ", nrow(x$p), " rows:\n"))
   cat("\npredicted response-category probabilties\n")
   print(x$p[1:n, ], ...)
   if (truncate) cat("  . . .\n")
@@ -372,16 +363,16 @@ confint.predictNestedLogit <- function (object, parm=c("prob", "logit"),
 #     return(result)
 #   }
 # }
+#' #' @rdname nestedMethods
+#' #' @export
+#' print.predictDichotomies <- function(x, ...){
+#'   cat("\n predictions for binary logit models from nested logit model:",
+#'       attr(x, "model"))
+#'   cat("\n for responses:", paste(names(x), sep=", "))
+#'   cat(paste0("\n access via $", names(x)[1], " etc."))
+#' }
 # END OLD PREDICT CODE
 
-#' @rdname nestedMethods
-#' @export
-print.predictDichotomies <- function(x, ...){
-  cat("\n predictions for binary logit models from nested logit model:",
-      attr(x, "model"))
-  cat("\n for responses:", paste(names(x), sep=", "))
-  cat(paste0("\n access via $", names(x)[1], " etc."))
-}
 
 #' @rdname nestedMethods
 #' @importFrom stats fitted
