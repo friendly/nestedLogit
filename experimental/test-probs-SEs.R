@@ -1,4 +1,4 @@
-# test that predict.nestedLogut() correctly computes SEs of fitted probabilities
+# test that predict.nestedLogit() correctly computes SEs of fitted probabilities
 
 m.gss <- nestedLogit(degree ~ parentdeg + year, 
                      continuationLogits(c("l.t.highschool",  "highschool", 
