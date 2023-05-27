@@ -1,6 +1,6 @@
 Package: nestedLogit
 Title: Nested Dichotomy Logistic Regression Models
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: c(
     person("John", "Fox", , "jfox@mcmaster.ca", role = "aut",
            comment = c(ORCID = "0000-0002-1196-8012")),

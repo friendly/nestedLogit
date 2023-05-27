@@ -47,7 +47,9 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "equatiomatic", "geomtextpath")
+to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+
+# removed: "equatiomatic" -- now in references.bib
 ```
 
 Load the packages we'll use here:
