@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,12 +47,6 @@
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/plotting.html">Plotting nestedLogit models</a>
-  </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -85,7 +79,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-15</h4>
+            <h4 data-toc-skip class="date">2023-05-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit.Rmd" class="external-link"><code>vignettes/nestedLogit.Rmd</code></a></small>
       <div class="d-none name"><code>nestedLogit.Rmd</code></div>
@@ -507,6 +501,13 @@ equivalent to <code><a href="https://rdrr.io/r/stats/fitted.values.html" class="
 the predictors; the latter is useful for producing plots to aid
 interpretation.</li>
 <li>
+<code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> calculates confidence intervals for the
+predicted probabilities or predicted logits.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for predicted probabilities and
+logits converts these to long format for use with
+<code>ggplot2</code>.</li>
+<li>
 <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> and <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> are extensions of
 <code><a href="https://broom.tidymodels.org/reference/glance.glm.html" class="external-link">broom::glance.glm()</a></code> and <code><a href="https://broom.tidymodels.org/reference/tidy.glm.html" class="external-link">broom::tidy.glm()</a></code> to
 obtain compact summaries of a <code>"nestedLogit"</code> model
@@ -793,25 +794,84 @@ categories.</p>
 <h3 id="obtaining-fitted-values-predict">Obtaining fitted values: <code>predict()</code><a class="anchor" aria-label="anchor" href="#obtaining-fitted-values-predict"></a>
 </h3>
 <p>By default, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> for a <code>"nestedLogit"</code>
-model object returns the predicted probabilities
-(<code>type = "response"</code>) of each of the response categories for
-<em>all</em> observations in the data set: The computation is a bit
-tricky, because the probabilities of working full time or part time are
-conditional on working outside the home, but <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>
-takes care of the details.</p>
+model object returns a <code>"predictNestedLogit"</code> object, which
+is a named list of four data frames whose columns are the response
+categories:</p>
+<ul>
+<li>
+<code>p</code> : predicted response-category probabilities</li>
+<li>
+<code>logit</code> : the predicted probabilities transformed to the
+log-odds (logit) scale, <code>logit = log(p / 1-p)</code>
+</li>
+<li>
+<code>se.p</code> standard errors of the predicted
+probabilities</li>
+<li>
+<code>se.logit</code> standard errors of the logits</li>
+</ul>
+<p>The computation is a bit tricky, because the probabilities of working
+full time or part time are conditional on working outside the home, but
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> takes care of the details.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/some.html" class="external-link">some</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 13    0.6504  0.18696  0.16268</span></span>
-<span><span class="co">#&gt; 27    0.7396  0.20070  0.05974</span></span>
-<span><span class="co">#&gt; 134   0.3222  0.08251  0.59525</span></span>
-<span><span class="co">#&gt; 137   0.6968  0.20093  0.10226</span></span>
-<span><span class="co">#&gt; 143   0.6693  0.19426  0.13640</span></span>
-<span><span class="co">#&gt; 182   0.3410  0.09661  0.56240</span></span>
-<span><span class="co">#&gt; 198   0.7925  0.18197  0.02556</span></span>
-<span><span class="co">#&gt; 212   0.6878  0.19929  0.11291</span></span>
-<span><span class="co">#&gt; 242   0.3131  0.07607  0.61087</span></span>
-<span><span class="co">#&gt; 257   0.2225  0.02865  0.74886</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">wlf.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wlf.pred</span><span class="op">[[</span><span class="st">"p"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1   0.7057   0.2020 0.092343</span></span>
+<span><span class="co">#&gt; 2   0.6878   0.1993 0.112912</span></span>
+<span><span class="co">#&gt; 3   0.8951   0.1030 0.001886</span></span>
+<span><span class="co">#&gt; 4   0.7708   0.1920 0.037208</span></span>
+<span><span class="co">#&gt; 5   0.7396   0.2007 0.059742</span></span>
+<span><span class="co">#&gt; 6   0.6309   0.1776 0.191521</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wlf.pred</span><span class="op">[[</span><span class="st">"se.p"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1  0.03394  0.03077 0.022756</span></span>
+<span><span class="co">#&gt; 2  0.03514  0.03104 0.024934</span></span>
+<span><span class="co">#&gt; 3  0.05948  0.05846 0.002676</span></span>
+<span><span class="co">#&gt; 4  0.04243  0.03908 0.017651</span></span>
+<span><span class="co">#&gt; 5  0.03651  0.03368 0.020323</span></span>
+<span><span class="co">#&gt; 6  0.04984  0.04053 0.041672</span></span></code></pre></div>
+<p>By default, these are provided for <em>all</em> the observations in
+the data set. You can provide a <code>newdata</code> data.frame
+containing arbitrary combinations of predicted values, for example to
+obtain a grid of predicted values for custom plots or other
+purposes.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>hincome<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, length<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,</span>
+<span>                   children<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absent"</span>, <span class="st">"present"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">wlf.new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="va">new</span><span class="op">)</span></span></code></pre></div>
+<p>For greater flexibility, the <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for
+<code>"predictNestedLogit"</code> converts the components to long
+format.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">wlf.new</span>, newdata <span class="op">=</span> <span class="va">new</span><span class="op">)</span> </span>
+<span><span class="co">#&gt;    hincome children response        p     se.p    logit se.logit</span></span>
+<span><span class="co">#&gt; 1        0   absent not.work 0.208197 0.063264 -1.33583   0.3838</span></span>
+<span><span class="co">#&gt; 2        0   absent parttime 0.023716 0.017749 -3.71762   0.7666</span></span>
+<span><span class="co">#&gt; 3        0   absent fulltime 0.768088 0.063856  1.19755   0.3585</span></span>
+<span><span class="co">#&gt; 4       15   absent not.work 0.331545 0.053684 -0.70120   0.2422</span></span>
+<span><span class="co">#&gt; 5       15   absent parttime 0.089363 0.033557 -2.32144   0.4124</span></span>
+<span><span class="co">#&gt; 6       15   absent fulltime 0.579092 0.056899  0.31905   0.2334</span></span>
+<span><span class="co">#&gt; 7       30   absent not.work 0.483362 0.095465 -0.06658   0.3823</span></span>
+<span><span class="co">#&gt; 8       30   absent parttime 0.224959 0.095639 -1.23700   0.5485</span></span>
+<span><span class="co">#&gt; 9       30   absent fulltime 0.291679 0.101606 -0.88724   0.4918</span></span>
+<span><span class="co">#&gt; 10      45   absent not.work 0.638313 0.147769  0.56805   0.6401</span></span>
+<span><span class="co">#&gt; 11      45   absent parttime 0.287184 0.137011 -0.90910   0.6693</span></span>
+<span><span class="co">#&gt; 12      45   absent fulltime 0.074503 0.077020 -2.51949   1.1170</span></span>
+<span><span class="co">#&gt; 13       0  present not.work 0.559669 0.079322  0.23982   0.3219</span></span>
+<span><span class="co">#&gt; 14       0  present parttime 0.134047 0.057151 -1.86564   0.4923</span></span>
+<span><span class="co">#&gt; 15       0  present fulltime 0.306284 0.075679 -0.81755   0.3562</span></span>
+<span><span class="co">#&gt; 16      15  present not.work 0.705670 0.033942  0.87445   0.1634</span></span>
+<span><span class="co">#&gt; 17      15  present parttime 0.201988 0.030774 -1.37392   0.1909</span></span>
+<span><span class="co">#&gt; 18      15  present fulltime 0.092343 0.022756 -2.28536   0.2715</span></span>
+<span><span class="co">#&gt; 19      30  present not.work 0.818924 0.052611  1.50907   0.3548</span></span>
+<span><span class="co">#&gt; 20      30  present parttime 0.165901 0.049356 -1.61496   0.3567</span></span>
+<span><span class="co">#&gt; 21      30  present fulltime 0.015175 0.011492 -4.17279   0.7689</span></span>
+<span><span class="co">#&gt; 22      45  present not.work 0.895078 0.059478  2.14370   0.6333</span></span>
+<span><span class="co">#&gt; 23      45  present parttime 0.103036 0.058460 -2.16394   0.6326</span></span>
+<span><span class="co">#&gt; 24      45  present fulltime 0.001886 0.002676 -6.27153   1.4215</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="plotting-nestedlogit-objects">Plotting <code>"nestedLogit"</code> objects<a class="anchor" aria-label="anchor" href="#plotting-nestedlogit-objects"></a>
@@ -825,20 +885,19 @@ values. To produce multi-panel plots, it is necessary to call
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> repeatedly for various levels of the other
 predictors, and to compose these into a single figure, for example using
 <code>par("mfcol")</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfcol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="st">"hincome"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>children<span class="op">=</span><span class="st">"absent"</span><span class="op">)</span>, <span class="co"># left panel</span></span>
 <span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend.location<span class="op">=</span><span class="st">"top"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="st">"hincome"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>children<span class="op">=</span><span class="st">"present"</span><span class="op">)</span>, <span class="co"># right panel</span></span>
-<span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="fig/wlf-plot-1.png" alt="**plot method**: Predicted probabilities of working at all or working part time or full time" width="100%"><p class="caption">
 <strong>plot method</strong>: Predicted probabilities of working at all
 or working part time or full time
 </p>
 </div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
 <p>We provide a separate vignette on constructing custom graphs of
 <code>"nestedLogit"</code> objects.</p>
 </div>
@@ -854,7 +913,7 @@ working} vs. {part time}. The rationale is that the real hurdle for
 young married women to enter the paid labor force is to combine fulltime
 work outside the home with housework. This alternative
 nested-dichotomies model proves enlightening:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>,</span>
 <span>                              <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span>full<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span>nonfulltime<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span>, <span class="st">"fulltime"</span><span class="op">)</span>,</span>
 <span>                                     part<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -863,7 +922,7 @@ nested-dichotomies model proves enlightening:</p>
 show that the effects of husband’s income and children are significant
 for the <code>full</code> model but not for the <code>part</code>
 model:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
@@ -948,9 +1007,9 @@ children affect the decision to work fulltime, but not the decision to
 work parttime among those who aren’t engaged in fulltime work.</p>
 <p>But do the fits of the two models to the data differ? We can compare
 fitted probabilities under the two specifications:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
-<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span><span class="op">$</span><span class="va">p</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span><span class="op">$</span><span class="va">p</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
 <span><span class="co">#&gt;   0.9801   0.9185   0.9961</span></span></code></pre></div>
@@ -960,7 +1019,7 @@ perfect.</p>
 nested within the other, so a conventional likelihood-ratio test is
 inappropriate, but we can still compare maximized log-likelihoods under
 the two models:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'log Lik.' -212.1 (df=6)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
@@ -968,7 +1027,7 @@ the two models:</p>
 <p>Because the sample sizes and numbers of parameters are the same for
 the two models, differences in AIC and BIC are just twice the
 differences in the log-likelihoods; for example:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                df   AIC</span></span>
 <span><span class="co">#&gt; wlf.nested      6 436.2</span></span>
@@ -976,7 +1035,7 @@ differences in the log-likelihoods; for example:</p>
 <p>The comparison slightly favors the alternative nested-dichotomies
 model.</p>
 <p>Here’s a graph of the alternative model:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfcol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span>, <span class="st">"hincome"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>children<span class="op">=</span><span class="st">"absent"</span><span class="op">)</span>, <span class="co"># left panel</span></span>
 <span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend.location<span class="op">=</span><span class="st">"top"</span><span class="op">)</span></span>
@@ -987,14 +1046,14 @@ model.</p>
 Predicted probabilities for the alternative nested-dichotomies model
 </p>
 </div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
 <p>Compare this to the previous graph for the original
 specification.</p>
 <p>It’s also of interest to compare the nested-dichotomies models to the
 multinomial logit model, which, as we explained, treats the response
 categories symmetrically:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.multinom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, data <span class="op">=</span> <span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # weights:  12 (6 variable)</span></span>
 <span><span class="co">#&gt; initial  value 288.935032 </span></span>
@@ -1020,7 +1079,7 @@ categories symmetrically:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.multinom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'log Lik.' -211.4 (df=6)</span></span></code></pre></div>
 <p>Check the correlation between fitted probabilities:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.multinom</span>, type<span class="op">=</span><span class="st">"probs"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="va">fit3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>

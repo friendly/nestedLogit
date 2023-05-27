@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,12 +23,6 @@
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/plotting.html">Plotting nestedLogit models</a>
-  </div>
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -53,6 +47,16 @@
       <small>Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="nestedlogit-030">nestedLogit 0.3.0<a class="anchor" aria-label="anchor" href="#nestedlogit-030"></a></h2>
+<ul><li>Added an example of <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code> to print nested lists</li>
+<li>Now use <code>fig.show="hold"</code> to keep <code>par(op)</code> with the code.</li>
+<li>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.</li>
+<li>A <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for the result of <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> generates the corresponding confidence intervals.</li>
+<li>An <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for predicted probabilities converts these to a data frame in long format, handy for using <code>ggplot()</code>.</li>
+<li>Added a <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for predicted probabilities and logits</li>
+<li>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> objects now plots confidence intervals for predicted probabilities.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="nestedlogit-021">nestedLogit 0.2.1<a class="anchor" aria-label="anchor" href="#nestedlogit-021"></a></h2><p class="text-muted">CRAN release: 2023-05-15</p>
 <ul><li>Reset all <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par()</a></code> and <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> calls so as to not alter user’s workspace.</li>
