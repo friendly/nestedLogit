@@ -15,6 +15,6 @@ These functions are supplemented by various methods for testing hypotheses about
 
 * `anova()` provides analysis-of-deviance Type I (sequential) tests for each dichotomy and for the combined model. When given a sequence of model objects, `anova()` tests the models against one another in the order specified.
 * `Anova()` uses `car::Anova()` to provide analysis-of-deviance Type II or III (partial) tests for each dichotomy and for the combined model.
-* `linearHypothesis()` computes Wald tests for hypotheses about coefficients or their linear combinations.
+* `linearHypothesis()` uses `car::linearHypothesis()` to compute Wald tests for hypotheses about coefficients or their linear combinations.
 * `logLik()` returns the log-likelihood and degrees of freedom for the nested-dichotomies logit model.
 * Through `logLik()`, the `AIC()` and `BIC()` functions compute the Akaike and Bayesian information criteria model-comparison statistics.
