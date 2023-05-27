@@ -17,7 +17,7 @@ vignette: >
 <!-- \usepackage{amsmath} -->
 
 This document uses the [delta method](https://bookdown.org/ts_robinson1994/10_fundamental_theorems_for_econometrics/dm.html) to derive approximations to the standard errors of estimated probabilities for dichotomous logit models. The nested logit model dichotomies is comprised of these
-dichotomous models, and so standard errors for estimated probabilites can also be found.
+dichotomous models, and so standard errors for estimated probabilities can also be found.
 
 ## Notation
 
