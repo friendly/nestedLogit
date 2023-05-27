@@ -16,12 +16,11 @@ vignette: >
 
 <!-- \usepackage{amsmath} -->
 
-This document uses the [delta method](https://bookdown.org/ts_robinson1994/10_fundamental_theorems_for_econometrics/dm.html) to derive approximations to the standard errors of estimated probabilities for dichotomous logit models. The nested logit model dichotomies is comprised of these
-dichotomous models, and so standard errors for estimated probabilities can also be found.
+This document uses the delta method [@Fox:2021:Primer, sec. 6.3.5] to derive approximations to the standard errors of estimated probabilities for dichotomous logit models, and from these, for the nested logit model.
 
 ## Notation
 
-Let $\phi^{(j)}$ represent the probability that the dichotomous response in the $j$th nested dichotomous logit model is $Y_j = 1$ (i.e., a "success"),  $j = 1, \ldots, m - 1$, where $m$ is the number of response categories for the polytomy. Then $1 - \phi^{(j)}$ is the probability that $Y_j  = 0$ (i.e., a "failure"). I assume that the regression coefficients and their covariance matrix for each dichotomous logit model are estimated in the usual manner. Let $\lambda^{(j)} = log[\phi^{(j)}/(1 - \phi^{(j)})]$ represent the (estimated) logit (log-odds) for the $j$th dichotomous logit model, with variance $V(\lambda^{(j)})$ (see Section @ref(sec:dichotomous-variances).
+Let $\phi^{(j)}$ represent the probability that the dichotomous response in the $j$th nested dichotomous logit model is $Y_j = 1$ (i.e., a "success"),  $j = 1, \ldots, m - 1$, where $m$ is the number of response categories for the polytomy. Then $1 - \phi^{(j)}$ is the probability that $Y_j  = 0$ (i.e., a "failure"). I assume that the regression coefficients and their covariance matrix for each dichotomous logit model are estimated in the usual manner. Let $\lambda^{(j)} = log[\phi^{(j)}/(1 - \phi^{(j)})]$ represent the (estimated) logit (log-odds) for the $j$th dichotomous logit model, with variance $V(\lambda^{(j)})$ (see below).
 
 
 Let $\phi_k$, $k = 1, \ldots, m$ represent the probability that the polytomous response is $Y = k$. Let $\widehat{\phi}^{(j)}$ and $\widehat{\phi}_k$ represent the estimates of these probabilities. In the sequel, which involves only the estimates of these and other parameters,  I'll omit the hats so as to simplify the notation.
@@ -114,4 +113,5 @@ for $k = 1, \ldots, m$, and so
  &= \left[ \frac{1}{\phi_k(1 - \phi_k)} \right]^2 V(\phi_k)
 \end{align*}
 
+## Reference
 
