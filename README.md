@@ -14,7 +14,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
 
-**Version 0.2.1**
+**Version 0.3.0**
 
 The `nestedLogit` package provides functions for fitting nested
 dichotomy logistic regression models for a polytomous response. Nested
@@ -141,6 +141,10 @@ complete set of methods for `"nestedLogit"` objects:
   categories, either for the cases in the data, which is equivalent to
   `fitted()`, or for arbitrary combinations of the predictors; the
   latter is useful for producing plots to aid interpretation.
+- `confint()` calculates confidence intervals for the predicted
+  probabilities or predicted logits.
+- `as.data.frame()` method for predicted probabilities and logits
+  converts these to long format for use with `ggplot2`.
 - `glance()` and `tidy()` are extensions of `broom::glance.glm()` and
   `broom::tidy.glm()` to obtain compact summaries of a `"nestedLogit"`
   model object.
@@ -287,9 +291,8 @@ plot(m, "hincome", list(children="present"),
   and detailed examples can be found in
   `vignette("nestedLogit", package="nestedLogit")`
 
-- A variety of other plots can be produced using base graphics
-  (`matplot()`) and `ggplot()`, as described in the vignette,
-  `vignette("plotting", package="nestedLogit")`.
+<!-- * A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette, -->
+<!-- `vignette("plotting", package="nestedLogit")`. -->
 
 ## Authors
 

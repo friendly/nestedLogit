@@ -27,7 +27,7 @@ library(nestedLogit)
 <!-- badges: end -->
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
-**Version 0.2.1**
+**Version 0.3.0**
 
 The `nestedLogit` package provides functions for fitting nested dichotomy logistic regression models
 for a polytomous response. Nested dichotomies are statistically independent, and hence provide an
@@ -196,8 +196,9 @@ par(op)
 * A more general discussion of nested dichotomies logistic regression and detailed examples can be found in 
 `vignette("nestedLogit", package="nestedLogit")`
 
-* A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette,
-`vignette("plotting", package="nestedLogit")`.
+
+<!-- * A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette, -->
+<!-- `vignette("plotting", package="nestedLogit")`. -->
 
 
 ## Authors
