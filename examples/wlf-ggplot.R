@@ -101,7 +101,6 @@ ggplot(plotlogit,
                 hjust = -0.01, vjust=-0.5, size=5) +
   theme(legend.position = "none")
 
-
 #' Do this for the alternative model
 #'
 wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
