@@ -89,6 +89,7 @@ A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
 \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
 for each level of the polytomous response variable, with one of the explanatory variables
 on the horizontal axis and other explanatory variables fixed to particular values.
+By default, a 95\% pointwise confidence envelope is added to the plot.
 }
 \examples{
 data("Womenlf", package = "carData")

@@ -48,4 +48,10 @@ new <- expand.grid(hincome=seq(0, 45, length=10),
 pred.nested <- predict(wlf.nested, new)
 plotdata <- as.data.frame(pred.nested, newdata=new)
 str(plotdata)
+
+# Predicted logit values for the dichotomies
+pred.dichot <- predict(wlf.nested, newdata = new,
+                       model = "dichotomies", se.fit = TRUE)
+plotlogit <- as.data.frame(pred.dichot, newdata=new)
+str(plotlogit)
 }
