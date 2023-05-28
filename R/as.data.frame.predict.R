@@ -1,16 +1,25 @@
 
-#' Convert a predictNestedLogit object to a data.frame
+#' Convert a Predicted Objects to a data.frame
+#'
+#' These functions provide simple ways to convert the results of \code{\link{predict.nestedLogit}}
+#' to a data frame in a consistent format for plotting and other actions.
 #'
 #' @param x         a \code{"predictNestedLogit"} object
 #' @param row.names row.names for result (for conformity with generic; not currently used)
 #' @param optional  logical. If TRUE, setting row names and converting column names
-#'        (to syntactic names: see make.names) is optional
+#'        (to syntactic names: see \code{\link[base]{make.names}} is optional
 #' @param newdata   A  \code{newdata} data.frame used to generate predicted values. If not supplied,
 #'        the original data frame is used.
 #' @param ...       other arguments (unused)
 #'
-#' @return A data frame containing the newdata values of predictors along with the columns
-#'         \code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}
+#' @return \itemize{
+#'  \item For \code{predict(\dots, model="nested")} (the default), returns
+#'  a data frame containing the newdata values of predictors along with the columns
+#'         \code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}.
+#'  \item For \code{predict(\dots, model="dichotomies")}, returns
+#'  a data frame containing the newdata values of predictors along with the columns
+#'         \code{response}, \code{logit}, and \code{se.logit}.
+#'    }
 #' @export
 #'
 #' @examples
@@ -29,7 +38,10 @@
 #' plotdata <- as.data.frame(pred.nested, newdata=new)
 #' str(plotdata)
 
-as.data.frame.predictNestedLogit <- function(x, row.names = NULL, optional = FALSE, newdata, ...){
+as.data.frame.predictNestedLogit <- function(x,
+                                             row.names = NULL,
+                                             optional = FALSE,
+                                             newdata, ...){
   resp.names <- colnames(x$p)
 
   result <- data.frame(
@@ -51,4 +63,37 @@ as.data.frame.predictNestedLogit <- function(x, row.names = NULL, optional = FAL
   result
 }
 
+#' @importFrom dplyr select bind_cols
+#' @importFrom tibble rownames_to_column
+#' @importFrom stringr str_remove
+#' @export
 
+as.data.frame.predictDichotomies <- function(x,
+                                             row.names = NULL,
+                                             optional = FALSE,
+                                             newdata, ...){
+  result <- do.call(rbind, x) |>
+    select(- residual.scale) |>
+    tibble::rownames_to_column(var = "response") |>
+    mutate(response =  stringr::str_remove(response, ".\\d+")) |>
+    rename(logit = fit,
+           se.logit = se.fit)
+
+  if(!missing(newdata)) {
+    nlogits <- length(x)
+    idx <- rep(seq_len(nrow(newdata)), nlogits)
+    result <- dplyr::bind_cols(new[idx,], result)
+  }
+  result
+}
+
+
+# Example of steps
+# plotlogit <- do.call(rbind, pred.dichot) |>
+#   select(- residual.scale) |>
+#   tibble::rownames_to_column(var = "response") |>
+#   mutate(response =  stringr::str_remove(response, ".\\d+")) |>
+#   rename(logit = fit,
+#          se.logit = se.fit)
+# idx <- rep(seq_len(nrow(new)), length(pred.dichot))
+# plotlogit <- bind_cols(new[idx,], plotlogit)

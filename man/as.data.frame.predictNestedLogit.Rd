@@ -2,7 +2,7 @@
 % Please edit documentation in R/as.data.frame.predict.R
 \name{as.data.frame.predictNestedLogit}
 \alias{as.data.frame.predictNestedLogit}
-\title{Convert a predictNestedLogit object to a data.frame}
+\title{Convert a Predicted Objects to a data.frame}
 \usage{
 \method{as.data.frame}{predictNestedLogit}(x, row.names = NULL, optional = FALSE, newdata, ...)
 }
@@ -12,7 +12,7 @@
 \item{row.names}{row.names for result (for conformity with generic; not currently used)}
 
 \item{optional}{logical. If TRUE, setting row names and converting column names
-(to syntactic names: see make.names) is optional}
+(to syntactic names: see \code{\link[base]{make.names}} is optional}
 
 \item{newdata}{A  \code{newdata} data.frame used to generate predicted values. If not supplied,
 the original data frame is used.}
@@ -20,11 +20,18 @@ the original data frame is used.}
 \item{...}{other arguments (unused)}
 }
 \value{
-A data frame containing the newdata values of predictors along with the columns
-\code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}
+\itemize{
+\item For \code{predict(\dots, model="nested")} (the default), returns
+a data frame containing the newdata values of predictors along with the columns
+\code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}.
+\item For \code{predict(\dots, model="dichotomies")}, returns
+a data frame containing the newdata values of predictors along with the columns
+\code{response}, \code{logit}, and \code{se.logit}.
+}
 }
 \description{
-Convert a predictNestedLogit object to a data.frame
+These functions provide simple ways to convert the results of \code{\link{predict.nestedLogit}}
+to a data frame in a consistent format for plotting and other actions.
 }
 \examples{
 data("Womenlf", package = "carData")
