@@ -162,8 +162,8 @@ hypotheses about and comparing nested-logit models:
   order specified.
 - `Anova()` uses `car::Anova()` to provide analysis-of-deviance Type II
   or III (partial) tests for each dichotomy and for the combined model.
-- `linearHypothesis()` computes Wald tests for hypotheses about
-  coefficients or their linear combinations.
+- `linearHypothesis()` uses `car::linearHypothesis()` to compute Wald
+  tests for hypotheses about coefficients or their linear combinations.
 - `logLik()` returns the log-likelihood and degrees of freedom for the
   nested-dichotomies logit model.
 - Through `logLik()`, the `AIC()` and `BIC()` functions compute the
@@ -242,27 +242,21 @@ car::Anova(m)
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
 #> Response work: {not.work} vs. working{parttime, fulltime}
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome    4.8264  1    0.02803 *  
-#> children  31.3229  1  2.185e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome    4.8264  1    0.02803
+#> children  31.3229  1  2.185e-08
 #> 
 #> 
 #> Response full: {parttime} vs. {fulltime}
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome     8.981  1   0.002728 ** 
-#> children   32.136  1  1.437e-08 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome     8.981  1   0.002728
+#> children   32.136  1  1.437e-08
 #> 
 #> 
 #> Combined Responses
-#>          LR Chisq Df Pr(>Chisq)    
-#> hincome    13.808  2   0.001004 ** 
-#> children   63.459  2   1.66e-14 ***
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#>          LR Chisq Df Pr(>Chisq)
+#> hincome    13.808  2   0.001004
+#> children   63.459  2   1.66e-14
 ```
 
 ### Plots
