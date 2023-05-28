@@ -4,7 +4,7 @@
 * Now use `fig.show="hold"` to keep `par(op)` with the code.
 * The `predict()` method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.
 * A `confint()` method for the result of `predict()` generates the corresponding confidence intervals.
-* An `as.data.frame()` method for predicted probabilities converts these to a data frame in long format, handy for using `ggplot()`.
+* `as.data.frame()` methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using `ggplot()`.
 * Added a `confint()` method for predicted probabilities and logits
 * The `plot()` method for `"nestedLogit"` objects now plots confidence intervals for predicted probabilities.
 

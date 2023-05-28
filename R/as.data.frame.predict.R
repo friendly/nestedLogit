@@ -78,17 +78,20 @@ as.data.frame.predictDichotomies <- function(x,
                                              row.names = NULL,
                                              optional = FALSE,
                                              newdata, ...){
+  # quiet no visible binding
+  response <- fit <- se.fit <- residual.scale <- NULL
+
   result <- do.call(rbind, x) |>
-    select(- residual.scale) |>
+    dplyr::select(- residual.scale) |>
     tibble::rownames_to_column(var = "response") |>
-    mutate(response =  stringr::str_remove(response, ".\\d+")) |>
-    rename(logit = fit,
+    dplyr::mutate(response =  stringr::str_remove(response, ".\\d+")) |>
+    dplyr::rename(logit = fit,
            se.logit = se.fit)
 
   if(!missing(newdata)) {
     nlogits <- length(x)
     idx <- rep(seq_len(nrow(newdata)), nlogits)
-    result <- dplyr::bind_cols(new[idx,], result)
+    result <- dplyr::bind_cols(newdata[idx,], result)
   }
   result
 }

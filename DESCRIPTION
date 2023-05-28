@@ -30,10 +30,11 @@ Imports:
     dplyr,
     graphics,
     grDevices,
-    stats
+    stats,
+    stringr,
+    tibble
 Suggests:
     carData,
-    directlabels,
     geomtextpath,
     ggplot2,
     here,
