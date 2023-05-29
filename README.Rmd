@@ -193,13 +193,15 @@ par(op)
 
 ## Vignettes
 
-* A more general discussion of nested dichotomies logistic regression and detailed examples can be found in 
-`vignette("nestedLogit", package="nestedLogit")`
+* A more general discussion of nested dichotomies logistic regression and detailed examples can be found 
+in `vignette("nestedLogit")`
 
 
-<!-- * A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette, -->
-<!-- `vignette("plotting", package="nestedLogit")`. -->
+* A variety of other plots can be produced using `ggplot()`, as described in the vignette,
+`vignette("plotting-ggplot")`.
 
+* A new vignette, "`vignette("standard-errors")`, describes the mathematics behind the calculation of
+standard errors using the delta method.
 
 ## Authors
 * John Fox

@@ -242,21 +242,27 @@ car::Anova(m)
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
 #> Response work: {not.work} vs. working{parttime, fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    4.8264  1    0.02803
-#> children  31.3229  1  2.185e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    4.8264  1    0.02803 *  
+#> children  31.3229  1  2.185e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Response full: {parttime} vs. {fulltime}
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome     8.981  1   0.002728
-#> children   32.136  1  1.437e-08
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome     8.981  1   0.002728 ** 
+#> children   32.136  1  1.437e-08 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #> 
 #> 
 #> Combined Responses
-#>          LR Chisq Df Pr(>Chisq)
-#> hincome    13.808  2   0.001004
-#> children   63.459  2   1.66e-14
+#>          LR Chisq Df Pr(>Chisq)    
+#> hincome    13.808  2   0.001004 ** 
+#> children   63.459  2   1.66e-14 ***
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Plots
@@ -282,11 +288,14 @@ plot(m, "hincome", list(children="present"),
 ## Vignettes
 
 - A more general discussion of nested dichotomies logistic regression
-  and detailed examples can be found in
-  `vignette("nestedLogit", package="nestedLogit")`
+  and detailed examples can be found in `vignette("nestedLogit")`
 
-<!-- * A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette, -->
-<!-- `vignette("plotting", package="nestedLogit")`. -->
+- A variety of other plots can be produced using `ggplot()`, as
+  described in the vignette, `vignette("plotting-ggplot")`.
+
+- A new vignette, “`vignette("standard-errors")`, describes the
+  mathematics behind the calculation of standard errors using the delta
+  method.
 
 ## Authors
 
