@@ -40,7 +40,7 @@
 #'
 #' # Predicted logit values for the dichotomies
 #' pred.dichot <- predict(wlf.nested, newdata = new,
-#'                        model = "dichotomies", se.fit = TRUE)
+#'                        model = "dichotomies")
 #' plotlogit <- as.data.frame(pred.dichot, newdata=new)
 #' str(plotlogit)
 

@@ -70,8 +70,9 @@ ggplot(plotdata,
 # Predicted logit values for the dichotomies
 
 pred.dichot <- predict(wlf.nested, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 str(pred.dichot)
+pred.dichot
 
 # this is now the as.data.frame.predictDichotomies method
 
@@ -126,7 +127,7 @@ wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               data=Womenlf)
 
 pred.dichot.alt <- predict(wlf.nested.alt, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 str(pred.dichot.alt)
 
 plotlogit.alt <- as.data.frame(pred.dichot.alt, newdata = new)

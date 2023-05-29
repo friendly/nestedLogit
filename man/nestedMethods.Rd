@@ -177,7 +177,7 @@ fit <- predict(m, newdata=new)
 cbind(new, fit) # fitted probabilities at specific values of predictors
 
 # predicted logits for dichotomies
-predictions <- predict(m, newdata=new, model="dichotomies", se.fit=TRUE)
+predictions <- predict(m, newdata=new, model="dichotomies")
 predictions
 
 }
