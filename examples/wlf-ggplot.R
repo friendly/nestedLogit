@@ -15,7 +15,7 @@
 #' * doing the same, for an alternative model for the nested dichotomies.
 
 #' This uses the new as.data.frame.predictDichotomies method
-source("R/as.data.frame.predict.R")
+#source("R/as.data.frame.predict.R")
 library(ggplot2)
 library(geomtextpath)
 
