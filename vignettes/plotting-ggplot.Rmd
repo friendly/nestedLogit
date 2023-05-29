@@ -192,9 +192,8 @@ names(models(wlf.nested))
 The `predict()` method can also generate predicted values and their standard errors for the logits of these dichotomies, using the  `model = "dichotomies"` argument:
 ```{r}
 pred.dichot <- predict(wlf.nested, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 str(pred.dichot)
-
 ```
 
 Transforming this to a data frame, we get an analogous result for plotting:
@@ -268,7 +267,7 @@ of the dichotomies.
 
 ```{r}
 pred.dichot.alt <- predict(wlf.nested.alt, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 plotlogit.alt <- as.data.frame(pred.dichot.alt, newdata = new)
 head(plotlogit.alt)
 ```
