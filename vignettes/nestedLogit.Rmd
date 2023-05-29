@@ -467,7 +467,7 @@ par(op)
 
 <!-- We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects. -->
 
-### Alternative models for the `Womenlf` data
+### Alternative models for the `Womenlf` data {#sec: alt-model}
 
 We've mentioned that the nested dichotomies {not working} vs. {part-time, full-time} and {part-time} vs. {full-time} for the `Womenlf` data are largely arbitrary. An alternative set of nested dichotomies first contrasts full-time work with the other categories, {full-time} vs. {not working, part-time}, and then {not working} vs. {part-time}. The rationale is that the real hurdle for young married women to enter the paid labor force is to combine full-time work outside the home with housework. This alternative nested-dichotomies model proves enlightening:
 ```{r alt-model}

@@ -35,14 +35,17 @@ new <- expand.grid(hincome=seq(0, 45, length=4),
 pred.nested <- predict(wlf.nested, new)
 plotdata <- as.data.frame(pred.nested, newdata=new)
 
+# set a consistent theme
+theme_set(theme_bw(base_size = 14))
+
 ggplot(plotdata,
        aes(x=hincome, y=p, color=response)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-  scale_color_discrete() +
+#  scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
   facet_wrap(~ children, labeller = label_both) +
-  theme_bw(base_size = 14) +
+#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=p - se.p,
                   ymax=p + se.p,
                   fill = response), alpha = 0.3) +
@@ -70,12 +73,18 @@ ggplot(plotdata,
 # Predicted logit values for the dichotomies
 
 pred.dichot <- predict(wlf.nested, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 str(pred.dichot)
 
 # this is now the as.data.frame.predictDichotomies method
 
 plotlogit <- as.data.frame(pred.dichot, newdata = new)
+
+pred.dichot.no.se <- predict(wlf.nested, newdata = new,
+                             model = "dichotomies")
+str(pred.dichot.no.se)
+as.data.frame(pred.dichot.no.se, newdata = new)
+
 
 # plotlogit <- do.call(rbind, pred.dichot) |>
 #   select(- residual.scale) |>
@@ -110,7 +119,7 @@ ggplot(plotlogit,
   #  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ response, labeller = label_both) +
-  theme_bw(base_size = 14) +
+#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = children), alpha = 0.3) +
@@ -126,7 +135,7 @@ wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               data=Womenlf)
 
 pred.dichot.alt <- predict(wlf.nested.alt, newdata = new,
-                       model = "dichotomies", se.fit = TRUE)
+                       model = "dichotomies")
 str(pred.dichot.alt)
 
 plotlogit.alt <- as.data.frame(pred.dichot.alt, newdata = new)
@@ -138,7 +147,7 @@ ggplot(plotlogit.alt,
   #  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ children, labeller = label_both) +
-  theme_bw(base_size = 14) +
+#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = response), alpha = 0.3) +
@@ -151,10 +160,10 @@ ggplot(plotlogit.alt,
        aes(x=hincome, y=logit, color=children)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-   scale_color_discrete() +
+#   scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ response, labeller = label_both) +
-  theme_bw(base_size = 14) +
+#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = children), alpha = 0.3) +
