@@ -51,6 +51,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a>
     <a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a>
   </div>
 </li>
@@ -85,7 +86,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-27</h4>
+            <h4 data-toc-skip class="date">2023-05-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit.Rmd" class="external-link"><code>vignettes/nestedLogit.Rmd</code></a></small>
       <div class="d-none name"><code>nestedLogit.Rmd</code></div>
@@ -115,8 +116,8 @@ completed level of education, taking on the values (1) less than
 highschool, (2) highschool graduate, (3) some post-secondary, or (4)
 post-secondary degree.</p></li>
 <li><p>Women’s labor-force participation is classified as (1) not
-working outside the home, (2) working parttime, or (3) working
-fulltime.</p></li>
+working outside the home, (2) working part-time, or (3) working
+full-time.</p></li>
 <li><p>Voters in Quebec in a Canadian national election choose one of
 the (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party,
 or (4) Bloc Quebecois.</p></li>
@@ -218,9 +219,8 @@ vs. <span class="math inline">\(\{2, 3, 4\}\)</span>, therefore
 represents highschool graduation; the second, <span class="math inline">\(\{2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>, enrollment in post-secondary
 education; and the third, <span class="math inline">\(\{3\}\)</span>
 vs. <span class="math inline">\(\{4\}\)</span>, completion of a
-post-secondary degree. This scheme for generating the a
-nested-dichotomies logit model is termed <em>continuation
-logits</em>.</p>
+post-secondary degree. This scheme for generating the logits for the
+nested-dichotomies model is termed <em>continuation logits</em>.</p>
 <p>To take another example, the figure below shows the classification of
 psychiatric patients into four diagnostic categories. These might be
 naturally dichotomized by contrasting the normal individuals to the
@@ -298,8 +298,8 @@ compelling choice of nested dichotomies.</p>
 <p>It is at least arguable to construe a woman’s labor-force choice as
 first involving a dichotomy (let’s call it <code>work</code>) between
 women who are not working outside the home vs. those who are working
-(either parttime or fulltime). A second dichotomy (<code>full</code>)
-contrasts those who work fulltime time vs. parttime, but among only
+(either part-time or full-time). A second dichotomy (<code>full</code>)
+contrasts those who work full-time time vs. part-time, but among only
 those who work.</p>
 <p>The two binary variables for the nested dichotomies can be created by
 recoding <code>partic</code> as follows.</p>
@@ -453,7 +453,7 @@ above, here named <code>work</code> and <code>full</code>.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">$</span><span class="va">models</span><span class="op">)</span> <span class="co"># equivalent: names(models(wlf.models))</span></span>
 <span><span class="co">#&gt; [1] "work" "full"</span></span>
 <span></span>
-<span><span class="co"># view the separate models; same as lapply(models(wlf.nested), I)</span></span>
+<span><span class="co"># view the separate models</span></span>
 <span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="fl">1</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:  glm(formula = work ~ hincome + children, family = binomial, data = Womenlf, </span></span>
@@ -538,8 +538,9 @@ against one another in the order specified.</li>
 analysis-of-deviance Type II or III (partial) tests for each dichotomy
 and for the combined model.</li>
 <li>
-<code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> computes Wald tests for hypotheses
-about coefficients or their linear combinations.</li>
+<code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> uses
+<code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">car::linearHypothesis()</a></code> to compute Wald tests for
+hypotheses about coefficients or their linear combinations.</li>
 <li>
 <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code> returns the log-likelihood and degrees of
 freedom for the nested-dichotomies logit model.</li>
@@ -555,7 +556,7 @@ example, the coefficients <span class="math inline">\(\widehat{\beta}_{j1}\)</sp
 change in the log-odds of working vs. not working associated with a
 $1,000 increase in husband’s income and with having children present
 vs. absent, each holding the other constant. The coefficients <span class="math inline">\(\widehat{\beta}_{j2}\)</span> are similar for the
-log-odds of working fulltime vs. parttime among those who are working
+log-odds of working full-time vs. part-time among those who are working
 outside the home. The exponentiated coefficients <span class="math inline">\(e^{\widehat{\beta}_{jk}}\)</span> give
 multiplicative effects on the odds for these comparisons.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -571,10 +572,10 @@ multiplicative effects on the odds for these comparisons.</p>
 <span><span class="co">#&gt; (Intercept)     3.8032 32.38753</span></span>
 <span><span class="co">#&gt; hincome         0.9586  0.89829</span></span>
 <span><span class="co">#&gt; childrenpresent 0.2069  0.07055</span></span></code></pre></div>
-<p>Thus, the odds of both working and working fulltime decrease with
+<p>Thus, the odds of both working and working full-time decrease with
 husband’s income, by about 4% and 10% respectively per $1000. Having
 young children also decreases the odds of both working and working
-fulltime, by about 79% and 93% respectively.</p>
+full-time, by about 79% and 93% respectively.</p>
 <p><strong>Analysis of deviance</strong>: A method for the
 <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code> function from the <strong>car</strong> package
 <span class="citation">(Fox &amp; Weisberg, 2019)</span> computes Type
@@ -759,8 +760,8 @@ of <code>region</code> over and above the main effects of
 <span><span class="co">#&gt; 2       357        419  8     5.08     0.75</span></span></code></pre></div>
 <p>Recall that <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> with two or models tests the models
 sequentially against one another, in the order specified. This assumes
-that the models compared are <em>nested</em> (an unintentional a pun),
-in the sense that the terms in the smaller model in each sequential pair
+that the models compared are <em>nested</em> (an unintentional pun), in
+the sense that the terms in the smaller model in each sequential pair
 are a subset of those in the larger model.</p>
 <p>In a similar manner, we could fit and test a <em>wider</em> scope of
 models. For example to add an interaction between husband’s income and
@@ -805,44 +806,85 @@ is a named list of four data frames whose columns are the response
 categories:</p>
 <ul>
 <li>
-<code>p</code> : predicted response-category probabilities</li>
+<code>p</code>: predicted response-category probabilities.</li>
 <li>
-<code>logit</code> : the predicted probabilities transformed to the
-log-odds (logit) scale, <code>logit = log(p / 1-p)</code>
-</li>
+<code>logit</code>: the predicted probabilities transformed to the
+log-odds (logit) scale, <code>logit = log(p / (1 - p))</code>.</li>
 <li>
-<code>se.p</code> standard errors of the predicted
-probabilities</li>
+<code>se.p</code>: standard errors of the predicted probabilities,
+computed by the delta method (see the corresponding vignette).</li>
 <li>
-<code>se.logit</code> standard errors of the logits</li>
+<code>se.logit</code>: standard errors of the logits.</li>
 </ul>
 <p>The computation is a bit tricky, because the probabilities of working
-full time or part time are conditional on working outside the home, but
+full-time or part-time are conditional on working outside the home, but
 <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> takes care of the details.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wlf.pred</span><span class="op">[[</span><span class="st">"p"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1   0.7057   0.2020 0.092343</span></span>
-<span><span class="co">#&gt; 2   0.6878   0.1993 0.112912</span></span>
-<span><span class="co">#&gt; 3   0.8951   0.1030 0.001886</span></span>
-<span><span class="co">#&gt; 4   0.7708   0.1920 0.037208</span></span>
-<span><span class="co">#&gt; 5   0.7396   0.2007 0.059742</span></span>
-<span><span class="co">#&gt; 6   0.6309   0.1776 0.191521</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wlf.pred</span><span class="op">[[</span><span class="st">"se.p"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1  0.03394  0.03077 0.022756</span></span>
-<span><span class="co">#&gt; 2  0.03514  0.03104 0.024934</span></span>
-<span><span class="co">#&gt; 3  0.05948  0.05846 0.002676</span></span>
-<span><span class="co">#&gt; 4  0.04243  0.03908 0.017651</span></span>
-<span><span class="co">#&gt; 5  0.03651  0.03368 0.020323</span></span>
-<span><span class="co">#&gt; 6  0.04984  0.04053 0.041672</span></span></code></pre></div>
-<p>By default, these are provided for <em>all</em> the observations in
-the data set. You can provide a <code>newdata</code> data.frame
-containing arbitrary combinations of predicted values, for example to
-obtain a grid of predicted values for custom plots or other
-purposes.</p>
+<span><span class="va">wlf.pred</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; First 10 of 263 rows:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; predicted response-category probabilties</span></span>
+<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1    0.7057   0.2020 0.092343</span></span>
+<span><span class="co">#&gt; 2    0.6878   0.1993 0.112912</span></span>
+<span><span class="co">#&gt; 3    0.8951   0.1030 0.001886</span></span>
+<span><span class="co">#&gt; 4    0.7708   0.1920 0.037208</span></span>
+<span><span class="co">#&gt; 5    0.7396   0.2007 0.059742</span></span>
+<span><span class="co">#&gt; 6    0.6309   0.1776 0.191521</span></span>
+<span><span class="co">#&gt; 7    0.7057   0.2020 0.092343</span></span>
+<span><span class="co">#&gt; 8    0.6309   0.1776 0.191521</span></span>
+<span><span class="co">#&gt; 9    0.7057   0.2020 0.092343</span></span>
+<span><span class="co">#&gt; 10   0.7708   0.1920 0.037208</span></span>
+<span><span class="co">#&gt;   . . .</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; predicted response-category logits</span></span>
+<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1    0.8744   -1.374   -2.285</span></span>
+<span><span class="co">#&gt; 2    0.7898   -1.391   -2.061</span></span>
+<span><span class="co">#&gt; 3    2.1437   -2.164   -6.272</span></span>
+<span><span class="co">#&gt; 4    1.2129   -1.437   -3.253</span></span>
+<span><span class="co">#&gt; 5    1.0437   -1.382   -2.756</span></span>
+<span><span class="co">#&gt; 6    0.5360   -1.533   -1.440</span></span>
+<span><span class="co">#&gt; 7    0.8744   -1.374   -2.285</span></span>
+<span><span class="co">#&gt; 8    0.5360   -1.533   -1.440</span></span>
+<span><span class="co">#&gt; 9    0.8744   -1.374   -2.285</span></span>
+<span><span class="co">#&gt; 10   1.2129   -1.437   -3.253</span></span>
+<span><span class="co">#&gt;   . . .</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; standard errors of predicted probabilities</span></span>
+<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1   0.03394  0.03077 0.022756</span></span>
+<span><span class="co">#&gt; 2   0.03514  0.03104 0.024934</span></span>
+<span><span class="co">#&gt; 3   0.05948  0.05846 0.002676</span></span>
+<span><span class="co">#&gt; 4   0.04243  0.03908 0.017651</span></span>
+<span><span class="co">#&gt; 5   0.03651  0.03368 0.020323</span></span>
+<span><span class="co">#&gt; 6   0.04984  0.04053 0.041672</span></span>
+<span><span class="co">#&gt; 7   0.03394  0.03077 0.022756</span></span>
+<span><span class="co">#&gt; 8   0.04984  0.04053 0.041672</span></span>
+<span><span class="co">#&gt; 9   0.03394  0.03077 0.022756</span></span>
+<span><span class="co">#&gt; 10  0.04243  0.03908 0.017651</span></span>
+<span><span class="co">#&gt;   . . .</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; standard errors of predicted logits</span></span>
+<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1    0.1634   0.1909   0.2715</span></span>
+<span><span class="co">#&gt; 2    0.1637   0.1945   0.2489</span></span>
+<span><span class="co">#&gt; 3    0.6333   0.6326   1.4215</span></span>
+<span><span class="co">#&gt; 4    0.2402   0.2519   0.4927</span></span>
+<span><span class="co">#&gt; 5    0.1896   0.2100   0.3618</span></span>
+<span><span class="co">#&gt; 6    0.2140   0.2775   0.2691</span></span>
+<span><span class="co">#&gt; 7    0.1634   0.1909   0.2715</span></span>
+<span><span class="co">#&gt; 8    0.2140   0.2775   0.2691</span></span>
+<span><span class="co">#&gt; 9    0.1634   0.1909   0.2715</span></span>
+<span><span class="co">#&gt; 10   0.2402   0.2519   0.4927</span></span>
+<span><span class="co">#&gt;   . . .</span></span></code></pre></div>
+<p>By default, fitted values and standard errors are computed for
+<em>all</em> the observations in the data set. You can provide a
+<code>newdata</code> data.frame containing arbitrary combinations of
+predicted values, for example to obtain a grid of predicted values for
+custom plots or other purposes.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>hincome<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, length<span class="op">=</span><span class="fl">4</span><span class="op">)</span>,</span>
 <span>                   children<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absent"</span>, <span class="st">"present"</span><span class="op">)</span><span class="op">)</span></span>
@@ -884,10 +926,11 @@ format.</p>
 </h3>
 <p>The <strong>nestedLogit</strong> package includes a basic
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> models, which
-calculates fitted probabilities for the response categories and plots
-these against a single explanatory variable on the horizontal axis,
-while <code>other</code> explanatory variables are fixed to particular
-values. To produce multi-panel plots, it is necessary to call
+calculates fitted probabilities and standard errors for the response
+categories and plots the probabilities and point-wise confidence limits
+against a single explanatory variable on the horizontal axis, while
+<code>other</code> explanatory variables are fixed to particular values.
+To produce multi-panel plots, it is necessary to call
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> repeatedly for various levels of the other
 predictors, and to compose these into a single figure, for example using
 <code>par("mfcol")</code>:</p>
@@ -899,25 +942,26 @@ predictors, and to compose these into a single figure, for example using
 <span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="fig/wlf-plot-1.png" alt="**plot method**: Predicted probabilities of working at all or working part time or full time" width="100%"><p class="caption">
-<strong>plot method</strong>: Predicted probabilities of working at all
-or working part time or full time
+<img src="fig/wlf-plot-1.png" alt="**plot method**: Predicted probabilities and 95 percent pointwise confidence envelopes of not working, working part-time, and working full-time" width="100%"><p class="caption">
+<strong>plot method</strong>: Predicted probabilities and 95 percent
+pointwise confidence envelopes of not working, working part-time, and
+working full-time
 </p>
 </div>
-<p>We provide a separate vignette on constructing custom graphs of
-<code>"nestedLogit"</code> objects.</p>
+<!-- We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects. -->
 </div>
 <div class="section level3">
-<h3 id="alternative-models-for-the-womenlf-data">Alternative models for the <code>Womenlf</code> data<a class="anchor" aria-label="anchor" href="#alternative-models-for-the-womenlf-data"></a>
+<h3 id="alternative-models-for-the-womenlf-data-sec-alt-model">Alternative models for the <code>Womenlf</code> data {#sec:
+alt-model}<a class="anchor" aria-label="anchor" href="#alternative-models-for-the-womenlf-data-sec-alt-model"></a>
 </h3>
 <p>We’ve mentioned that the nested dichotomies {not working}
-vs. {parttime, fulltime} and {parttime} vs. {fulltime} for the
+vs. {part-time, full-time} and {part-time} vs. {full-time} for the
 <code>Womenlf</code> data are largely arbitrary. An alternative set of
-nested dichotomies first contrasts fulltime work with the other
-categories, {fulltime} vs. {not working, parttime}, and then {not
-working} vs. {part time}. The rationale is that the real hurdle for
-young married women to enter the paid labor force is to combine fulltime
-work outside the home with housework. This alternative
+nested dichotomies first contrasts full-time work with the other
+categories, {full-time} vs. {not working, part-time}, and then {not
+working} vs. {part-time}. The rationale is that the real hurdle for
+young married women to enter the paid labor force is to combine
+full-time work outside the home with housework. This alternative
 nested-dichotomies model proves enlightening:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>,</span>
@@ -925,9 +969,9 @@ nested-dichotomies model proves enlightening:</p>
 <span>                                     part<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></code></pre></div>
 <p>The <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> for this model
-show that the effects of husband’s income and children are significant
-for the <code>full</code> model but not for the <code>part</code>
-model:</p>
+show that the effects of husband’s income and children make a
+substantial contribution to the <code>full</code> model but not to the
+<code>part</code> model:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -1009,8 +1053,8 @@ model:</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 4</span></span></code></pre></div>
 <p>It’s apparent that the alternative model produces a simpler
 description of the data: The predictors husband’s income and presence of
-children affect the decision to work fulltime, but not the decision to
-work parttime among those who aren’t engaged in fulltime work.</p>
+children affect the decision to work full-time, but not the decision to
+work part-time among those who aren’t engaged in full-time work.</p>
 <p>But do the fits of the two models to the data differ? We can compare
 fitted probabilities under the two specifications:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -1018,9 +1062,12 @@ fitted probabilities under the two specifications:</p>
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span><span class="op">$</span><span class="va">p</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
-<span><span class="co">#&gt;   0.9801   0.9185   0.9961</span></span></code></pre></div>
-<p>The correlations of the fitted probabilities are high but far from
-perfect.</p>
+<span><span class="co">#&gt;   0.9801   0.9185   0.9961</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fit1</span> <span class="op">-</span> <span class="va">fit2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.01712</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fit1</span> <span class="op">-</span> <span class="va">fit2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.1484</span></span></code></pre></div>
+<p>The fitted probabilities are similar but far from the same.</p>
 <p>The two models have the same number of parameters and neither is
 nested within the other, so a conventional likelihood-ratio test is
 inappropriate, but we can still compare maximized log-likelihoods under
@@ -1084,12 +1131,16 @@ categories symmetrically:</p>
 <span><span class="co">#&gt; AIC: 434.9</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.multinom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'log Lik.' -211.4 (df=6)</span></span></code></pre></div>
-<p>Check the correlation between fitted probabilities:</p>
+<p>Check the relationship between fitted probabilities:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.multinom</span>, type<span class="op">=</span><span class="st">"probs"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="va">fit3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
-<span><span class="co">#&gt;        1        1        1</span></span></code></pre></div>
+<span><span class="co">#&gt;        1        1        1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fit2</span> <span class="op">-</span> <span class="va">fit3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.0001251</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">fit2</span> <span class="op">-</span> <span class="va">fit3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.0006908</span></span></code></pre></div>
 <p>As it turns out, the multinomial logit model and the alternative
 nested-dichotomies model produce nearly identical fits with similar
 simple interpretations.</p>
@@ -1111,7 +1162,7 @@ Social Research. http://doi.org/<a href="https://doi.org/10.3886/ICPSR07879.V1" 
 </div>
 <div id="ref-Fienberg:80" class="csl-entry">
 Fienberg, S. E. (1980). <em>The analysis of cross-classified categorical
-data</em> (2nd ed.). Cambridge, MA: MIT Press.
+data</em> (Second edition). Cambridge, MA: MIT Press.
 </div>
 <div id="ref-Fox:1984:LSM" class="csl-entry">
 Fox, J. (1984). <em>Linear statistical models and related methods</em>.
@@ -1119,7 +1170,8 @@ New York: Wiley.
 </div>
 <div id="ref-Fox:2016:ARA" class="csl-entry">
 Fox, J. (2016). <em>Applied regression analysis and generalized linear
-models</em> (Third edition.). Los Angeles: SAGE.
+models</em> (Third edition). Thousand Oaks <span>CA</span>: SAGE.
+Retrieved from <a href="https://www.john-fox.ca/AppliedRegression/index.html" class="external-link">https://www.john-fox.ca/AppliedRegression/index.html</a>
 </div>
 <div id="ref-car2019" class="csl-entry">
 Fox, J., &amp; Weisberg, S. (2019). <em>An <span>R</span> companion to

@@ -75,6 +75,7 @@ Summarizes the terms in "nestedLogit" model.
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a>
     <a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a>
   </div>
 </li>
@@ -156,6 +157,9 @@ probabilities or logits.</p></dd>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for predictDichotomies</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">10L</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for nestedLogit</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">object</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nested"</span>, <span class="st">"dichotomies"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -206,7 +210,8 @@ dichotomies and a named list of the results is returned.</p></dd>
 
 
 <dt>n</dt>
-<dd><p>For the print method of <code>predict.nestedLogit</code>, and integer or <code>"all"</code>
+<dd><p>For the print method of <code>predict.nestedLogit</code>
+or <code>predictDichotomies</code>, an integer or <code>"all"</code>
 to control how many rows are printed for each of the probabilities of
 response categories, corresponding logits and their standard errors.</p></dd>
 
@@ -355,7 +360,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0016570885 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002856ac45830&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001f6e7fec1b0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
@@ -399,7 +404,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual Deviance: 14050 	AIC: 14060</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002856ac45830&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000001f6e7fec1b0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -517,7 +522,7 @@ dichotomies.</p>
 <span class="r-in"><span><span class="co"># predicted probabilities and ploting</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="co"># fitted probabilities for first few cases;</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> First 20 of 44091 rows:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> First 10 of 44091 rows:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> predicted response-category probabilties</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    l.t.highschool highschool    college   graduate</span>
@@ -648,20 +653,43 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32 0.04471601</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predicted logits for dichotomies</span></span></span>
-<span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, newdata<span class="op">=</span><span class="va">new</span>, model<span class="op">=</span><span class="st">"dichotomies"</span>, se.fit<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, newdata<span class="op">=</span><span class="va">new</span>, model<span class="op">=</span><span class="st">"dichotomies"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">predictions</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                          above_l.t.highschool</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fit            0.05323272, 2.01652113, 3.15390636, 3.40445160, 1.00551133, 2.96879974, 4.10618498, 4.35673022</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> se.fit         0.02522651, 0.03467891, 0.09442790, 0.12890190, 0.03466465, 0.03730782, 0.09412952, 0.12842860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> residual.scale                                                                                              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                              above_highschool</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fit               -1.9291427, -1.3281099, -0.2233964, 0.2820807, -1.3873084, -0.7862756, 0.3184379, 0.8239151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> se.fit         0.03501272, 0.02896659, 0.03806677, 0.04445165, 0.03693667, 0.02531886, 0.03387511, 0.04064027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> residual.scale                                                                                              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                 above_college</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fit            -0.6835162, -1.0289955, -1.0981997, -0.5377960, -0.2914957, -0.6369750, -0.7061792, -0.1457755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> se.fit         0.06476680, 0.05203322, 0.06219778, 0.06313624, 0.06656676, 0.04354779, 0.05173419, 0.05184601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> residual.scale                                                                                              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  predictions for binary logit models from nested logit model: m </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_l.t.highschool </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.05323272 0.02522651              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.01652113 0.03467891              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3.15390636 0.09442790              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.40445160 0.12890190              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.00551133 0.03466465              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 2.96879974 0.03730782              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 4.10618498 0.09412952              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 4.35673022 0.12842860              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_highschool </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -1.9291427 0.03501272              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -1.3281099 0.02896659              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.2233964 0.03806677              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.2820807 0.04445165              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -1.3873084 0.03693667              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.7862756 0.02531886              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.3184379 0.03387511              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.8239151 0.04064027              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_college </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.6835162 0.06476680              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -1.0289955 0.05203322              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -1.0981997 0.06219778              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -0.5377960 0.06313624              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -0.2914957 0.06656676              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.6369750 0.04354779              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -0.7061792 0.05173419              1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.1457755 0.05184601              1</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

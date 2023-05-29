@@ -27,6 +27,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a>
     <a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a>
   </div>
 </li>
@@ -55,13 +56,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="nestedlogit-030">nestedLogit 0.3.0<a class="anchor" aria-label="anchor" href="#nestedlogit-030"></a></h2>
+<p>This is a major enhancement to the package, adding computations of standard errors and confidence intervals to predicted probabilities and logits.</p>
 <ul><li>Added an example of <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code> to print nested lists</li>
 <li>Now use <code>fig.show="hold"</code> to keep <code>par(op)</code> with the code.</li>
 <li>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.</li>
 <li>A <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for the result of <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> generates the corresponding confidence intervals.</li>
-<li>An <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> method for predicted probabilities converts these to a data frame in long format, handy for using <code>ggplot()</code>.</li>
+<li>
+<code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</li>
 <li>Added a <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for predicted probabilities and logits</li>
 <li>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> objects now plots confidence intervals for predicted probabilities.</li>
+<li>A new vignette, “standard-errors”, describes the mathematics behind the standard error calculations.</li>
+<li>An old vignette on plotting methods was completely re-written using the new <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> methods and focusing exclusively on `ggplot2().</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="nestedlogit-021">nestedLogit 0.2.1<a class="anchor" aria-label="anchor" href="#nestedlogit-021"></a></h2><p class="text-muted">CRAN release: 2023-05-15</p>

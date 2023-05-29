@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content='Provides functions for specifying and fitting nested
     dichotomy logistic regression models for a multi-category response and
-    methods for summarising those models.  Nested dichotomies are
+    methods for summarising and plotting those models.  Nested dichotomies are
     statistically independent, and hence provide an additive decomposition
     of tests for the overall polytomous response.  When the dichotomies
     make sense substantively, this method can be a simpler alternative to
@@ -29,7 +29,7 @@
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Nested Dichotomy Logistic Regression Models">
 <meta property="og:description" content='Provides functions for specifying and fitting nested
     dichotomy logistic regression models for a multi-category response and
-    methods for summarising those models.  Nested dichotomies are
+    methods for summarising and plotting those models.  Nested dichotomies are
     statistically independent, and hence provide an additive decomposition
     of tests for the overall polytomous response.  When the dichotomies
     make sense substantively, this method can be a simpler alternative to
@@ -69,6 +69,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a>
     <a class="dropdown-item" href="articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a>
   </div>
 </li>
@@ -210,7 +211,7 @@
 <li>
 <code>Anova()</code> uses <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">car::Anova()</a></code> to provide analysis-of-deviance Type II or III (partial) tests for each dichotomy and for the combined model.</li>
 <li>
-<code>linearHypothesis()</code> computes Wald tests for hypotheses about coefficients or their linear combinations.</li>
+<code>linearHypothesis()</code> uses <code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">car::linearHypothesis()</a></code> to compute Wald tests for hypotheses about coefficients or their linear combinations.</li>
 <li>
 <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code> returns the log-likelihood and degrees of freedom for the nested-dichotomies logit model.</li>
 <li>Through <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code>, the <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code> functions compute the Akaike and Bayesian information criteria model-comparison statistics.</li>
@@ -310,10 +311,10 @@
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
 <ul>
-<li>A more general discussion of nested dichotomies logistic regression and detailed examples can be found in <code><a href="articles/nestedLogit.html">vignette("nestedLogit", package="nestedLogit")</a></code>
-</li>
+<li><p>A more general discussion of nested dichotomies logistic regression and detailed examples can be found in <code><a href="articles/nestedLogit.html">vignette("nestedLogit")</a></code></p></li>
+<li><p>A variety of other plots can be produced using <code>ggplot()</code>, as described in the vignette, <code><a href="articles/plotting-ggplot.html">vignette("plotting-ggplot")</a></code>.</p></li>
+<li><p>A new vignette, “<code><a href="articles/standard-errors.html">vignette("standard-errors")</a></code>, describes the mathematics behind the calculation of standard errors using the delta method.</p></li>
 </ul>
-<!-- * A variety of other plots can be produced using base graphics (`matplot()`) and `ggplot()`, as described in the vignette, --><!-- `vignette("plotting", package="nestedLogit")`. -->
 </div>
 <div class="section level2">
 <h2 id="authors">Authors<a class="anchor" aria-label="anchor" href="#authors"></a>

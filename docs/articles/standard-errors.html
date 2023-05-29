@@ -51,6 +51,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a>
     <a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a>
   </div>
 </li>
@@ -84,7 +85,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</h1>
                         <h4 data-toc-skip class="author">John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-27</h4>
+            <h4 data-toc-skip class="date">2023-05-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/standard-errors.Rmd" class="external-link"><code>vignettes/standard-errors.Rmd</code></a></small>
       <div class="d-none name"><code>standard-errors.Rmd</code></div>
@@ -93,11 +94,10 @@
     
     
 <!-- \usepackage{amsmath} -->
-<p>This document uses the <a href="https://bookdown.org/ts_robinson1994/10_fundamental_theorems_for_econometrics/dm.html" class="external-link">delta
-method</a> to derive approximations to the standard errors of estimated
-probabilities for dichotomous logit models. The nested logit model
-dichotomies is comprised of these dichotomous models, and so standard
-errors for estimated probabilites can also be found.</p>
+<p>This document uses the delta method <span class="citation">(Fox,
+2021, sec. 6.3.5)</span> to derive approximations to the standard errors
+of estimated probabilities for dichotomous logit models, and from these,
+for the nested logit model.</p>
 <div class="section level2">
 <h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a>
 </h2>
@@ -111,7 +111,7 @@ dichotomous logit model are estimated in the usual manner. Let <span class="math
 \phi^{(j)})]\)</span> represent the (estimated) logit (log-odds) for the
 <span class="math inline">\(j\)</span>th dichotomous logit model, with
 variance <span class="math inline">\(V(\lambda^{(j)})\)</span> (see
-Section <span class="citation">(<strong>ref?</strong>)</span>(sec:dichotomous-variances).</p>
+below).</p>
 <p>Let <span class="math inline">\(\phi_k\)</span>, <span class="math inline">\(k = 1, \ldots, m\)</span> represent the
 probability that the polytomous response is <span class="math inline">\(Y = k\)</span>. Let <span class="math inline">\(\widehat{\phi}^{(j)}\)</span> and <span class="math inline">\(\widehat{\phi}_k\)</span> represent the estimates
 of these probabilities. In the sequel, which involves only the estimates
@@ -243,6 +243,16 @@ V(\lambda_k) &amp;\approx \left( \frac{d\lambda_k}{d\phi_k} \right)^2
 V(\phi_k) \\
 &amp;= \left[ \frac{1}{\phi_k(1 - \phi_k)} \right]^2 V(\phi_k)
 \end{align*}\]</span></p>
+</div>
+</div>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Fox:2021:Primer" class="csl-entry">
+Fox, J. (2021). <em>A mathematical primer for social statistics</em>
+(Second edition). Thousand Oaks <span>CA</span>: Sage. Retrieved from <a href="https://www.john-fox.ca/MathPrimer/index.html" class="external-link">https://www.john-fox.ca/MathPrimer/index.html</a>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

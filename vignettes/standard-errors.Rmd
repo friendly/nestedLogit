@@ -45,7 +45,7 @@ Here, I abuse the notation slightly in the interest of clarity, using letters ra
 
 ## Variances of the Estimated Probabilities
 
-### Variances of Estimated Probabilities for the Dichotomous Logit Models}{sec:dichotomous-variances}
+### For the Dichotomous Logit Models
 
 The estimated probability of success $\phi^{(j)}$ for the $j$th dichotomous logit model is
 \begin{equation*}
@@ -78,7 +78,7 @@ By the univariate delta method,
  &= V(\phi^{(j)})
 \end{align*}
 
-### Variances of Estimated Probabilities for the Nested Logit Model
+### For the Nested Logit Model
 
 The variances of the estimated response-category probabilities for the polytomous response can be obtained similarly by the multivariate delta method, recognizing that these probabilities are products of the dichotomous probabilities. The result is greatly simplified because the dichotomies are independent, and so the covariance matrix of the estimated dichotomous probabilities is diagonal.
 
