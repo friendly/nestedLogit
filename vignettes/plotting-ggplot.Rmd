@@ -117,7 +117,7 @@ head(plotdata)
 
 ## Plotting with `ggplot2`
 Then we can plot probability against one predictor, use `color` to distinguish the levels of the response
-(`partic`) and facet facet the plot by `children`. The point-wise standard errors are drawn
+(`partic`) and facet the plot by `children`. The point-wise standard errors are drawn
 in a 68% confidence envelope using `geom_ribbon()`. We've also plotted the predicted values as points to
 show where the predictions are obtained.
 ```{r wlf-ggplot-p1}
@@ -157,7 +157,7 @@ gg1 + geom_textline(aes(label = response),
 
 ### Plotting log-odds
 The advantage of the data structure returned by `as.data.frame()` is that you can just as easily plot the predicted probabilities on the scale of log-odds
-($\text{logit}(p) = \log(p / 1-p)$),
+($\text{logit}(p) = \log(p / (1-p))$),
 using the `logit` and
 `logit.se` components.
 
@@ -182,7 +182,7 @@ ggplot(plotdata,
 
 ## Predicted logit values for the dichotomies
 
-The nested logit model `wlf.nested` is comprised of the two binary logistic regression
+The nested logit model `wlf.nested` comprises the two binary logistic regression
 models for the `work` and `full` dichotomies. We can plot these as follows.
 
 ```{r}
@@ -262,7 +262,7 @@ wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               data=Womenlf)
 ```
 
-Proceeding in the same way above, we get predicted logits and standard errors for each
+Proceeding in the same way as above, we get predicted logits and standard errors for each
 of the dichotomies.
 
 ```{r}

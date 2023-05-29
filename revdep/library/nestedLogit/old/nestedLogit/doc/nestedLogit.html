@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Michael Friendly and John Fox" />
+
+<meta name="date" content="2023-05-12" />
+
+<title>Nested-dichotomies logistic regression models</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Nested-dichotomies logistic regression
+models</h1>
+<h4 class="author">Michael Friendly and John Fox</h4>
+<h4 class="date">2023-05-12</h4>
+
+
+
+<p>Load the packages we’ll use here:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nestedLogit)    <span class="co"># Nested Dichotomy Logistic Regression Models</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)          <span class="co"># A General-Purpose Package for Dynamic Report Generation in R</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)            <span class="co"># Companion to Applied Regression</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)           <span class="co"># Feed-Forward Neural Networks and Multinomial Log-Linear Models</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)          <span class="co"># Convert Statistical Objects into Tidy Tibbles</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)          <span class="co"># A Grammar of Data Manipulation</span></span></code></pre></div>
+<div id="models-for-polytomous-responses" class="section level2">
+<h2>Models for polytomous responses</h2>
+<p>The familiar logistic-regression model applies when there is a binary
+(“<em>dichotomous</em>”) response, such as “survived” vs. “died”, or
+voted “yes” vs. “no” on a referendum. Often, however, the response
+variable is multi-category (“<em>polytomous</em>”), taking on <span class="math inline">\(m &gt; 2\)</span> discrete values. For
+example,</p>
+<ul>
+<li><p>Respondents to a social survey are classified by their highest
+completed level of education, taking on the values (1) less than
+highschool, (2) highschool graduate, (3) some post-secondary, or (4)
+post-secondary degree.</p></li>
+<li><p>Women’s labor-force participation is classified as (1) not
+working outside the home, (2) working parttime, or (3) working
+fulltime.</p></li>
+<li><p>Voters in Quebec in a Canadian national election choose one of
+the (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party,
+or (4) Bloc Quebecois.</p></li>
+</ul>
+<p>The numbers in these examples, (1), (2), etc., are category labels,
+and the categories may be ordered (as in the first two examples) or may
+not (as in the third).</p>
+<p>There are several different ways to model the category probabilities
+for a polytomous response. Let <span class="math inline">\(\phi_{ij}
+\equiv \phi_j \, ( \vec{x}_i )\)</span> be the probability of response
+<span class="math inline">\(j\)</span> for case <span class="math inline">\(i\)</span>, given the predictors <span class="math inline">\(\vec{x}_i\)</span>. Because <span class="math inline">\(\sum_j \, \phi_{ij} = 1\)</span>, any <span class="math inline">\(m - 1\)</span> of these probabilities imply the
+last; for example, <span class="math inline">\(\phi_{im} = 1 - \sum_{j =
+1}^{m - 1} \, \phi_{ij}\)</span>. The essential idea is to construct a
+model for the polytomous response composed of <span class="math inline">\(m-1\)</span> logit comparisons among the response
+categories in a manner analogous to to the treatment of factors in the
+predictor variables. There are also more restrictive models specifically
+for ordered categorical responses, but we will not consider them
+here.</p>
+<div id="multinomial-logit-model" class="section level3">
+<h3>Multinomial logit model</h3>
+<p>One natural generalization of the the standard logistic-regression
+(or <em>logit</em>) model is the <em>multinomial logit</em> (or
+<em>generalized logit</em>) model. When the polytomous response has
+<span class="math inline">\(m\)</span> levels, the multinomial logit
+model comprises <span class="math inline">\(m-1\)</span> log-odds
+comparisons with a reference level, typically the first or last, as
+described in <span class="citation">Fox (2016, sec. 14.2.1)</span> and
+<span class="citation">Friendly &amp; Meyer (2016, sec. 8.3)</span>.
+This is an inessential choice, in that the likelihood under the model
+and the fitted response probabilities that it produces are unaffected by
+choice of reference level, much as choice of reference level for dummy
+regressors created from a factor predictor doesn’t affect the fit of a
+regression model. The standard implementation of this model in R is
+<code>multinom()</code> in the <strong>nnet</strong> package <span class="citation">(Venables &amp; Ripley, 2002)</span>, which takes the
+first level of the response as the omitted reference category.</p>
+</div>
+<div id="nested-dichotomies-logit-model" class="section level3">
+<h3>Nested-dichotomies logit model</h3>
+<p>Because it uses the familiar dichotomous logit model, fitting
+separate models for each of a hierarchically nested set of binary
+comparisons among the response categories, the
+<em>nested-dichotomies</em> logit model can be a simpler alternative to
+the multinomial logit model. Standard methods for model summaries, tests
+and graphs can then be employed for each of the constituent binary logit
+models, and taken together, the set of <span class="math inline">\(m-1\)</span> models comprises a complete model for
+the polytomous response, just as the multinomial logit model does. This
+approach is described by <span class="citation">Fienberg (1980)</span>
+and is also discussed by <span class="citation">Fox (2016, sec.
+14.2.2)</span> and <span class="citation">Friendly &amp; Meyer (2016,
+sec. 8.2)</span>.</p>
+<p>For an <span class="math inline">\(m\)</span>-category response and a
+model-matrix with <span class="math inline">\(p\)</span> regressors,
+both the nested-dichotomies logit model and the multinomial logit model
+have <span class="math inline">\(p \times (m - 1)\)</span> parameters.
+The models are not equivalent, however, in that they generally produce
+different sets of fitted category probabilities and hence different
+likelihoods.</p>
+<p>By the construction of nested dichotomies, the submodels are
+statistically independent (because the likelihood for the polytomous
+response is the product of the likelihoods for the dichotomies), so test
+statistics, such as likelihood ratio (<span class="math inline">\(G^2\)</span>) and Wald chi-square tests for
+regression coefficients can be summed to give overall tests for the full
+polytomy. In this way, the <span class="math inline">\(m-1\)</span>
+dichotomies are analogous to <span class="math inline">\(m-1\)</span>
+orthogonal contrasts for an <span class="math inline">\(m\)</span>-level
+factor in a balanced ANOVA design.</p>
+<p>Alternative sets of nested dichotomies are illustrated in the figure
+below, for a four-category polytomous response response <span class="math inline">\(Y = \{1, 2, 3, 4\}\)</span>. In the case shown at
+the left of the figure, the response categories are divided first as
+<span class="math inline">\(\{1, 2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>. Then these compound categories
+are subdivided as the dichotomies <span class="math inline">\(\{1\}\)</span> vs. <span class="math inline">\(\{2\}\)</span> and as <span class="math inline">\(\{3\}\)</span> vs. <span class="math inline">\(\{4\}\)</span>. Alternatively, as shown at the
+right of the figure, the response categories are divided progressively:
+first as <span class="math inline">\(\{1\}\)</span> vs. <span class="math inline">\(\{2, 3, 4\}\)</span>; next as <span class="math inline">\(\{2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>; and and finally <span class="math inline">\(\{3\}\)</span> vs. <span class="math inline">\(\{4\}\)</span>.</p>
+<div class="figure" style="text-align: center">
+<img src="data:image/jpeg;base64,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ASNdYtdzNNPHG6327/WRXK7dg3/8s3QfuzQB0/hO/wBI8TQOPsUFre2zeXd2skMYkgl/74+ZT/yzcDD0Adf/AGFp3/Ppbf8AfmP/AOIoAP7C07/n0tv+/Mf/AMRQAf2Fp3/Ppbf9+Y//AIigA/sLTv8An0tv+/Mf/wARQAf2Fp3/AD6W3/fmP/4igBV0PT0IK2tupHQiGPj/AMcoA1aACgAoADQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAGTq+tWmhW5u76RYYl7nqx/uqv8AE3+yKAPPfsepfEAeZqCy6Zo+cpahttxdL/C07L/qon6+X1P/AC0oA9NsrKDToUtrVFhhjGERBgKKALdAHnnizwnPdTprmhuLXWbVcKx/1dzF3t7hf4l/55v1jPtQBp+EvFsPiaB8o1re2reXd2knEkMv/syP/wAs36OKAOwoAKACgAoAKACgAoAKAA0AFAAKAFxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAKAEoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAwrjxDYW2oxaNJKovLmN5I488lE+8aAMjxH4vj0ZxY2cbX+qSj91aRH5v96Zv+WUX+29AGdpHg6W5ul1jxE63moKP3UQ/49rUN/DFH/E3+2+T6UAei0AFABQAUAed+K/Ck15OmuaEwtdZtRhWPEdzH/z73A/iVv8Alm/WM0AVofiXYJo13qt4rWlxpakXlpIcSxTfwx/7SyNxG/SSgDs/D+s2/iDT7fU7MhobuJZFPpu/h+qH5aANqgAoAKACgAoAKAA0AFACigAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgBKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA5zxT4ktfCWmzarfELFboTjPLt/Ci/7T0AfmhqHxI1W98SHxWG2XYcmMdVjTbsWNf9xWoA+8fhDqWkazpzXmnwzx3khVr1rpG895dv3vMb76f3NnT0oA9hoAKACgAoAKAIZS6oxiALgHaCcAmgD88/jffeJ7rUGk1mwGnwlfLV4AxSaNW+XzJlzv+b/Vh8flQB6h+zB4582OXwvdN80e6a13Hqv/AC0jX/c+/wD8CoA+wqACgAoAKACgAoADQAUAKKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAEoAKACgAoAKACgAoAKACgAoA8S8I2Gv+KdLi1WTW7q3a5aY+VHbWmxAk8saqu6Hf8AdWgDpv8AhDtc/wChgvf/AAGsv/jNAB/wh2uf9DBe/wDgNZf/ABmgA/4Q7XP+hgvf/Aay/wDjNAB/wh2uf9DBe/8AgNZf/GaAPPPFPwd1rxrcR2+s63NPpMPzLH5MMc5l2/e/doImX/fGaAIdF/Zx0/w/KZ7HULkOeP30FpMv/fMkJoA9GTwXrUQCJr92iqMBVtbIAD/vzQBU1Hwvr1lazXKa/eM0MTyAG2ssEqrN/wA8aAOu8G38+q6JYXt02+e4tIJZGA27neNWY7aAOnoA8a0S113xRJf3I1i4so7fUru1ihht7QoscEm1fmlhd2/OgDe/4Q7XP+hgvf8AwGsv/jNAB/wh2uf9DBe/+A1l/wDGaAK114E1a+ia3udcuponGGSS0sWU/wDAfJoA8rb9nN9GuE1bw5qk1vqcUvmK80cXl/7S7YkH02H5KAPW08Ia6ygtr94pxyPs1lx/5BoAd/wh2uf9DBe/+A1l/wDGaAD/AIQ7XP8AoYL3/wABrL/4zQAf8Idrn/QwXv8A4DWX/wAZoAvfDrVLrV9Btru/k8+5Yzq8m1U3+VcSxq21PkX5FWgDuaAA0AFACigAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgBKACgAoAKACgAoAKACgAoABQB518J/+RYsvrc/+lc9AHotABQAUAFABQAUAFAGVr3/ACDrv/r2m/8ARbUAYXw8/wCRa0v/AK8Lb/0StAHZUAec/Df/AFOp/wDYb1H/ANHUAejUAFABQAUAFABQAUAAoA85+E//ACLVr/10u/8A0rnoA9GoADQAUAKKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAEoAKACgAoAKACgAoAKACgAFAHnXwn/5Fiy+tz/6Vz0Aei0AFAFa5uorKJp53WKKMbndm2qq/3mY0Aedab8YPCerXZsLXUIjPu2gOJI1Y52/LI6BG/OgD00dMigBaACgDK17/AJB13/17Tf8AotqAML4ef8i1pf8A14W3/olaAOyoA85+G/8AqdT/AOw3qP8A6OoA9GoAKACgAoA5seKtM/tb+wBODqPlecYAGJCf3mbG39aAOkoAKAAUAec/Cf8A5Fq1/wCul3/6Vz0AejUABoAKAFFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFACUAFABQAUAFABQAUAFABQACgDzr4T/wDIsWX1uf8A0rnoA9FoAKAPOviF4Jn8cW9vp4uvstklwkt3GFJNzGv/ACy3bhtU96APMfiu/hGHSJvD1nDayauNkdpa2qRi5Sf/AJZn5BvWgD2zwba3lhotlbakd15FbxrMc5+cLzQB09ABQBla9/yDrv8A69pv/RbUAYXw8/5FrS/+vC2/9ErQB2VAHnPw3/1Op/8AYb1H/wBHUAejUAFABQBxPjvxfH4N01rsL511IRFaW6/emnb7sar+tAHzx4C0G70H4jY1OVp76801ru5J6JLO25o1/wBhPuUAfXtABQACgDzn4T/8i1a/9dLv/wBK56APRqAA0AFACigAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgBKACgAoAKACgAoAKACgAoABQB518J/+RYsvrc/+lc9AHotABQBz+reJdN0Ke3tdQuEt5b5/Lt1cN+8f+7u27B/wMigDk/F3w38PazDdXtzaQx3jRO/2xF2zo6LuWRZP9jb+lAFD4K61d654Yt5792mlieSASt1kSJtqszfxUAet0AFAGVr3/IOu/8Ar2m/9FtQBhfDz/kWtL/68Lb/ANErQB2VAHnPw3/1Op/9hvUf/R1AHo1ABQAUAfIGofECH/hMJtU16w1O4i0kmHTYoLctErf8tLht/l7n/wCedAGPD8U7OX4grrgstRWJ7FLUQmD9+Du/1nl7/wDVUAfaUb+aocAgMAcHqKAJaAAUAec/Cf8A5Fq1/wCul3/6Vz0AejUABoAKAFFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFACUAFABQAUAFABQAUAFABQACgDzr4T/wDIsWX1uf8A0rnoA9FoAKAOK8ceCbLx1YixvGeF4pFlgniOJIZV+7IlAHmh+G/jDVAbDWPEHm6Yw2OkMCxzvH/daTZ/Gv8ArKAPatF0a18PWUWnWCCK3tkCIo9KANagAoAyte/5B13/ANe03/otqAML4ef8i1pf/Xhbf+iVoA7KgDzn4b/6nU/+w3qP/o6gD0agAoAKACgDzD/hBbn/AITP/hLRPGLf7ELXyNreZu/vbvubaAPT6ACgAFAHnPwn/wCRatf+ul3/AOlc9AHo1AAaACgBRQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAlABQAUAFABQAUAFABQAUAAoA86+E//ACLFl9bn/wBK56APRaACgAoAKACgAoAKAMrXv+Qdd/8AXtN/6LagDC+Hn/ItaX/14W3/AKJWgDsqAPOfhv8A6nU/+w3qP/o6gD0agAoAKACgAoAKACgAFAHnPwn/AORatf8Arpd/+lc9AHo1AC0AJQAooAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoASgAoAKACgAoAKACgAoAKACgDxXwhd+IfC2lw6VJoV3Obdph5kd5pYR1aeSRWUPeo/3GHDAH1oA6f/hLNe/6Fy//APA3Sf8A5OoAP+Es17/oXL//AMDdJ/8Ak6gA/wCEs17/AKFy/wD/AAN0n/5OoAP+Es17/oXL/wD8DdJ/+TqAD/hLNe/6Fy//APA3Sf8A5OoAP+Es17/oXL//AMDdJ/8Ak6gA/wCEs17/AKFy/wD/AAN0n/5OoApah4j1+8tZrZfD18pmieME3mk4BZWX/n+oA6jwbYT6VolhY3S+XPbWlvFKmVba6RqrDcvyNz/d4/OgDqKAPHdEuNe8Lvf2y6LdXsdxqV3dRTRXWmojRzybl+WW7jkX/gaUAb//AAlmvf8AQuX/AP4G6T/8nUAH/CWa9/0Ll/8A+Buk/wDydQAf8JZr3/QuX/8A4G6T/wDJ1AB/wlmvf9C5f/8AgbpP/wAnUAH/AAlmvf8AQuX/AP4G6T/8nUAH/CWa9/0Ll/8A+Buk/wDydQAf8JZr3/QuX/8A4G6T/wDJ1AB/wlmvf9C5f/8AgbpP/wAnUAWfh3pd3o2g21pqERtrlDcM8ReOQp5lxLKq7onkRsIy/cegDuqAFoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAP/9k=" alt="**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies." width="80%" />
+<p class="caption">
+<strong>Nested dichotomies</strong>: The boxes show two different ways a
+four-category response can be represented as three nested dichotomies.
+</p>
+</div>
+<!-- knitr::include_graphics(here::here("vignettes", "fig", "nested.jpg")) -->
+<p>This example makes clear that nested dichotomies are not unique and
+that alternative sets of nested dichotomies are not equivalent:
+Different choices have different interpretations. Moreover, and more
+fundamentally, fitted probabilities and hence the likelihood for the
+nested-dichotomies model depend on how the nested dichotomies are
+defined.</p>
+<p>The nested-dichotomies model is consequently most compelling when
+there is a natural and unique way to define the dichotomies, such as a
+process that proceeds through an orderly sequence of stages. Consider
+the set of nested dichotomies at the right of the figure above, and the
+previously mentioned four-level educational response variable with
+categories (1) less than highschool, (2) highschool graduate, (3) some
+post-secondary, and (4) post-secondary degree. In the vast majority of
+cases, individuals proceed through these educational stages in sequence.
+The first dichotomy, <span class="math inline">\(\{1\}\)</span>
+vs. <span class="math inline">\(\{2, 3, 4\}\)</span>, therefore
+represents highschool graduation; the second, <span class="math inline">\(\{2\}\)</span> vs. <span class="math inline">\(\{3, 4\}\)</span>, enrollment in post-secondary
+education; and the third, <span class="math inline">\(\{3\}\)</span>
+vs. <span class="math inline">\(\{4\}\)</span>, completion of a
+post-secondary degree. This scheme for generating the a
+nested-dichotomies logit model is termed <em>continuation
+logits</em>.</p>
+<p>To take another example, the figure below shows the classification of
+psychiatric patients into four diagnostic categories. These might be
+naturally dichotomized by contrasting the normal individuals to the
+groups of patients, and then dividing the patient groups into a
+comparison of depressed and manic patients vs. schizophrenics, followed
+by a comparison of depressed vs. manic patients. A model predicting
+diagnosis can be interpreted in terms of the probabilities of
+classification into each of the response categories.</p>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxcAAAHkCAYAAABMudKiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH5wQRFSYe+YzIfAAAIABJREFUeJzs3X+MG2e9+PvPQiANSRu8vjSQ0n7btSMFZfXdCLwU6CZSepR4aRH9QdE6QFFREY0dhE4hTchuquYrSNp1c3pQRfcHAhGRK9Yr2tJU7BJvdVopdipoAtqFrVopO9uqaZamZ71L2uSkPTf3+v6xZ6Yz9sx4bI89/vF+Sas49nj82PP8+szM8zwt2Ww2KwAAAABQpg95nQAAAAAAjYHgAgAAAIArlun/s3/gOXnmP172Ki0AAAAA6szt/7JB9se2ikjOlQsCCwAAAADF0McQ3BYFAAAAwBXLrF6YfOpfq5kOAAAAAHVk49d+lvccVy4AAAAAuILgAgAAAIArCC4AAAAAuILgAgAAAIArCC4AAAAAuILgAgAAAIArCC4AAAAAuILgAgAAAIArCC4AAAAAuILgAgAAAIArCC7qwPDwsLS0tEhra6vXSQGaSiKRkJaWFmlpaZGpqSmvkwOggqampijvJuiDoFgEF3Xg/PnzIiKyuLjocUqA5vLGG29oj999910PU4JqUIPJ1tZWGR8f9zo5qDJ9GS+1vMdiMWlpaZFgMCizs7NuJc1TzdYHmZqaktbWVmlpaZF4PO51cupS2cFFX1+fFuk7LUzqQRseHi7344GK0edts7/u7m7p6+vjDBca2vj4eF6+z2QyRe+nu7tb20dra6uk0+kKpLY8hw8fFpGlTtT09LS3iYEmkUhIJBLR+g5qPkwkEl4nLc/g4KCIiCiKInNzcx6nBqVIJpNaIPX88897nJr6VHZw8Ze//EV7rCiKxGKxgu9RD5oaDQO1SJ+3zSSTSTl48KBs3LhRuru7G+YsFaCX28lOJpPy5JNPFrWPRCIhyWRS+//i4qK8+OKLrqTPTffcc4+IiPh8Pmlvb/c2MZBMJiOdnZ2yfft2GR0dNZw5TyaTsn37dgkGgyUFu5USjUZFRCQQCMjatWs9Tg1KEQ6HxefziYjIzTff7HFq6pPrt0Ulk0kuJ6PhpFIpw9/IyIhEo1GtAkomkxIKhbiKgYYWCoVEROTRRx8t6n379u0TkaUOVy2LRCKSzWZlYWFBbrnlFq+T0/R27twpp06dEpGlDt/IyIikUikZGxvTOvGKohQd7FbSwMCAZLNZmZmZkba2Nq+TgxJ0dHTIwsKCZLNZ2b17t9fJqUuuBRehUEjraP3gBz9wa7dATejq6jL8RSIRGRgYkNOnT0tPT4+ILJ2N3bJlS02dRQPc9KMf/UhEljp0Tm9rSqfToiiKiIh873vfq1ja0FhmZ2dldHRURJYCi2PHjkkkEpGuri655ZZbZGBgQBRFkXA4LKtXr/Y4tQD0XAsu/H6//PjHPxaRpYaH8RRoBn6/XxKJhCHAePDBBz1OFVAZW7du1U4i/fa3v3X0HnW7UCgkX/rSlyqWNjSWV199VXus3q6Wq62tTQs6ANQOV2+Luvfee7WGZ+/evWWfwTUbxBUMBiUWi9meNYvH49LS0qJVOOPj4xIMBrWBhPpBYOl02jDFWiaTkXg8btg+Eonk3e6i30b9LLtbYtLptPT19Ul3d7fh+7S2ttbswDQ498QTT2h5f3Bw0DLvq/mrs7PTkAcikUhReTqTyUhfX19eHnSrXKhmZ2clFosZPkctg4XGmKjlN/d7Wt02OTs7m/edOjs7pa+vz7YuKSeNajr1g42DwaDE43GuQJnw+/1a/hkcHCz4+87OzmoDXNWrHnYymYwMDw9LJBIxlBE1LxQ6prnTiCYSCcN+Ojs7bWd/cToVaTqdzmubCpU/FOedd97RHpczPrPcY5VbX3d3d9ve+m01bevs7KztBCHqn1X+LrU/lNvHUdOYWy6K6YNkMhlDnWvVT9JT61j1xHM8Hte+SzAYNH2v2bFTy7Bd/VxuPSDibOIh6gEbWZ2OO/9d+3MqHA5nRSQbDoez2Ww2OzQ0lBWRrIhke3t7Td+jvt7f32/6+vz8fDYUCmnbWf1Z7b+/v19L08jISN779J+bSqW05ycnJ7M+n8/0s3w+X3ZycjKrKIpt2lKplO13tvuLRqO23yfncKHC1Lzt9HePRqPa9iMjI3mv2+WvYvL02NiY7X7MPjt3H4XKRTabNd0mt0xYfZb+tzD7m5ycLOq36enpMf2cctJYKJ2hUCjb09NTsGw3utz6Z3JysmAdnvten8+XnZ+fN9S3Zu/Vf5bdMc3NPyp1m7GxMUP5dVrX6tNndbwL5e1Cvwmc0eezQCCQnZ+fL3ofxR4r/fEfGxuzbesL1bO57YaiKI76Abn5rtz+UG4fx25fTvogTvpJZtTy2N/fb3pccr93oWMXCAQqVg/o92FVnqkHPmAWO7geXGSz2WwgENB+YEVR8t5T6MfXZ361I5RKpbKpVCrb29tryNhDQ0N579c3aPrPSqVS2aGhoezY2Ji2rb7gqdurHbixsTFD5yIQCGjbhEKh7NjYWDaVShkyWSAQMP1OakYeGxsz/Ca5hd2sQSO48EaxwcXY2Jhl3lYURcs7gUDAkAcnJycN+Uz/msosT6v5SS0XdhW11T6syoX+u4TDYUMlrm90fT5fXhnXl6loNKp1Cubn57MjIyOmjYL6W/t8PkPaJycns9Fo1DS4KCeN+t9DPSZqPaOmsVDj1yzM6h/197Gq71RqXlMbcSfBRSAQyA4NDRl+7/n5ecOJK317o5dbl+uP69DQkCHvm3UOCwUXuXlGTWduW2GW31A8fR0cCASKKoOlHCv98dfnNat6tlC9kkvtx+T+qeXJ5/Plvafc/pBVH8eqXDgN+qPRqOnvaVUn6Ot49V81Db29vYbfUv87619T2xB9P8xMufWAfh+Ffg/qgSoGF/rMbNYpcHrQrKJKfeSsnhGz2kehTkFuZWKWptzI1yxd5Zzh1J/RMDv7QHDhjWKDC31eyu386CtWqzNw6jZmlbM+D/h8PtMARN/5Mit3TsvF/Py8oREqtE1ueVAbhkIdT/2+ClX0bqdR/5rVMck9M0Vw8UE50Oc1s7yYzRqvKqmNbKHgohD9MTE7ZvrjFQqF8rYp1DbZBRf6PGN1Jl39zlZnVFEcs7PkasfYTqnHKrc/YNbW68uD3clNp+2Gvizlfi83+kNO+jj6q0RmAU5u22H2++vbS7P8r3/drh10UkfotzFLS7n1gH4fuWmgHshXteBC/7xZJW2XcfQRvN1lUH1ka1cgCzVguWdZzegLv5PL6WYVTiHq2QmzjhLBhTeKDS6y2Q/ytv446oNHu7yh74zlVkr6PGDXydWfcc/ltFzYpUNP7ejlNkZWz1tx+vu4mUb9++0+k9uizOsffUBo1Tib1WnlBhf6q1Vmx8OuQ5GbLrP8aRdc2HUC9ZrlbGW1zM/PG8qh+qeejTZT6rFy0h8olPeLaa8LnSRxoz/ktMzpA/fcvK//Tla/p75smtWpdn1Cs3QUaj/U38buBHap9YB+H7m/GfVAPrPYwfV1LlT9/f3a4/vvv9/Re2ZnZ7UpC6PRqPj9fsttv/zlL2uP//73v1tuV8wcxd/4xjdMn9+wYUPBbfSL5ZQy+Mzuu6I+WA0we+mll7TH+ryU69Of/rT2+N1337Xcrqury/I1ddYqEbEdVGZXLo4fP6497ujosNzu+uuvFxExLGwlIrJ582bt+UgkUnDQb1tbm7b+wd69ex0NLCw3jfo6Y+vWrZbv/+xnP1swLc3I7/dr6wyMjo7mHeN0Oq2tT2A1008prrrqKkfbff3rX7esUzs7O0UkP08U8sILL2iP7fIMaxu4S52RL5VKGeo3RVFk+/btpivGu3GsrNp6v9+v1Vf//Oc/HX0HKzt37pTFxUXx+XwyMDBgeK0S/SG72dq+8pWvaI/tFri0mplr/fr12mO7PlA4HLZtwyYmJkRE5POf/7zlNiIiwWBQROyPAfWAdyoWXHR0dGiNz6lTpxx1GObm5rTHheat1mfOQispV4OTjDQ7OyvDw8N5M0a1tLQYVq9FfXrllVe0xx//+Me1x2+88Yb2eNOmTZazhGzatEnbrtTVi92Y713fUbSb1WTPnj3advpAJhKJaJ2A0dFRCQQCtrNEiYgcPnxYfD6fLC4uaqvuxuNxy8Ck3DTq64xmbwRKpe985S5ipk4/qx77Yo2Pj0ssFsubMUpfRkqlBpzFUjsxPp+Pk0Ee6OrqkkQiIYqiaH0LkaUFTHfu3GnYttLHSu3YlmN8fFxbx+Phhx/Oq4eq3R9yGrhbcaseVQOqZDJpW7erfaZS+07UA5VVseBCROQnP/mJNj3nvn37iprasdHmQ08kEhIIBGTHjh2STCaLjpZR+/RTJ5Z7xrue8r/P55PPfOYzhucSiYT09/dr5X90dFRuvfVWCQaDpkFGV1eXvPDCCxIOh0VkqYHZs2ePBAIBicViZU8La5ZGlKerq0s7g/uLX/xCez6TyWjTzxa7aF4mk5HOzk659dZbZXBwULv6UUsKnVFFZbW1tcnAwICkUilD/WI2lWmtHqtMJiPf+ta3RGRp/Zf77rvPdvt6ag+qTW0zqq1W81atqGhwkbuw3q9+9SvH7y3mzK3+LHEtSqfTsn37dhFZOpM3MjIiiqJIdmnMi2SzWc8KCNzzhz/8QXvc3t5uuk0qlTIcd6s/u8vG1eQkrQsLC6ZncHbv3i0LCwsyMjJiCBpuvfVW0wCjo6NDjh07JoqiSG9vr2HdkO7u7oqkEeV54IEHRGTpuKpXp/X1/F133VXU/r75zW9qAUU0Gs0rL6lUyqWUl25mZsbrJECWglu1fyFifga7Vo/VY489pp1g/OUvf1lw+0bqDzkVDocd1e3Hjh3zJH21mrdqRUWDC5GlhfXUs1uPPPKI4zOQhcYt6G9xqPX7on/+859rjycmJiQSiXArRoPJZDJa58rn88ktt9yivebGrUpOvf7669rjK6+8sqR9uN04RSIROXbsmOFM40MPPWS5fVtbmxw4cEBOnz5tuLVSH5CUm0Z9+XOy0B7M6YOHw4cPi8gHVzF6enqKquempqa0DmI0GpWBgYGaCbL11Ns24L1CZ/Rr8Vil02k5ePCgiCyNTbUbM6aqRn/ozTff1B5Xs83KpbYRta4W81YtqXhw4ff75ac//amILA2csbt60dXVZbjMaeePf/yj9rjWz/qr9+iFw2GCigb14IMPamei9GfTRES+8IUvaI/1+bZUdqug6gMcJ42WmS1btmiP7cZJFKurq0u7/97J7S5+v1927dql/X96etq1NOp/G/2A+1x//etfi953M9EP7E4mkxKPx7VG9/vf/35R+9JPYmA1mNZLN998s/bYbgwhwWr1WHWIa/VYZTIZbYKDQCAg9957r+W2legPvfzyy5avPfPMM9pjfZtVbdu2bRORpfqk3NthK6FW81atqXhwIbJ05lLN8I888kjBbUWWosJYLGa6zdTUlBb5h0KhkjtR1fbSSy+ZFpZEIsGA7jqVyWQkFotp95ibNRgdHR3a1bvBwUHb4MCJLVu2mM4EFY/HtQCnlEG0Kv0MGA899JCrFfzCwoKIiPZ7FKLvcF533XXa43LTqH+/2Xgw9bgWatRhDATUAfSBQKCsqw5mt4FkMhnHMw9Wgr7TZjWGMJ1OSygUsp2pDc50dnZKX1+fZdnOZDKyb98+7f/6Ml2rx+qxxx7Tgu/Dhw8XvFXT7f7Qjh07ZHh4OO/5dDqt1XWBQMDTPtXtt9+uPX7wwQc9S4eVWs1btaYqwYWIaJVAoYHMu3btyrvXOpFISDqd1mYQ2bhxo7a9k/sVvXbHHXeIyNJ337lzpxbRzs7OSiwW08ZjoHal02nDXyKRkFgsJuvWrdMCC5/PJ0899ZRpg6HeMrK4uChbtmyRRCJhOLMxNTUliURCIpGI7fgCdR+bNm2SWCympScWi2kdO5/PZzjjX6y2tjZtKulTp05Jd3e3jI+PGyrRdDotw8PD0tnZKfF43PD+1tZWicVihisKmUxG4vG41oDpB/oODw9LMBiU4eFhw2+STqflu9/9rvad9J2HctPY1tamnXFXFMVQzyQSCbnxxhtlcHBQQqFQCb9gc9EP7FapYzGK3Y9a9z/yyCOGs4LqMfFygHdHR4c2C5qiKHLjjTfK8PCwoW3atGmTLC4ulnxLIj6wuLgoBw8elHXr1kksFtPKZzqdlr6+Plm3bp3WUe/t7TXcFVCLx2p2dlYLAtQOam67kk6nDXVYJfpDO3bs0OrLdDot8XhcvvrVr2qvP/74465831LpT0YPDg5KJBIxdNIzmYyWB4LBYNU78LWYt2pSoYUwCrFaRM9M7kI4Vgu6mK3KmftntUpxNlvcIjZ2iyYVs002a7+io7pgi9V3UX8bFtGrHbkrs9v9RaNR20WOstmlhdsK5WtxsDCTfgE4s7xktahcsflIvzCT3V/ugkmFvmPuwkb6RYms/qwWKyo1jdls4XIZDocNC2axiJ51vtEfw3JW37XL22o5szsehdqWQt+nUF1fKM+ISLa3t9fys+FcobxQ6Pcu5Vg5bevt+j1W+St3pWyrv9y8W25/KHeBX7t9WdWzTtsOu/JXTF9xfn7ecftr1t6VWw8U2gf1gFFFFtFTB1Y6GWD5xBNPGC4pWQ3G6ujokNOnT0t/f3/e/YPhcFj6+/vl9OnThkGzeuq9l04GBukjS6so08k2+s/LHQzl9/vl2LFj0t/fbzgTGgqFtO+i3kNu9jsW833gns997nOWr/l8Pi0vKooiAwMDji5xnzp1Snp7e/POiIdCIYlGozIyMiJPPPFEwf1MTk4aFpQKBAISjUbl1KlTlpe0i81HBw4ckFQqJdFoNO/MdDgclt7eXhkbG8ubRvHZZ5+VaDSa9x3D4bCMjIzIyZMnDb/VXXfdJUNDQxIOhw1pU7+ToiiWt3mVmkYR+3I5MjIix44dE7/fr6WpWc9COck3W7du1V63W/BL/xvqb3NTRSIRbbE0dX8+n096enoklUrJwMCA7fGwqoOdfp9Cdb3f75eTJ08aZkBT96XObnXgwAHLz4ZzkUhEFEXR6gY9tb5UFMXy9y7lWDlt6+36PVb5y2n9kZt3y+0P6W3YsEGbKMOsfFnVs07bDrvyV0xfUa2bR0ZGDHWB+hnq956cnDRt78qtBwrtg3qgsJZsNptV/7Pxaz/TXph86l89SRCAfPF4XLvtSVdkAQCwlE6ntcUnU6lUTc7AhvpmFjtUbcwFAAAAgMZGcAEAAADAFQQXAAAAAFxBcAEAAADAFQQXQB1gxjAAQLGczoAFuIngAqgD9913n2SzWW2FawAACuno6JBsNivZbNbTlbfRXAguAAAAALiC4AIAAACAKwguAAAAALiC4AIAAACAKwguAAAAALhimdcJAADUJuXsRZlSzsuL0wuytfMT8knfFdIRXO11sgAANcwyuNj4tZ9VMx0AAI+1fOjD8pErrpTlH/PJso9+TJZ99GPaa3995S358EdXyIWFN+TSO+c8TCUAoJZx5QIAmlTLhz4syz7yMfnIig8CCisf/ugKERFZ1XqdfHjZcrmw8Ea1kgkAqCOG4OL2f9kgz/zHy16lBQBQQbnBxIeXLZeWD3246P2suGqNLPvox+Sfb71agVQCAOrN7f+yQXvcks1msx6mBQBQQfpxE8rcRblw6bLj965asUwCa1fK1b6PynOn/jPv9cA1K+VQtF1WreAiOABgCcEFADQQNZhQ5i7Ki9MLJQUT/ztwldzU7pc1rcu1wEE5e1EeOvyKnFt4P+89h6LtErhmpavfAwBQnwguAKCOXbh02XBlQjl7saj3B65ZKR2B1fKlDa0SuGal7VWIC5cuy67B6bzPWLVimey/Zz0zSQEACC4AoJ5cuHT5g1udXl6QcwvvF311oiOwWr7Y7pPg2lUlXXHYNTAtU8r5/OcjQQl3ril6fwCAxkFwAQA1zI1gQn+rk1u3Lw0efU2ePj6X9/zd266Vb4evc+UzAAD1h+ACAGqMG4OwzcZNuO03yTfkyMSZvOdvavfL/u+sr8hnAgBqG8EFAHismuMm3DY1c152DU7nPd8RWC2HYu1VSwcAoDYQXABAleXe6lRqMNG29mNyU7vf86lglbMXZdfgdN4VlsA1K2X/Pevlk61XeJQyAEC1EVwAQIXVwiDsSntr4T3Zf/hV05mkmKoWAJoHwQUAVEC9jJtwk9VUtSIih6LtTFULAE2A4AIAXKCcvSgzcxfkb8o7ri5eV4/2//pVOTGdyXs+etsNcufmtR6kCABQLQQXAFACdRC2cvZiWeMmvBiEXQ1MVQsAzYngAgAcaIZxE257+vicDB59Le95ZpICgMZFcAEAJmp18bp6YzVVbeCalXIo2t5wV2wAoNkRXADA/2jGQdjVYDVV7ZrW5fJ/7vlM0wZeANCICC4ANK16Xryu3ljNJMVUtQDQWAguADSNRlu8rt5cuHRZ9v/6VZlSzue9tv876+Wmdr8HqQIAuIngAkDDcmsQthpMcHbdHY8mTsvEybfznmeqWgCofwQXABoK4ybqw2+Sb8iRiTN5z9+5ea1Eb7vBgxQBANxAcAGgrunHTTT74nX1JnnynBxKzOQ9z1S1AFC/CC4A1BUWr2ssTFULAI2F4AJATWPxusannL0oDx1+Rc4tvG94npmkAKD+EFwAqCksXtec7Kaq3X/PeukIrvYoZQCAYhBcAPAcg7Ch2jUwbTpV7a5IUMKdazxIEQCgGAQXAKqOxetgZ/Doa/L08bm85+/edq18O3ydBykCADhFcAGg4spdvG5N63LpCKzWrk4QTDQ+q6lqt3VeLQ9E1nmQIgCAEwQXAFzH4nVwg9VMUkxVCwC1i+ACgCsYN4FKUM5elF2D03n5ialqAaA2EVwAKAmL16FamKoWAOoHwQUAR1i8Dl6ymqpWRORQtJ2pagGgRhBcADDF4nWoRft//aqcmM7kPR+97Qa5c/NaD1IEANAjuAAgIixeh/rBVLUAULsILoAmpgYTf1PekSnlPOMmUDespqplJikA8BbBBdBEWLwOjcRqqtrANStl6IcbPUgRAIDgAmhg5d7qtKZ1uQTXrpIvtvtYvA41yW6q2v33rJdPtl7hUcoAoDkRXAANhMXr0IzeWnhP9h9+Ne9KHFPVAkD1EVwAdY7F64ClwHr/r1+VKeV83mv7v7Nebmr3e5AqAGg+BBdAnSln3ATBBBodU9UCgLcILoAal3urE4OwAXtMVQsA3iG4AGoMi9cB5Xv6+JwMHn0t73mmqgWAyiK4ADx24dJlObfwvmvjJggmgCV2U9UeirZzFQ8AKoDgAvCAemVCmbsoL04vMAgbqBCrqWrXtC6X/3PPZwjGAcBlBBdAFbB4HeCdC5cuy67BadOpavffs146gqs9ShkANB6CC6AC3Bw3weJ1QPmYqhYAqoPgAnABi9cB9cFqJimmqgUAdxBcACVi8TqgPv0m+YYcmTiT9/ydm9dK9LYbPEgRADQOggvAIRavAxrHiemM7P/1q3nPM1UtAJSH4AKwwOJ1QGNjqloAcB/BBfA/WLwOaD7K2Yvy0OFX5NzC+4bnV61YJoei7ZRjACgSwQWampvjJuiEAPWJqWoBwD0EF2gqLF4HwMr+X78qJ6Yzec/vigQl3LnGgxQBQP0huEBDY/E6AMWwmqr27m3XyrfD13mQIgCoLwQXaCgsXgegXFZT1d7U7pf931nvQYoAoH4QXKCusXgdgEqwmkmKqWoBwB7BBeoOi9cBqAbl7EXZNTidV8cErlkp++9ZL59svcKjlAFA7SK4QM1j8ToAXnlr4T3Zf/hV05mkmKoWAPIRXKDmuLV43f8OXCUdgdUEEwDKYjVVrYjIoWg7U9UCgA7BBTzH4nUA6oHVVLXR226QOzev9SBFAFB7CC7gCRavA1CPmKoWAOwRXKAqlLMXZWbugvxNeYfF6wDUtaePz8ng0dfyni92JqkT0xm5qd3vZtIAwHMEF6gIdRC2cvZiWeMmWLwOQC2ymqo2cM1KORRtd1Rn7XhsUoZ+uLESyQMAzxBcwBVujpvoCKxmikcANa/cqWrv2PdnZpwC0HAILlASFq8DAOuZpJxMVbv1RydkW+fV8kBkXaWTCQBVQ3ABx1i8DgDyXbh0Wfb/+lWZUs7nvbb/O+stx1Vs/dEJERE50vc5rtYCaBgEF7Dk1uJ1HYHVjJsA0PAeTZyWiZNv5z1vNlXthUuX5Y59f7Z8HQDqFb29GqbOsBTuXFOVz3Nr8Tr1VieCCQDN5IHIOlnjWy5HJs4Ynh88+ppcuHTZMFWt/srvkYkzBBcAGga9vxo1NXNeHh09XdGZRFi8DgDc9e3wdbKmdbkcSswYnj8ycUb+prxjOlXthUuXJXnyXNVOJAFAJRFc1KCnj8/JkYkzsq3zatfP/jNuAgAqK9y5Rj7puyJvqtop5bzseGxSDkXb5eKl/9fw2nMn/5PgAkBDYMxFjdEvzjT0w41lXw3Qj5tg8ToAqB7l7EV56PArcm7hfcPza1qXy52b1uYtxMfAbgCNgOCiRly4dFmOTJyRp4/PiYjITe1+2f+d9SXth8XrAKA2WE1Va4ZpaQE0AnqONeDCpcsyePQ1wywjd2z6lOP3Mm4CAGrTqhXLZOiHG2XXwLTpVLV6L04vVClVAFA5XLnw2IVLl+VQYkZOTGe05wLXrLQcyO1GMKG/1YlgAgCqY/Doa9rVaSu7IkHGXgCoa1y58JDV/bi5Vy0YhA0A9efCpctybuF9mVLOy7nF9wteuRBZmlWK4AJAPaOX6RHl7EXZNTidFyiotymdmM6UvHjdmtbljJsAgCp6a+E9UeYuyrmF9+Vvyjvy1uJ7RV9ZFhE5t/C+vLXwHgO7AdQtbovywNTMedl/+NWiGx0rLF4HAN47MZ2RvynvaJNqlIqB3QDqGcFFlalrWJQTWDAIGwBq24VLl7Vgo5RpwI/0fY4TRQDqEsFFFf0m+YYcmThT9PsYNwEA9e2thffkxekF7cpGoWAjetsNcufmtVVKHQC4h+CiCsymmrVDMAEAjW1yb9kwAAAgAElEQVRq5rwocxflb8o7htkCVatWLJPf//RGD1IGAOUhuKgws6lmneCsFQA0DzXYeHF6QZtV6lC0XTqCqz1OGQAUh+CiwpInz8nvU/8oaXAfg/oAoDmdmM7IqiuWEVwAqDsEF1V0YjojytmLMjv3X47uuRVZmgnqgZ51DNoGAABAzSO48NCFS5e1KQvVQX5WuE0KAAAAtY7gosaoCzGZBRwdgdVyKNbuYeoAAAAAawQXdUA5e1Fm5i7I7Nx/ybmF9+XubddymxQAAABqDsEFAAAAAFd8yOsEAAAAAGgMBBcAAAAAXEFwAQAAAMAVBBcAAAAAXLFM/5/9A8/JM//xsldpAVxz+79skP2xrWXtg/IAAABgzqqvZbhyQUcKjcKNvEx5AAAAMGfVT+K2KAAAAACuWGb1wuRT/1rNdACu2Pi1n1Vkv5QHAACAwn0trlwAAAAAcAXBBQAAAABXEFwAAAAAcAXBBQAAAABXEFwAAAAAcAXBBQAAAABXEFwAAAAAcAXBBQAAAABXEFwAAAAAcAXBBQAAAABXEFzUgeHhYWlpaZHW1lavkwKggEQiIS0tLdLS0iJTU1NeJwdAmaampijTJuibwArBRR04f/68iIgsLi56nBIAhbzxxhva43fffdfDlKAYalDY2toq4+PjXicHNURfjkst07FYTFpaWiQYDMrs7KxbSfNUs/VNpqampLW1VVpaWiQej3udnJpWdnDR19enRfROC416cIaHh8v9eKCm6MuD2V93d7f09fVx9gt1YXx8PC//ZjKZovfT3d2t7aO1tVXS6XQFUluew4cPi8hSR2l6etrbxMCRRCIhkUhE61OoeTSRSHidtDyDg4MiIqIoiszNzXmcGpQimUxqgdTzzz/vcWpqW9nBxV/+8hftsaIoEovFCr5HPThq1As0Cn15MJNMJuXgwYOyceNG6e7ubpgzWGhMuZ3sZDIpTz75ZFH7SCQSkkwmtf8vLi7Kiy++6Er63HTPPfeIiIjP55P29nZvEwNbmUxGOjs7Zfv27TI6Omo4c55MJmX79u0SDAZLCoQrJRqNiohIIBCQtWvXepwalCIcDovP5xMRkZtvvtnj1NQ212+LSiaTXFIGRCSVShn+RkZGJBqNapVTMpmUUCjEVQzUhVAoJCIijz76aFHv27dvn4gsdapqWSQSkWw2KwsLC3LLLbd4nRzY2Llzp5w6dUpEljp8IyMjkkqlZGxsTOvEK4pSdCBcSQMDA5LNZmVmZkba2tq8Tg5K0NHRIQsLC5LNZmX37t1eJ6emuRZchEIhrdP0gx/8wK3dAnWrq6vL8BeJRGRgYEBOnz4tPT09IrJ0FnfLli01dYYNMPOjH/1IRJY6bU5va0qn06IoioiIfO9736tY2tA8ZmdnZXR0VESWAotjx45JJBKRrq4uueWWW2RgYEAURZFwOCyrV6/2OLVAc3ItuPD7/fLjH/9YRJYaH8ZTAOb8fr8kEglDgPHggw96nCrA3tatW7UTSL/97W8dvUfdLhQKyZe+9KWKpQ3N49VXX9Ueq7ey5Wpra9OCDgDV5+ptUffee6/W+Ozdu7fss7Fmg7WCwaDEYjHbM2fxeFxaWlq0imV8fFyCwaA2mFA/2CudThumUstkMhKPxw3bRyKRvFtX9Nuon2V3e0s6nZa+vj7p7u42fJ/W1taaHYCGynriiSe08jI4OGhbXhKJhGFQrJOBi7l5W2Rp6sDOzk5tH52dnbb7KKYsqWZnZyUWixnKh1puC40xUcu8vnxEIhHLWy1nZ2elr6/P8FmdnZ3S19dn+3uWk0Y1nfrjEQwGJR6PN/QVKL/fr+WDwcHBgr/T7OysNohVvepRaPt4PC7d3d2G46Lmdbvft1A9ru7D7pZdp9ON5h771tZWx/kG5XvnnXe0x+WM20yn03n9i0gk4viqXDweN9SlhfKX1bSts7OztpOAqH9W+avUfpIb7UOuTCZjqFet+k96allST0jH43HtuwSDQdP3mh27zs7OgnVwbvlOJBJ537fQLFBOJiQqN281hKxOx53/rv05FQ6HsyKSDYfD2Ww2mx0aGsqKSFZEsr29vabvUV/v7+83fX1+fj4bCoW07az+rPbf39+vpWlkZCTvffrPTaVS2vOTk5NZn89n+lk+ny87OTmZVRTFNm2pVMr2O9v9RaNR2++Tc7hgopQ87Oa+1PLg9FhFo1Ft+5GRkbzXnZSFcDicnZ+fz3tvbt6220+hvOekLGWzWdNtcsuR2ffM/S3M/iYnJw3b25VXEcn29PSYfk45aSyUzlAolO3p6SlYH9SL3LpncnKyYP2d+16fz5edn5835Eez9+rLjt3v6ySvBwIBy31YHVv9PsyOW6Gy6PP5smNjY05+VpRBnwcDgYBpfiikUF2Tmz/1eWNsbMw2H1jlL6t2XFEUR/2D3DxZbj/JzfZB3Ueh/pMZtdz39/ebHpfc713o2AUCAcvP0h9Du/rG6vvq92FV/xWbt+pVof6R68FFNps1VOyKouR/aIEfWZ/J1U5NKpXKplKpbG9vryEDDw0N5b1f36jpPyuVSmWHhoYMDYC+gKnbh8Ph7NjYWHZsbMzQUQgEAto2oVAoOzY2lk2lUobMFAgETL+TmmHHxsYMv0luoTZr1AgunKu34GJsbMy2PKh5w+fzZYeGhrSGVFEUQ74wa0Cs8rZanoaGhvLKSK5iypL+u4TDYUMFr2+QfT5fXr2gT2s0GtW+5/z8fHZkZMS0wVB/a5/PZyg3k5OT2Wg0ahpclJNG/e+hlnX1t1TTWKhhrDdmdY/6Pa3qOpWaZ9SG2klwoeZP/XFRFMVQx5q9164eV9sN/XExO7aFggt92daXo5GRES3fFPpN4A79sQgEAkWVs9wyPDQ0lE2lUnntvT6P6POGPg8Uk7/s2nG1f5P7p5Y1n8+X955y+0lutg+5HXOz39OqbOjrcfVfNQ29vb2G31L/O+tfU9sJff/MTO731dfhud/XKkh0+ns4zVv1ypPgQp9pzRp4pwfHKnrUR8jqWTGrfRRq4HMrDSdn1MzSVc7ZSv2ZC7NOIsGFc/UWXOjzn74MZbPG426Vp/Tb2HXYrfK2/iygWQPmtCzNz88bGqhC2+SWIbXRcNo5m5+fL9gIuJ1G/Wtm9U42m3/WqhGDC/3Vaasz9fqrQ2q+LBRcFKJ2tMw6Drl53ayO1n+XQp2t3ONWqE3LZpeOvVkZgvvMzpKrHWM7+jJsddVDzbv6ANeN/FVsO64vZ7nfy41+UiXaB7PfX98mml1R0L9uVa/mpteq/tBvY5YWfVrNroI6KedWaSg1b9WrQv2jiqzQ3dXVJeFwWERERkdHi7rP7Be/+IWILM01/pOf/MR0m46ODm26ucXFRXnuuecs99ff3y9dXV2OPjsajZpOL3bHHXcYthkYGMjb5vvf/772+OWXX3b0eaq2tjZtmsdC6ySgsdjlTbUs9PT0WG531113aY8LlQOzvJ1bluzKql1Zeu6557S55vv7+0230d+zn3sfr/rehYUFy8/X099r7fS+63LTqH//ww8/LH6/P+/9AwMD2kD9RqXPc7/5zW9Mt/m3f/s3EVmazcetaTfV31WdgtSKVR197733ao9feOGFoj775z//ufb44MGDptsMDAwUTBvc0dHRYZh1T8S4voXVOIEnn3xSK8M//elPTctwJBIRRVGko6PDdB+VyF+5MpmM7N27V0SWylDuwPRK9JPKbR9GRkZMB9DrZw/905/+ZPl+EZFnn33W9JiIfDA5hM/ns5wGtqurS5vy+plnnrH8nFAoJMeOHcv7rK6uLq0vNjExYZvWXG7krUZSkeBCxNh433///Y7eMzs7q01bGI1GLTOZiMiXv/xl7fHf//53y+2KmYv4G9/4hunzGzZsKLiNflGcUgaZ2X1XNC6rwWf6svDZz37W8v36jptdvrObqecrX/mK9thucTO7snT8+HHtsV3Fef3114uIGBa9EhHZvHmz9nwkEik4OLatrU1rRPbu3eto0GG5adTXM1u3brV8v93xagR+v1/rcIyOjuYdq3Q6rXWyrWbzKYXTaUWt6mi/36/lmX/+859Ffbba0QiFQrbBEusXVI86614qlTIEGYqiyPbt201Xk9d3+u3KsN1xrET+yrVz505ZXFwUn8+XF8hUop/kRvtgNTPX+vXrtcd2bVQ4HLY92aaWwc9//vOW24iIBINBEbE/Bl//+tctf7fOzk4Rya//C3EjbzWSigUX+oj31KlTjhr/ubk57XGhhkSfCWvhbL+TDDM7OyvDw8N5M0a1tLQYVrBF83jllVe0xx//+Me1x/qysGfPHttZRFTPP/98SWm46qqrSnqfnr6DaZfWPXv2aNvpz4JFIhGtgzA6OiqBQMB2ligRkcOHD4vP55PFxUXtjGU8HrcMTMpNo76eaZYGwoq+g5W7UJl6hlE9hsXIZDLa7De5M0bpj0up1I5HsdSORq0vBNiMurq6JJFIiKIoWp9DZOlKxs6dOw3bqh1On89XkRN6peYvvfHxcW0dj4cffjivrql2P6nc9sGtulINqJLJpG39rfalSu1TqSeXilXp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" alt="**Psychiatric classification**: The figure shows how four diagnostic categories might be represented by nested dichotomies." width="70%" />
+<p class="caption">
+<strong>Psychiatric classification</strong>: The figure shows how four
+diagnostic categories might be represented by nested dichotomies.
+</p>
+</div>
+<!-- knitr::include_graphics(here::here("vignettes", "fig", "nested-psychiatric.png")) -->
+</div>
+</div>
+<div id="example-womens-labor-force-participation" class="section level2">
+<h2>Example: Women’s labor-force participation</h2>
+<p>For a principal example, we consider the data set
+<code>Womenlf</code> from the <strong>carData</strong> package <span class="citation">(Fox, Weisberg, &amp; Price, 2022)</span>. The data
+give the responses of 263 young married women, 21–30 years old, drawn
+from a 1977 survey carried out by the York University Institute for
+Social Research <span class="citation">(Atkinson, Blishen, Ornstein,
+&amp; Stevenson, 1984)</span>. This example was originally developed by
+<span class="citation">Fox (1984, sec. 5.1.5)</span>. The variables in
+the model are:</p>
+<ul>
+<li><code>partic</code>: labor force participation, the response, with
+levels:
+<ul>
+<li><code>&quot;fulltime&quot;</code>: working full-time</li>
+<li><code>&quot;not.work&quot;</code>: not working outside the home</li>
+<li><code>&quot;parttime&quot;</code> : working part-time.</li>
+</ul></li>
+<li><code>hincome</code>: Husband’s income, in $1,000s.</li>
+<li><code>children</code>: Presence of children in the home,
+<code>&quot;absent&quot;</code> or <code>&quot;present&quot;</code>.</li>
+<li><code>region</code>: Region of Canada (“Atlantic”, “BC”, “Ontario”,
+“Prairie”, “Quebec”).</li>
+</ul>
+<p>The response, <code>partic</code> is a factor, but the levels are
+ordered alphabetically. To facilitate interpretation, we reorder the
+levels of <code>partic</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Womenlf, <span class="at">package =</span> <span class="st">&quot;carData&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Womenlf<span class="sc">$</span>partic <span class="ot">&lt;-</span> <span class="fu">with</span>(Womenlf, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">factor</span>(partic, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;not.work&quot;</span>, <span class="st">&quot;parttime&quot;</span>, <span class="st">&quot;fulltime&quot;</span>)))</span></code></pre></div>
+<p>In 1977, the majority of the 263 women in the sample were not working
+outside the home:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> partic, <span class="at">data=</span>Womenlf)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; partic</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; not.work parttime fulltime </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      155       42       66</span></span></code></pre></div>
+<div id="defining-nested-dichotomies" class="section level3">
+<h3>Defining nested dichotomies</h3>
+<p>How can we understand these womens’ labor-force participation choices
+in terms of the explanatory variables? We’ll consider three polytomous
+logit models for the <code>Womenlf</code> data, two of which entail
+different choices of nested dichotomies, and the multinomial logit
+model. The example will illustrate the potential pitfalls and advantages
+of the nested-dichotomies approach in a context where there isn’t a
+compelling choice of nested dichotomies.</p>
+<p>It is at least arguable to construe a woman’s labor-force choice as
+first involving a dichotomy (let’s call it <code>work</code>) between
+women who are not working outside the home vs. those who are working
+(either parttime or fulltime). A second dichotomy (<code>full</code>)
+contrasts those who work fulltime time vs. parttime, but among only
+those who work.</p>
+<p>The two binary variables for the nested dichotomies can be created by
+recoding <code>partic</code> as follows.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Womenlf <span class="ot">&lt;-</span> <span class="fu">within</span>(Womenlf, {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  work <span class="ot">=</span> <span class="fu">ifelse</span>(partic <span class="sc">==</span> <span class="st">&quot;not.work&quot;</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  full <span class="ot">=</span> <span class="fu">ifelse</span>(partic <span class="sc">==</span> <span class="st">&quot;fulltime&quot;</span>,  <span class="dv">1</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ifelse</span>(partic <span class="sc">==</span> <span class="st">&quot;parttime&quot;</span>, <span class="dv">0</span>, <span class="cn">NA</span>))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p>Note that the complete sample of 263 cases is available for the
+<code>work</code> dichotomy, while only 108 cases—excluding those not
+working outside the home—are available for the <code>full</code>
+dichotomy:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> work, <span class="at">data=</span>Womenlf)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; work</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0   1 </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 155 108</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> full, <span class="at">data=</span>Womenlf, <span class="at">addNA=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; full</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0    1 &lt;NA&gt; </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   42   66  155</span></span></code></pre></div>
+<p>The relationship of the response variable <code>partic</code> to the
+two nested dichotomies is as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> partic <span class="sc">+</span> work, <span class="at">data=</span>Womenlf)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           work</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; partic       0   1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   not.work 155   0</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   parttime   0  42</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   fulltime   0  66</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> partic <span class="sc">+</span> full, <span class="at">addNA=</span><span class="cn">TRUE</span>, <span class="at">data=</span>Womenlf)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           full</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; partic       0   1 &lt;NA&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   not.work   0   0  155</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   parttime  42   0    0</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   fulltime   0  66    0</span></span></code></pre></div>
+<p>We can then fit separate binary logit models to the two nested
+dichotomies directly:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mod.work <span class="ot">&lt;-</span> <span class="fu">glm</span>(work <span class="sc">~</span> hincome <span class="sc">+</span> children, <span class="at">family=</span>binomial, <span class="at">data=</span>Womenlf)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>mod.full <span class="ot">&lt;-</span> <span class="fu">glm</span>(full <span class="sc">~</span> hincome <span class="sc">+</span> children, <span class="at">family=</span>binomial, <span class="at">data=</span>Womenlf)</span></code></pre></div>
+<p>In equation form, the two log-odds models are shown below. (Model
+equations are conveniently rendered in markdown/LaTeX using the
+<code>equatiomatic</code> package <span class="citation">(Anderson,
+Heiss, &amp; Sumners, 2023)</span>.)
+<!-- equatiomatic::extract_eq(mod.work) -->
+<!-- equatiomatic::extract_eq(mod.work) --></p>
+<p><span class="math display">\[
+L_1 =\log\left[ \frac { P( \operatorname{work} = \operatorname{1} ) }{ 1
+- P( \operatorname{work} = \operatorname{1} ) } \right] = \alpha_1 +
+\beta_{11}(\operatorname{hincome}) +
+\beta_{12}(\operatorname{children}_{\operatorname{present}})
+\]</span> <span class="math display">\[
+L_2 = \log\left[ \frac { P( \operatorname{full} ) }{ 1 - P(
+\operatorname{full} ) } \right] = \alpha_2 +
+\beta_{21}(\operatorname{hincome}) +
+\beta_{22}(\operatorname{children}_{\operatorname{present}})
+\]</span> The estimated regression coefficients for the two binary logit
+models are</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mod.work</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = work ~ hincome + children, family = binomial, data = Womenlf)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     (Intercept)          hincome  childrenpresent  </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          1.3358          -0.0423          -1.5756  </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 262 Total (i.e. Null);  260 Residual</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       356 </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 320   AIC: 326</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>mod.full</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = full ~ hincome + children, family = binomial, data = Womenlf)</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     (Intercept)          hincome  childrenpresent  </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           3.478           -0.107           -2.651  </span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 107 Total (i.e. Null);  105 Residual</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   (155 observations deleted due to missingness)</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       144 </span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 104   AIC: 110</span></span></code></pre></div>
+<p>A disadvantage of this approach is that it is tedious to obtain tests
+for the combined model, to compute and plot predicted probabilities, and
+so forth.</p>
+</div>
+<div id="using-dichotomy-and-logits-to-define-the-response" class="section level3">
+<h3>Using <code>dichotomy()</code> and <code>logits()</code> to define
+the response</h3>
+<p>Instead, the <strong>nestedLogit</strong> package provides tools to
+specify and manipulate the nested-logit model. The
+<code>dichotomy()</code> function defines a single dichotomy, and the
+<code>logits()</code> function uses <span class="math inline">\(m-1\)</span> calls to <code>dichotomy()</code> to
+create a <code>&quot;dichotomies&quot;</code> object representing the nested
+dichotomies. For example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>comparisons <span class="ot">&lt;-</span> <span class="fu">logits</span>(<span class="at">work=</span><span class="fu">dichotomy</span>(<span class="st">&quot;not.work&quot;</span>, <span class="at">working=</span><span class="fu">c</span>(<span class="st">&quot;parttime&quot;</span>, <span class="st">&quot;fulltime&quot;</span>)),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">full=</span><span class="fu">dichotomy</span>(<span class="st">&quot;parttime&quot;</span>, <span class="st">&quot;fulltime&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>comparisons</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; work: {not.work} vs. working{parttime, fulltime}</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; full: {parttime} vs. {fulltime}</span></span></code></pre></div>
+<p>It is mandatory to name the dichotomies (here <code>work</code> and
+<code>full</code>), and we can optionally name the elements of each
+dichotomy, an option that is particularly useful for a compound
+category, such as <code>working=c(&quot;parttime&quot;, &quot;fulltime&quot;)</code> in the
+example.</p>
+<p>There are coercion functions to convert the set of nested dichotomies
+to a matrix or to a character string, representing the tree structure of
+the dichotomies:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.matrix</span>(comparisons)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      not.work parttime fulltime</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; work        0        1        1</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; full       NA        0        1</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">as.character</span>(comparisons))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; work = {{not.work}} {working{parttime fulltime}}; full = {{parttime}} {{fulltime}}</span></span></code></pre></div>
+</div>
+<div id="using-nestedlogit-to-fit-the-model" class="section level3">
+<h3>Using <code>nestedLogit()</code> to fit the model</h3>
+<p>To fit the model, we supply <code>comparisons</code> as the
+<code>dichotomies</code> argument to the <code>nestedLogit()</code>
+function. The model <code>formula</code> argument,
+<code>partic ~ hincome + children</code> specifies a main-effects model
+for husband’s income and presence of young children; aside from the
+<code>dichotomies</code> argument, the general format of the function
+call is typical for an R statistical modeling function (with optional
+<code>subset</code> and <code>contrasts</code> arguments not shown in
+this example). An atypical feature of <code>nestedLogit()</code> is that
+the <code>data</code> argument is required.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>wlf.nested <span class="ot">&lt;-</span> <span class="fu">nestedLogit</span>(partic <span class="sc">~</span> hincome <span class="sc">+</span> children, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">dichotomies =</span> comparisons,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data=</span>Womenlf)</span></code></pre></div>
+<p>The result, <code>wlf.nested</code>, is a an object of class
+<code>&quot;nestedLogit&quot;</code>, encapsulating the details of the model for
+the nested dichotomies. The <code>models</code> component of the object
+contains essentially the same <code>&quot;glm&quot;</code> model objects as we
+constructed directly as <code>mod.work</code> and <code>mod.full</code>
+above, here named <code>work</code> and <code>full</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(wlf.nested)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;models&quot;          &quot;formula&quot;         &quot;dichotomies&quot;     &quot;data&quot;           </span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;data.name&quot;       &quot;subset&quot;          &quot;contrasts&quot;       &quot;contrasts.print&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(wlf.nested<span class="sc">$</span>models) <span class="co"># equivalent: names(models(wlf.models))</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;work&quot; &quot;full&quot;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># view the separate models; same as lapply(models(wlf.nested), I)</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">models</span>(wlf.nested, <span class="dv">1</span>) </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = work ~ hincome + children, family = binomial, data = Womenlf, </span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     contrasts = contrasts)</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     (Intercept)          hincome  childrenpresent  </span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          1.3358          -0.0423          -1.5756  </span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 262 Total (i.e. Null);  260 Residual</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       356 </span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 320   AIC: 326</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">models</span>(wlf.nested, <span class="dv">2</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:  glm(formula = full ~ hincome + children, family = binomial, data = Womenlf, </span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     contrasts = contrasts)</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     (Intercept)          hincome  childrenpresent  </span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           3.478           -0.107           -2.651  </span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Degrees of Freedom: 107 Total (i.e. Null);  105 Residual</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   (155 observations deleted due to missingness)</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Null Deviance:       144 </span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 104   AIC: 110</span></span></code></pre></div>
+</div>
+<div id="methods-for-nestedlogit-objects" class="section level3">
+<h3>Methods for <code>&quot;nestedLogit&quot;</code> objects</h3>
+<p>As befits a model-fitting function, the package defines a nearly
+complete set of methods for <code>&quot;nestedLogit&quot;</code> objects:</p>
+<ul>
+<li><code>print()</code> and <code>summary()</code> print the results
+for each of the submodels.</li>
+<li><code>update()</code> re-fits the model, allowing changes to the
+model <code>formula</code>, <code>data</code>, <code>subset</code>, and
+<code>contrasts</code> arguments.</li>
+<li><code>coef()</code> returns the coefficients for the predictors in
+each dichotomy.</li>
+<li><code>vcov()</code> returns the variance-covariance matrix of the
+coefficients</li>
+<li><code>predict()</code> computes predicted probabilities for the
+response categories, either for the cases in the data, which is
+equivalent to <code>fitted()</code>, or for arbitrary combinations of
+the predictors; the latter is useful for producing plots to aid
+interpretation.</li>
+<li><code>glance()</code> and <code>tidy()</code> are extensions of
+<code>broom::glance.glm()</code> and <code>broom::tidy.glm()</code> to
+obtain compact summaries of a <code>&quot;nestedLogit&quot;</code> model
+object.</li>
+<li><code>plot()</code> provides basic plots of the predicted
+probabilities over a range of values of the predictor variables.</li>
+<li><code>models()</code> is an extractor function for the binary logit
+models in the <code>&quot;nestedLogit&quot;</code> object</li>
+</ul>
+<p>These functions are supplemented by various methods for testing
+hypotheses about and comparing nested-logit models:</p>
+<ul>
+<li><code>anova()</code> provides analysis-of-deviance Type I
+(sequential) tests for each dichotomy and for the combined model. When
+given a sequence of model objects, <code>anova()</code> tests the models
+against one another in the order specified.</li>
+<li><code>Anova()</code> uses <code>car::Anova()</code> to provide
+analysis-of-deviance Type II or III (partial) tests for each dichotomy
+and for the combined model.</li>
+<li><code>linearHypothesis()</code> computes Wald tests for hypotheses
+about coefficients or their linear combinations.</li>
+<li><code>logLik()</code> returns the log-likelihood and degrees of
+freedom for the nested-dichotomies logit model.</li>
+<li>Through <code>logLik()</code>, the <code>AIC()</code> and
+<code>BIC()</code> functions compute the Akaike and Bayesian information
+criteria model-comparison statistics.</li>
+</ul>
+<p>We illustrate the application of some of these methods:</p>
+<p><strong>Coefficients</strong>: By default, <code>coef()</code>
+returns a matrix whose rows are the regressors in the model and whose
+columns represent the nested dichotomies. In the <code>Womenlf</code>
+example, the coefficients <span class="math inline">\(\widehat{\beta}_{j1}\)</span> give the estimated
+change in the log-odds of working vs. not working associated with a
+$1,000 increase in husband’s income and with having children present
+vs. absent, each holding the other constant. The coefficients <span class="math inline">\(\widehat{\beta}_{j2}\)</span> are similar for the
+log-odds of working fulltime vs. parttime among those who are working
+outside the home. The exponentiated coefficients <span class="math inline">\(e^{\widehat{\beta}_{jk}}\)</span> give
+multiplicative effects on the odds for these comparisons.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(wlf.nested)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     work    full</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)      1.33583  3.4778</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome         -0.04231 -0.1073</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; childrenpresent -1.57565 -2.6515</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># show as odds ratios</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">coef</span>(wlf.nested))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   work     full</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)     3.8032 32.38753</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome         0.9586  0.89829</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; childrenpresent 0.2069  0.07055</span></span></code></pre></div>
+<p>Thus, the odds of both working and working fulltime decrease with
+husband’s income, by about 4% and 10% respectively per $1000. Having
+young children also decreases the odds of both working and working
+fulltime, by about 79% and 93% respectively.</p>
+<p><strong>Analysis of deviance</strong>: A method for the
+<code>Anova()</code> function from the <strong>car</strong> package
+<span class="citation">(Fox &amp; Weisberg, 2019)</span> computes Type
+II or III likelihood-ratio or Wald tests for each term in the model.
+Note that the likelihood-ratio or Wald <span class="math inline">\(\chi^2\)</span> and degrees of freedom for the
+<code>Combined Responses</code> is the sum of their values for the
+separate dichotomies:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(wlf.nested)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response work: {not.work} vs. working{parttime, fulltime}</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome      4.83  1      0.028 *  </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children    31.32  1    2.2e-08 ***</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: {parttime} vs. {fulltime}</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome       9.0  1     0.0027 ** </span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children     32.1  1    1.4e-08 ***</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Combined Responses</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome      13.8  2      0.001 ** </span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children     63.5  2    1.7e-14 ***</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p><strong>Linear hypotheses</strong>: The
+<code>linearHypothesis()</code> function in the <strong>car</strong>
+package provides a very general method for computing Wald tests of
+specific hypotheses about individual coefficients in a model or their
+linear combinations.</p>
+<p>For example, the following command tests the hypothesis that the
+coefficients for <code>hincome</code> and <code>children</code> are
+simultaneously all equal to zero. This is equivalent to the test of the
+global null model, <span class="math inline">\(H_0\)</span>: all <span class="math inline">\(\beta_{jk} = 0\)</span> for <span class="math inline">\(j = 1,2; k=1,2\)</span> against an alternative
+that one or more coefficients <span class="math inline">\(\beta_{jk} \ne
+0\)</span>.</p>
+<p><code>linearHypothesis()</code> reports this test for each of the
+submodels for the dichotomies <code>work</code> and <code>full</code>,
+as well as for the combined model:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(wlf.nested, <span class="fu">c</span>(<span class="st">&quot;hincome&quot;</span>, <span class="st">&quot;childrenpresent&quot;</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Linear hypothesis test</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Hypothesis: </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome = 0 </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; childrenpresent = 0 </span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 1: restricted model</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 2: partic ~ hincome + children </span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response work: {not.work} vs. working{parttime, fulltime} </span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Res.Df Df Chisq Pr(&gt;Chisq)    </span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    262                        </span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    260  2  32.2      1e-07 ***</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: {parttime} vs. {fulltime}</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Res.Df Df Chisq Pr(&gt;Chisq)    </span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    107                        </span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    105  2  25.6    2.8e-06 ***</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Combined Responses</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Chisq = 57.813, Df = 4, Pr(&gt;Chisq) = 8.4e-12</span></span></code></pre></div>
+<p><strong>Tidy summaries</strong>: The <strong>broom</strong> package
+<span class="citation">(Robinson, Hayes, &amp; Couch, 2023)</span>
+provides functions for compact and tidy summaries of fitted models. The
+<code>glance()</code> method for a <code>&quot;nestedLogit&quot;</code> model
+produces a one-line summary of the statistics for each dichotomy. The
+<code>tidy()</code> method combines the coefficients for the sub-models,
+together with test statistics:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(wlf.nested)   <span class="co"># summarize the sub-models</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 x 9</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   response null.deviance df.null logLik   AIC   BIC deviance df.residual  nobs</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 work              356.     262 -160.   326.  336.     320.         260   263</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 full              144.     107  -52.2  110.  119.     104.         105   108</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(wlf.nested)     <span class="co"># summarize the coefficients</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 6</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   response term            estimate std.error statistic      p.value</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 work     (Intercept)       1.34      0.384       3.48 0.000500    </span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 work     hincome          -0.0423    0.0198     -2.14 0.0324      </span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 work     childrenpresent  -1.58      0.292      -5.39 0.0000000700</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 full     (Intercept)       3.48      0.767       4.53 0.00000580  </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 full     hincome          -0.107     0.0392     -2.74 0.00615     </span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 full     childrenpresent  -2.65      0.541      -4.90 0.000000957</span></span></code></pre></div>
+<p>These functions facilitate the construction of custom tables. For
+example, to extract the likelihood-ratio difference-in-deviance (<span class="math inline">\(G^2\)</span>) tests and compute (<span class="math inline">\(G^2 / df\)</span>):</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>gl <span class="ot">&lt;-</span> <span class="fu">glance</span>(wlf.nested)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>gl <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(response, deviance, df.residual) <span class="sc">|&gt;</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="at">response =</span> <span class="st">&quot;Combined&quot;</span>, <span class="at">deviance =</span> <span class="fu">sum</span>(gl<span class="sc">$</span>deviance), <span class="at">df.residual =</span> <span class="fu">sum</span>(gl<span class="sc">$</span>df.residual)) <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">P-value</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">pchisq</span>(deviance, df.residual, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">$G^2$/df</span><span class="st">`</span> <span class="ot">=</span> deviance <span class="sc">/</span> df.residual) <span class="sc">|&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">$G^2$</span><span class="st">`</span> <span class="ot">=</span> deviance,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">df =</span> df.residual) <span class="sc">|&gt;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">response</th>
+<th align="right"><span class="math inline">\(G^2\)</span></th>
+<th align="right">df</th>
+<th align="right">P-value</th>
+<th align="right"><span class="math inline">\(G^2\)</span>/df</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">work</td>
+<td align="right">319.7</td>
+<td align="right">260</td>
+<td align="right">0.007</td>
+<td align="right">1.230</td>
+</tr>
+<tr class="even">
+<td align="left">full</td>
+<td align="right">104.5</td>
+<td align="right">105</td>
+<td align="right">0.496</td>
+<td align="right">0.995</td>
+</tr>
+<tr class="odd">
+<td align="left">Combined</td>
+<td align="right">424.2</td>
+<td align="right">365</td>
+<td align="right">0.018</td>
+<td align="right">1.162</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Model updating</strong>: The <code>update()</code> function
+makes it easy to create a new model from an old one, by adding or
+subtracting terms from the model formula, specifying a new formula, or
+changing the observations used or contrasts for factors.</p>
+<p>For example, you might ask, “<em>Does it make sense to include region
+of Canada in the model for the <code>Womenlf</code> data?</em>” This
+question can be answered by adding <code>region</code> to the model
+formula, and comparing the new model to the original one using
+<code>anova()</code>. The tests here are for the additional contribution
+of <code>region</code> over and above the main effects of
+<code>hincome</code> and <code>children</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>wlf.nested<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(wlf.nested, <span class="at">formula =</span> . <span class="sc">~</span> . <span class="sc">+</span> region)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(wlf.nested, wlf.nested<span class="fl">.1</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Analysis of Deviance Tables</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model 1: partic ~ hincome + children</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model 2: partic ~ hincome + children + region </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response work: {not.work} vs. working{parttime, fulltime}</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       260        320                     </span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       256        317  4     2.43     0.66</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: {parttime} vs. {fulltime}</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       105        104                     </span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       101        102  4     2.65     0.62</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Combined Responses</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       365        424                     </span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       357        419  8     5.08     0.75</span></span></code></pre></div>
+<p>Recall that <code>anova()</code> with two or models tests the models
+sequentially against one another, in the order specified. This assumes
+that the models compared are <em>nested</em> (an unintentional a pun),
+in the sense that the terms in the smaller model in each sequential pair
+are a subset of those in the larger model.</p>
+<p>In a similar manner, we could fit and test a <em>wider</em> scope of
+models. For example to add an interaction between husband’s income and
+children and then test the interaction term:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>wlf.nested<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(wlf.nested, <span class="at">formula =</span> . <span class="sc">~</span> .<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(wlf.nested, wlf.nested<span class="fl">.2</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Analysis of Deviance Tables</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model 1: partic ~ hincome + children</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Model 2: partic ~ hincome + children + hincome:children </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response work: {not.work} vs. working{parttime, fulltime}</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       260        320                     </span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       259        319  1    0.608     0.44</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: {parttime} vs. {fulltime}</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       105        104                     </span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       104        104  1    0.256     0.61</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Combined Responses</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       365        424                     </span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       363        423  2    0.864     0.65</span></span></code></pre></div>
+<p>We can see that neither <code>region</code> nor the
+<code>hincome</code> <span class="math inline">\(\times\)</span>
+<code>children</code> interaction make a difference to the fit either of
+the sub-models or of the combined model for the three response
+categories.</p>
+</div>
+<div id="obtaining-fitted-values-predict" class="section level3">
+<h3>Obtaining fitted values: <code>predict()</code></h3>
+<p>By default, <code>predict()</code> for a <code>&quot;nestedLogit&quot;</code>
+model object returns the predicted probabilities
+(<code>type = &quot;response&quot;</code>) of each of the response categories for
+<em>all</em> observations in the data set: The computation is a bit
+tricky, because the probabilities of working full time or part time are
+conditional on working outside the home, but <code>predict()</code>
+takes care of the details.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">some</span>(<span class="fu">predict</span>(wlf.nested))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     not.work parttime fulltime</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13    0.6504  0.18696  0.16268</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 27    0.7396  0.20070  0.05974</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 134   0.3222  0.08251  0.59525</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 137   0.6968  0.20093  0.10226</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 143   0.6693  0.19426  0.13640</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 182   0.3410  0.09661  0.56240</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 198   0.7925  0.18197  0.02556</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 212   0.6878  0.19929  0.11291</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 242   0.3131  0.07607  0.61087</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 257   0.2225  0.02865  0.74886</span></span></code></pre></div>
+</div>
+<div id="plotting-nestedlogit-objects" class="section level3">
+<h3>Plotting <code>&quot;nestedLogit&quot;</code> objects</h3>
+<p>The <strong>nestedLogit</strong> package includes a basic
+<code>plot()</code> method for <code>&quot;nestedLogit&quot;</code> models, which
+calculates fitted probabilities for the response categories and plots
+these against a single explanatory variable on the horizontal axis,
+while <code>other</code> explanatory variables are fixed to particular
+values. To produce multi-panel plots, it is necessary to call
+<code>plot()</code> repeatedly for various levels of the other
+predictors, and to compose these into a single figure, for example using
+<code>par(&quot;mfcol&quot;)</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wlf.nested, <span class="st">&quot;hincome&quot;</span>, <span class="fu">list</span>(<span class="at">children=</span><span class="st">&quot;absent&quot;</span>), <span class="co"># left panel</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Husband&#39;s Income&quot;</span>, <span class="at">legend.location=</span><span class="st">&quot;top&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wlf.nested, <span class="st">&quot;hincome&quot;</span>, <span class="fu">list</span>(<span class="at">children=</span><span class="st">&quot;present&quot;</span>), <span class="co"># right panel</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Husband&#39;s Income&quot;</span>, <span class="at">legend=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="**plot method**: Predicted probabilities of working at all or working part time or full time" width="100%" />
+<p class="caption">
+<strong>plot method</strong>: Predicted probabilities of working at all
+or working part time or full time
+</p>
+</div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div>
+<p>We provide a separate vignette on constructing custom graphs of
+<code>&quot;nestedLogit&quot;</code> objects.</p>
+</div>
+<div id="alternative-models-for-the-womenlf-data" class="section level3">
+<h3>Alternative models for the <code>Womenlf</code> data</h3>
+<p>We’ve mentioned that the nested dichotomies {not working}
+vs. {parttime, fulltime} and {parttime} vs. {fulltime} for the
+<code>Womenlf</code> data are largely arbitrary. An alternative set of
+nested dichotomies first contrasts fulltime work with the other
+categories, {fulltime} vs. {not working, parttime}, and then {not
+working} vs. {part time}. The rationale is that the real hurdle for
+young married women to enter the paid labor force is to combine fulltime
+work outside the home with housework. This alternative
+nested-dichotomies model proves enlightening:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>wlf.nested.alt <span class="ot">&lt;-</span> <span class="fu">nestedLogit</span>(partic <span class="sc">~</span> hincome <span class="sc">+</span> children,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">logits</span>(<span class="at">full=</span><span class="fu">dichotomy</span>(<span class="at">nonfulltime=</span><span class="fu">c</span>(<span class="st">&quot;not.work&quot;</span>, <span class="st">&quot;parttime&quot;</span>), <span class="st">&quot;fulltime&quot;</span>),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">part=</span><span class="fu">dichotomy</span>(<span class="st">&quot;not.work&quot;</span>, <span class="st">&quot;parttime&quot;</span>)),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data=</span>Womenlf)</span></code></pre></div>
+<p>The <code>Anova()</code> and <code>summary()</code> for this model
+show that the effects of husband’s income and children are significant
+for the <code>full</code> model but not for the <code>part</code>
+model:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(wlf.nested.alt)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: nonfulltime{not.work, parttime} vs. {fulltime}</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome      15.1  1      1e-04 ***</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children     63.6  1    1.6e-15 ***</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response part: {not.work} vs. {parttime}</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome    0.0851  1       0.77</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children   0.0012  1       0.97</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Combined Responses</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          LR Chisq Df Pr(&gt;Chisq)    </span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome      15.2  2    0.00051 ***</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; children     63.6  2    1.6e-14 ***</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wlf.nested.alt)</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Nested logit models: partic ~ hincome + children</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response full: nonfulltime{not.work, parttime} vs. {fulltime}</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; glm(formula = full ~ hincome + children, family = binomial, data = Womenlf, </span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     contrasts = contrasts)</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deviance Residuals: </span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min      1Q  Median      3Q     Max  </span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -1.745  -0.583  -0.443   0.242   2.378  </span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)       1.7696     0.4690    3.77  0.00016 ***</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome          -0.0987     0.0277   -3.57  0.00036 ***</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; childrenpresent  -2.5631     0.3489   -7.35    2e-13 ***</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Null deviance: 296.34  on 262  degrees of freedom</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual deviance: 218.81  on 260  degrees of freedom</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC: 224.8</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Fisher Scoring iterations: 5</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Response part: {not.work} vs. {parttime}</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; glm(formula = part ~ hincome + children, family = binomial, data = Womenlf, </span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     contrasts = contrasts)</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deviance Residuals: </span></span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min      1Q  Median      3Q     Max  </span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -0.757  -0.696  -0.688  -0.671   1.794  </span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 Estimate Std. Error z value Pr(&gt;|z|)  </span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept)     -1.42758    0.58222   -2.45    0.014 *</span></span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; hincome          0.00687    0.02343    0.29    0.769  </span></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; childrenpresent  0.01629    0.46762    0.03    0.972  </span></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Null deviance: 204.16  on 196  degrees of freedom</span></span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual deviance: 204.07  on 194  degrees of freedom</span></span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   (66 observations deleted due to missingness)</span></span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC: 210.1</span></span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Fisher Scoring iterations: 4</span></span></code></pre></div>
+<p>It’s apparent that the alternative model produces a simpler
+description of the data: The predictors husband’s income and presence of
+children affect the decision to work fulltime, but not the decision to
+work parttime among those who aren’t engaged in fulltime work.</p>
+<p>But do the fits of the two models to the data differ? We can compare
+fitted probabilities under the two specifications:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(wlf.nested)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(wlf.nested.alt)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="fu">cor</span>(fit1, fit2))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; not.work parttime fulltime </span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0.9801   0.9185   0.9961</span></span></code></pre></div>
+<p>The correlations of the fitted probabilities are high but far from
+perfect.</p>
+<p>The two models have the same number of parameters and neither is
+nested within the other, so a conventional likelihood-ratio test is
+inappropriate, but we can still compare maximized log-likelihoods under
+the two models:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(wlf.nested)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -212.1 (df=6)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(wlf.nested.alt)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -211.4 (df=6)</span></span></code></pre></div>
+<p>Because the sample sizes and numbers of parameters are the same for
+the two models, differences in AIC and BIC are just twice the
+differences in the log-likelihoods; for example:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(wlf.nested, wlf.nested.alt)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                df   AIC</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; wlf.nested      6 436.2</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; wlf.nested.alt  6 434.9</span></span></code></pre></div>
+<p>The comparison slightly favors the alternative nested-dichotomies
+model.</p>
+<p>Here’s a graph of the alternative model:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wlf.nested.alt, <span class="st">&quot;hincome&quot;</span>, <span class="fu">list</span>(<span class="at">children=</span><span class="st">&quot;absent&quot;</span>), <span class="co"># left panel</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Husband&#39;s Income&quot;</span>, <span class="at">legend.location=</span><span class="st">&quot;top&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(wlf.nested.alt, <span class="st">&quot;hincome&quot;</span>, <span class="fu">list</span>(<span class="at">children=</span><span class="st">&quot;present&quot;</span>), <span class="co"># right panel</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Husband&#39;s Income&quot;</span>, <span class="at">legend=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="data:image/png;base64,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" alt="Predicted probabilities for the alternative nested-dichotomies model" width="100%" />
+<p class="caption">
+Predicted probabilities for the alternative nested-dichotomies model
+</p>
+</div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div>
+<p>Compare this to the previous graph for the original
+specification.</p>
+<p>It’s also of interest to compare the nested-dichotomies models to the
+multinomial logit model, which, as we explained, treats the response
+categories symmetrically:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>wlf.multinom <span class="ot">&lt;-</span> <span class="fu">multinom</span>(partic <span class="sc">~</span> hincome <span class="sc">+</span> children, <span class="at">data =</span> Womenlf)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # weights:  12 (6 variable)</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; initial  value 288.935032 </span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; iter  10 value 211.454772</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; final  value 211.440963 </span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; converged</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wlf.multinom)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; multinom(formula = partic ~ hincome + children, data = Womenlf)</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          (Intercept)   hincome childrenpresent</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parttime      -1.432  0.006894         0.02146</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fulltime       1.983 -0.097232        -2.55861</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Std. Errors:</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          (Intercept) hincome childrenpresent</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parttime      0.5925 0.02345          0.4690</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fulltime      0.4842 0.02810          0.3622</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual Deviance: 422.9 </span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AIC: 434.9</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(wlf.multinom)</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &#39;log Lik.&#39; -211.4 (df=6)</span></span></code></pre></div>
+<p>Check the correlation between fitted probabilities:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(wlf.multinom, <span class="at">type=</span><span class="st">&quot;probs&quot;</span>)[, <span class="fu">c</span>(<span class="st">&quot;not.work&quot;</span>, <span class="st">&quot;parttime&quot;</span>, <span class="st">&quot;fulltime&quot;</span>)]</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="fu">cor</span>(fit2, fit3))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; not.work parttime fulltime </span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        1        1        1</span></span></code></pre></div>
+<p>As it turns out, the multinomial logit model and the alternative
+nested-dichotomies model produce nearly identical fits with similar
+simple interpretations.</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-R-equatiomatic" class="csl-entry">
+Anderson, D., Heiss, A., &amp; Sumners, J. (2023). <em>Equatiomatic:
+Transform models into LaTeX equations</em>.
+</div>
+<div id="ref-Atkinson-etal:1984" class="csl-entry">
+Atkinson, T., Blishen, B. R., Ornstein, M. D., &amp; Stevenson, H. M.
+(1984). <span class="nocase">Quality of Canadian Life: Social Change in
+Canada</span>, 1977. ICPSR - Interuniversity Consortium for Political;
+Social Research. http://doi.org/<a href="https://doi.org/10.3886/ICPSR07879.V1">10.3886/ICPSR07879.V1</a>
+</div>
+<div id="ref-Fienberg:80" class="csl-entry">
+Fienberg, S. E. (1980). <em>The analysis of cross-classified categorical
+data</em> (2nd ed.). Cambridge, MA: MIT Press.
+</div>
+<div id="ref-Fox:1984:LSM" class="csl-entry">
+Fox, J. (1984). <em>Linear statistical models and related methods</em>.
+New York: Wiley.
+</div>
+<div id="ref-Fox:2016:ARA" class="csl-entry">
+Fox, J. (2016). <em>Applied regression analysis and generalized linear
+models</em> (Third edition.). Los Angeles: SAGE.
+</div>
+<div id="ref-car2019" class="csl-entry">
+Fox, J., &amp; Weisberg, S. (2019). <em>An <span>R</span> companion to
+applied regression</em> (Third). Thousand Oaks <span>CA</span>: Sage.
+Retrieved from <a href="https://socialsciences.mcmaster.ca/jfox/Books/Companion/">https://socialsciences.mcmaster.ca/jfox/Books/Companion/</a>
+</div>
+<div id="ref-R-carData" class="csl-entry">
+Fox, J., Weisberg, S., &amp; Price, B. (2022). <em>carData: Companion to
+applied regression data sets</em>. Retrieved from <a href="https://CRAN.R-project.org/package=carData">https://CRAN.R-project.org/package=carData</a>
+</div>
+<div id="ref-FriendlyMeyer:2016:DDAR" class="csl-entry">
+Friendly, M., &amp; Meyer, D. (2016). <em>Discrete data analysis with
+<span>R</span>: Visualization and modeling techniques for categorical
+and count data</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-R-broom" class="csl-entry">
+Robinson, D., Hayes, A., &amp; Couch, S. (2023). <em>Broom: Convert
+statistical objects into tidy tibbles</em>. Retrieved from <a href="https://CRAN.R-project.org/package=broom">https://CRAN.R-project.org/package=broom</a>
+</div>
+<div id="ref-nnet2002" class="csl-entry">
+Venables, W. N., &amp; Ripley, B. D. (2002). <em>Modern applied
+statistics with s</em> (Fourth). New York: Springer. Retrieved from <a href="https://www.stats.ox.ac.uk/pub/MASS4/">https://www.stats.ox.ac.uk/pub/MASS4/</a>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

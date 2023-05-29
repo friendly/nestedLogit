@@ -1,0 +1,13 @@
+GSS                     Data From the U.S. General Social Survey
+                        1972-2016
+HealthInsurance         Choice of Health Insurance Product
+as.data.frame.predictNestedLogit
+                        Convert a Predicted Objects to a data.frame
+broomMethods            Broom Related Methods
+models                  Extract Binary Logit Models from a
+                        'nestedLogit' Object
+nestedHypotheses        Hypothesis-Testing and Related Methods for
+                        '"nestedLogit"' Objects
+nestedLogit             Binary Logit Models for Nested Dichotomies
+nestedMethods           Methods for '"nestedLogit"' and Related Objects
+plot.nestedLogit        Plotting Nested Logit Models
