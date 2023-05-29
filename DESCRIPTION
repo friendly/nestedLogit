@@ -11,7 +11,7 @@ Authors@R: c(
   )
 Description: Provides functions for specifying and fitting nested
     dichotomy logistic regression models for a multi-category response and
-    methods for summarising those models.  Nested dichotomies are
+    methods for summarising and plotting those models.  Nested dichotomies are
     statistically independent, and hence provide an additive decomposition
     of tests for the overall 'polytomous' response.  When the dichotomies
     make sense substantively, this method can be a simpler alternative to
