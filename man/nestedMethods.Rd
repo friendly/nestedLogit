@@ -18,6 +18,7 @@
 \alias{confint.predictNestedLogit}
 \alias{fitted.nestedLogit}
 \alias{as.dichotomies}
+\alias{print.predictDichotomies}
 \title{Methods for \code{"nestedLogit"} and Related Objects}
 \usage{
 \method{print}{nestedLogit}(x, ...)
@@ -39,6 +40,8 @@
   conf.limits.logit = TRUE,
   ...
 )
+
+\method{print}{predictDichotomies}(x, n = 10L, ...)
 
 \method{fitted}{nestedLogit}(object, model = c("nested", "dichotomies"), ...)
 
@@ -71,7 +74,8 @@ under the nested logit model are returned, or \code{"dichotomies"}, in which cas
 \code{\link{predict.glm}} is invoked for each binary logit model fit to the nested
 dichotomies and a named list of the results is returned.}
 
-\item{n}{For the print method of \code{predict.nestedLogit}, and integer or \code{"all"}
+\item{n}{For the print method of \code{predict.nestedLogit}
+or \code{predictDichotomies}, an integer or \code{"all"}
 to control how many rows are printed for each of the probabilities of
 response categories, corresponding logits and their standard errors.}
 

@@ -5,7 +5,7 @@
 #' update.nestedLogit predict.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
 #' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
 #' as.matrix.dichotomies print.predictNestedLogit confint.predictNestedLogit
-#' fitted.nestedLogit as.dichotomies
+#' fitted.nestedLogit as.dichotomies predict.nestedLogit
 #'
 #' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.
@@ -47,7 +47,8 @@
 #' @param data optional updated data argument
 #' @param subset optional updated subset argument.
 #' @param contrasts optional updated contrasts argument.
-#' @param n For the print method of \code{predict.nestedLogit}, and integer or \code{"all"}
+#' @param n For the print method of \code{predict.nestedLogit}
+#'        or \code{predictDichotomies}, an integer or \code{"all"}
 #'        to control how many rows are printed for each of the probabilities of
 #'        response categories, corresponding logits and their standard errors.
 #' @param parm  For the \code{confint} method, one of \code{"prob"} or \code{"logit"},
@@ -248,15 +249,21 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     return(result)
 
   } else {
+    
+    # browser()
 
-    # result <- lapply(models(object), function(x) as.data.frame(predict(x, newdata=newdata, ...)))
-    # attr(result, "model") <- deparse(substitute(object))
-    # class(result) <- "predictDichotomies"
-
-    result <- lapply(models(object), function(x) predict(x, newdata=newdata, ...))
-    result <- as.data.frame(do.call(cbind, result))
-    colnames(result) <- names(object$models)
-    return(result)
+    result <- lapply(models(object), function(x) as.data.frame(predict(x, newdata=newdata, ...)))
+    if (all(sapply(result, ncol) == 1)){
+      result <- do.call(cbind, result)
+      colnames(result) <- names(object$models)
+      return(result)
+    } else {
+      attr(result, "model") <- deparse(substitute(object))
+      class(result) <- "predictDichotomies"
+      return(result)
+    }
+    # result <- lapply(models(object), function(x) predict(x, newdata=newdata, ...))
+    
   }
 }
 
@@ -321,6 +328,19 @@ confint.predictNestedLogit <- function (object, parm=c("prob", "logit"),
     cnames <- paste0(cnames.1, ".", rep(cnames.2, each=ncol(p)))
     colnames(result) <- cnames
     return(as.data.frame(result))
+  }
+}
+
+#' @rdname nestedMethods
+#' @export
+print.predictDichotomies <- function(x, n=10L, ...){
+  cat("\n predictions for binary logit models from nested logit model:",
+      attr(x, "model"), "\n")
+  nms <- names(x)
+  for (i in seq_along(x)){
+    if (n == "all") n <- nrow(x[[i]])
+    cat("\n dichotomy:", nms[i], "\n")
+    print(x[[i]][1:min(n, nrow(x[[i]])), ])
   }
 }
 
