@@ -75,6 +75,7 @@ ggplot(plotdata,
 pred.dichot <- predict(wlf.nested, newdata = new,
                        model = "dichotomies")
 str(pred.dichot)
+pred.dichot
 
 # this is now the as.data.frame.predictDichotomies method
 
