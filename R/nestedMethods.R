@@ -187,16 +187,16 @@ print.dichotomies <- function(x, ...) {
 #' @export
 predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
   model <- match.arg(model)
-  
+
   if (missing(newdata))
     newdata <- models(object, 1)$data
-  
+
   if (model == "nested"){
-    
+
     ndichot <- length(models(object))
     if (ndichot < 2L)
       stop("there are fewer than 2 nested dichotomies")
-    
+
     var.fitted <- fitted <- vector(ndichot, mode = "list")
     for (j in seq_along(models(object))) {
       pred <- predict(models(object, j), newdata = newdata, type = "response",
@@ -206,40 +206,40 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
       fitted[[j]] <- p
       var.fitted[[j]] <- (pred$se.fit)^2
     }
-    
+
     response.levels <- unique(unlist(lapply(fitted, function(x) attr(x, "columns"))))
     p <- matrix(1, nrow(newdata), length(response.levels))
     v <- matrix(0, nrow(newdata), length(response.levels))
     colnames(v) <- colnames(p) <- response.levels
-    
+
     # explanation of indices:
-    
+
     #  k: indexes the m categories of the response
     #  j: indexes the subset of all m - 1 dichotomy models used for
     #     fitted probabilities for a particular category k
     #     of the response
     #  jp: like j, but also excludes current value of j
-    
+
     for (k in response.levels) {
-      
+
       for (j in seq_along(models(object))) {
-        
+
         deriv <- rep(1, nrow(newdata))
-        
+
         which.j <- sapply(models(object, j)$dichotomy, function(x) k %in% x)
         if (!any(which.j)) next
-        
+
         for (jp in seq_along(models(object))){
           which.jp <- sapply(models(object, jp)$dichotomy, function(x) k %in% x)
           if (j == jp || !any(which.jp)) next
           deriv <- deriv * fitted[[jp]][, which.jp]
         }
-        
+
         p[, k] <- p[, k] * fitted[[j]][, which.j]
         v[, k] <- v[, k] + deriv^2 * var.fitted[[j]]
       }
     }
-    
+
     logit <- log(p/(1 - p))
     v.logit <- (1/(p*(1 - p)))^2 * v
     rownames(v.logit) <- rownames(v) <- rownames(logit) <- rownames(p) <- rownames(newdata)
@@ -247,9 +247,9 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
                    se.p = as.data.frame(sqrt(v)), se.logit = as.data.frame(sqrt(v.logit)))
     class(result) <- "predictNestedLogit"
     return(result)
-    
+
   } else {
-    result <- lapply(models(object), 
+    result <- lapply(models(object),
                      function(x) as.data.frame(predict(x, newdata=newdata, se.fit=TRUE, ...)))
     attr(result, "model") <- deparse(substitute(object))
     class(result) <- "predictDichotomies"
@@ -261,7 +261,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
 #' @export
 print.predictNestedLogit <- function(x, n=min(10L, nrow(x$p)), ...){
   if (n == "all") n <- nrow(x$p)
-  if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst 10 of ", nrow(x$p), " rows:\n"))
+  if (truncate <- nrow(x$p) > n) cat(paste0("\nFirst ", n, " of ", nrow(x$p), " rows:\n"))
   cat("\npredicted response-category probabilties\n")
   print(x$p[1:n, ], ...)
   if (truncate) cat("  . . .\n")

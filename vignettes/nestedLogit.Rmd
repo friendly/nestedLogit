@@ -421,7 +421,7 @@ or part-time are conditional on working outside the home, but `predict()` takes 
 
 ```{r}
 wlf.pred <- predict(wlf.nested)
-wlf.pred
+print(wlf.pred, n=5)
 ```
 By default, fitted values and standard errors are computed for _all_ the observations in the data set. You can
 provide a `newdata` data.frame containing arbitrary combinations of predicted values,
