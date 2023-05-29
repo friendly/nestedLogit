@@ -35,17 +35,15 @@ new <- expand.grid(hincome=seq(0, 45, length=4),
 pred.nested <- predict(wlf.nested, new)
 plotdata <- as.data.frame(pred.nested, newdata=new)
 
-# set a consistent theme
+# set a consistent theme for all plots here
 theme_set(theme_bw(base_size = 14))
 
 ggplot(plotdata,
        aes(x=hincome, y=p, color=response)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-#  scale_color_discrete() +
   labs(x="Husband's Income", y= "Probability") +
   facet_wrap(~ children, labeller = label_both) +
-#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=p - se.p,
                   ymax=p + se.p,
                   fill = response), alpha = 0.3) +
@@ -58,10 +56,8 @@ ggplot(plotdata,
        aes(x=hincome, y=logit, color=response)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-#  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ children, labeller = label_both) +
-  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = response), alpha = 0.3) +
@@ -87,24 +83,12 @@ str(pred.dichot.no.se)
 as.data.frame(pred.dichot.no.se, newdata = new)
 
 
-# plotlogit <- do.call(rbind, pred.dichot) |>
-#   select(- residual.scale) |>
-#   tibble::rownames_to_column(var = "response") |>
-#   mutate(response =  stringr::str_remove(response, ".\\d+")) |>
-#   rename(logit = fit,
-#          se.logit = se.fit)
-#
-# idx <- rep(seq_len(nrow(new)), length(pred.dichot))
-# plotlogit <- bind_cols(new[idx,], plotlogit)
-
 ggplot(plotlogit,
        aes(x=hincome, y=logit, color=response)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-#  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ children, labeller = label_both) +
-  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = response), alpha = 0.3) +
@@ -117,10 +101,8 @@ ggplot(plotlogit,
        aes(x=hincome, y=logit, color=children)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-  #  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ response, labeller = label_both) +
-#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = children), alpha = 0.3) +
@@ -145,10 +127,8 @@ ggplot(plotlogit.alt,
        aes(x=hincome, y=logit, color=response)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-  #  scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ children, labeller = label_both) +
-#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = response), alpha = 0.3) +
@@ -161,10 +141,8 @@ ggplot(plotlogit.alt,
        aes(x=hincome, y=logit, color=children)) +
   geom_line(linewidth = 2) +
   geom_point(size = 1.5, shape = 16, color = "black") +
-#   scale_color_discrete() +
   labs(x="Husband's Income", y= "Log Odds") +
   facet_wrap(~ response, labeller = label_both) +
-#  theme_bw(base_size = 14) +
   geom_ribbon(aes(ymin=logit - se.logit,
                   ymax=logit + se.logit,
                   fill = children), alpha = 0.3) +
