@@ -417,7 +417,7 @@ frames whose columns are the response categories:
 * `se.logit`: standard errors of the logits.
 
 The computation is a bit tricky, because the probabilities of working full-time
-or part-time are conditional on working outside the home, but `predict()` takes care of the details.
+or part-time are conditional on working outside the home, but `predict()` takes care of the details.  See `vignette("standard-errors")` for how these are calculated.
 
 ```{r}
 wlf.pred <- predict(wlf.nested)
