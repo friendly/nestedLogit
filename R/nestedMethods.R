@@ -109,7 +109,7 @@
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
-#' cbind(new, fit) # fitted probabilities at specific values of predictors
+#' as.data.frame(new, fit) # fitted probabilities at specific values of predictors
 #'
 #' # predicted logits for dichotomies
 #' predictions <- predict(m, newdata=new, model="dichotomies")
