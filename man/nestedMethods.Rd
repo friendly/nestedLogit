@@ -110,9 +110,10 @@ with one element for each dichotomy.}
 coefficients and their covariances, respectively.
 \item The \code{update} method returns an object of class \code{"nestedLogit"} (see \code{\link{nestedLogit}})
 derived from the original nested-logit model.
-\item The \code{predict} and \code{fitted} methods return either a matrix of predicted probabilities or an
-object of class \code{"predictDichotomies"}, which is a named list with predicted logits for
-each nested-dichotomy model.
+\item The \code{predict} and \code{fitted} methods return an object of class \code{"predictNested"}
+or \code{"predictDichotomies"}, which contain the predicted probabilities, predicted logits,
+and other information, such as standard errors of predicted values, and, if supplied,
+the \code{newdata} on which predictions are based.
 \item The \code{summary} method returns an object of class \code{"summary.nestedLogit"}, which is
 a list of summaries of the \code{\link{glm}} objects that comprise the nested-dichotomies model; the
 object is normally printed.

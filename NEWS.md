@@ -1,4 +1,4 @@
-# lestedLogit 0.3.1
+# nestedLogit 0.3.1
 
 * correct buglet in `as.data.frame` method when `newdata` has one column
 

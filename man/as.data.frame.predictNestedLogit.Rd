@@ -4,7 +4,7 @@
 \alias{as.data.frame.predictNestedLogit}
 \title{Convert a Predicted Objects to a data.frame}
 \usage{
-\method{as.data.frame}{predictNestedLogit}(x, row.names = NULL, optional = FALSE, newdata, ...)
+\method{as.data.frame}{predictNestedLogit}(x, row.names = NULL, optional = FALSE, ...)
 }
 \arguments{
 \item{x}{a \code{"predictNestedLogit"} object}
@@ -14,18 +14,15 @@
 \item{optional}{logical. If TRUE, setting row names and converting column names
 (to syntactic names: see \code{\link[base]{make.names}} is optional}
 
-\item{newdata}{A  \code{newdata} data.frame used to generate predicted values. If not supplied,
-the original data frame is used.}
-
 \item{...}{other arguments (unused)}
 }
 \value{
 \itemize{
 \item For \code{predict(\dots, model="nested")} (the default), returns
-a data frame containing the newdata values of predictors along with the columns
+a data frame containing the values of predictors along with the columns
 \code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}.
 \item For \code{predict(\dots, model="dichotomies")}, returns
-a data frame containing the newdata values of predictors along with the columns
+a data frame containing the values of predictors along with the columns
 \code{response}, \code{logit}, and \code{se.logit}.
 }
 }
@@ -46,12 +43,11 @@ new <- expand.grid(hincome=seq(0, 45, length=10),
                    children=c("absent", "present"))
 
 pred.nested <- predict(wlf.nested, new)
-plotdata <- as.data.frame(pred.nested, newdata=new)
+plotdata <- as.data.frame(pred.nested)
 str(plotdata)
 
 # Predicted logit values for the dichotomies
-pred.dichot <- predict(wlf.nested, newdata = new,
-                       model = "dichotomies")
-plotlogit <- as.data.frame(pred.dichot, newdata=new)
+pred.dichot <- predict(wlf.nested, new, model = "dichotomies")
+plotlogit <- as.data.frame(pred.dichot)
 str(plotlogit)
 }

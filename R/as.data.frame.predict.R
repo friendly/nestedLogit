@@ -8,16 +8,14 @@
 #' @param row.names row.names for result (for conformity with generic; not currently used)
 #' @param optional  logical. If TRUE, setting row names and converting column names
 #'        (to syntactic names: see \code{\link[base]{make.names}} is optional
-#' @param newdata   A  \code{newdata} data.frame used to generate predicted values. If not supplied,
-#'        the original data frame is used.
 #' @param ...       other arguments (unused)
 #'
 #' @return \itemize{
 #'  \item For \code{predict(\dots, model="nested")} (the default), returns
-#'  a data frame containing the newdata values of predictors along with the columns
+#'  a data frame containing the values of predictors along with the columns
 #'         \code{response}, \code{p}, \code{se.p}, \code{logit}, \code{se.logit}.
 #'  \item For \code{predict(\dots, model="dichotomies")}, returns
-#'  a data frame containing the newdata values of predictors along with the columns
+#'  a data frame containing the values of predictors along with the columns
 #'         \code{response}, \code{logit}, and \code{se.logit}.
 #'    }
 #' @export
@@ -35,19 +33,18 @@
 #'                    children=c("absent", "present"))
 #'
 #' pred.nested <- predict(wlf.nested, new)
-#' plotdata <- as.data.frame(pred.nested, newdata=new)
+#' plotdata <- as.data.frame(pred.nested)
 #' str(plotdata)
 #'
 #' # Predicted logit values for the dichotomies
-#' pred.dichot <- predict(wlf.nested, newdata = new,
-#'                        model = "dichotomies")
-#' plotlogit <- as.data.frame(pred.dichot, newdata=new)
+#' pred.dichot <- predict(wlf.nested, new, model = "dichotomies")
+#' plotlogit <- as.data.frame(pred.dichot)
 #' str(plotlogit)
 
 as.data.frame.predictNestedLogit <- function(x,
                                              row.names = NULL,
                                              optional = FALSE,
-                                             newdata, ...){
+                                             ...){
   resp.names <- colnames(x$p)
 
   result <- data.frame(
@@ -57,12 +54,10 @@ as.data.frame.predictNestedLogit <- function(x,
     logit    = as.vector(t(x$logit)),
     se.logit = as.vector(t(x$se.logit))
   )
-  if(!missing(newdata)) {
-    if (nrow(newdata) != nrow(x$p)) stop("number of rows of newdata, ", nrow(newdata),
-                                         ",  must match number of rows, ", nrow(x$p),
-                                         ", in predictions.")
-    idx <- rep(seq_len(nrow(newdata)), each = length(resp.names))
-    result <- cbind(newdata[idx, , drop = FALSE], result)
+  .data <- x$.data
+  if (!is.null(.data)) {
+    idx <- rep(seq_len(nrow(.data)), each = length(resp.names))
+    result <- cbind(.data[idx, , drop = FALSE], result)
   }
 
   rownames(result) <- NULL
@@ -77,21 +72,23 @@ as.data.frame.predictNestedLogit <- function(x,
 as.data.frame.predictDichotomies <- function(x,
                                              row.names = NULL,
                                              optional = FALSE,
-                                             newdata, ...){
+                                             ...){
   # quiet no visible binding
   response <- fit <- se.fit <- residual.scale <- NULL
+  dichotomies <- attr(x, "dichotomies")
+  .data <- x$.data
 
-  result <- do.call(rbind, x) |>
+  result <- do.call(rbind, x[dichotomies]) |>
     dplyr::select(- residual.scale) |>
     tibble::rownames_to_column(var = "response") |>
     dplyr::mutate(response =  stringr::str_remove(response, ".\\d+")) |>
     dplyr::rename(logit = fit,
            se.logit = se.fit)
 
-  if(!missing(newdata)) {
-    nlogits <- length(x)
-    idx <- rep(seq_len(nrow(newdata)), nlogits)
-    result <- dplyr::bind_cols(newdata[idx,], result)
+  if(!is.null(.data)) {
+    nlogits <- length(x[dichotomies])
+    idx <- rep(seq_len(nrow(.data)), nlogits)
+    result <- dplyr::bind_cols(.data[idx,], result)
   }
   result
 }

@@ -63,9 +63,10 @@
 #'    coefficients and their covariances, respectively.
 #'    \item The \code{update} method returns an object of class \code{"nestedLogit"} (see \code{\link{nestedLogit}})
 #'    derived from the original nested-logit model.
-#'    \item The \code{predict} and \code{fitted} methods return either a matrix of predicted probabilities or an
-#'    object of class \code{"predictDichotomies"}, which is a named list with predicted logits for
-#'    each nested-dichotomy model.
+#'    \item The \code{predict} and \code{fitted} methods return an object of class \code{"predictNested"}
+#'    or \code{"predictDichotomies"}, which contain the predicted probabilities, predicted logits,
+#'     and other information, such as standard errors of predicted values, and, if supplied,
+#'     the \code{newdata} on which predictions are based.
 #'    \item The \code{summary} method returns an object of class \code{"summary.nestedLogit"}, which is
 #'    a list of summaries of the \code{\link{glm}} objects that comprise the nested-dichotomies model; the
 #'    object is normally printed.
@@ -109,7 +110,7 @@
 #'                                "college", "graduate"),
 #'                    year=c(1972, 2016))
 #' fit <- predict(m, newdata=new)
-#' as.data.frame(fit, newdata=new) # fitted probabilities at specific values of predictors
+#' cbind(new, fit) # fitted probabilities at specific values of predictors
 #'
 #' # predicted logits for dichotomies
 #' predictions <- predict(m, newdata=new, model="dichotomies")
@@ -188,7 +189,7 @@ print.dichotomies <- function(x, ...) {
 predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"), ...) {
   model <- match.arg(model)
 
-  if (missing(newdata))
+  if (no.newdata <- missing(newdata))
     newdata <- models(object, 1)$data
 
   if (model == "nested"){
@@ -245,6 +246,7 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     rownames(v.logit) <- rownames(v) <- rownames(logit) <- rownames(p) <- rownames(newdata)
     result <- list(p = as.data.frame(p), logit = as.data.frame(logit),
                    se.p = as.data.frame(sqrt(v)), se.logit = as.data.frame(sqrt(v.logit)))
+    if (!no.newdata) result$.data <- newdata
     class(result) <- "predictNestedLogit"
     return(result)
 
@@ -252,8 +254,10 @@ predict.nestedLogit <- function(object, newdata, model=c("nested", "dichotomies"
     result <- lapply(models(object),
                      function(x) as.data.frame(predict(x, newdata=newdata, se.fit=TRUE, ...)))
     attr(result, "model") <- deparse(substitute(object))
+    attr(result, "dichotomies") <- names(result)
+    if (!no.newdata) result$.data <- newdata
     class(result) <- "predictDichotomies"
-    return(result)
+    result
   }
 }
 

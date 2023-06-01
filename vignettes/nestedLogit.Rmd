@@ -439,7 +439,7 @@ For greater flexibility, the `as.data.frame()` method for `"predictNestedLogit"`
 converts the components to long format.
 
 ```{r}
-as.data.frame(wlf.new, newdata = new) 
+as.data.frame(wlf.new) 
 ```
 
 
