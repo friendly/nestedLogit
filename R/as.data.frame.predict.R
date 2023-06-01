@@ -62,7 +62,7 @@ as.data.frame.predictNestedLogit <- function(x,
                                          ",  must match number of rows, ", nrow(x$p),
                                          ", in predictions.")
     idx <- rep(seq_len(nrow(newdata)), each = length(resp.names))
-    result <- cbind(newdata[idx, ], result)
+    result <- cbind(newdata[idx, , drop = FALSE], result)
   }
 
   rownames(result) <- NULL

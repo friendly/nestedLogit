@@ -1,3 +1,7 @@
+# lestedLogit 0.3.1
+
+* correct buglet in `as.data.frame` method when `newdata` has one column
+
 # nestedLogit 0.3.0
 
 This is a major enhancement to the package, adding computations of standard errors and confidence intervals to predicted probabilities and logits.
