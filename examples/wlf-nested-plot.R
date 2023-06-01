@@ -115,7 +115,7 @@ par(op)
 #   mutate(Working = ordered(Working,
 #                            levels = c("not.work", "parttime", "fulltime")) )
 
-plotlong <- as.data.frame(pred.nested, newdata=new)
+plotlong <- as.data.frame(pred.nested)
 str(plotdata)
 
 
@@ -173,12 +173,6 @@ ggplot(plotlong,
 plotobs <- as.data.frame(pred.nested)
 str(plotobs)
 
-# plotlobs <- plotobs |>
-#   tidyr::pivot_longer(fulltime : not.work,
-#                       names_to = "Working",
-#                       values_to = "Probability") |>
-#   mutate(Working = ordered(Working,
-#                            levels = c("not.work", "parttime", "fulltime")) )
 
 ggplot(plotobs,
        aes(x=hincome, y=, color=response)) +

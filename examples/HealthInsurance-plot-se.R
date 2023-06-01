@@ -6,9 +6,9 @@ library(nestedLogit)
 library(ggplot2)
 library(geomtextpath)
 
-source("./experimental/predict-with-se.R")
-source("./experimental/plot.nested--with-conf-limits.R")
-source("./experimental/as.data.frame.predict.R")
+#source("./experimental/predict-with-se.R")
+#source("./experimental/plot.nested--with-conf-limits.R")
+#source("./experimental/as.data.frame.predict.R")
 
 # define logits as successive binary splits of A, B, C, D
 lbinary <- logits(AB_CD = dichotomy(c("A", "B"), c("C", "D")),
@@ -39,7 +39,7 @@ par(op)
 
 # make a data.frame in long format
 health.pred <- predict(health.mod, new)
-plotdata <- as.data.frame(health.pred, newdata=new)
+plotdata <- as.data.frame(health.pred)
 
 # plot probabilities
 plotdata |>

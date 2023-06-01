@@ -49,10 +49,17 @@ plot(gator.nested, x.var = "length")
 
 new <- data.frame(length = seq(1, 4, by = 0.25))
 pred <- predict(gator.nested, newdata = new)
-plotdat <- as.data.frame(pred, newdata = new)
+plotdat <- as.data.frame(pred)
+
+# this doesn't work:
+# > eff <- ggeffect(gator.nested, terms = "length[1:4,by=0.5]")
+# Can't compute marginal effects, 'effects::Effect()' returned an error.
+#
+# Reason: object 'prior.weights' not found
+# You may try 'ggpredict()' or 'ggemmeans()'.
 
 eff <- ggeffect(gator.nested, terms = "length[1:4,by=0.5]")
-plot(eff)
+
 
 matplot(plotdat[, "length"], plotdat[, 2:4],
         type ="b",

@@ -33,7 +33,7 @@ new <- expand.grid(hincome=seq(0, 45, length=4),
                    children=c("absent", "present"))
 
 pred.nested <- predict(wlf.nested, new)
-plotdata <- as.data.frame(pred.nested, newdata=new)
+plotdata <- as.data.frame(pred.nested)
 
 # set a consistent theme for all plots here
 theme_set(theme_bw(base_size = 14))
@@ -71,16 +71,10 @@ ggplot(plotdata,
 pred.dichot <- predict(wlf.nested, newdata = new,
                        model = "dichotomies")
 str(pred.dichot)
-pred.dichot
+#pred.dichot
 
-# this is now the as.data.frame.predictDichotomies method
 
-plotlogit <- as.data.frame(pred.dichot, newdata = new)
-
-pred.dichot.no.se <- predict(wlf.nested, newdata = new,
-                             model = "dichotomies")
-str(pred.dichot.no.se)
-as.data.frame(pred.dichot.no.se, newdata = new)
+plotlogit <- as.data.frame(pred.dichot)
 
 
 ggplot(plotlogit,
@@ -121,7 +115,7 @@ pred.dichot.alt <- predict(wlf.nested.alt, newdata = new,
                        model = "dichotomies")
 str(pred.dichot.alt)
 
-plotlogit.alt <- as.data.frame(pred.dichot.alt, newdata = new)
+plotlogit.alt <- as.data.frame(pred.dichot.alt)
 
 ggplot(plotlogit.alt,
        aes(x=hincome, y=logit, color=response)) +
