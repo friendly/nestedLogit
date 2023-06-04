@@ -47,7 +47,7 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+.to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
 
 # removed: "equatiomatic" -- now in references.bib
 ```
@@ -539,7 +539,7 @@ As it turns out, the multinomial logit model and the alternative nested-dichotom
 
 ```{r write-bib, echo = FALSE}
 # write a packages.bib file of the packages (.packages()) that have been used here
-pkgs <- unique(c(to.cite, .packages()))
+pkgs <- unique(c(.to.cite, .packages()))
 knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
 ```
 
