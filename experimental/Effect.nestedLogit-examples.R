@@ -75,3 +75,10 @@ all.equal(eff.h$se.prob, as.matrix(pred.h$se.p), check.attributes=FALSE)
 all.equal(eff.h$logit, as.matrix(pred.h$logit), check.attributes=FALSE)
 all.equal(eff.h$se.logit, as.matrix(pred.h$se.logit), check.attributes=FALSE)
 
+# check whether other Effect() args work
+
+Effect("hincome", m, xlevels=10)
+Effect("hincome", m, xlevels=list(hincome=seq(5, 45, by=5)))
+
+plot(Effect("hincome", m))
+plot(Effect("hincome", m, confidence.level=0.50))
