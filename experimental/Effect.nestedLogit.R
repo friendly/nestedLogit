@@ -18,7 +18,6 @@ Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, ...
     }
     effects
   }
-  models <- models(mod)
   effects <- findEffects(mod, focal.predictors, ...)
   logits <- lapply(effects, function(ef) as.vector(ef$fit))
   ps <- lapply(logits, function(x) 1/(1 + exp(-x)))
@@ -46,14 +45,14 @@ Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, ...
   
   for (k in response.levels) {
     
-    for (j in seq_along(models(mod))) {
+    for (j in 1:ndichot) {
       
       deriv <- rep(1, nrow(fitted[[1]]))
       
       which.j <- sapply(models(mod, j)$dichotomy, function(x) k %in% x)
       if (!any(which.j)) next
       
-      for (jp in seq_along(models(mod))){
+      for (jp in 1:ndichot){
         which.jp <- sapply(models(mod, jp)$dichotomy, function(x) k %in% x)
         if (j == jp || !any(which.jp)) next
         deriv <- deriv * fitted[[jp]][, which.jp]
