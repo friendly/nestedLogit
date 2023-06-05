@@ -46,3 +46,10 @@ new$kids <- c(kids=0.5)
 pred.3 <- predict(mm, newdata=new)
 all.equal(eff.3$prob, as.matrix(pred.3$p), check.attributes=FALSE)
 all.equal(eff.3$se.prob, as.matrix(pred.3$se.p), check.attributes=FALSE)
+
+new <- eff.h$x
+new$age <- with(HealthInsurance, mean(age))
+new$position_level <- with(HealthInsurance, mean(position_level))
+pred.h <- predict(health.nested, newdata=new)
+all.equal(eff.h$prob, as.matrix(pred.h$p), check.attributes=FALSE)
+all.equal(eff.h$se.prob, as.matrix(pred.h$se.p), check.attributes=FALSE)
