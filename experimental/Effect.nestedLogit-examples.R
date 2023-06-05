@@ -20,3 +20,29 @@ eff.h <- Effect(c("gender", "household"), health.nested)
 eff.h
 plot(eff.h)
 plot(eff.h, axes=list(y=list(style="stacked")))
+
+# tests of correctness
+
+eff.1 <- Effect("children", m)
+new <- eff.1$x
+new$hincome <- mean(Womenlf$hincome)
+pred.1 <- predict(m, newdata=new)
+all.equal(eff.1$prob, as.matrix(pred.1$p), check.attributes=FALSE)
+all.equal(eff.1$se.prob, as.matrix(pred.1$se.p), check.attributes=FALSE)
+
+Womenlf$kids <- with(Womenlf, ifelse(children == "present", 1, 0))
+mm <- update(m, . ~ . - children + kids, data=Womenlf)
+eff.2 <- Effect("hincome", m)
+new <- eff.2$x
+new$kids <- mean(Womenlf$kids)
+pred.2 <- predict(mm, newdata=new)
+all.equal(eff.2$prob, as.matrix(pred.2$p), check.attributes=FALSE)
+all.equal(eff.2$se.prob, as.matrix(pred.2$se.p), check.attributes=FALSE)
+
+eff.3 <- Effect("hincome", m, 
+                 fixed.predictors=list(given.values=c(childrenpresent=0.5)))
+new <- eff.3$x
+new$kids <- c(kids=0.5)
+pred.3 <- predict(mm, newdata=new)
+all.equal(eff.3$prob, as.matrix(pred.3$p), check.attributes=FALSE)
+all.equal(eff.3$se.prob, as.matrix(pred.3$se.p), check.attributes=FALSE)

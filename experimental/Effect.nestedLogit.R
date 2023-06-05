@@ -1,8 +1,27 @@
 
-Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, ...){
-  findEffects <- function(m, eff, ...){
+Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, 
+                               fixed.predictors=NULL, ...){
+  findEffects <- function(m, eff, fixed.predictors, ...){
     env <- environment()
     mods <- models(m)
+    
+    biggest <- which.max(sapply(mods, function(x) nrow(model.matrix(x))))
+    formula <- mods[[biggest]]$formula
+    environment(formula) <- env
+    data <- mods[[biggest]]$data
+    environment(data) <- env
+    names(data)[ncol(data)] <- as.character(formula[[2]])
+    mod <- glm(formula, data=data, family=binomial)
+    given <- colMeans(model.matrix(mod)[, -1])
+    if (!is.null(fixed.predictors) &&
+        !is.null(fixed.predictors$given.values)) 
+      given[names(fixed.predictors$given.values)] <- fixed.predictors$given.values
+    if (!is.null(fixed.predictors)){
+      fixed.predictors$given.values <- given
+    } else {
+      fixed.predictors <- list(given.values=given)
+    }
+    
     effects <- vector(length(mods), mode="list")
     names(effects) <- names(mods)
     for (i in seq_along(mods)){
@@ -14,11 +33,11 @@ Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, ...
       names(data)[ncol(data)] <- as.character(formula[[2]])
       mod <- glm(formula, data=data, family=binomial)
       # find effects for binomial logit models
-      effects[[i]] <- Effect(eff, mod, ...)
+      effects[[i]] <- Effect(eff, mod, fixed.predictors=fixed.predictors, ...)
     }
     effects
   }
-  effects <- findEffects(mod, focal.predictors, ...)
+  effects <- findEffects(mod, focal.predictors, fixed.predictors, ...)
   logits <- lapply(effects, function(ef) as.vector(ef$fit))
   ps <- lapply(logits, function(x) 1/(1 + exp(-x)))
   ses.lam <- lapply(effects, function(ef) ef$se)
