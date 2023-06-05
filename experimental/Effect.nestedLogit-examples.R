@@ -55,3 +55,23 @@ all.equal(eff.h$prob, as.matrix(pred.h$p), check.attributes=FALSE)
 all.equal(eff.h$se.prob, as.matrix(pred.h$se.p), check.attributes=FALSE)
 all.equal(eff.h$logit, as.matrix(pred.h$logit), check.attributes=FALSE)
 all.equal(eff.h$se.logit, as.matrix(pred.h$se.logit), check.attributes=FALSE)
+
+# tests with missing data
+
+H <- HealthInsurance
+H[2, 2] <- H[3, 3] <- H[4, 4] <- H[5, 5] <- H[6, 6] <- NA
+h.n <- update(health.nested, data=H)
+eff.h <- Effect(c("gender", "household"), h.n)
+eff.h
+plot(eff.h)
+plot(eff.h, axes=list(y=list(style="stacked")))
+new <- eff.h$x
+H <- na.omit(H[, 2:6])
+new$age <- with(H, mean(age))
+new$position_level <- with(H, mean(position_level))
+pred.h <- predict(h.n, newdata=new)
+all.equal(eff.h$prob, as.matrix(pred.h$p), check.attributes=FALSE)
+all.equal(eff.h$se.prob, as.matrix(pred.h$se.p), check.attributes=FALSE)
+all.equal(eff.h$logit, as.matrix(pred.h$logit), check.attributes=FALSE)
+all.equal(eff.h$se.logit, as.matrix(pred.h$se.logit), check.attributes=FALSE)
+
