@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +85,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</h1>
                         <h4 data-toc-skip class="author">John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-29</h4>
+            <h4 data-toc-skip class="date">2023-05-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/standard-errors.Rmd" class="external-link"><code>vignettes/standard-errors.Rmd</code></a></small>
       <div class="d-none name"><code>standard-errors.Rmd</code></div>
@@ -95,39 +95,42 @@
     
 <!-- \usepackage{amsmath} -->
 <p>This document uses the delta method <span class="citation">(Fox,
-2021, sec. 6.3.5)</span> to derive approximations to the standard errors
-of estimated probabilities for dichotomous logit models, and from these,
-for the nested logit model.</p>
+2021, sec. 6.3.5)</span> to derive approximations to the variances of
+estimated probabilities for dichotomous logit models, and from these,
+for the nested logit model. The standard errors of these estimated
+probabilities are the square-roots of their respective variances.</p>
 <div class="section level2">
 <h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a>
 </h2>
-<p>Let <span class="math inline">\(\phi^{(j)}\)</span> represent the
+<p>Let <span class="math inline">\(\psi_j\)</span> represent the
 probability that the dichotomous response in the <span class="math inline">\(j\)</span>th nested dichotomous logit model is
 <span class="math inline">\(Y_j = 1\)</span> (i.e., a “success”), <span class="math inline">\(j = 1, \ldots, m - 1\)</span>, where <span class="math inline">\(m\)</span> is the number of response categories
-for the polytomy. Then <span class="math inline">\(1 -
-\phi^{(j)}\)</span> is the probability that <span class="math inline">\(Y_j = 0\)</span> (i.e., a “failure”). I assume
-that the regression coefficients and their covariance matrix for each
-dichotomous logit model are estimated in the usual manner. Let <span class="math inline">\(\lambda^{(j)} = log[\phi^{(j)}/(1 -
-\phi^{(j)})]\)</span> represent the (estimated) logit (log-odds) for the
+for the polytomy. Then <span class="math inline">\(1 - \psi_j\)</span>
+is the probability that <span class="math inline">\(Y_j = 0\)</span>
+(i.e., a “failure”). I assume that the regression coefficients and their
+covariance matrix for each dichotomous logit model are estimated in the
+usual manner.</p>
+<p>Let <span class="math inline">\(\lambda_j = \log[\psi_j/(1 -
+\psi_j]\)</span> represent the (estimated) logit (log-odds) for the
 <span class="math inline">\(j\)</span>th dichotomous logit model, with
-variance <span class="math inline">\(V(\lambda^{(j)})\)</span> (see
+variance <span class="math inline">\(V(\lambda_j)\)</span> (see
 below).</p>
 <p>Let <span class="math inline">\(\phi_k\)</span>, <span class="math inline">\(k = 1, \ldots, m\)</span> represent the
-probability that the polytomous response is <span class="math inline">\(Y = k\)</span>. Let <span class="math inline">\(\widehat{\phi}^{(j)}\)</span> and <span class="math inline">\(\widehat{\phi}_k\)</span> represent the estimates
-of these probabilities. In the sequel, which involves only the estimates
-of these and other parameters, I’ll omit the hats so as to simplify the
-notation.</p>
+probability that the polytomous response is <span class="math inline">\(Y = k\)</span>.</p>
+<p>Let <span class="math inline">\(\widehat{\psi}_{j}\)</span> and <span class="math inline">\(\widehat{\phi}_k\)</span> represent the estimates
+of these probabilities.</p>
+<p>In the sequel, which involves only the estimates of these and other
+parameters, I’ll omit the hats so as to simplify the notation.</p>
 <p>In the nested logit model, the polytomous probabilities <span class="math inline">\(\phi_k\)</span> are each products of probabilities
-<span class="math inline">\(\phi^{(j)}\)</span> or <span class="math inline">\(1 - \phi^{(j)}\)</span> for <span class="math inline">\(j \in \mathcal{M}_k \subset \left\{ 1, \ldots, m -
-1 \right\}\)</span>; that is <span class="math inline">\(\mathcal{M}_k\)</span> is the subset of the
-dichotomous logit models that enter into <span class="math inline">\(\phi_k\)</span>. Let <span class="math inline">\(\phi^{(j, k_j)}\)</span> represent either <span class="math inline">\(\phi^{(j)}\)</span> or <span class="math inline">\(1 - \phi^{(j)}\)</span>, as appropriate for
-category <span class="math inline">\(k\)</span> of the polytomous
-response. Then <span class="math display">\[\begin{equation*}
-\phi_k = \prod_{j \in \mathcal{M}_k} \phi^{(j,k_j)}
+<span class="math inline">\(\psi_j\)</span> or <span class="math inline">\(1 - \psi_j\)</span> for <span class="math inline">\(j \in \mathcal{M}_k \subseteq \left\{ 1, \ldots, m
+- 1 \right\}\)</span>; that is <span class="math inline">\(\mathcal{M}_k\)</span> is the subset of the
+dichotomous logit models that enter into <span class="math inline">\(\phi_k\)</span>. Let <span class="math inline">\(\psi_{j, k_j}\)</span> represent either <span class="math inline">\(\psi_j\)</span> or <span class="math inline">\(1 -
+\psi_j\)</span>, as appropriate for category <span class="math inline">\(k\)</span> of the polytomous response. Then <span class="math display">\[\begin{equation*}
+\phi_k = \prod_{j \in \mathcal{M}_k} \psi_{j,k_j}
 \end{equation*}\]</span> for <span class="math inline">\(k = 1, \ldots,
 m\)</span>.</p>
 <p>Finally, the individual-category probabilities <span class="math inline">\(\phi_k\)</span> can be converted into logits,
-<span class="math inline">\(\lambda_k = \log[\phi_k/(1 -
+<span class="math inline">\(\Lambda_k = \log[\phi_k/(1 -
 \phi_k)]\)</span>. The estimates of these logits should approach
 asymptotic normality more rapidly than the estimates of the
 corresponding probabilities.</p>
@@ -137,14 +140,14 @@ corresponding probabilities.</p>
 <p>I’ll use the following example to illustrate the results in this
 document: Suppose that we have a three-category response variable <span class="math inline">\(Y\)</span> with categories <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, and define the two nested dichotomies
 <span class="math inline">\(Y_1\)</span> coded 0 or 1 for categories
-<span class="math inline">\(\{A\}\)</span> and <span class="math inline">\(\{B, C\}\)</span>, respectively, and <span class="math inline">\(Y_2\)</span> coded 0 and 1 for categories <span class="math inline">\(\{B\}\)</span> and <span class="math inline">\(\{C\}\)</span>. Then <span class="math inline">\(\phi^{(1)} = \Pr(Y_1 = 1) = \Pr(\{B,
-C\})\)</span>; <span class="math inline">\(1 - \phi^{(1)} = \Pr(Y_1 = 0)
-= \Pr(\{A\})\)</span>. As well, <span class="math inline">\(\mathcal{M}_A = \{1\}\)</span> and <span class="math inline">\(\mathcal{M}_B = \mathcal{M}_C = \{1, 2\}\)</span>.
-Consequently, <span class="math display">\[\begin{align*}
-    \phi_A &amp;= \phi^{(1, A_1)} = 1 - \phi^{(1)}\\
-    \phi_B &amp;= \phi^{(1, B_1)}\phi^{(2, B_2)} = \phi^{(1)}(1 -
-\phi^{(2)}) \\
-    \phi_C &amp;= \phi^{(1, C_1)}\phi^{(2, C_2)} = \phi^{(1)}\phi^{(2)}
+<span class="math inline">\(\{A\}\)</span> and <span class="math inline">\(\{B, C\}\)</span>, respectively, and <span class="math inline">\(Y_2\)</span> coded 0 and 1 for categories <span class="math inline">\(\{B\}\)</span> and <span class="math inline">\(\{C\}\)</span>. Then <span class="math inline">\(\psi_1 = \Pr(Y_1 = 1) = \Pr(\{B, C\})\)</span>;
+<span class="math inline">\(1 - \psi_1 = \Pr(Y_1 = 0) =
+\Pr(\{A\})\)</span>. As well, <span class="math inline">\(\mathcal{M}_A
+= \{1\}\)</span> and <span class="math inline">\(\mathcal{M}_B =
+\mathcal{M}_C = \{1, 2\}\)</span>. Consequently, <span class="math display">\[\begin{align*}
+    \phi_A &amp;= \psi_{1, A_1} = 1 - \psi_{1}\\
+    \phi_B &amp;= \psi_{1, B_1}\psi_{2, B_2} = \psi_{1}(1 - \psi_{2}) \\
+    \phi_C &amp;= \psi_{1, C_1}\psi_{2, C_2} = \psi_{1}\psi_{2}
 \end{align*}\]</span> Here, I abuse the notation slightly in the
 interest of clarity, using letters rather than numbers for the response
 categories, so the index of response categories, <span class="math inline">\(k\)</span>, takes on the values <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, rather than 1, 2, and 3.</p>
@@ -154,45 +157,44 @@ categories, so the index of response categories, <span class="math inline">\(k\)
 <h2 id="variances-of-the-estimated-probabilities">Variances of the Estimated Probabilities<a class="anchor" aria-label="anchor" href="#variances-of-the-estimated-probabilities"></a>
 </h2>
 <div class="section level3">
-<h3 id="variances-of-estimated-probabilities-for-the-dichotomous-logit-modelssecdichotomous-variances">Variances of Estimated Probabilities for the Dichotomous Logit
-Models}{sec:dichotomous-variances}<a class="anchor" aria-label="anchor" href="#variances-of-estimated-probabilities-for-the-dichotomous-logit-modelssecdichotomous-variances"></a>
+<h3 id="for-the-dichotomous-logit-models">For the Dichotomous Logit Models<a class="anchor" aria-label="anchor" href="#for-the-dichotomous-logit-models"></a>
 </h3>
-<p>The estimated probability of success <span class="math inline">\(\phi^{(j)}\)</span> for the <span class="math inline">\(j\)</span>th dichotomous logit model is <span class="math display">\[\begin{equation*}
-\phi^{(j)} = \frac{1}{1 + e^{-\lambda^{(j)}}}
+<p>The estimated probability of success <span class="math inline">\(\psi_{j}\)</span> for the <span class="math inline">\(j\)</span>th dichotomous logit model is <span class="math display">\[\begin{equation*}
+\psi_{j} = \frac{1}{1 + e^{-\lambda_{j}}}
 \end{equation*}\]</span> Then <span class="math display">\[\begin{align*}
-    \lambda^{(j)} &amp;= \alpha^{(j)} + \beta_1^{(j)} x_1 + \cdots +
+    \lambda_{j} &amp;= \alpha^{(j)} + \beta_1^{(j)} x_1 + \cdots +
 \beta_p^{(j)} x_p \\
-    &amp;= \mathbf{x}^T \boldsymbol{\beta}
+    &amp;= \mathbf{x}^T \boldsymbol{\beta}^{(j)}
 \end{align*}\]</span> is a function of the regression coefficients,
 where <span class="math inline">\(\mathbf{x}^T = [1, x_1, \ldots,
 x_p]\)</span> (an arbitrary vector of values of the regressors) and
-<span class="math inline">\(\boldsymbol{\beta} = [\alpha, \beta_1,
-\ldots, \beta_p]^T\)</span>. The probability of failure is <span class="math display">\[\begin{equation*}
-1 - \phi^{(j)} = \frac{1}{1 + e^{\lambda^{(j)}}}
-\end{equation*}\]</span> The variance of the logit is <span class="math inline">\(V(\lambda^{(j)}) = \mathbf{x}^T
-V(\boldsymbol{\beta}) \mathbf{x}\)</span>,</p>
-<p>The derivatives of <span class="math inline">\(\phi^{(j)}\)</span>
-and <span class="math inline">\(1 - \phi^{(j)}\)</span> with respect to
-<span class="math inline">\(\lambda^{(j)}\)</span> are <span class="math display">\[\begin{align*}
-\frac{d\phi^{(j)}}{d\lambda^{(j)}} &amp;=
-\frac{e^{-\lambda^{(j)}}}{\left( 1 + e^{-\lambda^{(j)}} \right)^2} \\
-\frac{d \left(1 - \phi^{(j)} \right)}{d\lambda^{(j)}} &amp;= -
-\frac{e^{\lambda^{(j)}}}{\left( 1 + e^{\lambda^{(j)}} \right)^2}
+<span class="math inline">\(\boldsymbol{\beta}^{(j)} = [\alpha^{(j)},
+\beta_1^{(j)}, \ldots, \beta_p^{(j)}]^T\)</span>. The probability of
+failure is <span class="math display">\[\begin{equation*}
+1 - \psi_{j} = \frac{1}{1 + e^{\lambda_{j}}}
+\end{equation*}\]</span> The variance of the logit is <span class="math inline">\(V(\lambda_{j}) = \mathbf{x}^T
+V(\boldsymbol{\beta}^{(j)}) \mathbf{x}\)</span>,</p>
+<p>The derivatives of <span class="math inline">\(\psi_{j}\)</span> and
+<span class="math inline">\(1 - \psi_{j}\)</span> with respect to <span class="math inline">\(\lambda_{j}\)</span> are <span class="math display">\[\begin{align*}
+\frac{d\psi_{j}}{d\lambda_{j}} &amp;= \frac{e^{-\lambda_{j}}}{\left( 1 +
+e^{-\lambda_{j}} \right)^2} \\
+\frac{d \left(1 - \psi_{j} \right)}{d\lambda_{j}} &amp;= -
+\frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}} \right)^2}
 \end{align*}\]</span></p>
 <p>By the univariate delta method, <span class="math display">\[\begin{align*}
-V(\phi^{(j)}) &amp;\approx \left( \frac{d\phi^{(j)}}{d\lambda^{(j)}}
-\right)^2 V(\lambda^{(j)}) \\
-&amp;= \left[ \frac{e^{-\lambda^{(j)}}}{\left( 1 + e^{-\lambda^{(j)}}
-\right)^2} \right]^2 V(\lambda^{(j)})\\
-V(1 - \phi^{(j)}) &amp;\approx \left[ \frac{d \left(1 - \phi^{(j)}
-\right)}{d\lambda^{(j)}} \right]^2 V(\lambda^{(j)}) \\
-&amp;= \left[ \frac{e^{\lambda^{(j)}}}{\left( 1 + e^{\lambda^{(j)}}
-\right)^2}\right]^2 V(\lambda^{(j)}) \\
-&amp;= V(\phi^{(j)})
+V(\psi_{j}) &amp;\approx \left( \frac{d\psi_{j}}{d\lambda_{j}} \right)^2
+V(\lambda_{j}) \\
+&amp;= \left[ \frac{e^{-\lambda_{j}}}{\left( 1 + e^{-\lambda_{j}}
+\right)^2} \right]^2 V(\lambda_{j})\\
+V(1 - \psi_{j}) &amp;\approx \left[ \frac{d \left(1 - \psi_{j}
+\right)}{d\lambda_{j}} \right]^2 V(\lambda_{j}) \\
+&amp;= \left[ \frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}}
+\right)^2}\right]^2 V(\lambda_{j}) \\
+&amp;= V(\psi_{j})
 \end{align*}\]</span></p>
 </div>
 <div class="section level3">
-<h3 id="variances-of-estimated-probabilities-for-the-nested-logit-model">Variances of Estimated Probabilities for the Nested Logit Model<a class="anchor" aria-label="anchor" href="#variances-of-estimated-probabilities-for-the-nested-logit-model"></a>
+<h3 id="for-the-nested-logit-model">For the Nested Logit Model<a class="anchor" aria-label="anchor" href="#for-the-nested-logit-model"></a>
 </h3>
 <p>The variances of the estimated response-category probabilities for
 the polytomous response can be obtained similarly by the multivariate
@@ -201,49 +203,55 @@ dichotomous probabilities. The result is greatly simplified because the
 dichotomies are independent, and so the covariance matrix of the
 estimated dichotomous probabilities is diagonal.</p>
 <p>The required derivatives are <span class="math display">\[\begin{equation*}
-\frac{\partial \phi_k}{\partial \phi^{(j, k_j)} } = \prod_{j' \in
-\mathcal{M}_k, j' - \{j\}} \phi^{(j', k_j)}
+\frac{\partial \phi_k}{\partial \psi_{j, k_j} } = \prod_{j' \in
+\mathcal{M}_k - \{j\}} \psi_{j', k_j}
 \end{equation*}\]</span> for <span class="math inline">\(j \in
 \mathcal{M}_k\)</span> and <span class="math inline">\(k = 1, \ldots,
 m\)</span>. Here, <span class="math inline">\(-\)</span> denotes set
-difference. Because <span class="math inline">\(V(\phi^{(j)}) = V(1 -
-\phi^{(j)})\)</span>, it’s always the case that <span class="math inline">\(V(\phi^{(j, k_j)}) = V(\phi^{(j)})\)</span>, and
-so <span class="math display">\[\begin{align*}
+difference. Because <span class="math inline">\(V(\psi_{j}) = V(1 -
+\psi_{j})\)</span>, it’s always the case that <span class="math inline">\(V(\psi_{j, k_j}) = V(\psi_{j})\)</span>, and so
+<span class="math display">\[\begin{align*}
 V(\phi_k) &amp;\approx \sum_{j \in \mathcal{M}_k} \left( \frac{\partial
-\phi_k}{\partial \phi^{(j, k_j)} }  \right)^2 V\left( \phi^{(j)} \right)
-\\
-&amp;= \sum_{j \in \mathcal{M}_k} \left( \prod_{j' \in \mathcal{M} -
-\{j\}} \phi^{(j', k_j)} \right)^2 V\left( \phi^{(j)} \right)
+\phi_k}{\partial \psi_{j, k_j} }  \right)^2 V\left( \psi_{j} \right) \\
+&amp;= \sum_{j \in \mathcal{M}_k} \left( \prod_{j' \in \mathcal{M}_k
+- \{j\}} \psi_{j', k_j} \right)^2 V\left( \psi_{j} \right)
 \end{align*}\]</span> for <span class="math inline">\(k = 1, \ldots,
 m\)</span>.</p>
 <p>Applying these results to the example, recall, first, that <span class="math inline">\(\mathcal{M}_A = \{1\}\)</span> and so the set for
 the product <span class="math inline">\(\prod_{j' \in
 \mathcal{M}_{A} - \{j\}} \phi^{(j', A_j)}\)</span>, that is, <span class="math inline">\(j' \in \{1\}-\{1\}\)</span>, is empty. In this
-case, the product is taken = 1, and <span class="math inline">\(V(\phi_A) = V(\phi^{(1)})\)</span>. That makes
-intuitive sense, because, as noted previously, <span class="math inline">\(\phi_A = 1 - \phi^{(1)}\)</span>.</p>
+case, the product is taken = 1, and <span class="math inline">\(V(\phi_A) = V(\psi_{1})\)</span>. That makes
+intuitive sense, because, as noted previously, <span class="math inline">\(\phi_A = 1 - \psi_{1}\)</span>.</p>
 <p>Proceeding with <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, <span class="math inline">\(\mathcal{M}_B = \mathcal{M}_C = \{1, 2\}\)</span>.
 Consequently, each product <span class="math inline">\(\prod_{j' \in
-\mathcal{M}_{B} - \{j\}} \phi^{(j', B_j)}\)</span> and <span class="math inline">\(\prod_{j' \in \mathcal{M}_{C} - \{j\}}
-\phi^{(j', C_j)}\)</span> has only one term, for <span class="math inline">\(j' = 2\)</span> in the case of <span class="math inline">\(B\)</span> or <span class="math inline">\(j' =
+\mathcal{M}_{B} - \{j\}} \psi_{j', B_j}\)</span> and <span class="math inline">\(\prod_{j' \in \mathcal{M}_{C} - \{j\}}
+\psi_{j', C_j}\)</span> has only one term, for <span class="math inline">\(j' = 2\)</span> in the case of <span class="math inline">\(B\)</span> or <span class="math inline">\(j' =
 1\)</span> in the case of <span class="math inline">\(C\)</span>: <span class="math display">\[\begin{align*}
-    V(\phi_B) &amp;= \phi^{(2, B_2)} V(\phi^{(1)}) + \phi^{(1,
-B_1)}  V(\phi^{(2)}) \\
-    &amp;= (1 - \phi^{(2)}) V(\phi^{(1)}) + \phi^{(1)} V(\phi^{(2)}) \\
-    V(\phi_C) &amp;= \phi^{(2, C_2)} V(\phi^{(1)}) + \phi^{(1,
-C_1)}  V(\phi^{(2)}) \\
-    &amp;= \phi^{(2)} V(\phi^{(1)}) + \phi^{(1)} V(\phi^{(2)}) \\
+    V(\phi_B) &amp;= \psi_{2, B_2} V(\psi_{1}) + \psi_{1,
+B_1}  V(\psi_{2}) \\
+    &amp;= (1 - \psi_{2}) V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
+    V(\phi_C) &amp;= \psi_{2, C_2} V(\psi_{1}) + \psi_{1,
+C_1}  V(\psi_{2}) \\
+    &amp;= \psi_{2} V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
 \end{align*}\]</span></p>
 <p>Yet another application of the delta method produces approximate
 variances for the individual-category logits. The relevant derivative is
 <span class="math display">\[\begin{equation*}
-\frac{d\lambda_k}{d\phi_k} = \frac{1}{\phi_k(1 - \phi_k)}
+\frac{d\Lambda_k}{d\phi_k} = \frac{1}{\phi_k(1 - \phi_k)}
 \end{equation*}\]</span> for <span class="math inline">\(k = 1, \ldots,
 m\)</span>, and so <span class="math display">\[\begin{align*}
-V(\lambda_k) &amp;\approx \left( \frac{d\lambda_k}{d\phi_k} \right)^2
+V(\Lambda_k) &amp;\approx \left( \frac{d\Lambda_k}{d\phi_k} \right)^2
 V(\phi_k) \\
 &amp;= \left[ \frac{1}{\phi_k(1 - \phi_k)} \right]^2 V(\phi_k)
 \end{align*}\]</span></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="acknowledgment">Acknowledgment<a class="anchor" aria-label="anchor" href="#acknowledgment"></a>
+</h2>
+<p>I’m grateful to Georges Monette of York University for a close
+reading of an earlier version of this document, and in particular for
+his suggested simplification of the notation employed.</p>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>

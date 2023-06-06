@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,11 +55,21 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="nestedlogit-030">nestedLogit 0.3.0<a class="anchor" aria-label="anchor" href="#nestedlogit-030"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.2" id="nestedlogit-032">nestedLogit 0.3.2<a class="anchor" aria-label="anchor" href="#nestedlogit-032"></a></h2>
+<ul><li>new <code>Effect</code> method for <code>"nestedLogit"</code> objects to create effect displays.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.1" id="nestedlogit-031">nestedLogit 0.3.1<a class="anchor" aria-label="anchor" href="#nestedlogit-031"></a></h2>
+<ul><li>correct buglet in <code>as.data.frame</code> method when <code>newdata</code> has one column</li>
+<li>
+<code><a href="../reference/nestedMethods.html">predict.nestedLogit()</a></code> now includes the <code>newdata</code> data frame as an additional component (<code>.data</code>) in its result. Consequently, the <code>newdata</code> argument is no longer required in the <code>as.data.frame</code> method.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="nestedlogit-030">nestedLogit 0.3.0<a class="anchor" aria-label="anchor" href="#nestedlogit-030"></a></h2><p class="text-muted">CRAN release: 2023-05-30</p>
 <p>This is a major enhancement to the package, adding computations of standard errors and confidence intervals to predicted probabilities and logits.</p>
-<ul><li>Added an example of <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code> to print nested lists</li>
-<li>Now use <code>fig.show="hold"</code> to keep <code>par(op)</code> with the code.</li>
-<li>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.</li>
+<div class="section level3">
+<h3 id="enhancements-0-3-0">Enhancements<a class="anchor" aria-label="anchor" href="#enhancements-0-3-0"></a></h3>
+<ul><li>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.</li>
 <li>A <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for the result of <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> generates the corresponding confidence intervals.</li>
 <li>
 <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</li>
@@ -68,6 +78,12 @@
 <li>A new vignette, “standard-errors”, describes the mathematics behind the standard error calculations.</li>
 <li>An old vignette on plotting methods was completely re-written using the new <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> methods and focusing exclusively on `ggplot2().</li>
 </ul></div>
+<div class="section level3">
+<h3 id="other-0-3-0">Other<a class="anchor" aria-label="anchor" href="#other-0-3-0"></a></h3>
+<ul><li>Added an example of <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code> to print nested lists</li>
+<li>Now use <code>fig.show="hold"</code> to keep <code>par(op)</code> with the code.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="nestedlogit-021">nestedLogit 0.2.1<a class="anchor" aria-label="anchor" href="#nestedlogit-021"></a></h2><p class="text-muted">CRAN release: 2023-05-15</p>
 <ul><li>Reset all <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par()</a></code> and <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> calls so as to not alter user’s workspace.</li>

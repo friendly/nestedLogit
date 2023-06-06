@@ -51,7 +51,7 @@
     
     <a class="navbar-brand me-2" href="index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,17 +102,27 @@
 <img src="logo.png" class="logo" alt=""><h1 id="nestedlogit-">nestedLogit <a class="anchor" aria-label="anchor" href="#nestedlogit-"></a>
 </h1>
 </div>
-<p><strong>Version 0.3.0</strong></p>
+<p><strong>Version 0.3.2</strong></p>
 <p>The <code>nestedLogit</code> package provides functions for fitting nested dichotomy logistic regression models for a polytomous response. Nested dichotomies are statistically independent, and hence provide an additive decomposition of tests for the overall polytomous response. When the dichotomies make sense substantively, this method can be a simpler alternative to the standard multinomial logistic model which compares response categories to a reference level.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The package is now available on CRAN. This development version can be installed to your R library directly from the <a href="https://github.com/friendly/nestedLogit" class="external-link">GitHub repo</a> via:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"nestedLogit"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># or, devel version</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(remotes)) <span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"friendly/nestedLogit"</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="29%">
+<col width="70%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>CRAN version</td>
+<td><code>install.packages("nestedLogit")</code></td>
+</tr>
+<tr class="even">
+<td>Development version</td>
+<td><code>remotes::install_github("friendly/nestedLogit")</code></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="package-overview">Package overview<a class="anchor" aria-label="anchor" href="#package-overview"></a>
@@ -127,7 +137,7 @@
 <code><a href="reference/nestedLogit.html">continuationLogits()</a></code>: provides a convenient way to generate all dichotomies for an ordered response.</li>
 </ul>
 <p>For instance, a 4-category response, with levels A, B, C, D, and successive binary splits for the dichotomies of interest could be specified as:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">ABCD</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/nestedLogit.html">logits</a></span><span class="op">(</span>AB.CD <span class="op">=</span> <span class="fu"><a href="reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>           A.B <span class="op">=</span> <span class="fu"><a href="reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span>
@@ -138,7 +148,7 @@
 <span><span class="co">#&gt; A.B: {A} vs. {B}</span></span>
 <span><span class="co">#&gt; C.D: {C} vs. {D}</span></span></code></pre></div>
 <p>These dichotomies are effectively a tree structure of lists, which can be displayed simply using <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span><span class="va">ABCD</span><span class="op">)</span></span>
 <span><span class="co">#&gt; S3&lt;dichotomies&gt;</span></span>
 <span><span class="co">#&gt; ├─AB.CD: &lt;list&gt;</span></span>
@@ -151,7 +161,7 @@
 <span><span class="co">#&gt;   ├─"C"</span></span>
 <span><span class="co">#&gt;   └─"D"</span></span></code></pre></div>
 <p>Alternatively, the nested dichotomies can be specified more compactly as a nested (i.e., recursive) list with optionally named elements. For example, where people might choose a method of transportation among the categories <code>plane</code>, <code>train</code>, <code>bus</code>, <code>car</code>, a sensible set of three dichotomies could be specified as:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">transport</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  air <span class="op">=</span> <span class="st">"plane"</span>,</span>
 <span>  ground <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -168,7 +178,7 @@
 <span><span class="co">#&gt;   │ └─"bus"</span></span>
 <span><span class="co">#&gt;   └─private: "car"</span></span></code></pre></div>
 <p>There are also methods including <code><a href="reference/nestedMethods.html">as.matrix.dichotomies()</a></code>, <code><a href="reference/nestedMethods.html">as.character.dichotomies()</a></code> to facilitate working with <code>dichotomies</code> objects in other representations. The <code>ABCD</code> example above corresponds to the matrix below, whose rows represent the dichotomies and columns are the response levels:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">ABCD</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        A  B  C  D</span></span>
 <span><span class="co">#&gt; AB.CD  0  0  1  1</span></span>
@@ -203,6 +213,8 @@
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> provides basic plots of the predicted probabilities over a range of values of the predictor variables.</li>
 <li>
 <code><a href="reference/models.html">models()</a></code> is an extractor function for the binary logit models in the <code>"nestedLogit"</code> object</li>
+<li>
+<code>Effect()</code> calculates marginal effects collapsed over some variable(s) for the purpose of making effect plots.</li>
 </ul>
 <p>These functions are supplemented by various methods for testing hypotheses about and comparing nested-logit models:</p>
 <ul>
@@ -230,7 +242,7 @@
 <code>full</code>: {parttime} vs. {fulltime}, but only for those working</li>
 </ul>
 <p><code><a href="reference/nestedLogit.html">nestedLogit()</a></code> effectively fits each of these dichotomies as logistic regression models via <code>glm(..., family = binomial)</code></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">Womenlf</span>, package <span class="op">=</span> <span class="st">"carData"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Use `logits()` and `dichotomy()` to specify the comparisons of interest</span></span>
@@ -247,7 +259,7 @@
 <span><span class="co">#&gt; hincome         -0.04230843 -0.1072679</span></span>
 <span><span class="co">#&gt; childrenpresent -1.57564843 -2.6514557</span></span></code></pre></div>
 <p>The <code>"nestedLogit"</code> object contains the components of the fitted model. The structure can be shown nicely using <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span>max_depth<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; S3&lt;nestedLogit&gt;</span></span>
 <span><span class="co">#&gt; ├─models: &lt;list&gt;...</span></span>
@@ -259,13 +271,13 @@
 <span><span class="co">#&gt; ├─contrasts: &lt;NULL&gt;</span></span>
 <span><span class="co">#&gt; └─contrasts.print: "NULL"</span></span></code></pre></div>
 <p>The separate models for the <code>work</code> and <code>full</code> dichotomies can be extracted via <code><a href="reference/models.html">models()</a></code>. These are the binomial <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> models.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/models.html">models</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span>max_depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;list&gt;</span></span>
 <span><span class="co">#&gt; ├─work: S3&lt;glm/lm&gt;...</span></span>
 <span><span class="co">#&gt; └─full: S3&lt;glm/lm&gt;...</span></span></code></pre></div>
 <p><code>Anova()</code> produces analysis of variance deviance tests for the terms in this model for each of the submodels, as well as for the combined responses of the polytomy. The <code>LR Chisq</code> and <code>df</code> for terms in the combined model are the sums of those for the submodels.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
@@ -296,7 +308,7 @@
 <h3 id="plots">Plots<a class="anchor" aria-label="anchor" href="#plots"></a>
 </h3>
 <p>A basic plot of predicted probabilities can be produced using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> objects. It can be called several times to give multi-panel plots. By default, a 95% pointwise confidence envelope is added to the plot. Here, they are plotted with <code>conf.level = 0.68</code> to give <span class="math inline"> ± 1</span> std. error bounds.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfcol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m</span>, <span class="st">"hincome"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>children<span class="op">=</span><span class="st">"absent"</span><span class="op">)</span>,</span>
 <span>     conf.level <span class="op">=</span> <span class="fl">0.68</span>,</span>

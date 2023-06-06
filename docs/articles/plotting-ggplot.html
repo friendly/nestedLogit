@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-29</h4>
+            <h4 data-toc-skip class="date">2023-06-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/plotting-ggplot.Rmd" class="external-link"><code>vignettes/plotting-ggplot.Rmd</code></a></small>
       <div class="d-none name"><code>plotting-ggplot.Rmd</code></div>
@@ -143,7 +143,7 @@ range of 0 - 45 in steps of 5, combined with the two values of
 <span></span>
 <span><span class="va">pred.nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span>, newdata <span class="op">=</span> <span class="va">new</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">pred.nested</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "p"        "logit"    "se.p"     "se.logit"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "p"        "logit"    "se.p"     "se.logit" ".data"</span></span></code></pre></div>
 <p>As explained in <code><a href="../reference/nestedMethods.html">help(predict.nestedLogit)</a></code>, the predict
 method returns a complicated structure – a list of four data frames
 corresponding to the predicted probabilities for the response
@@ -178,10 +178,10 @@ set:</p>
 </h2>
 <p>Then we can plot probability against one predictor, use
 <code>color</code> to distinguish the levels of the response
-(<code>partic</code>) and facet facet the plot by <code>children</code>.
-The point-wise standard errors are drawn in a 68% confidence envelope
-using <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code>. We’ve also plotted the predicted
-values as points to show where the predictions are obtained.</p>
+(<code>partic</code>) and facet the plot by <code>children</code>. The
+point-wise standard errors are drawn in a 68% confidence envelope using
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code>. We’ve also plotted the predicted values as
+points to show where the predictions are obtained.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -228,7 +228,7 @@ The same plot using direct labels on the curves rather than a legend.`
 </h3>
 <p>The advantage of the data structure returned by
 <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> is that you can just as easily plot the
-predicted probabilities on the scale of log-odds (<span class="math inline">\(\text{logit}(p) = \log(p / 1-p)\)</span>), using
+predicted probabilities on the scale of log-odds (<span class="math inline">\(\text{logit}(p) = \log(p / (1-p))\)</span>), using
 the <code>logit</code> and <code>logit.se</code> components.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotdata</span>,</span>
@@ -254,8 +254,8 @@ versus husband’s income, by <code>children</code>
 <div class="section level2">
 <h2 id="predicted-logit-values-for-the-dichotomies">Predicted logit values for the dichotomies<a class="anchor" aria-label="anchor" href="#predicted-logit-values-for-the-dichotomies"></a>
 </h2>
-<p>The nested logit model <code>wlf.nested</code> is comprised of the
-two binary logistic regression models for the <code>work</code> and
+<p>The nested logit model <code>wlf.nested</code> comprises the two
+binary logistic regression models for the <code>work</code> and
 <code>full</code> dichotomies. We can plot these as follows.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/models.html">models</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span><span class="op">)</span></span>
@@ -267,16 +267,26 @@ and their standard errors for the logits of these dichotomies, using the
 <code class="sourceCode R"><span><span class="va">pred.dichot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span>, newdata <span class="op">=</span> <span class="va">new</span>,</span>
 <span>                       model <span class="op">=</span> <span class="st">"dichotomies"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">pred.dichot</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 2</span></span>
-<span><span class="co">#&gt;  $ work:'data.frame':    20 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt; List of 3</span></span>
+<span><span class="co">#&gt;  $ work :'data.frame':   20 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;   ..$ fit           : num [1:20] 1.336 1.124 0.913 0.701 0.49 ...</span></span>
 <span><span class="co">#&gt;   ..$ se.fit        : num [1:20] 0.384 0.313 0.262 0.242 0.261 ...</span></span>
 <span><span class="co">#&gt;   ..$ residual.scale: num [1:20] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
-<span><span class="co">#&gt;  $ full:'data.frame':    20 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt;  $ full :'data.frame':   20 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;   ..$ fit           : num [1:20] 3.48 2.94 2.41 1.87 1.33 ...</span></span>
 <span><span class="co">#&gt;   ..$ se.fit        : num [1:20] 0.767 0.613 0.489 0.423 0.443 ...</span></span>
 <span><span class="co">#&gt;   ..$ residual.scale: num [1:20] 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ .data:'data.frame':   20 obs. of  2 variables:</span></span>
+<span><span class="co">#&gt;   ..$ hincome : num [1:20] 0 5 10 15 20 25 30 35 40 45 ...</span></span>
+<span><span class="co">#&gt;   ..$ children: Factor w/ 2 levels "absent","present": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, "out.attrs")=List of 2</span></span>
+<span><span class="co">#&gt;   .. ..$ dim     : Named int [1:2] 10 2</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, "names")= chr [1:2] "hincome" "children"</span></span>
+<span><span class="co">#&gt;   .. ..$ dimnames:List of 2</span></span>
+<span><span class="co">#&gt;   .. .. ..$ hincome : chr [1:10] "hincome= 0" "hincome= 5" "hincome=10" "hincome=15" ...</span></span>
+<span><span class="co">#&gt;   .. .. ..$ children: chr [1:2] "children=absent" "children=present"</span></span>
 <span><span class="co">#&gt;  - attr(*, "model")= chr "wlf.nested"</span></span>
+<span><span class="co">#&gt;  - attr(*, "dichotomies")= chr [1:2] "work" "full"</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "predictDichotomies"</span></span></code></pre></div>
 <p>Transforming this to a data frame, we get an analogous result for
 plotting:</p>
@@ -353,7 +363,7 @@ vs. {part-time}.</p>
 <span>                              <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span>full<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span>nonfulltime<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span>, <span class="st">"fulltime"</span><span class="op">)</span>,</span>
 <span>                                     part<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></code></pre></div>
-<p>Proceeding in the same way above, we get predicted logits and
+<p>Proceeding in the same way as above, we get predicted logits and
 standard errors for each of the dichotomies.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred.dichot.alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span>, newdata <span class="op">=</span> <span class="va">new</span>,</span>

@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2023-05-29</h4>
+            <h4 data-toc-skip class="date">2023-06-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit.Rmd" class="external-link"><code>vignettes/nestedLogit.Rmd</code></a></small>
       <div class="d-none name"><code>nestedLogit.Rmd</code></div>
@@ -524,6 +524,9 @@ probabilities over a range of values of the predictor variables.</li>
 <li>
 <code><a href="../reference/models.html">models()</a></code> is an extractor function for the binary logit
 models in the <code>"nestedLogit"</code> object</li>
+<li>
+<code>Effect()</code> calculates marginal effects collapsed over
+some variable(s) for the purpose of making effect plots.</li>
 </ul>
 <p>These functions are supplemented by various methods for testing
 hypotheses about and comparing nested-logit models:</p>
@@ -818,67 +821,49 @@ computed by the delta method (see the corresponding vignette).</li>
 </ul>
 <p>The computation is a bit tricky, because the probabilities of working
 full-time or part-time are conditional on working outside the home, but
-<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> takes care of the details.</p>
+<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> takes care of the details. See
+<code><a href="../articles/standard-errors.html">vignette("standard-errors")</a></code> for how these are
+calculated.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
-<span><span class="va">wlf.pred</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">wlf.pred</span>, n<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; First 10 of 263 rows:</span></span>
+<span><span class="co">#&gt; First 5 of 263 rows:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; predicted response-category probabilties</span></span>
-<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1    0.7057   0.2020 0.092343</span></span>
-<span><span class="co">#&gt; 2    0.6878   0.1993 0.112912</span></span>
-<span><span class="co">#&gt; 3    0.8951   0.1030 0.001886</span></span>
-<span><span class="co">#&gt; 4    0.7708   0.1920 0.037208</span></span>
-<span><span class="co">#&gt; 5    0.7396   0.2007 0.059742</span></span>
-<span><span class="co">#&gt; 6    0.6309   0.1776 0.191521</span></span>
-<span><span class="co">#&gt; 7    0.7057   0.2020 0.092343</span></span>
-<span><span class="co">#&gt; 8    0.6309   0.1776 0.191521</span></span>
-<span><span class="co">#&gt; 9    0.7057   0.2020 0.092343</span></span>
-<span><span class="co">#&gt; 10   0.7708   0.1920 0.037208</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1   0.7057   0.2020 0.092343</span></span>
+<span><span class="co">#&gt; 2   0.6878   0.1993 0.112912</span></span>
+<span><span class="co">#&gt; 3   0.8951   0.1030 0.001886</span></span>
+<span><span class="co">#&gt; 4   0.7708   0.1920 0.037208</span></span>
+<span><span class="co">#&gt; 5   0.7396   0.2007 0.059742</span></span>
 <span><span class="co">#&gt;   . . .</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; predicted response-category logits</span></span>
-<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1    0.8744   -1.374   -2.285</span></span>
-<span><span class="co">#&gt; 2    0.7898   -1.391   -2.061</span></span>
-<span><span class="co">#&gt; 3    2.1437   -2.164   -6.272</span></span>
-<span><span class="co">#&gt; 4    1.2129   -1.437   -3.253</span></span>
-<span><span class="co">#&gt; 5    1.0437   -1.382   -2.756</span></span>
-<span><span class="co">#&gt; 6    0.5360   -1.533   -1.440</span></span>
-<span><span class="co">#&gt; 7    0.8744   -1.374   -2.285</span></span>
-<span><span class="co">#&gt; 8    0.5360   -1.533   -1.440</span></span>
-<span><span class="co">#&gt; 9    0.8744   -1.374   -2.285</span></span>
-<span><span class="co">#&gt; 10   1.2129   -1.437   -3.253</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1   0.8744   -1.374   -2.285</span></span>
+<span><span class="co">#&gt; 2   0.7898   -1.391   -2.061</span></span>
+<span><span class="co">#&gt; 3   2.1437   -2.164   -6.272</span></span>
+<span><span class="co">#&gt; 4   1.2129   -1.437   -3.253</span></span>
+<span><span class="co">#&gt; 5   1.0437   -1.382   -2.756</span></span>
 <span><span class="co">#&gt;   . . .</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; standard errors of predicted probabilities</span></span>
-<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1   0.03394  0.03077 0.022756</span></span>
-<span><span class="co">#&gt; 2   0.03514  0.03104 0.024934</span></span>
-<span><span class="co">#&gt; 3   0.05948  0.05846 0.002676</span></span>
-<span><span class="co">#&gt; 4   0.04243  0.03908 0.017651</span></span>
-<span><span class="co">#&gt; 5   0.03651  0.03368 0.020323</span></span>
-<span><span class="co">#&gt; 6   0.04984  0.04053 0.041672</span></span>
-<span><span class="co">#&gt; 7   0.03394  0.03077 0.022756</span></span>
-<span><span class="co">#&gt; 8   0.04984  0.04053 0.041672</span></span>
-<span><span class="co">#&gt; 9   0.03394  0.03077 0.022756</span></span>
-<span><span class="co">#&gt; 10  0.04243  0.03908 0.017651</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1  0.03394  0.03077 0.022756</span></span>
+<span><span class="co">#&gt; 2  0.03514  0.03104 0.024934</span></span>
+<span><span class="co">#&gt; 3  0.05948  0.05846 0.002676</span></span>
+<span><span class="co">#&gt; 4  0.04243  0.03908 0.017651</span></span>
+<span><span class="co">#&gt; 5  0.03651  0.03368 0.020323</span></span>
 <span><span class="co">#&gt;   . . .</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; standard errors of predicted logits</span></span>
-<span><span class="co">#&gt;    not.work parttime fulltime</span></span>
-<span><span class="co">#&gt; 1    0.1634   0.1909   0.2715</span></span>
-<span><span class="co">#&gt; 2    0.1637   0.1945   0.2489</span></span>
-<span><span class="co">#&gt; 3    0.6333   0.6326   1.4215</span></span>
-<span><span class="co">#&gt; 4    0.2402   0.2519   0.4927</span></span>
-<span><span class="co">#&gt; 5    0.1896   0.2100   0.3618</span></span>
-<span><span class="co">#&gt; 6    0.2140   0.2775   0.2691</span></span>
-<span><span class="co">#&gt; 7    0.1634   0.1909   0.2715</span></span>
-<span><span class="co">#&gt; 8    0.2140   0.2775   0.2691</span></span>
-<span><span class="co">#&gt; 9    0.1634   0.1909   0.2715</span></span>
-<span><span class="co">#&gt; 10   0.2402   0.2519   0.4927</span></span>
+<span><span class="co">#&gt;   not.work parttime fulltime</span></span>
+<span><span class="co">#&gt; 1   0.1634   0.1909   0.2715</span></span>
+<span><span class="co">#&gt; 2   0.1637   0.1945   0.2489</span></span>
+<span><span class="co">#&gt; 3   0.6333   0.6326   1.4215</span></span>
+<span><span class="co">#&gt; 4   0.2402   0.2519   0.4927</span></span>
+<span><span class="co">#&gt; 5   0.1896   0.2100   0.3618</span></span>
 <span><span class="co">#&gt;   . . .</span></span></code></pre></div>
 <p>By default, fitted values and standard errors are computed for
 <em>all</em> the observations in the data set. You can provide a
@@ -894,7 +879,7 @@ custom plots or other purposes.</p>
 <code>"predictNestedLogit"</code> converts the components to long
 format.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">wlf.new</span>, newdata <span class="op">=</span> <span class="va">new</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">wlf.new</span><span class="op">)</span> </span>
 <span><span class="co">#&gt;    hincome children response        p     se.p    logit se.logit</span></span>
 <span><span class="co">#&gt; 1        0   absent not.work 0.208197 0.063264 -1.33583   0.3838</span></span>
 <span><span class="co">#&gt; 2        0   absent parttime 0.023716 0.017749 -3.71762   0.7666</span></span>
