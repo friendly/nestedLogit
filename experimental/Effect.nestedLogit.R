@@ -1,4 +1,49 @@
+#' Effect Displays for Nested Logit Models
+#'
+#' @name Effect.nestedLogit
+#' @aliases Effect.nestedLogit
+#' @description Computes effects (in the sense of the \pkg{effects} package---see, in
+#' particular, \code{\link[effects]{Effect}})---for \code{"nestedLogit"} models, which then
+#' can be used with other functions in the \pkg{effects} package, for example, 
+#' \code{\link[effects]{predictorEffects}} and to produce effect plots.
+#' 
+#' @seealso  \code{\link[effects]{Effect}}), \code{\link[efffects]plot.effpoly},
+#' \code{\link[effects]{predictorEffects}})
+#' 
+#' @param focal.predictors a character vector of the names of one or more of 
+#' the predictors in the model, for which the effect display should be computed.
+#' @param mod a \code{"nestedLogit"} model object.
+#' @param confidence.level for point-wise confidence bands around the effects
+#' (the default is \code{0.95}).\
+#' @param fixed.predictors controls the values at which other predictors are fixed;
+#' see \code{link[effects]{Effect}} for details; if \code{NULL} (the default),
+#' numeric predictors are set to their mean, factors to their distribution in the data.
+#' @param dots optional arguments to be passed to the \code{Effect} method for
+#' binary logit models (fit by the \code{\link{glm}} function).
+#' @return an object of class \code{"effpoly"} (see \code{\link[effects]{Effect}}).
+#' @author John Fox 
+#' @keywords regression
+#' @references
+#' John Fox and Sanford Weisberg (2019). \emph{An R Companion to Applied Regression},
+#' 3rd Edition. Thousand Oaks, CA.
+#' 
+#' John Fox, Sanford Weisberg (2018). Visualizing Fit and Lack of Fit in Complex
+#' Regression Models with Predictor Effect Plots and Partial Residuals. 
+#' \emph{Journal of Statistical Software}, 87(9), 1-27.
+#' @examples
+#' data("Womenlf", package = "carData")
+#' comparisons <- logits(work=dichotomy("not.work",
+#'                                      working=c("parttime", "fulltime")),
+#'                       full=dichotomy("parttime", "fulltime"))
+#' m <- nestedLogit(partic ~ hincome + children,
+#'                    dichotomies = comparisons,
+#'                    data=Womenlf)
+#' plot(effects::predictorEffects(m))
+#' plot(effects::predictorEffects(m), axes=list(y=list(style="stacked")))
+#' summary(effects::Effect("hincome", m))
 
+#' @importFrom effects Effect
+#' @export
 Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, 
                                fixed.predictors=NULL, ...){
   findEffects <- function(m, eff, fixed.predictors, ...){
