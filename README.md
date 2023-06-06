@@ -14,7 +14,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
 
-**Version 0.3.0**
+**Version 0.3.2**
 
 The `nestedLogit` package provides functions for fitting nested
 dichotomy logistic regression models for a polytomous response. Nested
@@ -26,15 +26,10 @@ response categories to a reference level.
 
 ## Installation
 
-The package is now available on CRAN. This development version can be
-installed to your R library directly from the [GitHub
-repo](https://github.com/friendly/nestedLogit) via:
-
-    install.packages("nestedLogit")
-
-    # or, devel version
-    if (!require(remotes)) install.packages("remotes")
-    remotes::install_github("friendly/nestedLogit", build_vignettes = TRUE)
+|                     |                                                   |
+|---------------------|---------------------------------------------------|
+| CRAN version        | `install.packages("nestedLogit")`                 |
+| Development version | `remotes::install_github("friendly/nestedLogit")` |
 
 ## Package overview
 
@@ -152,6 +147,8 @@ complete set of methods for `"nestedLogit"` objects:
   range of values of the predictor variables.
 - `models()` is an extractor function for the binary logit models in the
   `"nestedLogit"` object
+- `Effect()` calculates marginal effects collapsed over some variable(s)
+  for the purpose of making effect plots.
 
 These functions are supplemented by various methods for testing
 hypotheses about and comparing nested-logit models:

@@ -27,7 +27,7 @@ library(nestedLogit)
 <!-- badges: end -->
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
-**Version 0.3.0**
+**Version 0.3.2**
 
 The `nestedLogit` package provides functions for fitting nested dichotomy logistic regression models
 for a polytomous response. Nested dichotomies are statistically independent, and hence provide an
@@ -37,16 +37,15 @@ which compares response categories to a reference level.
 
 ## Installation
 
-The package is now available on CRAN.
-This development version can be installed to your R library directly from the [GitHub repo](https://github.com/friendly/nestedLogit) via:
 
-```
-install.packages("nestedLogit")
++-------------------+-----------------------------------------------------+
+| CRAN version      | `install.packages("nestedLogit")`                   |
++-------------------+-----------------------------------------------------+
+| Development       | `remotes::install_github("friendly/nestedLogit")`   |
+| version           |                                                     |
++-------------------+-----------------------------------------------------+
 
-# or, devel version
-if (!require(remotes)) install.packages("remotes")
-remotes::install_github("friendly/nestedLogit", build_vignettes = TRUE)
-```
+
 
 
 ## Package overview

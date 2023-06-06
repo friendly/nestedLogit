@@ -10,6 +10,7 @@ As befits a model-fitting function, the package defines a nearly complete set of
 * `glance()` and `tidy()` are extensions of `broom::glance.glm()` and `broom::tidy.glm()` to obtain compact summaries of a `"nestedLogit"` model object.
 * `plot()` provides basic plots of the predicted probabilities over a range of values of the predictor variables.
 * `models()` is an extractor function for the binary logit models in the `"nestedLogit"` object
+* `Effect()` calculates marginal effects collapsed over some variable(s) for the purpose of making effect plots.
 
 These functions are supplemented by various methods for testing hypotheses about and comparing nested-logit models:
 
