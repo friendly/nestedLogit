@@ -2,6 +2,7 @@
 
 * correct buglet in `as.data.frame` method when `newdata` has one column
 * `predict.nestedLogit()` now includes the `newdata` data frame as an additional component (`.data`) in its result. Consequently, the `newdata` argument is no longer required in the `as.data.frame` method.
+* new `Effect` method for `"nestedLogit"` objects to create effect displays.
 
 # nestedLogit 0.3.0
 
