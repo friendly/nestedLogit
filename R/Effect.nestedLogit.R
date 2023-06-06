@@ -38,9 +38,21 @@
 #' m <- nestedLogit(partic ~ hincome + children,
 #'                    dichotomies = comparisons,
 #'                    data=Womenlf)
-#' plot(effects::predictorEffects(m))
-#' plot(effects::predictorEffects(m), axes=list(y=list(style="stacked")))
-#' summary(effects::Effect("hincome", m))
+#' peff.women <- effects::predictorEffects(m)
+#' plot(peff.women)
+#' plot(peff.women, axes=list(y=list(style="stacked")))
+#' summary(peff.women)
+#' 
+#' dichots <- logits(AB_CD = dichotomy(c("A", "B"), c("C", "D")),
+#'                   A_B   = dichotomy("A", "B"),
+#'                   C_D   = dichotomy("C", "D"))
+#' m.health <- nestedLogit(product4 ~ age + gender*household + position_level,
+#'                         dichotomies = dichots, data = HealthInsurance)
+#' eff.gen.hh <- effects::Effect(c("gender", "household"), m.health,
+#'                               xlevels=list(household=0:7))
+#' eff.gen.hh
+#' plot(eff.gen.hh)
+#' plot(eff.gen.hh, axes=list(y=list(style="stacked")))
 
 #' @importFrom effects Effect
 #' @importFrom stats model.matrix
