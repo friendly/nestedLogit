@@ -7,25 +7,25 @@
 #' can be used with other functions in the \pkg{effects} package, for example, 
 #' \code{\link[effects]{predictorEffects}} and to produce effect plots.
 #' 
-#' @seealso  \code{\link[effects]{Effect}}), \code{\link[efffects]plot.effpoly},
+#' @seealso  \code{\link[effects]{Effect}}), \code{\link[effects]{plot.effpoly}},
 #' \code{\link[effects]{predictorEffects}})
 #' 
 #' @param focal.predictors a character vector of the names of one or more of 
 #' the predictors in the model, for which the effect display should be computed.
 #' @param mod a \code{"nestedLogit"} model object.
 #' @param confidence.level for point-wise confidence bands around the effects
-#' (the default is \code{0.95}).\
+#' (the default is \code{0.95}).
 #' @param fixed.predictors controls the values at which other predictors are fixed;
-#' see \code{link[effects]{Effect}} for details; if \code{NULL} (the default),
-#' numeric predictors are set to their mean, factors to their distribution in the data.
-#' @param dots optional arguments to be passed to the \code{Effect} method for
+#' see \code{\link[effects]{Effect}} for details; if \code{NULL} (the default),
+#' numeric predictors are set to their means, factors to their distribution in the data.
+#' @param ... optional arguments to be passed to the \code{\link[effects]{Effect}} method for
 #' binary logit models (fit by the \code{\link{glm}} function).
 #' @return an object of class \code{"effpoly"} (see \code{\link[effects]{Effect}}).
 #' @author John Fox 
 #' @keywords regression
 #' @references
 #' John Fox and Sanford Weisberg (2019). \emph{An R Companion to Applied Regression},
-#' 3rd Edition. Thousand Oaks, CA.
+#' 3rd Edition. Sage, Thousand Oaks, CA.
 #' 
 #' John Fox, Sanford Weisberg (2018). Visualizing Fit and Lack of Fit in Complex
 #' Regression Models with Predictor Effect Plots and Partial Residuals. 
@@ -43,7 +43,8 @@
 #' summary(effects::Effect("hincome", m))
 
 #' @importFrom effects Effect
-#' @export
+#' @importFrom stats model.matrix
+#' @exportS3Method effects::Effect nestedLogit
 Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95, 
                                fixed.predictors=NULL, ...){
   findEffects <- function(m, eff, fixed.predictors, ...){
@@ -142,7 +143,7 @@ Effect.nestedLogit <- function(focal.predictors, mod, confidence.level=0.95,
            "lower.logit", "upper.logit", "lower.prob", "upper.prob",
            "y.levels", "response", "model")] <-
     list(p, logit, sqrt(v), se.logit, lower.logit, upper.logit,
-         lower.prob, upper.prob, response.levels, as.character(formula(m)[2]),
+         lower.prob, upper.prob, response.levels, as.character(formula(mod)[2]),
          "multinom")
   class(result) <- "effpoly"
   result

@@ -29,6 +29,7 @@ Imports:
     broom,
     car,
     dplyr,
+    effects,
     graphics,
     grDevices,
     stats,
