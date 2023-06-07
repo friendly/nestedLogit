@@ -58,8 +58,9 @@ m.health <- nestedLogit(product4 ~ age + gender*household + position_level,
 eff.gen.hh <- effects::Effect(c("gender", "household"), m.health,
                               xlevels=list(household=0:7))
 eff.gen.hh
-plot(eff.gen.hh)
-plot(eff.gen.hh, axes=list(y=list(style="stacked")))
+plot(eff.gen.hh, axes=list(x=list(rug=FALSE)))
+plot(eff.gen.hh, axes=list(x=list(rug=FALSE), 
+                           y=list(style="stacked")))
 }
 \references{
 John Fox and Sanford Weisberg (2019). \emph{An R Companion to Applied Regression},

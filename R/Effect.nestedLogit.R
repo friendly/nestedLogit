@@ -51,8 +51,9 @@
 #' eff.gen.hh <- effects::Effect(c("gender", "household"), m.health,
 #'                               xlevels=list(household=0:7))
 #' eff.gen.hh
-#' plot(eff.gen.hh)
-#' plot(eff.gen.hh, axes=list(y=list(style="stacked")))
+#' plot(eff.gen.hh, axes=list(x=list(rug=FALSE)))
+#' plot(eff.gen.hh, axes=list(x=list(rug=FALSE), 
+#'                            y=list(style="stacked")))
 
 #' @importFrom effects Effect
 #' @importFrom stats model.matrix
