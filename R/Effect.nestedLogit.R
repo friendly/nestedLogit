@@ -7,8 +7,8 @@
 #' can be used with other functions in the \pkg{effects} package, for example, 
 #' \code{\link[effects]{predictorEffects}} and to produce effect plots.
 #' 
-#' @seealso  \code{\link[effects]{Effect}}), \code{\link[effects]{plot.effpoly}},
-#' \code{\link[effects]{predictorEffects}})
+#' @seealso  \code{\link[effects]{Effect}}, \code{\link[effects]{plot.effpoly}},
+#' \code{\link[effects]{predictorEffects}}
 #' 
 #' @param focal.predictors a character vector of the names of one or more of 
 #' the predictors in the model, for which the effect display should be computed.

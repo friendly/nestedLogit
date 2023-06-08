@@ -71,8 +71,8 @@ Regression Models with Predictor Effect Plots and Partial Residuals.
 \emph{Journal of Statistical Software}, 87(9), 1-27.
 }
 \seealso{
-\code{\link[effects]{Effect}}), \code{\link[effects]{plot.effpoly}},
-\code{\link[effects]{predictorEffects}})
+\code{\link[effects]{Effect}}, \code{\link[effects]{plot.effpoly}},
+\code{\link[effects]{predictorEffects}}
 }
 \author{
 John Fox
