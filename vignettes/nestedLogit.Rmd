@@ -32,7 +32,7 @@ knitr::set_alias(w = "fig.width",
                  h = "fig.height",
                  cap = "fig.cap")
 
-# colorize text
+# colorize text: use inline as `r colorize(text, color)`
 colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
