@@ -60,6 +60,7 @@ library(car)            # Companion to Applied Regression
 library(nnet)           # Feed-Forward Neural Networks and Multinomial Log-Linear Models
 library(broom)          # Convert Statistical Objects into Tidy Tibbles
 library(dplyr)          # A Grammar of Data Manipulation
+library(effects)        # Effect Displays for Linear, Generalized Linear, and Other Models
 ```
 
 ## Models for polytomous responses
@@ -465,7 +466,34 @@ plot(wlf.nested, "hincome", list(children="present"), # right panel
 par(op)
 ```
 
-<!-- We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects. -->
+### Effect plots for `"nestedLogit"` models
+
+We provide a `"nestedLogit"` method for the `Effect()` function in the **effects** package [@effects2003; @effects2019]. Because `Effect()` is the basic building block for other functions in the **effects** package, such as `predictorEffects()` [@effects2018], the full range of capabilities of the **effects** package is available; in particular, it's possible to produce effect plots similar to those for multinomial logistic regression models [@effects2009].
+
+We illustrate with the nested-logit model fit to the `Womenlf` data set:
+
+```{r wlf-effect-plot-1}
+#| out.width = "100%",
+#| fig.height = 6,
+#| fig.cap = "Default predictor effect plots for the nested-logit model fit to the `Womenlf` data"
+plot(predictorEffects(wlf.nested))
+```
+
+The panel at the left shows the predictor effect plot for husband's income, that at the right the predictor effect plot for presence of children. 
+
+Because the model is additive, there are no conditioning variables in either plot. Effect plots are generally more interesting in models with interactions, in which case the effect plot for a predictor is conditioned on the other predictors with which the focal predictor interacts (see `?Effect.nestedLogit` for an example). 
+
+In the predictor effect plot for `hincome`, the factor `children` is by default fixed to its distribution in the data; in the predictor effect plot for `children`, the numeric predictor `hincome` is by default fixed to its mean. The band in the graph at the left and vertical bars in the graph at the right give 95\% confidence limits around the fit.
+
+An alternative style of effect plot shows the fit as a stacked-area graph (in this case without confidence limits):
+```{r wlf-effect-plot-2}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "Stacked-area predictor effect plots for the nested-logit model fit to the `Womenlf` data"
+plot(predictorEffects(wlf.nested), axes=list(y=list(style="stacked")))
+```
+
+The computation and display of effect graphs are highly customizable. For details, see the documentation for the **effects** package.
 
 ### Alternative models for the `Womenlf` data {#sec: alt-model}
 
