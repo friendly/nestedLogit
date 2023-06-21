@@ -47,7 +47,9 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "equatiomatic")
+to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+
+# removed: "equatiomatic" -- now in references.bib
 ```
 
 Load the packages we'll use here:
@@ -71,7 +73,7 @@ For example,
 * Respondents to a social survey are classified
 by their highest completed level of education, taking on the values (1) less than highschool, (2) highschool graduate, (3) some post-secondary, or (4) post-secondary degree.
 
-* Women's labor-force participation is classified as (1) not working outside the home, (2) working parttime, or (3) working fulltime.
+* Women's labor-force participation is classified as (1) not working outside the home, (2) working part-time, or (3) working full-time.
 
 * Voters in Quebec in a Canadian national election choose one of the (1) Liberal Party, (2) Conservative Party, (3) New Democratic Party, or (4) Bloc Quebecois.
 
@@ -141,7 +143,7 @@ knitr::include_graphics("nested.jpg")
 This example makes clear that nested dichotomies are not unique and that alternative sets of nested dichotomies are
 not equivalent: Different choices have different interpretations. Moreover, and more fundamentally, fitted probabilities and hence the likelihood for the nested-dichotomies model depend on how the nested dichotomies are defined. 
 
-The nested-dichotomies model is consequently most compelling when there is a natural and unique way to define the dichotomies, such as a process that proceeds through an orderly sequence of stages. Consider the set of nested dichotomies at the right of the figure above, and the previously mentioned four-level educational response variable with categories (1) less than highschool, (2) highschool graduate, (3) some post-secondary, and (4) post-secondary degree. In the vast majority of cases, individuals proceed through these educational stages in sequence. The first dichotomy, $\{1\}$ vs. $\{2, 3, 4\}$, therefore represents highschool graduation; the second, $\{2\}$ vs. $\{3, 4\}$, enrollment in post-secondary education; and the third, $\{3\}$ vs. $\{4\}$, completion of a post-secondary degree. This scheme for generating the a nested-dichotomies logit model is termed _continuation logits_.
+The nested-dichotomies model is consequently most compelling when there is a natural and unique way to define the dichotomies, such as a process that proceeds through an orderly sequence of stages. Consider the set of nested dichotomies at the right of the figure above, and the previously mentioned four-level educational response variable with categories (1) less than highschool, (2) highschool graduate, (3) some post-secondary, and (4) post-secondary degree. In the vast majority of cases, individuals proceed through these educational stages in sequence. The first dichotomy, $\{1\}$ vs. $\{2, 3, 4\}$, therefore represents highschool graduation; the second, $\{2\}$ vs. $\{3, 4\}$, enrollment in post-secondary education; and the third, $\{3\}$ vs. $\{4\}$, completion of a post-secondary degree. This scheme for generating the  logits for the nested-dichotomies model is termed _continuation logits_.
 
 To take another example, the figure below shows the classification of psychiatric patients
 into four diagnostic categories.  These might be naturally dichotomized by contrasting the normal individuals to the groups of patients, and then dividing the patient groups into
@@ -199,8 +201,8 @@ How can we understand these womens' labor-force participation choices in terms o
 
 It is at least arguable to construe a woman's labor-force choice as first involving
 a dichotomy (let's call it `work`) between women who are not working outside the home vs. those who are working
-(either parttime or fulltime). A second dichotomy (`full`) contrasts those who work
-fulltime time vs. parttime, but among only those who work.
+(either part-time or full-time). A second dichotomy (`full`) contrasts those who work
+full-time time vs. part-time, but among only those who work.
 
 The two binary variables for the nested dichotomies can be created by recoding `partic` 
 as follows.  
@@ -294,7 +296,7 @@ names(wlf.nested)
 
 names(wlf.nested$models) # equivalent: names(models(wlf.models))
 
-# view the separate models; same as lapply(models(wlf.nested), I)
+# view the separate models
 models(wlf.nested, 1) 
 
 models(wlf.nested, 2)
@@ -314,7 +316,7 @@ whose columns represent the nested dichotomies.
 In the `Womenlf` example, the coefficients $\widehat{\beta}_{j1}$ give the estimated change in the
 log-odds of working vs. not working associated with a \$1,000 increase
 in husband's income and with having children present vs. absent, each holding the other constant.
-The coefficients $\widehat{\beta}_{j2}$ are similar for the log-odds of working fulltime vs. parttime
+The coefficients $\widehat{\beta}_{j2}$ are similar for the log-odds of working full-time vs. part-time
 among those who are working outside the home. The exponentiated coefficients
 $e^{\widehat{\beta}_{jk}}$ give multiplicative effects on the odds for these comparisons.
 ```{r coef}
@@ -323,8 +325,8 @@ coef(wlf.nested)
 # show as odds ratios
 exp(coef(wlf.nested))
 ```
-Thus, the odds of both working and working fulltime decrease with husband's income, by about 4% and 10% respectively per $1000.
-Having young children also decreases the odds of both working and working fulltime, by about 79% and 93% respectively.
+Thus, the odds of both working and working full-time decrease with husband's income, by about 4% and 10% respectively per $1000.
+Having young children also decreases the odds of both working and working full-time, by about 79% and 93% respectively.
 
 **Analysis of deviance**: A method for the `Anova()` function from the **car** package [@car2019]
 computes Type II or III likelihood-ratio or Wald tests for each term in the model. Note that the likelihood-ratio or Wald $\chi^2$ and degrees of freedom for the `Combined Responses` is the sum of their values for the separate dichotomies:
@@ -386,7 +388,7 @@ anova(wlf.nested, wlf.nested.1)
 ```
 
 Recall that `anova()` with two or models tests the models sequentially against one another, in the order specified.
-This assumes that the models compared are _nested_ (an unintentional a pun), in the sense that the
+This assumes that the models compared are _nested_ (an unintentional pun), in the sense that the
 terms in the smaller model in each sequential pair are a subset of those in the larger model.
 
 In a similar manner, we could fit and test a _wider_ scope of models. For example to add
@@ -405,20 +407,46 @@ either of the sub-models or of the combined model for the three response categor
 
 ### Obtaining fitted values: `predict()` 
 
-By default, `predict()` for a `"nestedLogit"` model object returns the predicted probabilities
-(`type = "response"`) of
-each of the response categories for _all_ observations in the data set:
-The computation is a bit tricky, because the probabilities of working full time
-or part time are conditional on working outside the home, but `predict()` takes care of the details.
+By default, `predict()` for a `"nestedLogit"` model object returns a `"predictNestedLogit"`
+object, which is a named list of four data
+frames whose columns are the response categories:
+
+* `p`: predicted response-category probabilities.
+* `logit`: the predicted probabilities transformed to the log-odds (logit) scale, `logit = log(p / (1 - p))`.
+* `se.p`: standard errors of the predicted probabilities, computed by the delta method (see the corresponding vignette).
+* `se.logit`: standard errors of the logits.
+
+The computation is a bit tricky, because the probabilities of working full-time
+or part-time are conditional on working outside the home, but `predict()` takes care of the details.  See `vignette("standard-errors")` for how these are calculated.
 
 ```{r}
-car::some(predict(wlf.nested))
+wlf.pred <- predict(wlf.nested)
+print(wlf.pred, n=5)
 ```
+By default, fitted values and standard errors are computed for _all_ the observations in the data set. You can
+provide a `newdata` data.frame containing arbitrary combinations of predicted values,
+for example to obtain a grid of predicted values for custom plots or other purposes.
+
+```{r}
+new <- expand.grid(hincome=seq(0, 45, length=4),
+                   children=c("absent", "present"))
+
+wlf.new <- predict(wlf.nested, new)
+```
+
+
+For greater flexibility, the `as.data.frame()` method for `"predictNestedLogit"`
+converts the components to long format.
+
+```{r}
+as.data.frame(wlf.new, newdata = new) 
+```
+
 
 ### Plotting `"nestedLogit"` objects
 
 The **nestedLogit** package includes a basic `plot()` method for `"nestedLogit"` models,
-which calculates fitted probabilities for the response categories and plots these
+which calculates fitted probabilities and standard errors for the response categories and plots the probabilities and point-wise confidence limits
 against a single explanatory variable
 on the horizontal axis, while `other` explanatory variables are fixed to particular values.
 To produce multi-panel plots, it is necessary to call `plot()` repeatedly for
@@ -427,7 +455,8 @@ various levels of the other predictors, and to compose these into a single figur
 ```{r wlf-plot}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "**plot method**: Predicted probabilities of working at all or working part time or full time"
+#| fig.cap = "**plot method**: Predicted probabilities and 95 percent pointwise confidence envelopes of not working, working part-time, and working full-time",
+#| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(wlf.nested, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
@@ -436,11 +465,11 @@ plot(wlf.nested, "hincome", list(children="present"), # right panel
 par(op)
 ```
 
-We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects.
+<!-- We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects. -->
 
-### Alternative models for the `Womenlf` data
+### Alternative models for the `Womenlf` data {#sec: alt-model}
 
-We've mentioned that the nested dichotomies {not working} vs. {parttime, fulltime} and {parttime} vs. {fulltime} for the `Womenlf` data are largely arbitrary. An alternative set of nested dichotomies first contrasts fulltime work with the other categories, {fulltime} vs. {not working, parttime}, and then {not working} vs. {part time}. The rationale is that the real hurdle for young married women to enter the paid labor force is to combine fulltime work outside the home with housework. This alternative nested-dichotomies model proves enlightening:
+We've mentioned that the nested dichotomies {not working} vs. {part-time, full-time} and {part-time} vs. {full-time} for the `Womenlf` data are largely arbitrary. An alternative set of nested dichotomies first contrasts full-time work with the other categories, {full-time} vs. {not working, part-time}, and then {not working} vs. {part-time}. The rationale is that the real hurdle for young married women to enter the paid labor force is to combine full-time work outside the home with housework. This alternative nested-dichotomies model proves enlightening:
 ```{r alt-model}
 wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               logits(full=dichotomy(nonfulltime=c("not.work", "parttime"), "fulltime"),
@@ -448,23 +477,24 @@ wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
                               data=Womenlf)
 ```
 
-The `Anova()` and `summary()` for this model show that the effects of husband's income and children are
-significant for the `full` model but not for the `part` model:
+The `Anova()` and `summary()` for this model show that the effects of husband's income and children make a substantial contribution to the `full` model but not to the `part` model:
 ```{r alt-anova}
 Anova(wlf.nested.alt)
 
 summary(wlf.nested.alt)
 ```
 
-It's apparent that the alternative model produces a simpler description of the data: The predictors husband's income and presence of children affect the decision to work fulltime, but not the decision to work parttime among those who aren't engaged in fulltime work.
+It's apparent that the alternative model produces a simpler description of the data: The predictors husband's income and presence of children affect the decision to work full-time, but not the decision to work part-time among those who aren't engaged in full-time work.
 
 But do the fits of the two models to the data differ? We can compare fitted probabilities under the two specifications:
 ```{r fit-correlations}
-fit1 <- predict(wlf.nested)
-fit2 <- predict(wlf.nested.alt)
+fit1 <- predict(wlf.nested)$p
+fit2 <- predict(wlf.nested.alt)$p
 diag(cor(fit1, fit2))
+mean(as.matrix(abs(fit1 - fit2)))
+max(abs(fit1 - fit2))
 ```
-The correlations of the fitted probabilities are high but far from perfect. 
+The fitted probabilities are similar but far from the same. 
 
 The two models have the same number of parameters and neither is nested within the other, so a conventional likelihood-ratio test is inappropriate, but we can still compare maximized log-likelihoods under the two models:
 ```{r compare-logLik}
@@ -498,10 +528,12 @@ summary(wlf.multinom)
 logLik(wlf.multinom)
 ```
 
-Check the correlation between fitted probabilities:
+Check the relationship between fitted probabilities:
 ```{r check-corr}
 fit3 <- predict(wlf.multinom, type="probs")[, c("not.work", "parttime", "fulltime")]
 diag(cor(fit2, fit3))
+mean(as.matrix(abs(fit2 - fit3)))
+max(abs(fit2 - fit3))
 ```
 As it turns out, the multinomial logit model and the alternative nested-dichotomies model produce nearly identical fits with similar simple interpretations.
 

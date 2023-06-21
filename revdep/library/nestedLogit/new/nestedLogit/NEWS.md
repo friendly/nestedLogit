@@ -1,9 +1,19 @@
+# nestedLogit 0.3.2
+
+* new `Effect` method for `"nestedLogit"` objects to create effect displays.
+* add Effect example to vignette
+
+
+# nestedLogit 0.3.1
+
+* correct buglet in `as.data.frame` method when `newdata` has one column
+* `predict.nestedLogit()` now includes the `newdata` data frame as an additional component (`.data`) in its result. Consequently, the `newdata` argument is no longer required in the `as.data.frame` method.
+
 # nestedLogit 0.3.0
 
 This is a major enhancement to the package, adding computations of standard errors and confidence intervals to predicted probabilities and logits.
 
-* Added an example of `lobstr::tree()` to print nested lists
-* Now use `fig.show="hold"` to keep `par(op)` with the code.
+## Enhancements
 * The `predict()` method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.
 * A `confint()` method for the result of `predict()` generates the corresponding confidence intervals.
 * `as.data.frame()` methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using `ggplot()`.
@@ -11,6 +21,10 @@ This is a major enhancement to the package, adding computations of standard erro
 * The `plot()` method for `"nestedLogit"` objects now plots confidence intervals for predicted probabilities.
 * A new vignette, "standard-errors", describes the mathematics behind the standard error calculations.
 * An old vignette on plotting methods was completely re-written using the new `predict()` methods and focusing exclusively on `ggplot2().
+
+## Other
+* Added an example of `lobstr::tree()` to print nested lists
+* Now use `fig.show="hold"` to keep `par(op)` with the code.
 
 # nestedLogit 0.2.1
 

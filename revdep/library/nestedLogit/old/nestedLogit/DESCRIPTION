@@ -1,6 +1,7 @@
 Package: nestedLogit
 Title: Nested Dichotomy Logistic Regression Models
-Version: 0.2.1
+Version: 0.3.0
+Date: 2023-05-30
 Authors@R: c(
     person("John", "Fox", , "jfox@mcmaster.ca", role = "aut",
            comment = c(ORCID = "0000-0002-1196-8012")),
@@ -11,7 +12,7 @@ Authors@R: c(
   )
 Description: Provides functions for specifying and fitting nested
     dichotomy logistic regression models for a multi-category response and
-    methods for summarising those models.  Nested dichotomies are
+    methods for summarising and plotting those models.  Nested dichotomies are
     statistically independent, and hence provide an additive decomposition
     of tests for the overall 'polytomous' response.  When the dichotomies
     make sense substantively, this method can be a simpler alternative to
@@ -23,20 +24,20 @@ License: GPL (>= 2)
 URL: https://github.com/friendly/nestedLogit
 BugReports: https://github.com/friendly/nestedLogit/issues
 Depends: R (>= 3.5.0)
-Imports: broom, car, dplyr, graphics, grDevices, stats
-Suggests: carData, directlabels, geomtextpath, ggplot2, here, knitr,
-        nnet, rmarkdown, spelling, testthat, tidyr
+Imports: broom, car, dplyr, graphics, grDevices, stats, stringr, tibble
+Suggests: carData, geomtextpath, ggplot2, here, lobstr, knitr, nnet,
+        rmarkdown, spelling, testthat, tidyr
 VignetteBuilder: knitr, rmarkdown
 Encoding: UTF-8
 Language: en-US
 LazyData: TRUE
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-05-12 15:09:47 UTC; friendly
+Packaged: 2023-05-30 16:09:16 UTC; friendly
 Author: John Fox [aut] (<https://orcid.org/0000-0002-1196-8012>),
   Michael Friendly [aut, cre] (<https://orcid.org/0000-0002-3237-0941>),
   Achim Zeileis [ctb] (<https://orcid.org/0000-0003-0918-3766>)
 Maintainer: Michael Friendly <friendly@yorku.ca>
 Repository: CRAN
-Date/Publication: 2023-05-15 08:20:02 UTC
-Built: R 4.2.3; ; 2023-05-26 04:00:17 UTC; windows
+Date/Publication: 2023-05-30 17:10:02 UTC
+Built: R 4.2.3; ; 2023-06-19 03:58:43 UTC; windows

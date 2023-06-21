@@ -1,0 +1,126 @@
+---
+title: "Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model"
+author: "John Fox"
+date: "2023-05-20"
+package: nestedLogit
+output:
+  rmarkdown::html_vignette:
+  fig_caption: yes
+bibliography: ["references.bib", "packages.bib"]
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<!-- \usepackage{amsmath} -->
+
+This document uses the delta method [@Fox:2021:Primer, sec. 6.3.5] to derive approximations to the variances of estimated probabilities for dichotomous logit models, and from these, for the nested logit model. The standard errors of these estimated probabilities are the square-roots of their respective variances.
+
+## Notation
+
+Let $\psi_j$ represent the probability that the dichotomous response in the $j$th nested dichotomous logit model is $Y_j = 1$ (i.e., a "success"),  $j = 1, \ldots, m - 1$, where $m$ is the number of response categories for the polytomy. Then $1 - \psi_j$ is the probability that $Y_j  = 0$ (i.e., a "failure"). I assume that the regression coefficients and their covariance matrix for each dichotomous logit model are estimated in the usual manner. 
+
+Let $\lambda_j = \log[\psi_j/(1 - \psi_j]$ represent the (estimated) logit (log-odds) for the $j$th dichotomous logit model, with variance $V(\lambda_j)$ (see below).
+
+Let $\phi_k$, $k = 1, \ldots, m$ represent the probability that the polytomous response is $Y = k$. 
+
+Let $\widehat{\psi}_{j}$ and $\widehat{\phi}_k$ represent the estimates of these probabilities. 
+
+In the sequel, which involves only the estimates of these and other parameters,  I'll omit the hats so as to simplify the notation.
+
+In the nested logit model, the polytomous probabilities $\phi_k$ are each products of probabilities  $\psi_j$ or $1 - \psi_j$ for $j \in \mathcal{M}_k \subseteq \left\{ 1, \ldots, m - 1 \right\}$; that is $\mathcal{M}_k$ is the subset of the dichotomous logit models that enter into $\phi_k$. Let $\psi_{j, k_j}$ represent either $\psi_j$ or $1 - \psi_j$, as appropriate for category $k$ of the polytomous response. Then
+\begin{equation*}
+ \phi_k = \prod_{j \in \mathcal{M}_k} \psi_{j,k_j}
+\end{equation*}
+for $k = 1, \ldots, m$.
+
+Finally, the individual-category probabilities $\phi_k$ can be converted into logits, $\Lambda_k = \log[\phi_k/(1 - \phi_k)]$. The estimates of these logits should approach asymptotic normality more rapidly than the estimates of the corresponding probabilities.
+
+### An Example
+
+I'll use the following example to illustrate the results in this document: Suppose that we have a three-category response variable $Y$ with categories $A$, $B$, and $C$, and define the two nested dichotomies $Y_1$ coded 0 or 1 for categories $\{A\}$ and $\{B, C\}$, respectively, and $Y_2$ coded 0 and 1 for categories $\{B\}$ and $\{C\}$. Then $\psi_1 = \Pr(Y_1 = 1) = \Pr(\{B, C\})$; $1 - \psi_1 = \Pr(Y_1 = 0) = \Pr(\{A\})$. As well, $\mathcal{M}_A = \{1\}$ and $\mathcal{M}_B = \mathcal{M}_C = \{1, 2\}$. Consequently,
+\begin{align*}
+	\phi_A &= \psi_{1, A_1} = 1 - \psi_{1}\\
+	\phi_B &= \psi_{1, B_1}\psi_{2, B_2} = \psi_{1}(1 - \psi_{2}) \\
+	\phi_C &= \psi_{1, C_1}\psi_{2, C_2} = \psi_{1}\psi_{2}
+\end{align*}
+Here, I abuse the notation slightly in the interest of clarity, using letters rather than numbers for the response categories, so the index of response categories, $k$, takes on the values $A$, $B$, and $C$, rather than 1, 2, and 3.
+
+## Variances of the Estimated Probabilities
+
+### For the Dichotomous Logit Models
+
+The estimated probability of success $\psi_{j}$ for the $j$th dichotomous logit model is
+\begin{equation*}
+ \psi_{j} = \frac{1}{1 + e^{-\lambda_{j}}}
+\end{equation*}
+Then
+\begin{align*}
+	\lambda_{j} &= \alpha^{(j)} + \beta_1^{(j)} x_1 + \cdots + \beta_p^{(j)} x_p \\
+	&= \mathbf{x}^T \boldsymbol{\beta}^{(j)}
+\end{align*}
+is a function of the regression coefficients, where $\mathbf{x}^T = [1, x_1, \ldots, x_p]$ (an arbitrary vector of values of the regressors) and $\boldsymbol{\beta}^{(j)} = [\alpha^{(j)}, \beta_1^{(j)}, \ldots, \beta_p^{(j)}]^T$. The probability of failure is
+\begin{equation*}
+ 1 - \psi_{j} = \frac{1}{1 + e^{\lambda_{j}}}
+\end{equation*}
+The variance of the logit is $V(\lambda_{j}) = \mathbf{x}^T V(\boldsymbol{\beta}^{(j)}) \mathbf{x}$,
+
+
+The derivatives of $\psi_{j}$ and $1 - \psi_{j}$ with respect to $\lambda_{j}$ are
+\begin{align*}
+ \frac{d\psi_{j}}{d\lambda_{j}} &= \frac{e^{-\lambda_{j}}}{\left( 1 + e^{-\lambda_{j}} \right)^2} \\
+ \frac{d \left(1 - \psi_{j} \right)}{d\lambda_{j}} &= - \frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}} \right)^2}
+\end{align*}
+
+By the univariate delta method,
+\begin{align*}
+ V(\psi_{j}) &\approx \left( \frac{d\psi_{j}}{d\lambda_{j}} \right)^2 V(\lambda_{j}) \\
+ &= \left[ \frac{e^{-\lambda_{j}}}{\left( 1 + e^{-\lambda_{j}} \right)^2} \right]^2 V(\lambda_{j})\\
+ V(1 - \psi_{j}) &\approx \left[ \frac{d \left(1 - \psi_{j} \right)}{d\lambda_{j}} \right]^2 V(\lambda_{j}) \\
+ &= \left[ \frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}} \right)^2}\right]^2 V(\lambda_{j}) \\
+ &= V(\psi_{j})
+\end{align*}
+
+### For the Nested Logit Model
+
+The variances of the estimated response-category probabilities for the polytomous response can be obtained similarly by the multivariate delta method, recognizing that these probabilities are products of the dichotomous probabilities. The result is greatly simplified because the dichotomies are independent, and so the covariance matrix of the estimated dichotomous probabilities is diagonal.
+
+The required derivatives are
+\begin{equation*}
+ \frac{\partial \phi_k}{\partial \psi_{j, k_j} } = \prod_{j' \in \mathcal{M}_k - \{j\}} \psi_{j', k_j}
+\end{equation*}
+for $j \in \mathcal{M}_k$ and $k = 1, \ldots, m$. Here, $-$ denotes set difference. Because $V(\psi_{j}) =  V(1 - \psi_{j})$, it's always the case that $V(\psi_{j, k_j}) =  V(\psi_{j})$, and so
+\begin{align*}
+ V(\phi_k) &\approx \sum_{j \in \mathcal{M}_k} \left( \frac{\partial \phi_k}{\partial \psi_{j, k_j} }  \right)^2 V\left( \psi_{j} \right) \\
+ &= \sum_{j \in \mathcal{M}_k} \left( \prod_{j' \in \mathcal{M}_k - \{j\}} \psi_{j', k_j} \right)^2 V\left( \psi_{j} \right)
+\end{align*}
+for $k = 1, \ldots, m$.
+
+Applying these results to the example, recall, first, that $\mathcal{M}_A = \{1\}$ and so the set for the product $\prod_{j' \in \mathcal{M}_{A} - \{j\}} \phi^{(j', A_j)}$, that is, $j' \in \{1\}-\{1\}$, is empty. In this case, the product is taken = 1, and $V(\phi_A) = V(\psi_{1})$. That makes intuitive sense, because, as noted previously, $\phi_A = 1 - \psi_{1}$.
+
+Proceeding with $B$ and $C$, $\mathcal{M}_B = \mathcal{M}_C = \{1, 2\}$. Consequently, each product $\prod_{j' \in \mathcal{M}_{B} - \{j\}} \psi_{j', B_j}$ and $\prod_{j' \in \mathcal{M}_{C} - \{j\}} \psi_{j', C_j}$ has only one term, for $j' = 2$ in the case of $B$ or $j' = 1$ in the case of $C$:
+\begin{align*}
+	V(\phi_B) &= \psi_{2, B_2} V(\psi_{1}) + \psi_{1, B_1}  V(\psi_{2}) \\
+	&= (1 - \psi_{2}) V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
+	V(\phi_C) &= \psi_{2, C_2} V(\psi_{1}) + \psi_{1, C_1}  V(\psi_{2}) \\
+	&= \psi_{2} V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
+\end{align*}
+
+Yet another application of the delta method produces approximate variances for the individual-category logits. The relevant derivative is
+\begin{equation*}
+ \frac{d\Lambda_k}{d\phi_k} = \frac{1}{\phi_k(1 - \phi_k)}
+\end{equation*}
+for $k = 1, \ldots, m$, and so
+\begin{align*}
+ V(\Lambda_k) &\approx \left( \frac{d\Lambda_k}{d\phi_k} \right)^2 V(\phi_k) \\
+ &= \left[ \frac{1}{\phi_k(1 - \phi_k)} \right]^2 V(\phi_k)
+\end{align*}
+
+## Acknowledgment
+
+I'm grateful to Georges Monette of York University for a close reading of an earlier version of this document, and in particular for his suggested simplification of the notation employed.
+
+## Reference
+

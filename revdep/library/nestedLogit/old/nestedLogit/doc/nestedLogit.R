@@ -31,7 +31,9 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "equatiomatic")
+to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+
+# removed: "equatiomatic" -- now in references.bib
 
 ## ----setup--------------------------------------------------------------------
 library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
@@ -99,7 +101,7 @@ names(wlf.nested)
 
 names(wlf.nested$models) # equivalent: names(models(wlf.models))
 
-# view the separate models; same as lapply(models(wlf.nested), I)
+# view the separate models
 models(wlf.nested, 1) 
 
 models(wlf.nested, 2)
@@ -144,7 +146,17 @@ wlf.nested.2 <- update(wlf.nested, formula = . ~ .^2)
 anova(wlf.nested, wlf.nested.2)
 
 ## -----------------------------------------------------------------------------
-car::some(predict(wlf.nested))
+wlf.pred <- predict(wlf.nested)
+print(wlf.pred, n=5)
+
+## -----------------------------------------------------------------------------
+new <- expand.grid(hincome=seq(0, 45, length=4),
+                   children=c("absent", "present"))
+
+wlf.new <- predict(wlf.nested, new)
+
+## -----------------------------------------------------------------------------
+as.data.frame(wlf.new, newdata = new) 
 
 ## ----wlf-plot-----------------------------------------------------------------
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
@@ -166,9 +178,11 @@ Anova(wlf.nested.alt)
 summary(wlf.nested.alt)
 
 ## ----fit-correlations---------------------------------------------------------
-fit1 <- predict(wlf.nested)
-fit2 <- predict(wlf.nested.alt)
+fit1 <- predict(wlf.nested)$p
+fit2 <- predict(wlf.nested.alt)$p
 diag(cor(fit1, fit2))
+mean(as.matrix(abs(fit1 - fit2)))
+max(abs(fit1 - fit2))
 
 ## ----compare-logLik-----------------------------------------------------------
 logLik(wlf.nested)
@@ -193,6 +207,8 @@ logLik(wlf.multinom)
 ## ----check-corr---------------------------------------------------------------
 fit3 <- predict(wlf.multinom, type="probs")[, c("not.work", "parttime", "fulltime")]
 diag(cor(fit2, fit3))
+mean(as.matrix(abs(fit2 - fit3)))
+max(abs(fit2 - fit3))
 
 ## ----write-bib, echo = FALSE--------------------------------------------------
 # write a packages.bib file of the packages (.packages()) that have been used here

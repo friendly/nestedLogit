@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="John Fox" />
+
+<meta name="date" content="2023-05-20" />
+
+<title>Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Standard Errors of Fitted Category
+Probabilities by the Delta Method for the Nested Logit Model</h1>
+<h4 class="author">John Fox</h4>
+<h4 class="date">2023-05-20</h4>
+
+
+
+<!-- \usepackage{amsmath} -->
+<p>This document uses the delta method <span class="citation">(Fox,
+2021, sec. 6.3.5)</span> to derive approximations to the variances of
+estimated probabilities for dichotomous logit models, and from these,
+for the nested logit model. The standard errors of these estimated
+probabilities are the square-roots of their respective variances.</p>
+<div id="notation" class="section level2">
+<h2>Notation</h2>
+<p>Let <span class="math inline">\(\psi_j\)</span> represent the
+probability that the dichotomous response in the <span class="math inline">\(j\)</span>th nested dichotomous logit model is
+<span class="math inline">\(Y_j = 1\)</span> (i.e., a “success”), <span class="math inline">\(j = 1, \ldots, m - 1\)</span>, where <span class="math inline">\(m\)</span> is the number of response categories
+for the polytomy. Then <span class="math inline">\(1 - \psi_j\)</span>
+is the probability that <span class="math inline">\(Y_j = 0\)</span>
+(i.e., a “failure”). I assume that the regression coefficients and their
+covariance matrix for each dichotomous logit model are estimated in the
+usual manner.</p>
+<p>Let <span class="math inline">\(\lambda_j = \log[\psi_j/(1 -
+\psi_j]\)</span> represent the (estimated) logit (log-odds) for the
+<span class="math inline">\(j\)</span>th dichotomous logit model, with
+variance <span class="math inline">\(V(\lambda_j)\)</span> (see
+below).</p>
+<p>Let <span class="math inline">\(\phi_k\)</span>, <span class="math inline">\(k = 1, \ldots, m\)</span> represent the
+probability that the polytomous response is <span class="math inline">\(Y = k\)</span>.</p>
+<p>Let <span class="math inline">\(\widehat{\psi}_{j}\)</span> and <span class="math inline">\(\widehat{\phi}_k\)</span> represent the estimates
+of these probabilities.</p>
+<p>In the sequel, which involves only the estimates of these and other
+parameters, I’ll omit the hats so as to simplify the notation.</p>
+<p>In the nested logit model, the polytomous probabilities <span class="math inline">\(\phi_k\)</span> are each products of probabilities
+<span class="math inline">\(\psi_j\)</span> or <span class="math inline">\(1 - \psi_j\)</span> for <span class="math inline">\(j \in \mathcal{M}_k \subseteq \left\{ 1, \ldots, m
+- 1 \right\}\)</span>; that is <span class="math inline">\(\mathcal{M}_k\)</span> is the subset of the
+dichotomous logit models that enter into <span class="math inline">\(\phi_k\)</span>. Let <span class="math inline">\(\psi_{j, k_j}\)</span> represent either <span class="math inline">\(\psi_j\)</span> or <span class="math inline">\(1 -
+\psi_j\)</span>, as appropriate for category <span class="math inline">\(k\)</span> of the polytomous response. Then <span class="math display">\[\begin{equation*}
+\phi_k = \prod_{j \in \mathcal{M}_k} \psi_{j,k_j}
+\end{equation*}\]</span> for <span class="math inline">\(k = 1, \ldots,
+m\)</span>.</p>
+<p>Finally, the individual-category probabilities <span class="math inline">\(\phi_k\)</span> can be converted into logits,
+<span class="math inline">\(\Lambda_k = \log[\phi_k/(1 -
+\phi_k)]\)</span>. The estimates of these logits should approach
+asymptotic normality more rapidly than the estimates of the
+corresponding probabilities.</p>
+<div id="an-example" class="section level3">
+<h3>An Example</h3>
+<p>I’ll use the following example to illustrate the results in this
+document: Suppose that we have a three-category response variable <span class="math inline">\(Y\)</span> with categories <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, and define the two nested dichotomies
+<span class="math inline">\(Y_1\)</span> coded 0 or 1 for categories
+<span class="math inline">\(\{A\}\)</span> and <span class="math inline">\(\{B, C\}\)</span>, respectively, and <span class="math inline">\(Y_2\)</span> coded 0 and 1 for categories <span class="math inline">\(\{B\}\)</span> and <span class="math inline">\(\{C\}\)</span>. Then <span class="math inline">\(\psi_1 = \Pr(Y_1 = 1) = \Pr(\{B, C\})\)</span>;
+<span class="math inline">\(1 - \psi_1 = \Pr(Y_1 = 0) =
+\Pr(\{A\})\)</span>. As well, <span class="math inline">\(\mathcal{M}_A
+= \{1\}\)</span> and <span class="math inline">\(\mathcal{M}_B =
+\mathcal{M}_C = \{1, 2\}\)</span>. Consequently, <span class="math display">\[\begin{align*}
+    \phi_A &amp;= \psi_{1, A_1} = 1 - \psi_{1}\\
+    \phi_B &amp;= \psi_{1, B_1}\psi_{2, B_2} = \psi_{1}(1 - \psi_{2}) \\
+    \phi_C &amp;= \psi_{1, C_1}\psi_{2, C_2} = \psi_{1}\psi_{2}
+\end{align*}\]</span> Here, I abuse the notation slightly in the
+interest of clarity, using letters rather than numbers for the response
+categories, so the index of response categories, <span class="math inline">\(k\)</span>, takes on the values <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span>, rather than 1, 2, and 3.</p>
+</div>
+</div>
+<div id="variances-of-the-estimated-probabilities" class="section level2">
+<h2>Variances of the Estimated Probabilities</h2>
+<div id="for-the-dichotomous-logit-models" class="section level3">
+<h3>For the Dichotomous Logit Models</h3>
+<p>The estimated probability of success <span class="math inline">\(\psi_{j}\)</span> for the <span class="math inline">\(j\)</span>th dichotomous logit model is <span class="math display">\[\begin{equation*}
+\psi_{j} = \frac{1}{1 + e^{-\lambda_{j}}}
+\end{equation*}\]</span> Then <span class="math display">\[\begin{align*}
+    \lambda_{j} &amp;= \alpha^{(j)} + \beta_1^{(j)} x_1 + \cdots +
+\beta_p^{(j)} x_p \\
+    &amp;= \mathbf{x}^T \boldsymbol{\beta}^{(j)}
+\end{align*}\]</span> is a function of the regression coefficients,
+where <span class="math inline">\(\mathbf{x}^T = [1, x_1, \ldots,
+x_p]\)</span> (an arbitrary vector of values of the regressors) and
+<span class="math inline">\(\boldsymbol{\beta}^{(j)} = [\alpha^{(j)},
+\beta_1^{(j)}, \ldots, \beta_p^{(j)}]^T\)</span>. The probability of
+failure is <span class="math display">\[\begin{equation*}
+1 - \psi_{j} = \frac{1}{1 + e^{\lambda_{j}}}
+\end{equation*}\]</span> The variance of the logit is <span class="math inline">\(V(\lambda_{j}) = \mathbf{x}^T
+V(\boldsymbol{\beta}^{(j)}) \mathbf{x}\)</span>,</p>
+<p>The derivatives of <span class="math inline">\(\psi_{j}\)</span> and
+<span class="math inline">\(1 - \psi_{j}\)</span> with respect to <span class="math inline">\(\lambda_{j}\)</span> are <span class="math display">\[\begin{align*}
+\frac{d\psi_{j}}{d\lambda_{j}} &amp;= \frac{e^{-\lambda_{j}}}{\left( 1 +
+e^{-\lambda_{j}} \right)^2} \\
+\frac{d \left(1 - \psi_{j} \right)}{d\lambda_{j}} &amp;= -
+\frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}} \right)^2}
+\end{align*}\]</span></p>
+<p>By the univariate delta method, <span class="math display">\[\begin{align*}
+V(\psi_{j}) &amp;\approx \left( \frac{d\psi_{j}}{d\lambda_{j}} \right)^2
+V(\lambda_{j}) \\
+&amp;= \left[ \frac{e^{-\lambda_{j}}}{\left( 1 + e^{-\lambda_{j}}
+\right)^2} \right]^2 V(\lambda_{j})\\
+V(1 - \psi_{j}) &amp;\approx \left[ \frac{d \left(1 - \psi_{j}
+\right)}{d\lambda_{j}} \right]^2 V(\lambda_{j}) \\
+&amp;= \left[ \frac{e^{\lambda_{j}}}{\left( 1 + e^{\lambda_{j}}
+\right)^2}\right]^2 V(\lambda_{j}) \\
+&amp;= V(\psi_{j})
+\end{align*}\]</span></p>
+</div>
+<div id="for-the-nested-logit-model" class="section level3">
+<h3>For the Nested Logit Model</h3>
+<p>The variances of the estimated response-category probabilities for
+the polytomous response can be obtained similarly by the multivariate
+delta method, recognizing that these probabilities are products of the
+dichotomous probabilities. The result is greatly simplified because the
+dichotomies are independent, and so the covariance matrix of the
+estimated dichotomous probabilities is diagonal.</p>
+<p>The required derivatives are <span class="math display">\[\begin{equation*}
+\frac{\partial \phi_k}{\partial \psi_{j, k_j} } = \prod_{j&#39; \in
+\mathcal{M}_k - \{j\}} \psi_{j&#39;, k_j}
+\end{equation*}\]</span> for <span class="math inline">\(j \in
+\mathcal{M}_k\)</span> and <span class="math inline">\(k = 1, \ldots,
+m\)</span>. Here, <span class="math inline">\(-\)</span> denotes set
+difference. Because <span class="math inline">\(V(\psi_{j}) = V(1 -
+\psi_{j})\)</span>, it’s always the case that <span class="math inline">\(V(\psi_{j, k_j}) = V(\psi_{j})\)</span>, and so
+<span class="math display">\[\begin{align*}
+V(\phi_k) &amp;\approx \sum_{j \in \mathcal{M}_k} \left( \frac{\partial
+\phi_k}{\partial \psi_{j, k_j} }  \right)^2 V\left( \psi_{j} \right) \\
+&amp;= \sum_{j \in \mathcal{M}_k} \left( \prod_{j&#39; \in \mathcal{M}_k
+- \{j\}} \psi_{j&#39;, k_j} \right)^2 V\left( \psi_{j} \right)
+\end{align*}\]</span> for <span class="math inline">\(k = 1, \ldots,
+m\)</span>.</p>
+<p>Applying these results to the example, recall, first, that <span class="math inline">\(\mathcal{M}_A = \{1\}\)</span> and so the set for
+the product <span class="math inline">\(\prod_{j&#39; \in
+\mathcal{M}_{A} - \{j\}} \phi^{(j&#39;, A_j)}\)</span>, that is, <span class="math inline">\(j&#39; \in \{1\}-\{1\}\)</span>, is empty. In this
+case, the product is taken = 1, and <span class="math inline">\(V(\phi_A) = V(\psi_{1})\)</span>. That makes
+intuitive sense, because, as noted previously, <span class="math inline">\(\phi_A = 1 - \psi_{1}\)</span>.</p>
+<p>Proceeding with <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, <span class="math inline">\(\mathcal{M}_B = \mathcal{M}_C = \{1, 2\}\)</span>.
+Consequently, each product <span class="math inline">\(\prod_{j&#39; \in
+\mathcal{M}_{B} - \{j\}} \psi_{j&#39;, B_j}\)</span> and <span class="math inline">\(\prod_{j&#39; \in \mathcal{M}_{C} - \{j\}}
+\psi_{j&#39;, C_j}\)</span> has only one term, for <span class="math inline">\(j&#39; = 2\)</span> in the case of <span class="math inline">\(B\)</span> or <span class="math inline">\(j&#39; =
+1\)</span> in the case of <span class="math inline">\(C\)</span>: <span class="math display">\[\begin{align*}
+    V(\phi_B) &amp;= \psi_{2, B_2} V(\psi_{1}) + \psi_{1,
+B_1}  V(\psi_{2}) \\
+    &amp;= (1 - \psi_{2}) V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
+    V(\phi_C) &amp;= \psi_{2, C_2} V(\psi_{1}) + \psi_{1,
+C_1}  V(\psi_{2}) \\
+    &amp;= \psi_{2} V(\psi_{1}) + \psi_{1} V(\psi_{2}) \\
+\end{align*}\]</span></p>
+<p>Yet another application of the delta method produces approximate
+variances for the individual-category logits. The relevant derivative is
+<span class="math display">\[\begin{equation*}
+\frac{d\Lambda_k}{d\phi_k} = \frac{1}{\phi_k(1 - \phi_k)}
+\end{equation*}\]</span> for <span class="math inline">\(k = 1, \ldots,
+m\)</span>, and so <span class="math display">\[\begin{align*}
+V(\Lambda_k) &amp;\approx \left( \frac{d\Lambda_k}{d\phi_k} \right)^2
+V(\phi_k) \\
+&amp;= \left[ \frac{1}{\phi_k(1 - \phi_k)} \right]^2 V(\phi_k)
+\end{align*}\]</span></p>
+</div>
+</div>
+<div id="acknowledgment" class="section level2">
+<h2>Acknowledgment</h2>
+<p>I’m grateful to Georges Monette of York University for a close
+reading of an earlier version of this document, and in particular for
+his suggested simplification of the notation employed.</p>
+</div>
+<div id="reference" class="section level2 unnumbered">
+<h2 class="unnumbered">Reference</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Fox:2021:Primer" class="csl-entry">
+Fox, J. (2021). <em>A mathematical primer for social statistics</em>
+(Second edition). Thousand Oaks <span>CA</span>: Sage. Retrieved from <a href="https://www.john-fox.ca/MathPrimer/index.html">https://www.john-fox.ca/MathPrimer/index.html</a>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
