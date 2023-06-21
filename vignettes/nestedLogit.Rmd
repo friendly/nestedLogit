@@ -490,12 +490,13 @@ An alternative style of effect plot shows the fit as a stacked-area graph (in th
 #| out.width = "100%",
 #| fig.height = 4,
 #| fig.cap = "Stacked-area predictor effect plots for the nested-logit model fit to the `Womenlf` data"
-plot(predictorEffects(wlf.nested), axes=list(y=list(style="stacked")))
+plot(predictorEffects(wlf.nested),
+     axes=list(y=list(style="stacked")))
 ```
 
 The computation and display of effect graphs are highly customizable. For details, see the documentation for the **effects** package.
 
-### Alternative models for the `Womenlf` data {#sec: alt-model}
+### Alternative models for the `Womenlf` data 
 
 We've mentioned that the nested dichotomies {not working} vs. {part-time, full-time} and {part-time} vs. {full-time} for the `Womenlf` data are largely arbitrary. An alternative set of nested dichotomies first contrasts full-time work with the other categories, {full-time} vs. {not working, part-time}, and then {not working} vs. {part-time}. The rationale is that the real hurdle for young married women to enter the paid labor force is to combine full-time work outside the home with housework. This alternative nested-dichotomies model proves enlightening:
 ```{r alt-model}
@@ -539,7 +540,8 @@ Here's a graph of the alternative model:
 ```{r wlf-alt-plot}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "Predicted probabilities for the alternative nested-dichotomies model"
+#| fig.cap = "Predicted probabilities for the alternative nested-dichotomies model",
+#| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
      xlab="Husband's Income", legend.location="top")
