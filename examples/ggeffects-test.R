@@ -18,30 +18,15 @@ m <- nestedLogit(partic ~ hincome + children,
                  data = Womenlf
 )
 
-ggpredict(m, c("hincome", "children")) |> plot()
+ggpredict(m, c("hincome[all]", "children")) |> plot()
 
-# Using ggeffects 1.2.2.14
-# Error in if ((is.null(mf) || nrow(mf) == 0) && source != "environment") { :
-#     missing value where TRUE/FALSE needed
-#   In addition: Warning message:
-#     Could not access model information.
-#   > traceback()
-#   5: get_data.default(model, source = "frame")
-#   4: insight::get_data(model, source = "frame")
-#   3: ggpredict_helper(model = model, terms = terms, ci.lvl = ci.lvl,
-#                       type = type, typical = typical, ppd = ppd, condition = condition,
-#                       back.transform = back.transform, vcov.fun = vcov.fun, vcov.type = vcov.type,
-#                       vcov.args = vcov.args, interval = interval, verbose = verbose,
-#                       ...)
-#   2: ggpredict(m, c("hincome", "children"))
-#   1: plot(ggpredict(m, c("hincome", "children")))
 
 # Data were 'prettified'. Consider using `terms="hincome [all]"` to get smooth plots.
 # Error: At least one term specified in `terms` is no valid model term.
 
-ggeffect(m, terms = "hincome[5:40, by=5]")
 
-# Can't compute marginal effects, 'effects::Effect()' returned an error.
-#
-# Reason: object 'prior.weights' not found
-# You may try 'ggpredict()' or 'ggemmeans()'.
+
+wlf.ggeff <- ggeffect(m, terms = c("hincome[5:40, by=5]", "children"))
+plot(wlf.ggeff, facet=TRUE)
+
+# why does this produce only one plot??

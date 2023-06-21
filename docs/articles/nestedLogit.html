@@ -987,6 +987,13 @@ the <code>Womenlf</code> data
 <p>The computation and display of effect graphs are highly customizable.
 For details, see the documentation for the <strong>effects</strong>
 package.</p>
+<p>Effect plots for nestedLogit models are also supported in the
+<strong>ggeffects</strong> package <span class="citation">(Lüdecke,
+2023)</span>. For example, the following (not run) produces plots of
+predicted probabilities for the same model with separate panels for the
+levels of <code>partic</code>.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggpredict</span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hincome[all]"</span>, <span class="st">"children"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="alternative-models-for-the-womenlf-data">Alternative models for the <code>Womenlf</code> data<a class="anchor" aria-label="anchor" href="#alternative-models-for-the-womenlf-data"></a>
@@ -1000,7 +1007,7 @@ working} vs. {part-time}. The rationale is that the real hurdle for
 young married women to enter the paid labor force is to combine
 full-time work outside the home with housework. This alternative
 nested-dichotomies model proves enlightening:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.nested.alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>,</span>
 <span>                              <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span>full<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span>nonfulltime<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span>, <span class="st">"fulltime"</span><span class="op">)</span>,</span>
 <span>                                     part<span class="op">=</span><span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1009,7 +1016,7 @@ nested-dichotomies model proves enlightening:</p>
 show that the effects of husband’s income and children make a
 substantial contribution to the <code>full</code> model but not to the
 <code>part</code> model:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  Analysis of Deviance Tables (Type II tests)</span></span>
@@ -1094,7 +1101,7 @@ children affect the decision to work full-time, but not the decision to
 work part-time among those who aren’t engaged in full-time work.</p>
 <p>But do the fits of the two models to the data differ? We can compare
 fitted probabilities under the two specifications:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span><span class="op">$</span><span class="va">p</span></span>
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span><span class="op">$</span><span class="va">p</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit1</span>, <span class="va">fit2</span><span class="op">)</span><span class="op">)</span></span>
@@ -1109,7 +1116,7 @@ fitted probabilities under the two specifications:</p>
 nested within the other, so a conventional likelihood-ratio test is
 inappropriate, but we can still compare maximized log-likelihoods under
 the two models:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'log Lik.' -212.1 (df=6)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span><span class="op">)</span></span>
@@ -1117,7 +1124,7 @@ the two models:</p>
 <p>Because the sample sizes and numbers of parameters are the same for
 the two models, differences in AIC and BIC are just twice the
 differences in the log-likelihoods; for example:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="va">wlf.nested.alt</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                df   AIC</span></span>
 <span><span class="co">#&gt; wlf.nested      6 436.2</span></span>
@@ -1125,7 +1132,7 @@ differences in the log-likelihoods; for example:</p>
 <p>The comparison slightly favors the alternative nested-dichotomies
 model.</p>
 <p>Here’s a graph of the alternative model:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfcol<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.nested.alt</span>, <span class="st">"hincome"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>children<span class="op">=</span><span class="st">"absent"</span><span class="op">)</span>, <span class="co"># left panel</span></span>
 <span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span>, legend.location<span class="op">=</span><span class="st">"top"</span><span class="op">)</span></span>
@@ -1142,7 +1149,7 @@ specification.</p>
 <p>It’s also of interest to compare the nested-dichotomies models to the
 multinomial logit model, which, as we explained, treats the response
 categories symmetrically:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wlf.multinom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, data <span class="op">=</span> <span class="va">Womenlf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # weights:  12 (6 variable)</span></span>
 <span><span class="co">#&gt; initial  value 288.935032 </span></span>
@@ -1168,7 +1175,7 @@ categories symmetrically:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">wlf.multinom</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'log Lik.' -211.4 (df=6)</span></span></code></pre></div>
 <p>Check the relationship between fitted probabilities:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">wlf.multinom</span>, type<span class="op">=</span><span class="st">"probs"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"not.work"</span>, <span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="va">fit3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; not.work parttime fulltime </span></span>
@@ -1242,6 +1249,10 @@ applied regression</em>. Retrieved from <a href="https://CRAN.R-project.org/pack
 Friendly, M., &amp; Meyer, D. (2016). <em>Discrete data analysis with
 <span>R</span>: Visualization and modeling techniques for categorical
 and count data</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-R-ggeffects" class="csl-entry">
+Lüdecke, D. (2023). <em>Ggeffects: Create tidy data frames of marginal
+effects for ggplot from model outputs</em>. Retrieved from <a href="https://strengejacke.github.io/ggeffects/" class="external-link">https://strengejacke.github.io/ggeffects/</a>
 </div>
 <div id="ref-R-broom" class="csl-entry">
 Robinson, D., Hayes, A., &amp; Couch, S. (2023). <em>Broom: Convert

@@ -39,6 +39,7 @@ Suggests:
     carData,
     geomtextpath,
     ggplot2,
+    ggeffects,
     here,
     lobstr,
     knitr,

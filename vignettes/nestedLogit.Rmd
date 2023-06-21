@@ -47,7 +47,7 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-.to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+.to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath", "ggeffects")
 
 # removed: "equatiomatic" -- now in references.bib
 ```
@@ -495,6 +495,16 @@ plot(predictorEffects(wlf.nested),
 ```
 
 The computation and display of effect graphs are highly customizable. For details, see the documentation for the **effects** package.
+
+Effect plots for nestedLogit models are also supported in the
+**ggeffects** package [@R-ggeffects].  For example, the following
+(not run) produces plots of predicted probabilities for the same model with separate panels for the levels of `partic`.
+
+```{r wlf-ggeff}
+#| eval=FALSE
+ggpredict(wlf.nested, c("hincome[all]", "children")) |> plot()
+```
+
 
 ### Alternative models for the `Womenlf` data 
 
