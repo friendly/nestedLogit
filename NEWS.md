@@ -1,6 +1,7 @@
 # nestedLogit 0.3.2
 
 * new `Effect` method for `"nestedLogit"` objects to create effect displays.
+* add Effect example to vignette
 
 
 # nestedLogit 0.3.1

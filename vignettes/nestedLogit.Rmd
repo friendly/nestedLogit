@@ -329,7 +329,7 @@ exp(coef(wlf.nested))
 Thus, the odds of both working and working full-time decrease with husband's income, by about 4% and 10% respectively per $1000.
 Having young children also decreases the odds of both working and working full-time, by about 79% and 93% respectively.
 
-**Analysis of deviance**: A method for the `Anova()` function from the **car** package [@car2019]
+**Analysis of deviance**: A method for the `Anova()` function from the **car** package [@R-car]
 computes Type II or III likelihood-ratio or Wald tests for each term in the model. Note that the likelihood-ratio or Wald $\chi^2$ and degrees of freedom for the `Combined Responses` is the sum of their values for the separate dichotomies:
 ```{r Anova}
 Anova(wlf.nested)
@@ -468,7 +468,7 @@ par(op)
 
 ### Effect plots for `"nestedLogit"` models
 
-We provide a `"nestedLogit"` method for the `Effect()` function in the **effects** package [@effects2003; @effects2019]. Because `Effect()` is the basic building block for other functions in the **effects** package, such as `predictorEffects()` [@effects2018], the full range of capabilities of the **effects** package is available; in particular, it's possible to produce effect plots similar to those for multinomial logistic regression models [@effects2009].
+We provide a `"nestedLogit"` method for the `Effect()` function in the **effects** package [@effects2003; @FoxWeisberg:2019:CAR]. Because `Effect()` is the basic building block for other functions in the **effects** package, such as `predictorEffects()` [@effects2018], the full range of capabilities of the **effects** package is available; in particular, it's possible to produce effect plots similar to those for multinomial logistic regression models [@effects2009].
 
 We illustrate with the nested-logit model fit to the `Womenlf` data set:
 
