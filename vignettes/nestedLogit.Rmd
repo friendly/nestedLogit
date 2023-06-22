@@ -459,10 +459,15 @@ various levels of the other predictors, and to compose these into a single figur
 #| fig.cap = "**plot method**: Predicted probabilities and 95 percent pointwise confidence envelopes of not working, working part-time, and working full-time",
 #| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)                  # ggplot discrete colors
+plot(wlf.nested, "hincome",                  # left panel
+     other = list(children="absent"),
+     xlab = "Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested, "hincome",                  # right panel
+     other = list(children="present"),
+     xlab = "Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
 ```
 
@@ -491,7 +496,8 @@ An alternative style of effect plot shows the fit as a stacked-area graph (in th
 #| fig.height = 4,
 #| fig.cap = "Stacked-area predictor effect plots for the nested-logit model fit to the `Womenlf` data"
 plot(predictorEffects(wlf.nested),
-     axes=list(y=list(style="stacked")))
+     axes=list(y=list(style="stacked")),
+     lines=list(col=scales::hue_pal()(3)))
 ```
 
 The computation and display of effect graphs are highly customizable. For details, see the documentation for the **effects** package.
@@ -553,10 +559,15 @@ Here's a graph of the alternative model:
 #| fig.cap = "Predicted probabilities for the alternative nested-dichotomies model",
 #| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested.alt, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)
+plot(wlf.nested.alt, "hincome",           # left panel
+     others = list(children="absent"), 
+     xlab="Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested.alt, "hincome",           # right panel
+     others = list(children="present"),
+     xlab="Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
 ```
 Compare this to the previous graph for the original specification.
