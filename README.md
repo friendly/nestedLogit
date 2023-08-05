@@ -9,6 +9,7 @@ Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https:/
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-project.org/package=nestedLogit)
 [![Downloads](https://cranlogs.r-pkg.org/badges/nestedLogit?color=brightgreen)](https://www.r-pkg.org:443/pkg/nestedLogit)
+[![](https://img.shields.io/badge/pkgdown%20site-blue)](https://friendly.github.io/nestedLogit)
 
 <!-- badges: end -->
 
