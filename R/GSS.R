@@ -17,7 +17,7 @@
 #'   \item{degree}{The respondent's level of education, a factor with the same levels
 #'   as \code{parentdeg}.}
 #'   \item{year}{The year of the survey, between \code{1972} and
-#'   code{2016}.}
+#'   \code{2016}.}
 #'   }
 #'
 #' @source General Social Survey, NORC, The University of Chicago

@@ -149,7 +149,7 @@ to label the curves directly.  The `geomtextpath` package [@R-geomtextpath] prod
 ```{r wlf-ggplot-p2}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "The same plot using direct labels on the curves rather than a legend.`"
+#| fig.cap = "The same plot using direct labels on the curves rather than a legend."
 gg1 + geom_textline(aes(label = response), 
                     hjust = -0.01, vjust=-0.5, size=5) +
   theme(legend.position = "none")
