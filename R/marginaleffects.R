@@ -10,12 +10,14 @@ get_coef.nestedLogit <- function(model, ...) {
   return(b)
 }
 
+
 set_coef.nestedLogit <- function(model, coefs, ...) {
   out <- model
   out$b <- coefs
   return(out)
 }
 
+#' @importFrom stats vcov
 get_vcov.nestedLogit <- function(model, ...) {
   return(vcov(model))
 }
