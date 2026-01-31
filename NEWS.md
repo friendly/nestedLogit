@@ -1,3 +1,6 @@
+# nestedLogit 0.3.4
+
+
 # nestedLogit 0.3.3
 
 * Fixed documentation error in GSS.R
