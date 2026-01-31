@@ -85,7 +85,9 @@ Let \(\phi_{ij} \equiv \phi_j \,  ( \vec{x}_i )\)
 be the probability of response $j$ for case
 $i$, given the predictors $\vec{x}_i$.
 Because \(\sum_j \,  \phi_{ij} = 1\), any \(m - 1\) of
-these probabilities imply the last; for example, \(\phi_{im} = 1 - \sum_{j = 1}^{m - 1} \,  \phi_{ij}\).  The essential idea is to
+these probabilities imply the last; for example, \(\phi_{im} = 1 - \sum_{j = 1}^{m - 1} \,  \phi_{ij}\).  
+
+The essential idea is to
 construct a model for the polytomous 
 response composed of $m-1$
 logit comparisons among the response categories in a manner analogous to

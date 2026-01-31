@@ -1,5 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -15,7 +16,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
 
-**Version 0.3.2**
+**Version 0.3.4**
 
 The `nestedLogit` package provides functions for fitting nested
 dichotomy logistic regression models for a polytomous response. Nested
@@ -281,7 +282,7 @@ plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 ```
 
-<img src="man/figures/README-wlf-plot-1.png" width="100%" />
+<img src="man/figures/README-wlf-plot-1.png" alt="" width="100%" />
 
 ## Vignettes
 
