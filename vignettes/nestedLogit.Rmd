@@ -123,7 +123,7 @@ regression coefficients can be summed to give overall tests for the full polytom
 In this way, the $m-1$ dichotomies are analogous to $m-1$
 orthogonal contrasts for an $m$-level factor in a balanced ANOVA design.
 
-Alternative sets of nested dichotomies are illustrated in the figure below, for a four-category polytomous response response $Y = \{1, 2, 3, 4\}$. In the case shown at the left of the figure, the response categories
+Alternative sets of nested dichotomies are illustrated in the figure below, for a four-category polytomous response $Y = \{1, 2, 3, 4\}$. In the case shown at the left of the figure, the response categories
 are divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these compound categories are subdivided
  as the dichotomies $\{1\}$ vs. $\{2\}$ and as $\{3\}$ vs. $\{4\}$.
 Alternatively, as shown at the right of the figure, the response categories

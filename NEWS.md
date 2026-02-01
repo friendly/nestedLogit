@@ -1,5 +1,7 @@
 # nestedLogit 0.3.4
 
+* add link to `pkgdown` documentation in DESCRIPTION
+* edit description of nested dichotomies in README
 
 # nestedLogit 0.3.3
 
