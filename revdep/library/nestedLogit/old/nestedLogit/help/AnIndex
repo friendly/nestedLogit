@@ -11,6 +11,7 @@ coef.nestedLogit	nestedMethods
 confint.predictNestedLogit	nestedMethods
 continuationLogits	nestedLogit
 dichotomy	nestedLogit
+Effect.nestedLogit	Effect.nestedLogit
 fitted.nestedLogit	nestedMethods
 glance.nestedLogit	broomMethods
 GSS	GSS

@@ -32,7 +32,7 @@ knitr::set_alias(w = "fig.width",
                  h = "fig.height",
                  cap = "fig.cap")
 
-# colorize text
+# colorize text: use inline as `r colorize(text, color)`
 colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
@@ -47,7 +47,7 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+.to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath", "ggeffects")
 
 # removed: "equatiomatic" -- now in references.bib
 ```
@@ -60,6 +60,7 @@ library(car)            # Companion to Applied Regression
 library(nnet)           # Feed-Forward Neural Networks and Multinomial Log-Linear Models
 library(broom)          # Convert Statistical Objects into Tidy Tibbles
 library(dplyr)          # A Grammar of Data Manipulation
+library(effects)        # Effect Displays for Linear, Generalized Linear, and Other Models
 ```
 
 ## Models for polytomous responses
@@ -328,7 +329,7 @@ exp(coef(wlf.nested))
 Thus, the odds of both working and working full-time decrease with husband's income, by about 4% and 10% respectively per $1000.
 Having young children also decreases the odds of both working and working full-time, by about 79% and 93% respectively.
 
-**Analysis of deviance**: A method for the `Anova()` function from the **car** package [@car2019]
+**Analysis of deviance**: A method for the `Anova()` function from the **car** package [@R-car]
 computes Type II or III likelihood-ratio or Wald tests for each term in the model. Note that the likelihood-ratio or Wald $\chi^2$ and degrees of freedom for the `Combined Responses` is the sum of their values for the separate dichotomies:
 ```{r Anova}
 Anova(wlf.nested)
@@ -439,7 +440,7 @@ For greater flexibility, the `as.data.frame()` method for `"predictNestedLogit"`
 converts the components to long format.
 
 ```{r}
-as.data.frame(wlf.new, newdata = new) 
+as.data.frame(wlf.new) 
 ```
 
 
@@ -458,16 +459,60 @@ various levels of the other predictors, and to compose these into a single figur
 #| fig.cap = "**plot method**: Predicted probabilities and 95 percent pointwise confidence envelopes of not working, working part-time, and working full-time",
 #| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)                  # ggplot discrete colors
+plot(wlf.nested, "hincome",                  # left panel
+     other = list(children="absent"),
+     xlab = "Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested, "hincome",                  # right panel
+     other = list(children="present"),
+     xlab = "Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
 ```
 
-<!-- We provide a separate vignette on constructing custom graphs of `"nestedLogit"` objects. -->
+### Effect plots for `"nestedLogit"` models
 
-### Alternative models for the `Womenlf` data {#sec: alt-model}
+We provide a `"nestedLogit"` method for the `Effect()` function in the **effects** package [@effects2003; @FoxWeisberg:2019:CAR]. Because `Effect()` is the basic building block for other functions in the **effects** package, such as `predictorEffects()` [@effects2018], the full range of capabilities of the **effects** package is available; in particular, it's possible to produce effect plots similar to those for multinomial logistic regression models [@effects2009].
+
+We illustrate with the nested-logit model fit to the `Womenlf` data set:
+
+```{r wlf-effect-plot-1}
+#| out.width = "100%",
+#| fig.height = 6,
+#| fig.cap = "Default predictor effect plots for the nested-logit model fit to the `Womenlf` data"
+plot(predictorEffects(wlf.nested))
+```
+
+The panel at the left shows the predictor effect plot for husband's income, that at the right the predictor effect plot for presence of children. 
+
+Because the model is additive, there are no conditioning variables in either plot. Effect plots are generally more interesting in models with interactions, in which case the effect plot for a predictor is conditioned on the other predictors with which the focal predictor interacts (see `?Effect.nestedLogit` for an example). 
+
+In the predictor effect plot for `hincome`, the factor `children` is by default fixed to its distribution in the data; in the predictor effect plot for `children`, the numeric predictor `hincome` is by default fixed to its mean. The band in the graph at the left and vertical bars in the graph at the right give 95\% confidence limits around the fit.
+
+An alternative style of effect plot shows the fit as a stacked-area graph (in this case without confidence limits):
+```{r wlf-effect-plot-2}
+#| out.width = "100%",
+#| fig.height = 4,
+#| fig.cap = "Stacked-area predictor effect plots for the nested-logit model fit to the `Womenlf` data"
+plot(predictorEffects(wlf.nested),
+     axes=list(y=list(style="stacked")),
+     lines=list(col=scales::hue_pal()(3)))
+```
+
+The computation and display of effect graphs are highly customizable. For details, see the documentation for the **effects** package.
+
+Effect plots for nestedLogit models are also supported in the
+**ggeffects** package [@R-ggeffects].  For example, the following
+(not run) produces plots of predicted probabilities for the same model with separate panels for the levels of `partic`.
+
+```{r wlf-ggeff}
+#| eval=FALSE
+ggpredict(wlf.nested, c("hincome[all]", "children")) |> plot()
+```
+
+
+### Alternative models for the `Womenlf` data 
 
 We've mentioned that the nested dichotomies {not working} vs. {part-time, full-time} and {part-time} vs. {full-time} for the `Womenlf` data are largely arbitrary. An alternative set of nested dichotomies first contrasts full-time work with the other categories, {full-time} vs. {not working, part-time}, and then {not working} vs. {part-time}. The rationale is that the real hurdle for young married women to enter the paid labor force is to combine full-time work outside the home with housework. This alternative nested-dichotomies model proves enlightening:
 ```{r alt-model}
@@ -511,12 +556,18 @@ Here's a graph of the alternative model:
 ```{r wlf-alt-plot}
 #| out.width = "100%",
 #| fig.height = 4,
-#| fig.cap = "Predicted probabilities for the alternative nested-dichotomies model"
+#| fig.cap = "Predicted probabilities for the alternative nested-dichotomies model",
+#| fig.show = "hold"
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested.alt, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)
+plot(wlf.nested.alt, "hincome",           # left panel
+     others = list(children="absent"), 
+     xlab="Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested.alt, "hincome",           # right panel
+     others = list(children="present"),
+     xlab="Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
 ```
 Compare this to the previous graph for the original specification.
@@ -539,7 +590,7 @@ As it turns out, the multinomial logit model and the alternative nested-dichotom
 
 ```{r write-bib, echo = FALSE}
 # write a packages.bib file of the packages (.packages()) that have been used here
-pkgs <- unique(c(to.cite, .packages()))
+pkgs <- unique(c(.to.cite, .packages()))
 knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
 ```
 

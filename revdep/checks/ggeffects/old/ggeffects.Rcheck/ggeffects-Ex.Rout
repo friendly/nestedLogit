@@ -1,0 +1,1446 @@
+
+R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "ggeffects"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> library('ggeffects')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("coffee_data")
+> ### * coffee_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: coffee_data
+> ### Title: Sample dataset from a course about analysis of factorial designs
+> ### Aliases: coffee_data
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> # Attach coffee-data
+> data(coffee_data)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("collapse_by_group")
+> ### * collapse_by_group
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: collapse_by_group
+> ### Title: Collapse raw data by random effect groups
+> ### Aliases: collapse_by_group
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ library(ggeffects)
++ data(efc, package = "ggeffects")
++ efc$e15relat <- as.factor(efc$e15relat)
++ efc$c161sex <- as.factor(efc$c161sex)
++ levels(efc$c161sex) <- c("male", "female")
++ model <- lme4::lmer(neg_c_7 ~ c161sex + (1 | e15relat), data = efc)
++ me <- predict_response(model, terms = "c161sex")
++ head(attributes(me)$rawdata)
++ collapse_by_group(me, model, "e15relat")
++ ## Don't show: 
++ }) # examplesIf
+> library(ggeffects)
+> data(efc, package = "ggeffects")
+> efc$e15relat <- as.factor(efc$e15relat)
+> efc$c161sex <- as.factor(efc$c161sex)
+> levels(efc$c161sex) <- c("male", "female")
+> model <- lme4::lmer(neg_c_7 ~ c161sex + (1 | e15relat), data = efc)
+> me <- predict_response(model, terms = "c161sex")
+> head(attributes(me)$rawdata)
+  response x group facet panel rowname
+1       12 2     1     1     1       1
+2       20 2     1     1     1       2
+3       11 1     1     1     1       3
+4       10 1     1     1     1       4
+5       12 2     1     1     1       5
+6       19 1     1     1     1       6
+> collapse_by_group(me, model, "e15relat")
+   x group_col facet panel random  response
+1  1         1     1     1      1 12.297872
+2  2         1     1     1      1 13.347107
+3  1         1     1     1      2 11.585586
+4  2         1     1     1      2 12.118310
+5  1         1     1     1      3 12.166667
+6  2         1     1     1      3 10.545455
+7  1         1     1     1      4 10.750000
+8  2         1     1     1      4 11.726027
+9  1         1     1     1      5 11.333333
+10 2         1     1     1      5 10.235294
+11 1         1     1     1      6  8.200000
+12 2         1     1     1      6  9.235294
+13 1         1     1     1      7 13.000000
+14 2         1     1     1      7 10.400000
+15 1         1     1     1      8  9.666667
+16 2         1     1     1      8 10.955882
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("efc")
+> ### * efc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: efc
+> ### Title: Sample dataset from the EUROFAMCARE project
+> ### Aliases: efc efc_test
+> ### Keywords: data
+> 
+> ### ** Examples
+> 
+> # Attach EFC-data
+> data(efc)
+> 
+> # Show structure
+> str(efc)
+'data.frame':	908 obs. of  28 variables:
+ $ c12hour : num  16 148 70 168 168 16 161 110 28 40 ...
+  ..- attr(*, "label")= chr "average number of hours of care per week"
+ $ e15relat: num  2 2 1 1 2 2 1 4 2 2 ...
+  ..- attr(*, "label")= chr "relationship to elder"
+  ..- attr(*, "labels")= Named num [1:8] 1 2 3 4 5 6 7 8
+  .. ..- attr(*, "names")= chr [1:8] "spouse/partner" "child" "sibling" "daughter or son -in-law" ...
+ $ e16sex  : num  2 2 2 2 2 2 1 2 2 2 ...
+  ..- attr(*, "label")= chr "elder's gender"
+  ..- attr(*, "labels")= Named num [1:2] 1 2
+  .. ..- attr(*, "names")= chr [1:2] "male" "female"
+ $ e17age  : num  83 88 82 67 84 85 74 87 79 83 ...
+  ..- attr(*, "label")= chr "elder' age"
+ $ e42dep  : num  3 3 3 4 4 4 4 4 4 4 ...
+  ..- attr(*, "label")= chr "elder's dependency"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "independent" "slightly dependent" "moderately dependent" "severely dependent"
+ $ c82cop1 : num  3 3 2 4 3 2 4 3 3 3 ...
+  ..- attr(*, "label")= chr "do you feel you cope well as caregiver?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "never" "sometimes" "often" "always"
+ $ c83cop2 : num  2 3 2 1 2 2 2 2 2 2 ...
+  ..- attr(*, "label")= chr "do you find caregiving too demanding?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c84cop3 : num  2 3 1 3 1 3 4 2 3 1 ...
+  ..- attr(*, "label")= chr "does caregiving cause difficulties in your relationship with your friends?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c85cop4 : num  2 3 4 1 2 3 1 1 2 2 ...
+  ..- attr(*, "label")= chr "does caregiving have negative effect on your physical health?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c86cop5 : num  1 4 1 1 2 3 1 1 2 1 ...
+  ..- attr(*, "label")= chr "does caregiving cause difficulties in your relationship with your family?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c87cop6 : num  1 1 1 1 2 2 2 1 1 1 ...
+  ..- attr(*, "label")= chr "does caregiving cause financial difficulties?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c88cop7 : num  2 3 1 1 1 2 4 2 3 1 ...
+  ..- attr(*, "label")= chr "do you feel trapped in your role as caregiver?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "Never" "Sometimes" "Often" "Always"
+ $ c89cop8 : num  3 2 4 2 4 1 1 3 1 1 ...
+  ..- attr(*, "label")= chr "do you feel supported by friends/neighbours?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "never" "sometimes" "often" "always"
+ $ c90cop9 : num  3 2 3 4 4 1 4 3 3 3 ...
+  ..- attr(*, "label")= chr "do you feel caregiving worthwhile?"
+  ..- attr(*, "labels")= Named num [1:4] 1 2 3 4
+  .. ..- attr(*, "names")= chr [1:4] "never" "sometimes" "often" "always"
+ $ c160age : num  56 54 80 69 47 56 61 67 59 49 ...
+  ..- attr(*, "label")= chr "carer' age"
+ $ c161sex : num  2 2 1 1 2 1 2 2 2 2 ...
+  ..- attr(*, "label")= chr "carer's gender"
+  ..- attr(*, "labels")= Named num [1:2] 1 2
+  .. ..- attr(*, "names")= chr [1:2] "Male" "Female"
+ $ c172code: num  2 2 1 2 2 2 2 2 NA 2 ...
+  ..- attr(*, "label")= chr "carer's level of education"
+  ..- attr(*, "labels")= Named num [1:3] 1 2 3
+  .. ..- attr(*, "names")= chr [1:3] "low level of education" "intermediate level of education" "high level of education"
+ $ c175empl: num  1 1 0 0 0 1 0 0 0 0 ...
+  ..- attr(*, "label")= chr "are you currently employed?"
+  ..- attr(*, "labels")= Named num [1:2] 0 1
+  .. ..- attr(*, "names")= chr [1:2] "no" "yes"
+ $ barthtot: num  75 75 35 0 25 60 5 35 15 0 ...
+  ..- attr(*, "label")= chr "Total score BARTHEL INDEX"
+ $ neg_c_7 : num  12 20 11 10 12 19 15 11 15 10 ...
+  ..- attr(*, "label")= chr "Negative impact with 7 items"
+ $ pos_v_4 : num  12 11 13 15 15 9 13 14 13 13 ...
+  ..- attr(*, "label")= chr "Positive value with 4 items"
+ $ quol_5  : num  14 10 7 12 19 8 20 20 8 15 ...
+  ..- attr(*, "label")= chr "Quality of life 5 items"
+ $ resttotn: num  0 4 0 2 2 1 0 0 0 1 ...
+  ..- attr(*, "label")= chr "Job restrictions"
+ $ tot_sc_e: num  4 0 1 0 1 3 0 1 2 1 ...
+  ..- attr(*, "label")= chr "Services for elderly"
+ $ n4pstu  : num  0 0 2 3 2 2 3 1 3 3 ...
+  ..- attr(*, "label")= chr "Care level"
+  ..- attr(*, "labels")= Named chr [1:5] "0" "1" "2" "3" ...
+  .. ..- attr(*, "names")= chr [1:5] "No Care Level" "Care Level 1" "Care Level 2" "Care Level 3" ...
+ $ nur_pst : num  NA NA 2 3 2 2 3 1 3 3 ...
+  ..- attr(*, "label")= chr "Care level"
+  ..- attr(*, "labels")= Named chr [1:3] "1" "2" "3"
+  .. ..- attr(*, "names")= chr [1:3] "Care Level 1" "Care Level 2" "Care Level 3/3+"
+ $ grp     : Factor w/ 8 levels "spouse/partner",..: 2 2 1 1 2 2 1 4 2 2 ...
+  ..- attr(*, "label")= chr "relationship to elder"
+ $ negc7d  : Factor w/ 2 levels "0","1": 2 2 1 1 2 2 2 1 2 1 ...
+  ..- attr(*, "label")= chr "Negative impact with 7 items"
+> 
+> # show first rows
+> head(efc)
+  c12hour e15relat e16sex e17age e42dep c82cop1 c83cop2 c84cop3 c85cop4 c86cop5
+1      16        2      2     83      3       3       2       2       2       1
+2     148        2      2     88      3       3       3       3       3       4
+3      70        1      2     82      3       2       2       1       4       1
+4     168        1      2     67      4       4       1       3       1       1
+5     168        2      2     84      4       3       2       1       2       2
+6      16        2      2     85      4       2       2       3       3       3
+  c87cop6 c88cop7 c89cop8 c90cop9 c160age c161sex c172code c175empl barthtot
+1       1       2       3       3      56       2        2        1       75
+2       1       3       2       2      54       2        2        1       75
+3       1       1       4       3      80       1        1        0       35
+4       1       1       2       4      69       1        2        0        0
+5       2       1       4       4      47       2        2        0       25
+6       2       2       1       1      56       1        2        1       60
+  neg_c_7 pos_v_4 quol_5 resttotn tot_sc_e n4pstu nur_pst            grp negc7d
+1      12      12     14        0        4      0      NA          child      1
+2      20      11     10        4        0      0      NA          child      1
+3      11      13      7        0        1      2       2 spouse/partner      0
+4      10      15     12        2        0      3       3 spouse/partner      0
+5      12      15     19        2        1      2       2          child      1
+6      19       9      8        1        3      2       2          child      1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_title")
+> ### * get_title
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_title
+> ### Title: Get titles and labels from data
+> ### Aliases: get_title get_x_title get_y_title get_legend_title
+> ###   get_legend_labels get_x_labels get_complete_df
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("datawizard", quietly = TRUE) && require("ggplot2", quietly = TRUE) && require("effects", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ library(ggeffects)
++ library(ggplot2)
++ data(efc, package = "ggeffects")
++ efc$c172code <- datawizard::to_factor(efc$c172code)
++ fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
++ 
++ mydf <- predict_response(fit, terms = c("c12hour", "c161sex", "c172code"))
++ 
++ ggplot(mydf, aes(x = x, y = predicted, colour = group)) +
++   stat_smooth(method = "lm") +
++   facet_wrap(~facet, ncol = 2) +
++   labs(
++     x = get_x_title(mydf),
++     y = get_y_title(mydf),
++     colour = get_legend_title(mydf)
++   )
++ 
++ # adjusted predictions, a list of data frames (one data frame per term)
++ eff <- ggeffect(fit)
++ eff
++ get_complete_df(eff)
++ 
++ # adjusted predictions for education only, and get x-axis-labels
++ mydat <- eff[["c172code"]]
++ ggplot(mydat, aes(x = x, y = predicted, group = group)) +
++   stat_summary(fun = sum, geom = "line") +
++   scale_x_discrete(labels = get_x_labels(mydat))
++ ## Don't show: 
++ }) # examplesIf
+lattice theme set by effectsTheme()
+See ?effectsTheme for details.
+> library(ggeffects)
+> library(ggplot2)
+> data(efc, package = "ggeffects")
+> efc$c172code <- datawizard::to_factor(efc$c172code)
+> fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
+> mydf <- predict_response(fit, terms = c("c12hour", "c161sex", "c172code"))
+> ggplot(mydf, aes(x = x, y = predicted, colour = group)) + stat_smooth(method = "lm") + 
++     facet_wrap(~facet, ncol = 2) + labs(x = get_x_title(mydf), y = get_y_title(mydf), 
++     colour = get_legend_title(mydf))
+`geom_smooth()` using formula = 'y ~ x'
+> eff <- ggeffect(fit)
+> eff
+$c12hour
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.44 | 73.25, 77.63
+     20 |     70.38 | 68.56, 72.19
+     45 |     64.05 | 62.39, 65.70
+     65 |     58.98 | 57.16, 60.81
+     85 |     53.92 | 51.71, 56.12
+    105 |     48.85 | 46.15, 51.55
+    125 |     43.79 | 40.52, 47.06
+    170 |     32.39 | 27.74, 37.05
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+
+$neg_c_7
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mneg_c_7 | Predicted |       95% CI
+----------------------------------
+      6 |     78.07 | 75.01, 81.14
+      8 |     73.51 | 71.14, 75.88
+     12 |     64.39 | 62.73, 66.04
+     14 |     59.82 | 57.91, 61.73
+     16 |     55.26 | 52.79, 57.73
+     20 |     46.13 | 42.16, 50.10
+     22 |     41.57 | 36.78, 46.36
+     28 |     27.88 | 20.55, 35.22
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+
+$c161sex
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc161sex | Predicted |       95% CI
+----------------------------------
+      1 |     64.09 | 60.69, 67.49
+      2 |     64.96 | 63.07, 66.86
+
+
+$c172code
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc172code                        | Predicted |       95% CI
+----------------------------------------------------------
+low level of education          |     62.79 | 59.21, 66.38
+intermediate level of education |     65.68 | 63.55, 67.81
+high level of education         |     64.01 | 60.14, 67.88
+
+
+attr(,"class")
+[1] "ggalleffects" "list"        
+attr(,"model.name")
+[1] "fit"
+> get_complete_df(eff)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m[31m: c12hour[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.44 | 73.25, 77.63
+     35 |     66.58 | 64.91, 68.25
+     70 |     57.71 | 55.81, 59.62
+    100 |     50.12 | 47.55, 52.69
+    170 |     32.39 | 27.74, 37.05
+
+[31m: c161sex[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      1 |     64.09 | 60.69, 67.49
+      2 |     64.96 | 63.07, 66.86
+
+[31m: c172code[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      1 |     62.79 | 59.21, 66.38
+      2 |     65.68 | 63.55, 67.81
+      3 |     64.01 | 60.14, 67.88
+
+[31m: neg_c_7[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      6 |     78.07 | 75.01, 81.14
+     10 |     68.95 | 67.11, 70.79
+     14 |     59.82 | 57.91, 61.73
+     20 |     46.13 | 42.16, 50.10
+     28 |     27.88 | 20.55, 35.22
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> mydat <- eff[["c172code"]]
+> ggplot(mydat, aes(x = x, y = predicted, group = group)) + stat_summary(fun = sum, 
++     geom = "line") + scale_x_discrete(labels = get_x_labels(mydat))
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:effects', 'package:carData', 'package:ggplot2',
+  'package:datawizard'
+
+> nameEx("install_latest")
+> ### * install_latest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: install_latest
+> ### Title: Update latest ggeffects-version from R-universe (GitHub) or CRAN
+> ### Aliases: install_latest
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ # install latest development-version of ggeffects from the
++ # r-universe repository
++ install_latest()
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("new_data")
+> ### * new_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: new_data
+> ### Title: Create a data frame from all combinations of predictor values
+> ### Aliases: new_data data_grid
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("datawizard", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ data(efc, package = "ggeffects")
++ fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
++ new_data(fit, c("c12hour [meansd]", "c161sex"))
++ 
++ nd <- new_data(fit, c("c12hour [meansd]", "c161sex"))
++ pr <- predict(fit, type = "response", newdata = nd)
++ nd$predicted <- pr
++ nd
++ 
++ # compare to
++ predict_response(fit, c("c12hour [meansd]", "c161sex"))
++ ## Don't show: 
++ }) # examplesIf
+> data(efc, package = "ggeffects")
+> fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
+> new_data(fit, c("c12hour [meansd]", "c161sex"))
+  c12hour c161sex  neg_c_7 c172code
+1    -8.3       1 11.83804 1.970552
+2    42.2       1 11.83804 1.970552
+3    92.7       1 11.83804 1.970552
+4    -8.3       2 11.83804 1.970552
+5    42.2       2 11.83804 1.970552
+6    92.7       2 11.83804 1.970552
+> nd <- new_data(fit, c("c12hour [meansd]", "c161sex"))
+> pr <- predict(fit, type = "response", newdata = nd)
+> nd$predicted <- pr
+> nd
+  c12hour c161sex  neg_c_7 c172code predicted
+1    -8.3       1 11.83804 1.970552  76.75375
+2    42.2       1 11.83804 1.970552  63.96204
+3    92.7       1 11.83804 1.970552  51.17033
+4    -8.3       2 11.83804 1.970552  77.79518
+5    42.2       2 11.83804 1.970552  65.00347
+6    92.7       2 11.83804 1.970552  52.21175
+> predict_response(fit, c("c12hour [meansd]", "c161sex"))
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m[31mc161sex: Male[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+  -8.30 |     76.75 | 73.02, 80.49
+  42.20 |     63.96 | 60.57, 67.35
+  92.70 |     51.17 | 47.30, 55.04
+
+[31mc161sex: Female[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+  -8.30 |     77.80 | 75.20, 80.39
+  42.20 |     65.00 | 63.11, 66.90
+  92.70 |     52.21 | 49.68, 54.74
+[33m
+Adjusted for:
+*  neg_c_7 = 11.84
+* c172code =  1.97[39m
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot")
+> ### * plot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot
+> ### Title: Plot ggeffects-objects
+> ### Aliases: plot plot.ggeffects theme_ggeffects ggeffects_palette
+> ###   show_palettes
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("ggplot2") && requireNamespace("sjlabelled")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ library(sjlabelled)
++ data(efc)
++ efc$c172code <- as_label(efc$c172code)
++ fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
++ 
++ dat <- predict_response(fit, terms = "c12hour")
++ plot(dat)
++ 
++ 
++ # show color codes of specific palette
++ ggeffects_palette("okabe-ito")
++ 
++ # show all color palettes
++ show_palettes()
++ ## Don't show: 
++ }) # examplesIf
+> library(sjlabelled)
+> data(efc)
+> efc$c172code <- as_label(efc$c172code)
+> fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
+> dat <- predict_response(fit, terms = "c12hour")
+> plot(dat)
+> ggeffects_palette("okabe-ito")
+[1] "#E69F00" "#56B4E9" "#009E73" "#CC79A7" "#F0E442" "#999999" "#000000"
+[8] "#0072B2" "#D55E00"
+> show_palettes()
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:sjlabelled'
+
+> nameEx("pool_comparisons")
+> ### * pool_comparisons
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: pool_comparisons
+> ### Title: Pool contrasts and comparisons from 'test_predictions()'
+> ### Aliases: pool_comparisons
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("mice")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ data("nhanes2", package = "mice")
++ imp <- mice::mice(nhanes2, printFlag = FALSE)
++ comparisons <- lapply(1:5, function(i) {
++   m <- lm(bmi ~ age + hyp + chl, data = mice::complete(imp, action = i))
++   test_predictions(m, "age")
++ })
++ pool_comparisons(comparisons)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: mice
+
+Attaching package: 'mice'
+
+The following object is masked from 'package:stats':
+
+    filter
+
+The following objects are masked from 'package:base':
+
+    cbind, rbind
+
+> data("nhanes2", package = "mice")
+> imp <- mice::mice(nhanes2, printFlag = FALSE)
+> comparisons <- lapply(1:5, function(i) {
++     m <- lm(bmi ~ age + hyp + chl, data = mice::complete(imp, action = i))
++     test_predictions(m, "age")
++ })
+> pool_comparisons(comparisons)
+[34m# Pairwise comparisons[39m
+
+age             | Contrast |       95% CI |      p
+--------------------------------------------------
+(20-39)-(40-59) |     4.67 | -0.70, 10.03 | < .001
+(20-39)-(60-99) |     6.55 |  0.46, 12.64 | < .001
+(40-59)-(60-99) |     1.88 | -2.35,  6.12 | 0.222 
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:mice'
+
+> nameEx("pool_predictions")
+> ### * pool_predictions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: pool_predictions
+> ### Title: Pool Predictions or Estimated Marginal Means
+> ### Aliases: pool_predictions
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("mice")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ # example for multiple imputed datasets
++ data("nhanes2", package = "mice")
++ imp <- mice::mice(nhanes2, printFlag = FALSE)
++ predictions <- lapply(1:5, function(i) {
++   m <- lm(bmi ~ age + hyp + chl, data = mice::complete(imp, action = i))
++   predict_response(m, "age")
++ })
++ pool_predictions(predictions)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: mice
+
+Attaching package: 'mice'
+
+The following object is masked from 'package:stats':
+
+    filter
+
+The following objects are masked from 'package:base':
+
+    cbind, rbind
+
+> data("nhanes2", package = "mice")
+> imp <- mice::mice(nhanes2, printFlag = FALSE)
+> predictions <- lapply(1:5, function(i) {
++     m <- lm(bmi ~ age + hyp + chl, data = mice::complete(imp, action = i))
++     predict_response(m, "age")
++ })
+> pool_predictions(predictions)
+[34m# Predicted values of bmi
+
+[39mage   | Predicted |       95% CI
+--------------------------------
+20-39 |     28.86 |  9.96, 47.77
+40-59 |     24.20 |  2.96, 45.43
+60-99 |     22.31 | -3.43, 48.05
+[33m
+Adjusted for:
+* hyp =     no
+* chl = 192.07[39m
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:mice'
+
+> nameEx("predict_response")
+> ### * predict_response
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: predict_response
+> ### Title: Adjusted predictions and estimated marginal means from
+> ###   regression models
+> ### Aliases: predict_response
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("sjlabelled") && requireNamespace("ggplot2")) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ library(sjlabelled)
++ data(efc)
++ fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
++ 
++ predict_response(fit, terms = "c12hour")
++ predict_response(fit, terms = c("c12hour", "c172code"))
++ # more compact table layout for printing
++ out <- predict_response(fit, terms = c("c12hour", "c172code", "c161sex"))
++ print(out, collapse_table = TRUE)
++ 
++ # specified as formula
++ predict_response(fit, terms = ~ c12hour + c172code + c161sex)
++ 
++ # only range of 40 to 60 for variable 'c12hour'
++ predict_response(fit, terms = "c12hour [40:60]")
++ 
++ # terms as named list
++ predict_response(fit, terms = list(c12hour = 40:60))
++ 
++ # covariate "neg_c_7" is held constant at a value of 11.84 (its mean value).
++ # To use a different value, use "condition"
++ predict_response(fit, terms = "c12hour [40:60]", condition = c(neg_c_7 = 20))
++ 
++ # to plot ggeffects-objects, you can use the 'plot()'-function.
++ # the following examples show how to build your ggplot by hand.
++ 
++ 
++ # predictions for polynomial terms
++ data(efc)
++ fit <- glm(
++   tot_sc_e ~ c12hour + e42dep + e17age + I(e17age^2) + I(e17age^3),
++   data = efc,
++   family = poisson()
++ )
++ predict_response(fit, terms = "e17age")
++ ## Don't show: 
++ }) # examplesIf
+> library(sjlabelled)
+> data(efc)
+> fit <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
+> predict_response(fit, terms = "c12hour")
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.44 | 73.25, 77.63
+     20 |     70.38 | 68.56, 72.19
+     45 |     64.05 | 62.39, 65.70
+     65 |     58.98 | 57.15, 60.80
+     85 |     53.91 | 51.71, 56.12
+    105 |     48.85 | 46.14, 51.55
+    125 |     43.78 | 40.51, 47.05
+    170 |     32.38 | 27.73, 37.04
+[33m
+Adjusted for:
+*  neg_c_7 = 11.84
+*  c161sex =  1.76
+* c172code =  1.97[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> predict_response(fit, terms = c("c12hour", "c172code"))
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m[31mc172code: low level of education[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     74.75 | 71.26, 78.23
+     30 |     67.15 | 64.03, 70.26
+     55 |     60.81 | 57.77, 63.86
+     85 |     53.22 | 49.95, 56.48
+    115 |     45.62 | 41.86, 49.37
+    170 |     31.69 | 26.59, 36.78
+
+[31mc172code: intermediate level of education[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.46 | 73.28, 77.65
+     30 |     67.87 | 66.16, 69.57
+     55 |     61.53 | 59.82, 63.25
+     85 |     53.93 | 51.72, 56.14
+    115 |     46.34 | 43.35, 49.32
+    170 |     32.40 | 27.74, 37.07
+
+[31mc172code: high level of education[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     76.18 | 72.81, 79.55
+     30 |     68.58 | 65.41, 71.76
+     55 |     62.25 | 59.00, 65.50
+     85 |     54.65 | 51.03, 58.27
+    115 |     47.05 | 42.85, 51.26
+    170 |     33.12 | 27.50, 38.74
+[33m
+Adjusted for:
+* neg_c_7 = 11.84
+* c161sex =  1.76[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> out <- predict_response(fit, terms = c("c12hour", "c172code", "c161sex"))
+> print(out, collapse_table = TRUE)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour |                        c172code |    c161sex | Predicted |       95% CI
+---------------------------------------------------------------------------------
+      0 |          low level of education |   [1] Male |     73.95 | 69.35, 78.56
+     45 |                                 |            |     62.56 | 58.22, 66.89
+     85 |                                 |            |     52.42 | 47.89, 56.96
+    170 |                                 |            |     30.89 | 24.84, 36.95
+      0 |                                 | [2] Female |     75.00 | 71.40, 78.59
+     45 |                                 |            |     63.60 | 60.45, 66.74
+     85 |                                 |            |     53.46 | 50.12, 56.80
+    170 |                                 |            |     31.93 | 26.82, 37.05
+      0 | intermediate level of education |   [1] Male |     74.67 | 71.05, 78.29
+     45 |                                 |            |     63.27 | 59.88, 66.67
+     85 |                                 |            |     53.14 | 49.39, 56.89
+    170 |                                 |            |     31.61 | 25.97, 37.25
+      0 |                                 | [2] Female |     75.71 | 73.31, 78.12
+     45 |                                 |            |     64.32 | 62.41, 66.22
+     85 |                                 |            |     54.18 | 51.81, 56.56
+    170 |                                 |            |     32.65 | 27.94, 37.37
+      0 |         high level of education |   [1] Male |     75.39 | 71.03, 79.75
+     45 |                                 |            |     63.99 | 59.72, 68.26
+     85 |                                 |            |     53.86 | 49.22, 58.50
+    170 |                                 |            |     32.33 | 25.94, 38.72
+      0 |                                 | [2] Female |     76.43 | 72.88, 79.98
+     45 |                                 |            |     65.03 | 61.67, 68.39
+     85 |                                 |            |     54.90 | 51.15, 58.65
+    170 |                                 |            |     33.37 | 27.69, 39.05
+[33m
+Adjusted for:
+* neg_c_7 = 11.84[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> predict_response(fit, terms = ~c12hour + c172code + c161sex)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m[31mc172code: low level of education
+c161sex: [1] Male[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     73.95 | 69.35, 78.56
+     45 |     62.56 | 58.22, 66.89
+     85 |     52.42 | 47.89, 56.96
+    170 |     30.89 | 24.84, 36.95
+
+[31mc172code: low level of education
+c161sex: [2] Female[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.00 | 71.40, 78.59
+     45 |     63.60 | 60.45, 66.74
+     85 |     53.46 | 50.12, 56.80
+    170 |     31.93 | 26.82, 37.05
+
+[31mc172code: intermediate level of education
+c161sex: [1] Male[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     74.67 | 71.05, 78.29
+     45 |     63.27 | 59.88, 66.67
+     85 |     53.14 | 49.39, 56.89
+    170 |     31.61 | 25.97, 37.25
+
+[31mc172code: intermediate level of education
+c161sex: [2] Female[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.71 | 73.31, 78.12
+     45 |     64.32 | 62.41, 66.22
+     85 |     54.18 | 51.81, 56.56
+    170 |     32.65 | 27.94, 37.37
+
+[31mc172code: high level of education
+c161sex: [1] Male[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     75.39 | 71.03, 79.75
+     45 |     63.99 | 59.72, 68.26
+     85 |     53.86 | 49.22, 58.50
+    170 |     32.33 | 25.94, 38.72
+
+[31mc172code: high level of education
+c161sex: [2] Female[39m
+
+c12hour | Predicted |       95% CI
+----------------------------------
+      0 |     76.43 | 72.88, 79.98
+     45 |     65.03 | 61.67, 68.39
+     85 |     54.90 | 51.15, 58.65
+    170 |     33.37 | 27.69, 39.05
+[33m
+Adjusted for:
+* neg_c_7 = 11.84[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> predict_response(fit, terms = "c12hour [40:60]")
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour | Predicted |       95% CI
+----------------------------------
+     40 |     65.31 | 63.66, 66.96
+     43 |     64.55 | 62.90, 66.20
+     45 |     64.05 | 62.39, 65.70
+     47 |     63.54 | 61.88, 65.20
+     50 |     62.78 | 61.11, 64.45
+     53 |     62.02 | 60.33, 63.71
+     55 |     61.51 | 59.80, 63.22
+     60 |     60.25 | 58.49, 62.01
+[33m
+Adjusted for:
+*  neg_c_7 = 11.84
+*  c161sex =  1.76
+* c172code =  1.97[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> predict_response(fit, terms = list(c12hour = 40:60))
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour | Predicted |       95% CI
+----------------------------------
+     40 |     65.31 | 63.66, 66.96
+     43 |     64.55 | 62.90, 66.20
+     45 |     64.05 | 62.39, 65.70
+     47 |     63.54 | 61.88, 65.20
+     50 |     62.78 | 61.11, 64.45
+     53 |     62.02 | 60.33, 63.71
+     55 |     61.51 | 59.80, 63.22
+     60 |     60.25 | 58.49, 62.01
+[33m
+Adjusted for:
+*  neg_c_7 = 11.84
+*  c161sex =  1.76
+* c172code =  1.97[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> predict_response(fit, terms = "c12hour [40:60]", condition = c(neg_c_7 = 20))
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39mc12hour | Predicted |       95% CI
+----------------------------------
+     40 |     46.56 | 42.58, 50.55
+     43 |     45.80 | 41.84, 49.76
+     45 |     45.30 | 41.35, 49.24
+     47 |     44.79 | 40.86, 48.72
+     50 |     44.03 | 40.11, 47.94
+     53 |     43.27 | 39.37, 47.17
+     55 |     42.76 | 38.87, 46.65
+     60 |     41.50 | 37.62, 45.37
+[33m
+Adjusted for:
+*  c161sex = 1.76
+* c172code = 1.97[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> data(efc)
+> fit <- glm(tot_sc_e ~ c12hour + e42dep + e17age + I(e17age^2) + I(e17age^3), 
++     data = efc, family = poisson())
+> predict_response(fit, terms = "e17age")
+[34m# Predicted counts of Services for elderly
+
+[39me17age | Predicted |     95% CI
+-------------------------------
+    65 |      1.25 | 1.00, 1.55
+    69 |      0.97 | 0.87, 1.09
+    74 |      0.90 | 0.80, 1.01
+    78 |      0.94 | 0.85, 1.04
+    82 |      1.01 | 0.92, 1.11
+    87 |      1.06 | 0.94, 1.18
+    91 |      0.97 | 0.84, 1.12
+   103 |      0.22 | 0.07, 0.72
+[33m
+Adjusted for:
+* c12hour = 42.29
+*  e42dep =  2.94[39m
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:sjlabelled'
+
+> nameEx("pretty_range")
+> ### * pretty_range
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: pretty_range
+> ### Title: Create a pretty sequence over a range of a vector
+> ### Aliases: pretty_range
+> 
+> ### ** Examples
+> 
+> data(iris)
+> # pretty range for vectors with decimal points
+> pretty_range(iris$Petal.Length)
+ [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0 6.5 7.0
+> 
+> # pretty range for large range, increasing by 50
+> pretty_range(1:1000)
+ [1]    0   50  100  150  200  250  300  350  400  450  500  550  600  650  700
+[16]  750  800  850  900  950 1000
+> 
+> # increasing by 20
+> pretty_range(1:1000, n = 7)
+ [1]    0   20   40   60   80  100  120  140  160  180  200  220  240  260  280
+[16]  300  320  340  360  380  400  420  440  460  480  500  520  540  560  580
+[31]  600  620  640  660  680  700  720  740  760  780  800  820  840  860  880
+[46]  900  920  940  960  980 1000
+> 
+> # return 10 intervals
+> pretty_range(1:1000, length = 10)
+ [1]    0  100  200  300  400  500  600  700  800  900 1000
+> 
+> # same result
+> pretty_range(1:1000, n = 2.5)
+ [1]    0  100  200  300  400  500  600  700  800  900 1000
+> 
+> # function factory
+> range_n_5 <- pretty_range(n = 5)
+> range_n_5(1:1000)
+ [1]    0   50  100  150  200  250  300  350  400  450  500  550  600  650  700
+[16]  750  800  850  900  950 1000
+> 
+> 
+> 
+> cleanEx()
+> nameEx("print")
+> ### * print
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format.ggeffects
+> ### Title: Print and format ggeffects-objects
+> ### Aliases: format.ggeffects format.ggcomparisons print print.ggeffects
+> ###   print_md.ggeffects print_html.ggeffects print.ggcomparisons
+> ###   print_html.ggcomparisons print_md.ggcomparisons
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("datawizard", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ data(efc, package = "ggeffects")
++ fit <- lm(barthtot ~ c12hour + e42dep, data = efc)
++ 
++ # default print
++ predict_response(fit, "e42dep")
++ 
++ # surround CI values with parentheses
++ print(predict_response(fit, "e42dep"), ci_brackets = c("(", ")"))
++ # you can also use `options(ggeffects_ci_brackets = c("[", "]"))`
++ # to set this globally
++ 
++ # collapse CI columns into column with predicted values
++ print(predict_response(fit, "e42dep"), collapse_ci = TRUE)
++ 
++ # include value labels
++ print(predict_response(fit, "e42dep"), value_labels = TRUE)
++ 
++ # include variable labels in column headers
++ print(predict_response(fit, "e42dep"), variable_labels = TRUE)
++ 
++ # include value labels and variable labels
++ print(predict_response(fit, "e42dep"), variable_labels = TRUE, value_labels = TRUE)
++ 
++ data(iris)
++ m <- lm(Sepal.Length ~ Species * Petal.Length, data = iris)
++ 
++ # default print with subgroups
++ predict_response(m, c("Petal.Length", "Species"))
++ 
++ # omit name of grouping variable in subgroup table headers
++ print(predict_response(m, c("Petal.Length", "Species")), group_name = FALSE)
++ 
++ # collapse tables into one
++ print(predict_response(m, c("Petal.Length", "Species")), collapse_tables = TRUE, n = 3)
++ 
++ # increase number of digits
++ print(predict_response(fit, "e42dep"), digits = 5)
++ ## Don't show: 
++ }) # examplesIf
+> data(efc, package = "ggeffects")
+> fit <- lm(barthtot ~ c12hour + e42dep, data = efc)
+> predict_response(fit, "e42dep")
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39me42dep | Predicted |         95% CI
+-----------------------------------
+     1 |    104.42 | 101.21, 107.64
+     2 |     83.81 |  81.91,  85.72
+     3 |     63.20 |  61.94,  64.47
+     4 |     42.59 |  40.54,  44.65
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> print(predict_response(fit, "e42dep"), ci_brackets = c("(", ")"))
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39me42dep | Predicted |           95% CI
+-------------------------------------
+     1 |    104.42 | (101.21, 107.64)
+     2 |     83.81 | ( 81.91,  85.72)
+     3 |     63.20 | ( 61.94,  64.47)
+     4 |     42.59 | ( 40.54,  44.65)
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> print(predict_response(fit, "e42dep"), collapse_ci = TRUE)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39me42dep |      Predicted (95% CI)
+--------------------------------
+     1 | 104.42 (101.21, 107.64)
+     2 |  83.81  (81.91,  85.72)
+     3 |  63.20  (61.94,  64.47)
+     4 |  42.59  (40.54,  44.65)
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> print(predict_response(fit, "e42dep"), value_labels = TRUE)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m                  e42dep | Predicted |         95% CI
+-----------------------------------------------------
+         [1] independent |    104.42 | 101.21, 107.64
+  [2] slightly dependent |     83.81 |  81.91,  85.72
+[3] moderately dependent |     63.20 |  61.94,  64.47
+  [4] severely dependent |     42.59 |  40.54,  44.65
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> print(predict_response(fit, "e42dep"), variable_labels = TRUE)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39melder's dependency | Predicted values of Total score BARTHEL INDEX |         95% CI
+-----------------------------------------------------------------------------------
+                 1 |                                        104.42 | 101.21, 107.64
+                 2 |                                         83.81 |  81.91,  85.72
+                 3 |                                         63.20 |  61.94,  64.47
+                 4 |                                         42.59 |  40.54,  44.65
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> print(predict_response(fit, "e42dep"), variable_labels = TRUE, value_labels = TRUE)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39m      elder's dependency | Predicted values of Total score BARTHEL INDEX |         95% CI
+-----------------------------------------------------------------------------------------
+         [1] independent |                                        104.42 | 101.21, 107.64
+  [2] slightly dependent |                                         83.81 |  81.91,  85.72
+[3] moderately dependent |                                         63.20 |  61.94,  64.47
+  [4] severely dependent |                                         42.59 |  40.54,  44.65
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> data(iris)
+> m <- lm(Sepal.Length ~ Species * Petal.Length, data = iris)
+> predict_response(m, c("Petal.Length", "Species"))
+[34m# Predicted values of Sepal.Length
+
+[39m[31mSpecies: setosa[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      4.76 | 4.49,  5.03
+        2.00 |      5.30 | 4.99,  5.61
+        3.00 |      5.84 | 4.99,  6.69
+        4.00 |      6.38 | 4.99,  7.77
+        5.00 |      6.92 | 4.99,  8.86
+        7.00 |      8.01 | 4.98, 11.04
+
+[31mSpecies: versicolor[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      3.24 | 2.57,  3.90
+        2.00 |      4.06 | 3.60,  4.53
+        3.00 |      4.89 | 4.62,  5.16
+        4.00 |      5.72 | 5.61,  5.83
+        5.00 |      6.55 | 6.37,  6.73
+        7.00 |      8.21 | 7.64,  8.77
+
+[31mSpecies: virginica[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      2.06 | 1.27,  2.84
+        2.00 |      3.05 | 2.43,  3.67
+        3.00 |      4.05 | 3.60,  4.50
+        4.00 |      5.04 | 4.76,  5.33
+        5.00 |      6.04 | 5.90,  6.17
+        7.00 |      8.03 | 7.76,  8.30
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> print(predict_response(m, c("Petal.Length", "Species")), group_name = FALSE)
+[34m# Predicted values of Sepal.Length
+
+[39m[31msetosa[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      4.76 | 4.49,  5.03
+        2.00 |      5.30 | 4.99,  5.61
+        3.00 |      5.84 | 4.99,  6.69
+        4.00 |      6.38 | 4.99,  7.77
+        5.00 |      6.92 | 4.99,  8.86
+        7.00 |      8.01 | 4.98, 11.04
+
+[31mversicolor[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      3.24 | 2.57,  3.90
+        2.00 |      4.06 | 3.60,  4.53
+        3.00 |      4.89 | 4.62,  5.16
+        4.00 |      5.72 | 5.61,  5.83
+        5.00 |      6.55 | 6.37,  6.73
+        7.00 |      8.21 | 7.64,  8.77
+
+[31mvirginica[39m
+
+Petal.Length | Predicted |      95% CI
+--------------------------------------
+        1.00 |      2.06 | 1.27,  2.84
+        2.00 |      3.05 | 2.43,  3.67
+        3.00 |      4.05 | 3.60,  4.50
+        4.00 |      5.04 | 4.76,  5.33
+        5.00 |      6.04 | 5.90,  6.17
+        7.00 |      8.03 | 7.76,  8.30
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> print(predict_response(m, c("Petal.Length", "Species")), collapse_tables = TRUE, 
++     n = 3)
+[34m# Predicted values of Sepal.Length
+
+[39mPetal.Length |    Species | Predicted |      95% CI
+---------------------------------------------------
+        1.00 |     setosa |      4.76 | 4.49,  5.03
+        3.00 |            |      5.84 | 4.99,  6.69
+        7.00 |            |      8.01 | 4.98, 11.04
+        1.00 | versicolor |      3.24 | 2.57,  3.90
+        3.00 |            |      4.89 | 4.62,  5.16
+        7.00 |            |      8.21 | 7.64,  8.77
+        1.00 |  virginica |      2.06 | 1.27,  2.84
+        3.00 |            |      4.05 | 3.60,  4.50
+        7.00 |            |      8.03 | 7.76,  8.30
+
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+> print(predict_response(fit, "e42dep"), digits = 5)
+[34m# Predicted values of Total score BARTHEL INDEX
+
+[39me42dep | Predicted |               95% CI
+-----------------------------------------
+     1 | 104.42339 | 101.21081, 107.63598
+     2 |  83.81330 |  81.90728,  85.71932
+     3 |  63.20320 |  61.93656,  64.46985
+     4 |  42.59311 |  40.53516,  44.65105
+[33m
+Adjusted for:
+* c12hour = 42.25[39m
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("residualize_over_grid")
+> ### * residualize_over_grid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: residualize_over_grid
+> ### Title: Compute partial residuals from a data grid
+> ### Aliases: residualize_over_grid residualize_over_grid.data.frame
+> ###   residualize_over_grid.ggeffects
+> 
+> ### ** Examples
+> 
+> library(ggeffects)
+> set.seed(1234)
+> x <- rnorm(200)
+> z <- rnorm(200)
+> # quadratic relationship
+> y <- 2 * x + x^2 + 4 * z + rnorm(200)
+> 
+> d <- data.frame(x, y, z)
+> model <- lm(y ~ x + z, data = d)
+> 
+> pr <- predict_response(model, c("x [all]", "z"))
+> head(residualize_over_grid(pr, model))
+         x group predicted
+53  -1.207  0.07 -1.797239
+402  0.277  1.08  4.888712
+518  1.084  0.07  3.232202
+9   -2.346  1.08  4.133561
+428  0.429  0.07  1.801594
+441  0.506  1.08  5.659527
+> 
+> 
+> 
+> cleanEx()
+> nameEx("test_predictions")
+> ### * test_predictions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: test_predictions
+> ### Title: (Pairwise) comparisons between predictions (marginal effects)
+> ### Aliases: test_predictions hypothesis_test test_predictions.default
+> ###   test_predictions.ggeffects
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (all(insight::check_if_installed(c("parameters", "emmeans"), quietly = TRUE)) && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("values_at")
+> ### * values_at
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: values_at
+> ### Title: Calculate representative values of a vector
+> ### Aliases: values_at representative_values
+> 
+> ### ** Examples
+> 
+> data(efc)
+> values_at(efc$c12hour)
+[1] -8.4 42.4 93.2
+> values_at(efc$c12hour, "quartiles2")
+[1] 10.0 20.0 42.8
+> 
+> mean_sd <- values_at(values = "meansd")
+> mean_sd(efc$c12hour)
+[1] -8.4 42.4 93.2
+> 
+> 
+> 
+> cleanEx()
+> nameEx("vcov")
+> ### * vcov
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: vcov
+> ### Title: Calculate variance-covariance matrix for adjusted predictions
+> ### Aliases: vcov vcov.ggeffects
+> 
+> ### ** Examples
+> 
+> data(efc)
+> model <- lm(barthtot ~ c12hour + neg_c_7 + c161sex + c172code, data = efc)
+> result <- predict_response(model, c("c12hour [meansd]", "c161sex"))
+> 
+> vcov(result)
+            1           2            3            4           5           6
+1  3.62642428  0.71518593  2.922676591  0.011438238  2.21892890 -0.69230945
+2  0.71518593  1.74243837 -0.073477976  0.953774462 -0.86214188  0.16511056
+3  2.92267659 -0.07347798  2.987294098 -0.008860469  3.05191160  0.05575704
+4  0.01143824  0.95377446 -0.008860469  0.933475755 -0.02915918  0.91317705
+5  2.21892890 -0.86214188  3.051911604 -0.029159177  3.88489431  0.80382353
+6 -0.69230945  0.16511056  0.055757037  0.913177047  0.80382353  1.66124354
+> 
+> # compare standard errors
+> sqrt(diag(vcov(result)))
+        1         2         3         4         5         6 
+1.9043173 1.3200145 1.7283790 0.9661655 1.9710135 1.2888924 
+> as.data.frame(result)
+     x predicted std.error conf.low conf.high  group
+1 -8.3  76.75375 1.9043173 73.01577  80.49173   Male
+2 -8.3  77.79518 1.3200145 75.20412  80.38623 Female
+3 42.2  63.96204 1.7283790 60.56941  67.35467   Male
+4 42.2  65.00347 0.9661655 63.10698  66.89995 Female
+5 92.7  51.17033 1.9710135 47.30143  55.03923   Male
+6 92.7  52.21175 1.2888924 49.68179  54.74172 Female
+> 
+> # only two predicted values, no further terms
+> # vcov() returns a 2x2 matrix
+> result <- predict_response(model, "c161sex")
+> vcov(result)
+             1            2
+1  2.987290958 -0.008861546
+2 -0.008861546  0.933476742
+> 
+> # 2 levels for c161sex multiplied by 3 levels for c172code
+> # result in 6 combinations of predicted values
+> # thus vcov() returns a 6x6 matrix
+> result <- predict_response(model, c("c161sex", "c172code"))
+> vcov(result)
+            1            2           3           4            5           6
+1  4.87803294  3.024738355  1.17144377  1.76091479 -0.092379792 -1.94567437
+2  3.02473835  2.983277938  2.94181752  0.03225611 -0.009204306 -0.05066472
+3  1.17144377  2.941817522  4.71219127 -1.69640257  0.073971180  1.84434493
+4  1.76091479  0.032256111 -1.69640257  2.58228744  0.853628756 -0.87502993
+5 -0.09237979 -0.009204306  0.07397118  0.85362876  0.936804241  1.01997973
+6 -1.94567437 -0.050664722  1.84434493 -0.87502993  1.019979727  2.91498938
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.22 0.61 7.31 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

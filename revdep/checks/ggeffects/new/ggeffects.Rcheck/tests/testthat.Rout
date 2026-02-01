@@ -1,0 +1,134 @@
+
+R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(ggeffects)
+> test_check("ggeffects")
+(Intercept)    tensionM    tensionH 
+   36.38889   -10.00000   -14.72222 
+You are calculating adjusted predictions on the population-level (i.e.
+  `type = "fixed"`) for a *generalized* linear mixed model.
+  This may produce biased estimates due to Jensen's inequality. Consider
+  setting `bias_correction = TRUE` to correct for this bias.
+  See also the documentation of the `bias_correction` argument.
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+
+Not all rows are shown in the output. Use `print(..., n = Inf)` to show
+  all rows.
+Running model...
+Done!
+Some of the focal terms are of type `character`. This may lead to
+  unexpected results. It is recommended to convert these variables to
+  factors before fitting the model.
+  The following variables are of type character: `brand`
+Some of the focal terms are of type `character`. This may lead to
+  unexpected results. It is recommended to convert these variables to
+  factors before fitting the model.
+  The following variables are of type character: `brand`
+Some of the focal terms are of type `character`. This may lead to
+  unexpected results. It is recommended to convert these variables to
+  factors before fitting the model.
+  The following variables are of type character: `brand`
+
+Iteration 1 - deviance = 39.74973 - criterion = 0.8590917
+Iteration 2 - deviance = 10.50328 - criterion = 2.758244
+Iteration 3 - deviance = 9.231325 - criterion = 0.1363107
+Iteration 4 - deviance = 9.227742 - criterion = 0.0003840654
+Iteration 5 - deviance = 9.227742 - criterion = 3.446463e-09
+converged
+NOTE: Results may be misleading due to involvement in interactions
+NOTE: Results may be misleading due to involvement in interactions
+# weights:  16 (9 variable)
+initial  value 1149.238025 
+iter  10 value 1015.404427
+final  value 1013.443395 
+converged
+
+Re-fitting to get Hessian
+
+
+Re-fitting to get Hessian
+
+
+Re-fitting to get Hessian
+
+
+Re-fitting to get Hessian
+
+
+Re-fitting to get Hessian
+
+
+Re-fitting to get Hessian
+
+Could not compute variance-covariance matrix of predictions. No
+  confidence intervals are returned.
+NOTE: Results may be misleading due to involvement in interactions
+Can't compute adjusted predictions, `effects::Effect()` returned an error.
+
+Reason: Invalid operation on a survival time
+You may try `ggpredict()` or `ggemmeans()`.
+
+Can't compute adjusted predictions, `effects::Effect()` returned an error.
+
+Reason: non-conformable arguments
+You may try `ggpredict()` or `ggemmeans()`.
+
+[ FAIL 0 | WARN 0 | SKIP 72 | PASS 565 ]
+
+══ Skipped tests (72) ══════════════════════════════════════════════════════════
+• !interactive() is TRUE (1): 'test-print_test_predictions-ordinal.R:7:1'
+• On CRAN (69): 'test-MCMCglmm.R:1:1', 'test-MixMod.R:1:1',
+  'test-averaging.R:1:1', 'test-avg_predictions.R:1:1',
+  'test-backtransform_response.R:1:1', 'test-bias_correction.R:1:1',
+  'test-brglm.R:4:1', 'test-brms-categ-cum.R:1:1', 'test-brms-monotonic.R:1:1',
+  'test-brms-ppd.R:1:1', 'test-brms-trial.R:1:1', 'test-clean_vars.R:1:1',
+  'test-clm.R:1:1', 'test-clm2.R:1:1', 'test-clmm.R:1:1',
+  'test-condition.R:1:1', 'test-correct_se_sorting.R:1:1',
+  'test-decimals.R:1:1', 'test-fixest.R:1:1', 'test-focal_only_random.R:1:1',
+  'test-format.R:1:1', 'test-gamlss.R:1:1', 'test-gamm4.R:1:1',
+  'test-glmer.R:2:1', 'test-glmmTMB.R:1:1', 'test-interval_re.R:1:1',
+  'test-ivreg.R:1:1', 'test-list_terms.R:32:1', 'test-lmer.R:1:1',
+  'test-mgcv.R:1:1', 'test-plot-from-vignettes.R:5:1',
+  'test-plot-ordinal-latent.R:1:1', 'test-plot-show_data.R:1:1',
+  'test-plot-survival.R:2:1', 'test-plot.R:1:1', 'test-polr.R:13:5',
+  'test-polr.R:43:5', 'test-poly-zeroinf.R:1:1', 'test-pool_comparisons.R:1:1',
+  'test-print.R:1:1', 'test-print_digits.R:1:1', 'test-print_md.R:1:1',
+  'test-print_subsets.R:4:1', 'test-print_subsets.R:9:1',
+  'test-print_test_predictions.R:18:1', 'test-print_test_predictions.R:22:1',
+  'test-print_test_predictions.R:27:1', 'test-print_test_predictions.R:60:1',
+  'test-print_test_predictions.R:72:1', 'test-print_test_predictions.R:82:1',
+  'test-print_test_predictions.R:99:1', 'test-print_zero_inflation.R:1:1',
+  'test-resid_over_grid.R:33:5', 'test-rstanarm-ppd.R:1:1',
+  'test-rstanarm.R:1:1', 'test-sdmTMB.R:1:1', 'test-simulate.R:1:1',
+  'test-test_predictions-margin.R:1:1', 'test-test_predictions-mixed.R:1:1',
+  'test-test_predictions_emmeans.R:58:1',
+  'test-test_predictions_emmeans.R:73:1',
+  'test-test_predictions_ggeffects.R:115:1',
+  'test-test_predictions_ggeffects.R:164:1',
+  'test-test_predictions_ggeffects.R:183:3',
+  'test-test_predictions_ggeffects.R:226:5', 'test-vcov.R:1:1',
+  'test-vglm.R:1:1', 'test-zeroinfl.R:27:3', 'test-zi_prob.R:1:1'
+• empty test (2): 'test-polr.R:136:5', 'test-polr.R:142:5'
+
+[ FAIL 0 | WARN 0 | SKIP 72 | PASS 565 ]
+> 
+> proc.time()
+   user  system elapsed 
+  48.48    2.67   58.18 

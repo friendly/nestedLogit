@@ -1,7 +1,6 @@
 ## Test environments
-* local Windows 10, R version 4.2.3 (2023-03-15 ucrt)
-* local MacOS Ventura 13.3.1, R version 4.3.0 (2023-04-21)
-* win-builder R Under development (unstable) (2023-06-20 r84585 ucrt)
+* local Windows 10, R version 4.5.2 (2025-10-31 ucrt)
+* win-builder R Under development (unstable) (2026-01-31 r89365 ucrt)
 * Rhub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
 * Rhub: Windows Server 2022, R-devel, 64 bit
 
@@ -12,25 +11,25 @@
 ## Reverse dependencies
 
 > devtools::revdep()
-[1] "ggeffects"  "insight"    "parameters"
+[1] "ggeffects"   "insight"     "parameters"  "performance"
 
 ## revdepcheck results
 
-We checked 3 reverse dependencies (0 from CRAN + 3 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 4 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 0 packages
 
 
-## nestedLogit 0.3.2
+## nestedLogit 0.3.4
 
-This is a modest enhancement to the package, adding effect displays and smoothing some infelicities in the previously released version.
+This is a minor release, improving documentation 
 
-* new `Effect` method for `"nestedLogit"` objects to create effect displays.
-* add Effect example to vignette
+* add link to `pkgdown` documentation in DESCRIPTION
+* edit description of nested dichotomies in README to include examples and relations with other models
 
-# nestedLogit 0.3.1
+## nestedLogit 0.3.3
 
-* correct buglet in `as.data.frame` method when `newdata` has one column
-* `predict.nestedLogit()` now includes the `newdata` data frame as an additional component (`.data`) in its result. Consequently, the `newdata` argument is no longer required in the `as.data.frame` method.
+* Fixed documentation error in GSS.R
+* `createDichotomies` methods now explicitly internal
 

@@ -1,0 +1,31 @@
+skip_on_os("linux")
+skip_if_not_installed("emmeans")
+
+test_that("ggemmeans, weights", {
+  data(mtcars)
+  fit <- lm(mpg ~ hp + as.factor(cyl) + as.factor(gear) + as.factor(am), data = mtcars)
+  out <- ggemmeans(fit, "cyl")
+  expect_equal(out$predicted, c(22.6461, 19.0232, 20.2174), tolerance = 1e-3)
+  out <- ggemmeans(fit, "cyl", weights = "equal")
+  expect_equal(out$predicted, c(22.6461, 19.0232, 20.2174), tolerance = 1e-3)
+  out <- ggemmeans(fit, "cyl", weights = "proportional")
+  expect_equal(out$predicted, c(21.9457, 18.3228, 19.517), tolerance = 1e-3)
+  out <- ggemmeans(fit, "cyl", weights = "flat")
+  expect_equal(out$predicted, c(22.4982, 18.8754, 20.5131), tolerance = 1e-3)
+})
+
+test_that("ggemmeans, weights", {
+  data(iris)
+  set.seed(123)
+  iris$x <- as.factor(sample(1:4, nrow(iris), replace = TRUE, prob = c(0.1, 0.2, 0.3, 0.4)))
+  m <- lm(Sepal.Width ~ Species + x, data = iris)
+
+  out <- predict_response(m, "Species", margin = "marginalmeans")
+  expect_equal(out$predicted, c(3.44538, 2.78431, 2.98875), tolerance = 1e-3)
+  out <- predict_response(m, "Species", margin = "marginalmeans", weights = "equal")
+  expect_equal(out$predicted, c(3.44538, 2.78431, 2.98875), tolerance = 1e-3)
+  out <- predict_response(m, "Species", margin = "marginalmeans", weights = "proportional")
+  expect_equal(out$predicted, c(3.4299, 2.76883, 2.97327), tolerance = 1e-3)
+  out <- predict_response(m, "Species", margin = "marginalmeans", weights = "flat")
+  expect_equal(out$predicted, c(3.44538, 2.78431, 2.98875), tolerance = 1e-3)
+})

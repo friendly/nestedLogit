@@ -1,3 +1,13 @@
+# nestedLogit 0.3.4
+
+* add link to `pkgdown` documentation in DESCRIPTION
+* edit description of nested dichotomies in README
+
+# nestedLogit 0.3.3
+
+* Fixed documentation error in GSS.R
+* `createDichotomies` methods now explicitly internal
+
 # nestedLogit 0.3.2
 
 * new `Effect` method for `"nestedLogit"` objects to create effect displays.

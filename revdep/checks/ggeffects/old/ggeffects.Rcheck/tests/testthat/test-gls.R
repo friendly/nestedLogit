@@ -1,0 +1,15 @@
+skip_on_os(c("mac", "solaris"))
+skip_if_not_installed("nlme")
+skip_if_not_installed("effects")
+skip_if_not_installed("emmeans")
+
+test_that("ggpredict", {
+  data(Ovary, package = "nlme")
+  m1 <- nlme::gls(follicles ~ Time, Ovary, correlation = nlme::corAR1(form = ~ 1 | Mare))
+  p <- ggpredict(m1, "Time")
+  expect_equal(p$predicted[1], 11.49246, tolerance = 1e-3)
+  p <- ggeffect(m1, "Time")
+  expect_equal(p$predicted[1], 11.49246, tolerance = 1e-3)
+  p <- ggemmeans(m1, "Time")
+  expect_equal(p$predicted[1], 11.49246, tolerance = 1e-3)
+})

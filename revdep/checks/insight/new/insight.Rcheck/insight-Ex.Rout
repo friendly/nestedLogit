@@ -1,0 +1,6076 @@
+
+R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "insight"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> library('insight')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("all_models_equal")
+> ### * all_models_equal
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: all_models_equal
+> ### Title: Checks if all objects are models of same class
+> ### Aliases: all_models_equal all_models_same_class
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ data(sleepstudy, package = "lme4")
++ 
++ m1 <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ m2 <- lm(mpg ~ wt + cyl, data = mtcars)
++ m3 <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
++ m4 <- glm(formula = vs ~ wt, family = binomial(), data = mtcars)
++ 
++ all_models_same_class(m1, m2)
++ all_models_same_class(m1, m2, m3)
++ all_models_same_class(m1, m4, m2, m3, verbose = TRUE)
++ all_models_same_class(m1, m4, mtcars, m2, m3, verbose = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> data(mtcars)
+> data(sleepstudy, package = "lme4")
+> m1 <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> m2 <- lm(mpg ~ wt + cyl, data = mtcars)
+> m3 <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+> m4 <- glm(formula = vs ~ wt, family = binomial(), data = mtcars)
+> all_models_same_class(m1, m2)
+[1] TRUE
+> all_models_same_class(m1, m2, m3)
+[1] FALSE
+> all_models_same_class(m1, m4, m2, m3, verbose = TRUE)
+Following objects are not identical with m1 (of class "lm"): m4 ("glm"),
+  m3 ("lmerMod")
+[1] FALSE
+> all_models_same_class(m1, m4, mtcars, m2, m3, verbose = TRUE)
+Following objects are no (supported) models: mtcars
+Following objects are not identical with m1 (of class "lm"): m4 ("glm"),
+  mtcars ("data.frame"), m3 ("lmerMod")
+[1] FALSE
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("check_if_installed")
+> ### * check_if_installed
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: check_if_installed
+> ### Title: Checking if needed package is installed
+> ### Aliases: check_if_installed
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (interactive() || identical(Sys.getenv("IN_PKGDOWN"), "true")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("clean_names")
+> ### * clean_names
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: clean_names
+> ### Title: Get clean names of model terms
+> ### Aliases: clean_names clean_names.character
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # example from ?stats::glm
++ counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
++ outcome <- as.numeric(gl(3, 1, 9))
++ treatment <- gl(3, 3)
++ m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
++ clean_names(m)
++ 
++ # difference "clean_names()" and "find_variables()"
++ data(cbpp, package = "lme4")
++ m <- lme4::glmer(
++   cbind(incidence, size - incidence) ~ period + (1 | herd),
++   data = cbpp,
++   family = binomial
++ )
++ 
++ clean_names(m)
++ find_variables(m)
++ find_variables(m, flatten = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
+> outcome <- as.numeric(gl(3, 1, 9))
+> treatment <- gl(3, 3)
+> m <- glm(counts ~ log(outcome) + as.factor(treatment), family = poisson())
+> clean_names(m)
+[1] "counts"    "outcome"   "treatment"
+> data(cbpp, package = "lme4")
+> m <- lme4::glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), 
++     data = cbpp, family = binomial)
+> clean_names(m)
+[1] "incidence" "size"      "period"    "herd"     
+> find_variables(m)
+$response
+[1] "incidence" "size"     
+
+$conditional
+[1] "period"
+
+$random
+[1] "herd"
+
+> find_variables(m, flatten = TRUE)
+[1] "incidence" "size"      "period"    "herd"     
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("clean_parameters")
+> ### * clean_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: clean_parameters
+> ### Title: Get clean names of model parameters
+> ### Aliases: clean_parameters
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("curl", quietly = TRUE) && curl::has_internet() && require("brms")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+Using libcurl 8.14.1 with Schannel
+Loading required package: brms
+Loading required package: Rcpp
+Loading 'brms' package (version 2.23.0). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').
+
+Attaching package: 'brms'
+
+The following object is masked from 'package:stats':
+
+    ar
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:brms', 'package:Rcpp', 'package:curl'
+
+> nameEx("color_if")
+> ### * color_if
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: color_if
+> ### Title: Color-formatting for data columns based on condition
+> ### Aliases: color_if colour_if
+> 
+> ### ** Examples
+> 
+> # all values in Sepal.Length larger than 5 in green, all remaining in red
+> x <- color_if(iris[1:10, ], columns = "Sepal.Length", predicate = `>`, value = 5)
+> x
+                   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1  \033[32m        5.10\033[39m         3.5          1.4         0.2  setosa
+2  \033[31m        4.90\033[39m         3.0          1.4         0.2  setosa
+3  \033[31m        4.70\033[39m         3.2          1.3         0.2  setosa
+4  \033[31m        4.60\033[39m         3.1          1.5         0.2  setosa
+5  \033[31m        5.00\033[39m         3.6          1.4         0.2  setosa
+6  \033[32m        5.40\033[39m         3.9          1.7         0.4  setosa
+7  \033[31m        4.60\033[39m         3.4          1.4         0.3  setosa
+8  \033[31m        5.00\033[39m         3.4          1.5         0.2  setosa
+9  \033[31m        4.40\033[39m         2.9          1.4         0.2  setosa
+10 \033[31m        4.90\033[39m         3.1          1.5         0.1  setosa
+> cat(x$Sepal.Length)
+[32m        5.10[39m [31m        4.90[39m [31m        4.70[39m [31m        4.60[39m [31m        5.00[39m [32m        5.40[39m [31m        4.60[39m [31m        5.00[39m [31m        4.40[39m [31m        4.90[39m> 
+> # all levels "setosa" in Species in green, all remaining in red
+> x <- color_if(iris, columns = "Species", predicate = `==`, value = "setosa")
+> cat(x$Species)
+[32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [32m    setosa[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31mversicolor[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m [31m virginica[39m> 
+> # own function, argument "value" not needed here
+> p <- function(x, y) {
++   x >= 4.9 & x <= 5.1
++ }
+> # all values in Sepal.Length between 4.9 and 5.1 in green, all remaining in red
+> x <- color_if(iris[1:10, ], columns = "Sepal.Length", predicate = p)
+> cat(x$Sepal.Length)
+[32m        5.10[39m [32m        4.90[39m [31m        4.70[39m [31m        4.60[39m [32m        5.00[39m [31m        5.40[39m [31m        4.60[39m [32m        5.00[39m [31m        4.40[39m [32m        4.90[39m> 
+> 
+> 
+> cleanEx()
+> nameEx("compact_character")
+> ### * compact_character
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: compact_character
+> ### Title: Remove empty strings from character
+> ### Aliases: compact_character
+> 
+> ### ** Examples
+> 
+> compact_character(c("x", "y", NA))
+[1] "x" "y"
+> compact_character(c("x", "NULL", "", "y"))
+[1] "x" "y"
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("compact_list")
+> ### * compact_list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: compact_list
+> ### Title: Remove empty elements from lists
+> ### Aliases: compact_list
+> 
+> ### ** Examples
+> 
+> compact_list(list(NULL, 1, c(NA, NA)))
+[[1]]
+[1] 1
+
+[[2]]
+[1] NA NA
+
+> compact_list(c(1, NA, NA))
+[1]  1 NA NA
+> compact_list(c(1, NA, NA), remove_na = TRUE)
+[1] 1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("display")
+> ### * display
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: display
+> ### Title: Generic export of data frames into formatted tables
+> ### Aliases: display print_md print_html display.data.frame
+> ###   print_md.data.frame print_html.data.frame
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (all(check_if_installed(c("gt", "tinytable"), quietly = TRUE))) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ display(iris[1:5, ], format = "html")
++ 
++ display(iris[1:5, ], format = "tt")
++ 
++ display(iris[1:5, ], format = "markdown")
++ ## Don't show: 
++ }) # examplesIf
+> display(iris[1:5, ], format = "html")
+<div id="ydgabwknrs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  <style>#ydgabwknrs table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ydgabwknrs thead, #ydgabwknrs tbody, #ydgabwknrs tfoot, #ydgabwknrs tr, #ydgabwknrs td, #ydgabwknrs th {
+  border-style: none;
+}
+
+#ydgabwknrs p {
+  margin: 0;
+  padding: 0;
+}
+
+#ydgabwknrs .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ydgabwknrs .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ydgabwknrs .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ydgabwknrs .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ydgabwknrs .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ydgabwknrs .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ydgabwknrs .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ydgabwknrs .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ydgabwknrs .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ydgabwknrs .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ydgabwknrs .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ydgabwknrs .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ydgabwknrs .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ydgabwknrs .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ydgabwknrs .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydgabwknrs .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ydgabwknrs .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ydgabwknrs .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ydgabwknrs .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydgabwknrs .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ydgabwknrs .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydgabwknrs .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ydgabwknrs .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydgabwknrs .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ydgabwknrs .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ydgabwknrs .gt_left {
+  text-align: left;
+}
+
+#ydgabwknrs .gt_center {
+  text-align: center;
+}
+
+#ydgabwknrs .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ydgabwknrs .gt_font_normal {
+  font-weight: normal;
+}
+
+#ydgabwknrs .gt_font_bold {
+  font-weight: bold;
+}
+
+#ydgabwknrs .gt_font_italic {
+  font-style: italic;
+}
+
+#ydgabwknrs .gt_super {
+  font-size: 65%;
+}
+
+#ydgabwknrs .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ydgabwknrs .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ydgabwknrs .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ydgabwknrs .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ydgabwknrs .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ydgabwknrs .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ydgabwknrs .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#ydgabwknrs .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ydgabwknrs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+  <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Sepal.Length">Sepal.Length</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Sepal.Width">Sepal.Width</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Petal.Length">Petal.Length</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Petal.Width">Petal.Width</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Species">Species</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Sepal.Length" class="gt_row gt_left">5.10</td>
+<td headers="Sepal.Width" class="gt_row gt_center">3.50</td>
+<td headers="Petal.Length" class="gt_row gt_center">1.40</td>
+<td headers="Petal.Width" class="gt_row gt_center">0.20</td>
+<td headers="Species" class="gt_row gt_center">setosa</td></tr>
+    <tr><td headers="Sepal.Length" class="gt_row gt_left">4.90</td>
+<td headers="Sepal.Width" class="gt_row gt_center">3.00</td>
+<td headers="Petal.Length" class="gt_row gt_center">1.40</td>
+<td headers="Petal.Width" class="gt_row gt_center">0.20</td>
+<td headers="Species" class="gt_row gt_center">setosa</td></tr>
+    <tr><td headers="Sepal.Length" class="gt_row gt_left">4.70</td>
+<td headers="Sepal.Width" class="gt_row gt_center">3.20</td>
+<td headers="Petal.Length" class="gt_row gt_center">1.30</td>
+<td headers="Petal.Width" class="gt_row gt_center">0.20</td>
+<td headers="Species" class="gt_row gt_center">setosa</td></tr>
+    <tr><td headers="Sepal.Length" class="gt_row gt_left">4.60</td>
+<td headers="Sepal.Width" class="gt_row gt_center">3.10</td>
+<td headers="Petal.Length" class="gt_row gt_center">1.50</td>
+<td headers="Petal.Width" class="gt_row gt_center">0.20</td>
+<td headers="Species" class="gt_row gt_center">setosa</td></tr>
+    <tr><td headers="Sepal.Length" class="gt_row gt_left">5.00</td>
+<td headers="Sepal.Width" class="gt_row gt_center">3.60</td>
+<td headers="Petal.Length" class="gt_row gt_center">1.40</td>
+<td headers="Petal.Width" class="gt_row gt_center">0.20</td>
+<td headers="Species" class="gt_row gt_center">setosa</td></tr>
+  </tbody>
+  
+</table>
+</div>
+> display(iris[1:5, ], format = "tt")
+
++--------------+-------------+--------------+-------------+---------+
+| Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species |
++==============+=============+==============+=============+=========+
+| 5.10         | 3.50        | 1.40         | 0.20        | setosa  |
++--------------+-------------+--------------+-------------+---------+
+| 4.90         | 3.00        | 1.40         | 0.20        | setosa  |
++--------------+-------------+--------------+-------------+---------+
+| 4.70         | 3.20        | 1.30         | 0.20        | setosa  |
++--------------+-------------+--------------+-------------+---------+
+| 4.60         | 3.10        | 1.50         | 0.20        | setosa  |
++--------------+-------------+--------------+-------------+---------+
+| 5.00         | 3.60        | 1.40         | 0.20        | setosa  |
++--------------+-------------+--------------+-------------+---------+ 
+> display(iris[1:5, ], format = "markdown")
+
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width| Species|
+|------------:|-----------:|------------:|-----------:|-------:|
+|         5.10|        3.50|         1.40|        0.20|  setosa|
+|         4.90|        3.00|         1.40|        0.20|  setosa|
+|         4.70|        3.20|         1.30|        0.20|  setosa|
+|         4.60|        3.10|         1.50|        0.20|  setosa|
+|         5.00|        3.60|         1.40|        0.20|  setosa|
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("download_model")
+> ### * download_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: download_model
+> ### Title: Download circus models
+> ### Aliases: download_model
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("httr2", quietly = TRUE) && curl::has_internet() && interactive()) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:httr2'
+
+> nameEx("easystats_columns")
+> ### * easystats_columns
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: easystats_columns
+> ### Title: Easystats columns
+> ### Aliases: easystats_columns broom_columns
+> 
+> ### ** Examples
+> 
+> easystats_columns("uncertainty")
+ [1] "SE"                 "Std. Error"         "SD"                
+ [4] "Deviance_error"     "CI"                 "CI_low"            
+ [7] "CI_high"            "Difference_CI_low"  "Difference_CI_high"
+[10] "CI_Method"          "CI_Distribution"    "CI_Iterations"     
+[13] "Sum_Squares"        "Mean_Square"       
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ellipsis_info")
+> ### * ellipsis_info
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ellipsis_info
+> ### Title: Gather information about objects in ellipsis (dot dot dot)
+> ### Aliases: ellipsis_info ellipsis_info.default
+> 
+> ### ** Examples
+> 
+> m1 <- lm(Sepal.Length ~ Petal.Width + Species, data = iris)
+> m2 <- lm(Sepal.Length ~ Species, data = iris)
+> m3 <- lm(Sepal.Length ~ Petal.Width, data = iris)
+> m4 <- lm(Sepal.Length ~ 1, data = iris)
+> m5 <- lm(Petal.Width ~ 1, data = iris)
+> 
+> objects <- ellipsis_info(m1, m2, m3, m4)
+> class(objects)
+[1] "ListNonNestedRegressions" "ListRegressions"         
+[3] "ListModels"               "list"                    
+> 
+> objects <- ellipsis_info(m1, m2, m4)
+> attributes(objects)$is_nested
+[1] TRUE
+> 
+> objects <- ellipsis_info(m1, m2, m5)
+> attributes(objects)$same_response
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("export_table")
+> ### * export_table
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: export_table
+> ### Title: Data frame and Tables Pretty Formatting
+> ### Aliases: export_table
+> 
+> ### ** Examples
+> 
+> export_table(head(iris))
+Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species
+-----------------------------------------------------------------
+        5.10 |        3.50 |         1.40 |        0.20 |  setosa
+        4.90 |        3.00 |         1.40 |        0.20 |  setosa
+        4.70 |        3.20 |         1.30 |        0.20 |  setosa
+        4.60 |        3.10 |         1.50 |        0.20 |  setosa
+        5.00 |        3.60 |         1.40 |        0.20 |  setosa
+        5.40 |        3.90 |         1.70 |        0.40 |  setosa
+> export_table(head(iris), cross = "+")
+Sepal.Length | Sepal.Width | Petal.Length | Petal.Width | Species
+-------------+-------------+--------------+-------------+--------
+        5.10 |        3.50 |         1.40 |        0.20 |  setosa
+        4.90 |        3.00 |         1.40 |        0.20 |  setosa
+        4.70 |        3.20 |         1.30 |        0.20 |  setosa
+        4.60 |        3.10 |         1.50 |        0.20 |  setosa
+        5.00 |        3.60 |         1.40 |        0.20 |  setosa
+        5.40 |        3.90 |         1.70 |        0.40 |  setosa
+> export_table(head(iris), sep = " ", header = "*", digits = 1)
+Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+*********************************************************
+         5.1         3.5          1.4         0.2  setosa
+         4.9         3.0          1.4         0.2  setosa
+         4.7         3.2          1.3         0.2  setosa
+         4.6         3.1          1.5         0.2  setosa
+         5.0         3.6          1.4         0.2  setosa
+         5.4         3.9          1.7         0.4  setosa
+> 
+> # split longer tables
+> export_table(head(iris), table_width = 30)
+Sepal.Length | Sepal.Width
+--------------------------
+        5.10 |        3.50
+        4.90 |        3.00
+        4.70 |        3.20
+        4.60 |        3.10
+        5.00 |        3.60
+        5.40 |        3.90
+
+Sepal.Length | Petal.Length
+---------------------------
+        5.10 |         1.40
+        4.90 |         1.40
+        4.70 |         1.30
+        4.60 |         1.50
+        5.00 |         1.40
+        5.40 |         1.70
+
+Sepal.Length | Petal.Width | Species
+------------------------------------
+        5.10 |        0.20 |  setosa
+        4.90 |        0.20 |  setosa
+        4.70 |        0.20 |  setosa
+        4.60 |        0.20 |  setosa
+        5.00 |        0.20 |  setosa
+        5.40 |        0.40 |  setosa
+> 
+> # group (split) tables by variables
+> export_table(head(mtcars, 8), by = "cyl")
+[34mGroup: cyl=6[39m
+
+  mpg | disp |  hp | drat |   wt |  qsec | vs | am | gear | carb
+----------------------------------------------------------------
+21.00 |  160 | 110 | 3.90 | 2.62 | 16.46 |  0 |  1 |    4 |    4
+21.00 |  160 | 110 | 3.90 | 2.88 | 17.02 |  0 |  1 |    4 |    4
+21.40 |  258 | 110 | 3.08 | 3.21 | 19.44 |  1 |  0 |    3 |    1
+18.10 |  225 | 105 | 2.76 | 3.46 | 20.22 |  1 |  0 |    3 |    1
+
+[34mGroup: cyl=4[39m
+
+  mpg |   disp | hp | drat |   wt |  qsec | vs | am | gear | carb
+-----------------------------------------------------------------
+22.80 | 108.00 | 93 | 3.85 | 2.32 | 18.61 |  1 |  1 |    4 |    1
+24.40 | 146.70 | 62 | 3.69 | 3.19 | 20.00 |  1 |  0 |    4 |    2
+
+[34mGroup: cyl=8[39m
+
+  mpg | disp |  hp | drat |   wt |  qsec | vs | am | gear | carb
+----------------------------------------------------------------
+18.70 |  360 | 175 | 3.15 | 3.44 | 17.02 |  0 |  0 |    3 |    2
+14.30 |  360 | 245 | 3.21 | 3.57 | 15.84 |  0 |  0 |    3 |    4
+> 
+> 
+> # column-width
+> d <- data.frame(
++   x = c(1, 2, 3),
++   y = c(100, 200, 300),
++   z = c(10000, 20000, 30000)
++ )
+> export_table(d)
+x |   y |     z
+---------------
+1 | 100 | 10000
+2 | 200 | 20000
+3 | 300 | 30000
+> export_table(d, width = 8)
+       x |        y |        z
+------------------------------
+       1 |      100 |    10000
+       2 |      200 |    20000
+       3 |      300 |    30000
+> export_table(d, width = c(x = 5, z = 10))
+    x |   y |          z
+------------------------
+    1 | 100 |      10000
+    2 | 200 |      20000
+    3 | 300 |      30000
+> export_table(d, width = c(x = 5, y = 5, z = 10), align = "lcr")
+x     |   y   |          z
+--------------------------
+1     |  100  |      10000
+2     |  200  |      20000
+3     |  300  |      30000
+> 
+> # group rows in the table
+> ## Not run: 
+> ##D data(mtcars)
+> ##D 
+> ##D # fit model
+> ##D mtcars$cyl <- as.factor(mtcars$cyl)
+> ##D mtcars$gear <- as.factor(mtcars$gear)
+> ##D model <- lm(mpg ~ hp + gear * vs + cyl + drat, data = mtcars)
+> ##D 
+> ##D # model summary, don't select "Intercept" parameter
+> ##D mp <- as.data.frame(format(
+> ##D   parameters::model_parameters(model, drop = "^\\(Intercept")
+> ##D ))
+> ##D 
+> ##D # define groups for the table
+> ##D groups <- list(
+> ##D   Engine = c("cyl [6]", "cyl [8]", "vs", "hp"),
+> ##D   Interactions = c(8, 9),
+> ##D   Controls = c(2, 3, 7)
+> ##D )
+> ##D 
+> ##D # export table with groups, using tinytable format
+> ##D export_table(mp, format = "tt", row_groups = groups)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_algorithm")
+> ### * find_algorithm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_algorithm
+> ### Title: Find sampling algorithm and optimizers
+> ### Aliases: find_algorithm
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ m <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
++ find_algorithm(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy, package = "lme4")
+> m <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+> find_algorithm(m)
+$algorithm
+[1] "REML"
+
+$optimizer
+[1] "nloptwrap"
+
+> ## End(Don't show)
+> ## Don't show: 
+> if (require("rstanarm") && require("lme4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: rstanarm
+Loading required package: Rcpp
+This is rstanarm version 2.32.2
+- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+- For execution on a local, multicore CPU with excess RAM we recommend calling
+  options(mc.cores = parallel::detectCores())
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:rstanarm', 'package:Rcpp', 'package:lme4',
+  'package:Matrix'
+
+> nameEx("find_formula")
+> ### * find_formula
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_formula
+> ### Title: Find model formula
+> ### Aliases: find_formula formula_ok find_formula.default
+> ###   find_formula.nestedLogit
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ find_formula(m)
++ 
++ m <- lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris)
++ f <- find_formula(m)
++ f
++ format(f)
++ ## Don't show: 
++ }) # examplesIf
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_formula(m)
+$conditional
+mpg ~ wt + cyl + vs
+
+attr(,"class")
+[1] "insight_formula" "list"           
+> m <- lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris)
+> f <- find_formula(m)
+> f
+$conditional
+Sepal.Length ~ Sepal.Width
+
+$random
+~1 | Species
+<environment: 0x0000016e6d8b6810>
+
+attr(,"class")
+[1] "insight_formula" "list"           
+> format(f)
+[1] "Sepal.Length ~ Sepal.Width + (~1 | Species)"
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_interactions")
+> ### * find_interactions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_interactions
+> ### Title: Find interaction terms from models
+> ### Aliases: find_interactions
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> 
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_interactions(m)
+NULL
+> 
+> m <- lm(mpg ~ wt * cyl + vs * hp * gear + carb, data = mtcars)
+> find_interactions(m)
+$conditional
+[1] "wt:cyl"     "vs:hp"      "vs:gear"    "hp:gear"    "vs:hp:gear"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_offset")
+> ### * find_offset
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_offset
+> ### Title: Find possible offset terms in a model
+> ### Aliases: find_offset
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("pscl", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # Generate some zero-inflated data
++ set.seed(123)
++ N <- 100 # Samples
++ x <- runif(N, 0, 10) # Predictor
++ off <- rgamma(N, 3, 2) # Offset variable
++ yhat <- -1 + x * 0.5 + log(off) # Prediction on log scale
++ dat <- data.frame(y = NA, x, logOff = log(off), raw_off = off)
++ dat$y <- rpois(N, exp(yhat)) # Poisson process
++ dat$y <- ifelse(rbinom(N, 1, 0.3), 0, dat$y) # Zero-inflation process
++ 
++ m1 <- pscl::zeroinfl(y ~ offset(logOff) + x | 1, data = dat, dist = "poisson")
++ find_offset(m1)
++ 
++ m2 <- pscl::zeroinfl(
++   y ~ offset(log(raw_off)) + x | 1,
++   data = dat,
++   dist = "poisson"
++ )
++ find_offset(m2)
++ find_offset(m2, as_term = TRUE)
++ 
++ m3 <- pscl::zeroinfl(y ~ x | 1, data = dat, offset = logOff, dist = "poisson")
++ find_offset(m3)
++ ## Don't show: 
++ }) # examplesIf
+> set.seed(123)
+> N <- 100
+> x <- runif(N, 0, 10)
+> off <- rgamma(N, 3, 2)
+> yhat <- -1 + x * 0.5 + log(off)
+> dat <- data.frame(y = NA, x, logOff = log(off), raw_off = off)
+> dat$y <- rpois(N, exp(yhat))
+> dat$y <- ifelse(rbinom(N, 1, 0.3), 0, dat$y)
+> m1 <- pscl::zeroinfl(y ~ offset(logOff) + x | 1, data = dat, dist = "poisson")
+> find_offset(m1)
+[1] "logOff"
+> m2 <- pscl::zeroinfl(y ~ offset(log(raw_off)) + x | 1, data = dat, dist = "poisson")
+> find_offset(m2)
+[1] "raw_off"
+> find_offset(m2, as_term = TRUE)
+[1] "log(raw_off)"
+> m3 <- pscl::zeroinfl(y ~ x | 1, data = dat, offset = logOff, dist = "poisson")
+> find_offset(m3)
+[1] "logOff"
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.BGGM")
+> ### * find_parameters.BGGM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.BGGM
+> ### Title: Find names of model parameters from Bayesian models
+> ### Aliases: find_parameters.BGGM find_parameters.brmsfit
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_parameters(m)
+$conditional
+[1] "(Intercept)" "wt"          "cyl"         "vs"         
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters")
+> ### * find_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters
+> ### Title: Find names of model parameters
+> ### Aliases: find_parameters find_parameters.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_parameters(m)
+$conditional
+[1] "(Intercept)" "wt"          "cyl"         "vs"         
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.averaging")
+> ### * find_parameters.averaging
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.averaging
+> ### Title: Find model parameters from models with special components
+> ### Aliases: find_parameters.averaging
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("betareg", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data("GasolineYield", package = "betareg")
++ m <- betareg::betareg(yield ~ batch + temp, data = GasolineYield)
++ find_parameters(m)
++ find_parameters(m, component = "precision")
++ ## Don't show: 
++ }) # examplesIf
+> data("GasolineYield", package = "betareg")
+> m <- betareg::betareg(yield ~ batch + temp, data = GasolineYield)
+> find_parameters(m)
+$conditional
+ [1] "(Intercept)" "batch1"      "batch2"      "batch3"      "batch4"     
+ [6] "batch5"      "batch6"      "batch7"      "batch8"      "batch9"     
+[11] "temp"       
+
+$precision
+[1] "(phi)"
+
+> find_parameters(m, component = "precision")
+$precision
+[1] "(phi)"
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.betamfx")
+> ### * find_parameters.betamfx
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.betamfx
+> ### Title: Find names of model parameters from marginal effects models
+> ### Aliases: find_parameters.betamfx
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_parameters(m)
+$conditional
+[1] "(Intercept)" "wt"          "cyl"         "vs"         
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.emmGrid")
+> ### * find_parameters.emmGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.emmGrid
+> ### Title: Find model parameters from estimated marginal means objects
+> ### Aliases: find_parameters.emmGrid
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("emmeans", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ model <- lm(mpg ~ wt * factor(cyl), data = mtcars)
++ emm <- emmeans(model, c("wt", "cyl"))
++ find_parameters(emm)
++ ## Don't show: 
++ }) # examplesIf
+Welcome to emmeans.
+Caution: You lose important information if you filter this package's results.
+See '? untidy'
+> data(mtcars)
+> model <- lm(mpg ~ wt * factor(cyl), data = mtcars)
+> emm <- emmeans(model, c("wt", "cyl"))
+> find_parameters(emm)
+$emmeans
+[1] 3.21725 3.21725 3.21725
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:emmeans'
+
+> nameEx("find_parameters.gamlss")
+> ### * find_parameters.gamlss
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.gamlss
+> ### Title: Find names of model parameters from generalized additive models
+> ### Aliases: find_parameters.gamlss find_parameters.gam
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("mgcv", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ m <- mgcv::gam(mpg ~ s(hp) + gear, data = mtcars)
++ find_parameters(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(mtcars)
+> m <- mgcv::gam(mpg ~ s(hp) + gear, data = mtcars)
+> find_parameters(m)
+$conditional
+[1] "(Intercept)" "gear"       
+
+$smooth_terms
+[1] "s(hp)"
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.glmmTMB")
+> ### * find_parameters.glmmTMB
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.glmmTMB
+> ### Title: Find names of model parameters from mixed models
+> ### Aliases: find_parameters.glmmTMB
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ m <- lme4::lmer(
++   Reaction ~ Days + (1 + Days | Subject),
++   data = sleepstudy
++ )
++ find_parameters(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy, package = "lme4")
+> m <- lme4::lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+> find_parameters(m)
+$conditional
+[1] "(Intercept)" "Days"       
+
+$random
+$random$Subject
+[1] "(Intercept)" "Days"       
+
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_parameters.zeroinfl")
+> ### * find_parameters.zeroinfl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_parameters.zeroinfl
+> ### Title: Find names of model parameters from zero-inflated models
+> ### Aliases: find_parameters.zeroinfl
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("pscl", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(bioChemists, package = "pscl")
++ m <- pscl::zeroinfl(
++   art ~ fem + mar + kid5 + ment | kid5 + phd,
++   data = bioChemists
++ )
++ find_parameters(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(bioChemists, package = "pscl")
+> m <- pscl::zeroinfl(art ~ fem + mar + kid5 + ment | kid5 + phd, data = bioChemists)
+> find_parameters(m)
+$conditional
+[1] "count_(Intercept)" "count_femWomen"    "count_marMarried" 
+[4] "count_kid5"        "count_ment"       
+
+$zero_inflated
+[1] "zero_(Intercept)" "zero_kid5"        "zero_phd"        
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_predictors")
+> ### * find_predictors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_predictors
+> ### Title: Find names of model predictors
+> ### Aliases: find_predictors find_predictors.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_predictors(m)
+$conditional
+[1] "wt"  "cyl" "vs" 
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_random")
+> ### * find_random
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_random
+> ### Title: Find names of random effects
+> ### Aliases: find_random
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
++ sleepstudy$mysubgrp <- NA
++ for (i in 1:5) {
++   filter_group <- sleepstudy$mygrp == i
++   sleepstudy$mysubgrp[filter_group] <-
++     sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
++ 
++ m <- lme4::lmer(
++   Reaction ~ Days + (1 | mygrp / mysubgrp) + (1 | Subject),
++   data = sleepstudy
++ )
++ 
++ find_random(m)
++ find_random(m, split_nested = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy, package = "lme4")
+> sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
+> sleepstudy$mysubgrp <- NA
+> for (i in 1:5) {
++     filter_group <- sleepstudy$mygrp == i
++     sleepstudy$mysubgrp[filter_group] <- sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
+> m <- lme4::lmer(Reaction ~ Days + (1 | mygrp/mysubgrp) + (1 | Subject), 
++     data = sleepstudy)
+> find_random(m)
+$random
+[1] "mysubgrp:mygrp" "mygrp"          "Subject"       
+
+> find_random(m, split_nested = TRUE)
+$random
+[1] "mysubgrp" "mygrp"    "Subject" 
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_random_slopes")
+> ### * find_random_slopes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_random_slopes
+> ### Title: Find names of random slopes
+> ### Aliases: find_random_slopes
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ m <- lme4::lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
++ find_random_slopes(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy, package = "lme4")
+> m <- lme4::lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+> find_random_slopes(m)
+$random
+[1] "Days"
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_response")
+> ### * find_response
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_response
+> ### Title: Find name of the response variable
+> ### Aliases: find_response find_response.joint
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(cbpp, package = "lme4")
++ cbpp$trials <- cbpp$size - cbpp$incidence
++ m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
++ 
++ find_response(m, combine = TRUE)
++ find_response(m, combine = FALSE)
++ ## Don't show: 
++ }) # examplesIf
+> data(cbpp, package = "lme4")
+> cbpp$trials <- cbpp$size - cbpp$incidence
+> m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
+> find_response(m, combine = TRUE)
+[1] "cbind(incidence, trials)"
+> find_response(m, combine = FALSE)
+[1] "incidence" "trials"   
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_smooth")
+> ### * find_smooth
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_smooth
+> ### Title: Find smooth terms from a model object
+> ### Aliases: find_smooth
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("mgcv")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(iris)
++ model <- mgcv::gam(Petal.Length ~ Petal.Width + s(Sepal.Length), data = iris)
++ find_smooth(model)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: mgcv
+Loading required package: nlme
+This is mgcv 1.9-4. For overview type '?mgcv'.
+> data(iris)
+> model <- mgcv::gam(Petal.Length ~ Petal.Width + s(Sepal.Length), data = iris)
+> find_smooth(model)
+$smooth_terms
+[1] "s(Sepal.Length)"
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:mgcv', 'package:nlme'
+
+> nameEx("find_statistic")
+> ### * find_statistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_statistic
+> ### Title: Find statistic for model
+> ### Aliases: find_statistic
+> 
+> ### ** Examples
+> 
+> # regression model object
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> find_statistic(m)
+[1] "t-statistic"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_terms")
+> ### * find_terms
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_terms
+> ### Title: Find all model terms
+> ### Aliases: find_terms find_terms.default
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ m <- suppressWarnings(lme4::lmer(
++   log(Reaction) ~ Days + I(Days^2) + (1 + Days + exp(Days) | Subject),
++   data = sleepstudy
++ ))
++ 
++ find_terms(m)
++ 
++ # sometimes, it is necessary to retrieve terms from "term.labels" attribute
++ m <- lm(mpg ~ hp * (am + cyl), data = mtcars)
++ find_terms(m, as_term_labels = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy, package = "lme4")
+> m <- suppressWarnings(lme4::lmer(log(Reaction) ~ Days + I(Days^2) + (1 + 
++     Days + exp(Days) | Subject), data = sleepstudy))
+> find_terms(m)
+$response
+[1] "log(Reaction)"
+
+$conditional
+[1] "Days"      "I(Days^2)"
+
+$random
+[1] "Days"      "exp(Days)" "Subject"  
+
+> m <- lm(mpg ~ hp * (am + cyl), data = mtcars)
+> find_terms(m, as_term_labels = TRUE)
+$conditional
+[1] "hp"     "am"     "cyl"    "hp:am"  "hp:cyl"
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_transformation")
+> ### * find_transformation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_transformation
+> ### Title: Find possible transformation of model variables
+> ### Aliases: find_transformation find_transformation.default
+> 
+> ### ** Examples
+> 
+> # identity, no transformation
+> model <- lm(Sepal.Length ~ Species, data = iris)
+> find_transformation(model)
+[1] "identity"
+> 
+> # log-transformation
+> model <- lm(log(Sepal.Length) ~ Species, data = iris)
+> find_transformation(model)
+[1] "log"
+> 
+> # log+2
+> model <- lm(log(Sepal.Length + 2) ~ Species, data = iris)
+> find_transformation(model)
+[1] "log(x+2)"
+> 
+> # find transformation for all model terms
+> model <- lm(mpg ~ log(wt) + I(gear^2) + exp(am), data = mtcars)
+> find_transformation(model, include_all = TRUE)
+$response
+       mpg 
+"identity" 
+
+$conditional
+     wt    gear      am 
+  "log" "power"   "exp" 
+
+> 
+> # inverse, response provided as character string
+> find_transformation("1 / y")
+[1] "inverse"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("find_variables")
+> ### * find_variables
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_variables
+> ### Title: Find names of all variables
+> ### Aliases: find_variables
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(cbpp, package = "lme4")
++ data(sleepstudy, package = "lme4")
++ # some data preparation...
++ cbpp$trials <- cbpp$size - cbpp$incidence
++ sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
++ sleepstudy$mysubgrp <- NA
++ for (i in 1:5) {
++   filter_group <- sleepstudy$mygrp == i
++   sleepstudy$mysubgrp[filter_group] <-
++     sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
++ 
++ m1 <- lme4::glmer(
++   cbind(incidence, size - incidence) ~ period + (1 | herd),
++   data = cbpp,
++   family = binomial
++ )
++ find_variables(m1)
++ 
++ m2 <- lme4::lmer(
++   Reaction ~ Days + (1 | mygrp / mysubgrp) + (1 | Subject),
++   data = sleepstudy
++ )
++ find_variables(m2)
++ find_variables(m2, flatten = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> data(cbpp, package = "lme4")
+> data(sleepstudy, package = "lme4")
+> cbpp$trials <- cbpp$size - cbpp$incidence
+> sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
+> sleepstudy$mysubgrp <- NA
+> for (i in 1:5) {
++     filter_group <- sleepstudy$mygrp == i
++     sleepstudy$mysubgrp[filter_group] <- sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
+> m1 <- lme4::glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), 
++     data = cbpp, family = binomial)
+> find_variables(m1)
+$response
+[1] "incidence" "size"     
+
+$conditional
+[1] "period"
+
+$random
+[1] "herd"
+
+> m2 <- lme4::lmer(Reaction ~ Days + (1 | mygrp/mysubgrp) + (1 | Subject), 
++     data = sleepstudy)
+> find_variables(m2)
+$response
+[1] "Reaction"
+
+$conditional
+[1] "Days"
+
+$random
+[1] "mysubgrp" "mygrp"    "Subject" 
+
+> find_variables(m2, flatten = TRUE)
+[1] "Reaction" "Days"     "mysubgrp" "mygrp"    "Subject" 
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("find_weights")
+> ### * find_weights
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: find_weights
+> ### Title: Find names of model weights
+> ### Aliases: find_weights
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> mtcars$weight <- rnorm(nrow(mtcars), 1, .3)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars, weights = weight)
+> find_weights(m)
+[1] "weight"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_bf")
+> ### * format_bf
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_bf
+> ### Title: Bayes Factor formatting
+> ### Aliases: format_bf
+> 
+> ### ** Examples
+> 
+> bfs <- c(0.000045, 0.033, NA, 1557, 3.54)
+> format_bf(bfs)
+[1] "BF < 0.001" "BF = 0.033" ""           "BF > 1000"  "BF = 3.54" 
+> format_bf(bfs, exact = TRUE, name = NULL)
+[1] "4.50e-05" "0.033"    ""         "1.56e+03" "3.54"    
+> format_bf(bfs, stars = TRUE)
+[1] "BF < 0.001°°°" "BF = 0.033°°°" ""              "BF > 1000***" 
+[5] "BF = 3.54*"   
+> format_bf(bfs, protect_ratio = TRUE)
+[1] "BF < 1/1000"  "BF = 1/30.30" ""             "BF > 1000"    "BF = 3.54"   
+> format_bf(bfs, protect_ratio = TRUE, exact = TRUE)
+[1] "BF = 1/2.22e+04" "BF = 1/30.30"    ""                "BF = 1.56e+03"  
+[5] "BF = 3.54"      
+> format_bf(bfs, na_reference = 1)
+[1] "BF < 0.001" "BF = 0.033" "BF = 1.00"  "BF > 1000"  "BF = 3.54" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_capitalize")
+> ### * format_capitalize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_capitalize
+> ### Title: Capitalizes the first letter in a string
+> ### Aliases: format_capitalize
+> 
+> ### ** Examples
+> 
+> format_capitalize("hello")
+[1] "Hello"
+> format_capitalize(c("hello", "world"))
+[1] "Hello" "World"
+> unique(format_capitalize(iris$Species))
+[1] "Setosa"     "Versicolor" "Virginica" 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_ci")
+> ### * format_ci
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_ci
+> ### Title: Confidence/Credible Interval (CI) Formatting
+> ### Aliases: format_ci format_ci.numeric
+> 
+> ### ** Examples
+> 
+> format_ci(1.20, 3.57, ci = 0.90)
+[1] "90% CI [1.20, 3.57]"
+> format_ci(1.20, 3.57, ci = NULL)
+[1] "[1.20, 3.57]"
+> format_ci(1.20, 3.57, ci = NULL, brackets = FALSE)
+[1] "1.20, 3.57"
+> format_ci(1.20, 3.57, ci = NULL, brackets = c("(", ")"))
+[1] "(1.20, 3.57)"
+> format_ci(c(1.205645, 23.4), c(3.57, -1.35), ci = 0.90)
+[1] "90% CI [1.21, 3.57]"   "90% CI [23.40, -1.35]"
+> format_ci(c(1.20, NA, NA), c(3.57, -1.35, NA), ci = 0.90)
+[1] "90% CI [1.20, 3.57]" "90% CI [, -1.35]"    ""                   
+> 
+> # automatic alignment of width, useful for printing multiple CIs in columns
+> x <- format_ci(c(1.205, 23.4, 100.43), c(3.57, -13.35, 9.4))
+> cat(x, sep = "\n")
+95% CI [1.21, 3.57]
+95% CI [23.40, -13.35]
+95% CI [100.43, 9.40]
+> 
+> x <- format_ci(c(1.205, 23.4, 100.43), c(3.57, -13.35, 9.4), width = "auto")
+> cat(x, sep = "\n")
+95% CI [  1.21,   3.57]
+95% CI [ 23.40, -13.35]
+95% CI [100.43,   9.40]
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_message")
+> ### * format_message
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_message
+> ### Title: Format messages and warnings
+> ### Aliases: format_message format_alert format_warning format_error
+> 
+> ### ** Examples
+> 
+> msg <- format_message("Much too long string for just one line, I guess!",
++   line_length = 15
++ )
+> message(msg)
+Much too long
+  string for just
+  one line, I
+  guess!
+> 
+> msg <- format_message("Much too long string for just one line, I guess!",
++   "First new line",
++   "Second new line",
++   "(both indented)",
++   line_length = 30
++ )
+> message(msg)
+Much too long string for just
+  one line, I guess!
+  First new line
+  Second new line
+  (both indented)
+> 
+> msg <- format_message("Much too long string for just one line, I guess!",
++   "First new line",
++   "Second new line",
++   "(not indented)",
++   line_length = 30,
++   indent = ""
++ )
+> message(msg)
+Much too long string for just
+  one line, I guess!
+First new line
+Second new line
+(not indented)
+> 
+> # Caution, experimental! See 'Details'
+> msg <- format_message(
++   "This is {.i italic}, visit {.url easystats.github.io/easystats}",
++   line_length = 30
++ )
+> message(msg)
+This is [3mitalic[23m, visit
+  [3m[34m<easystats.github.io/easystats>[39m[23m
+> 
+> ## Don't show: 
+> if (identical(Sys.getenv("NOT_CRAN"), "true")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # message
++ format_alert("This is a message.")
++ format_alert("This is a warning.", type = "message")
++ 
++ # error
++ try(format_error("This is an error."))
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> ## Don't show: 
+> if (getOption("warn") < 2L) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # warning
++ format_warning("This is a warning.")
++ ## Don't show: 
++ }) # examplesIf
+> format_warning("This is a warning.")
+Warning: This is a warning.
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_number")
+> ### * format_number
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_number
+> ### Title: Convert number to words
+> ### Aliases: format_number
+> 
+> ### ** Examples
+> 
+> format_number(2)
+[1] "two"
+> format_number(45)
+[1] "forty five"
+> format_number(324.68765)
+[1] "three hundred and twenty five"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_p")
+> ### * format_p
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_p
+> ### Title: p-values formatting
+> ### Aliases: format_p
+> 
+> ### ** Examples
+> 
+> format_p(c(.02, .065, 0, .23))
+[1] "p = 0.020" "p = 0.065" "p < .001"  "p = 0.230"
+> format_p(c(.02, .065, 0, .23), name = NULL)
+[1] "0.020"  "0.065"  "< .001" "0.230" 
+> format_p(c(.02, .065, 0, .23), stars_only = TRUE)
+[1] "*"   ""    "***" ""   
+> 
+> model <- lm(mpg ~ wt + cyl, data = mtcars)
+> p <- coef(summary(model))[, 4]
+> format_p(p, digits = "apa")
+[1] "p < .001"  "p < .001"  "p = 0.001"
+> format_p(p, digits = "scientific")
+[1] "p = 3.04318e-20" "p = 2.22020e-04" "p = 1.06428e-03"
+> format_p(p, digits = "scientific2")
+[1] "p = 3.04e-20" "p = 2.22e-04" "p = 1.06e-03"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_pd")
+> ### * format_pd
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_pd
+> ### Title: Probability of direction (pd) formatting
+> ### Aliases: format_pd
+> 
+> ### ** Examples
+> 
+> format_pd(0.12)
+[1] "pd = 12.00%"
+> format_pd(c(0.12, 1, 0.9999, 0.98, 0.995, 0.96), name = NULL)
+[1] "12.00%" "100%"   "99.99%" "98.00%" "99.50%" "96.00%"
+> format_pd(c(0.12, 1, 0.9999, 0.98, 0.995, 0.96), stars = TRUE)
+[1] "pd = 12.00%"    "pd = 100%***"   "pd = 99.99%***" "pd = 98.00%*"  
+[5] "pd = 99.50%**"  "pd = 96.00%"   
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_rope")
+> ### * format_rope
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_rope
+> ### Title: Percentage in ROPE formatting
+> ### Aliases: format_rope
+> 
+> ### ** Examples
+> 
+> format_rope(c(0.02, 0.12, 0.357, 0))
+[1] "2.00% in ROPE"  "12.00% in ROPE" "35.70% in ROPE" "0% in ROPE"    
+> format_rope(c(0.02, 0.12, 0.357, 0), name = NULL)
+[1] "2.00%"  "12.00%" "35.70%" "0%"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_string")
+> ### * format_string
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_string
+> ### Title: String Values Formatting
+> ### Aliases: format_string format_string.character
+> 
+> ### ** Examples
+> 
+> s <- "This can be considered as very long string!"
+> # string is shorter than max.length, so returned as is
+> format_string(s, 60)
+[1] "This can be considered as very long string!"
+> 
+> # string is shortened to as many words that result in
+> # a string of maximum 20 chars
+> format_string(s, 20)
+[1] "This can be..."
+> 
+> 
+> 
+> cleanEx()
+> nameEx("format_table")
+> ### * format_table
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_table
+> ### Title: Parameter table formatting
+> ### Aliases: format_table
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("rstanarm", warn.conflicts = FALSE) && require("parameters", warn.conflicts = FALSE) && packageVersion("parameters") > "0.22.2") withAutoprint({ # examplesIf
++ ## End(Don't show)
++ format_table(head(iris), digits = 1)
++ 
++ m <- lm(Sepal.Length ~ Species * Sepal.Width, data = iris)
++ x <- parameters::model_parameters(m)
++ as.data.frame(format_table(x))
++ as.data.frame(format_table(x, p_digits = "scientific"))
++ # "glue" columns
++ as.data.frame(format_table(x, select = "minimal"))
++ as.data.frame(format_table(x, select = "{estimate}{stars}|{p}"))
++ 
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: rstanarm
+Loading required package: Rcpp
+This is rstanarm version 2.32.2
+- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+- For execution on a local, multicore CPU with excess RAM we recommend calling
+  options(mc.cores = parallel::detectCores())
+Loading required package: parameters
+> format_table(head(iris), digits = 1)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> m <- lm(Sepal.Length ~ Species * Sepal.Width, data = iris)
+> x <- parameters::model_parameters(m)
+> as.data.frame(format_table(x))
+                           Parameter Coefficient   SE        95% CI t(144)
+1                        (Intercept)        2.64 0.57 [ 1.51, 3.77]   4.62
+2               Species [versicolor]        0.90 0.80 [-0.68, 2.48]   1.13
+3                Species [virginica]        1.27 0.82 [-0.35, 2.88]   1.55
+4                        Sepal Width        0.69 0.17 [ 0.36, 1.02]   4.17
+5 Species [versicolor] × Sepal Width        0.17 0.26 [-0.34, 0.69]   0.67
+6  Species [virginica] × Sepal Width        0.21 0.26 [-0.29, 0.72]   0.83
+       p
+1 < .001
+2 0.261 
+3 0.123 
+4 < .001
+5 0.503 
+6 0.411 
+> as.data.frame(format_table(x, p_digits = "scientific"))
+                           Parameter Coefficient   SE        95% CI t(144)
+1                        (Intercept)        2.64 0.57 [ 1.51, 3.77]   4.62
+2               Species [versicolor]        0.90 0.80 [-0.68, 2.48]   1.13
+3                Species [virginica]        1.27 0.82 [-0.35, 2.88]   1.55
+4                        Sepal Width        0.69 0.17 [ 0.36, 1.02]   4.17
+5 Species [versicolor] × Sepal Width        0.17 0.26 [-0.34, 0.69]   0.67
+6  Species [virginica] × Sepal Width        0.21 0.26 [-0.29, 0.72]   0.83
+            p
+1 8.52612e-06
+2 2.61332e-01
+3 1.22515e-01
+4 5.31104e-05
+5 5.02805e-01
+6 4.10634e-01
+> as.data.frame(format_table(x, select = "minimal"))
+                           Parameter   Coefficient (CI)      p
+1                        (Intercept) 2.64 ( 1.51, 3.77) <0.001
+2               Species [versicolor] 0.90 (-0.68, 2.48)  0.261
+3                Species [virginica] 1.27 (-0.35, 2.88)  0.123
+4                        Sepal Width 0.69 ( 0.36, 1.02) <0.001
+5 Species [versicolor] × Sepal Width 0.17 (-0.34, 0.69)  0.503
+6  Species [virginica] × Sepal Width 0.21 (-0.29, 0.72)  0.411
+> as.data.frame(format_table(x, select = "{estimate}{stars}|{p}"))
+                           Parameter Coefficient      p
+1                        (Intercept)     2.64*** <0.001
+2               Species [versicolor]        0.90  0.261
+3                Species [virginica]        1.27  0.123
+4                        Sepal Width     0.69*** <0.001
+5 Species [versicolor] × Sepal Width        0.17  0.503
+6  Species [virginica] × Sepal Width        0.21  0.411
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:parameters', 'package:rstanarm', 'package:Rcpp'
+
+> nameEx("format_value")
+> ### * format_value
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: format_value
+> ### Title: Numeric Values Formatting
+> ### Aliases: format_value format_value.data.frame format_value.numeric
+> ###   format_percent
+> 
+> ### ** Examples
+> 
+> format_value(1.20)
+[1] "1.20"
+> format_value(1.2)
+[1] "1.20"
+> format_value(1.2012313)
+[1] "1.20"
+> format_value(c(0.0045, 234, -23))
+[1] "4.50e-03" "234.00"   "-23.00"  
+> format_value(c(0.0045, 0.12, 0.34))
+[1] "4.50e-03" "0.12"     "0.34"    
+> format_value(c(0.0045, 0.12, 0.34), as_percent = TRUE)
+[1] "0.45%"  "12.00%" "34.00%"
+> format_value(c(0.0045, 0.12, 0.34), digits = "scientific")
+[1] "4.50000e-03" "1.20000e-01" "3.40000e-01"
+> format_value(c(0.0045, 0.12, 0.34), digits = "scientific2")
+[1] "4.50e-03" "1.20e-01" "3.40e-01"
+> format_value(c(0.045, 0.12, 0.34), lead_zero = FALSE)
+[1] ".04" ".12" ".34"
+> format_value(c(0.0045, 0.12, 0.34), decimal_point = ",")
+[1] "4,50e-03" "0,12"     "0,34"    
+> format_value(c(1234567.89, 1234.56), big_mark = ",")
+[1] "1,234,567.89" "1,234.56"    
+> format_value(c(1234567.89, 1234.56), big_mark = " ")
+[1] "1 234 567.89" "1 234.56"    
+> 
+> # default
+> format_value(c(0.0045, 0.123, 0.345))
+[1] "4.50e-03" "0.12"     "0.34"    
+> # significant figures
+> format_value(c(0.0045, 0.123, 0.345), digits = "signif")
+[1] "0.0045" "0.123"  "0.345" 
+> 
+> format_value(as.factor(c("A", "B", "A")))
+[1] A B A
+Levels: A B
+> format_value(iris$Species)
+  [1] setosa     setosa     setosa     setosa     setosa     setosa    
+  [7] setosa     setosa     setosa     setosa     setosa     setosa    
+ [13] setosa     setosa     setosa     setosa     setosa     setosa    
+ [19] setosa     setosa     setosa     setosa     setosa     setosa    
+ [25] setosa     setosa     setosa     setosa     setosa     setosa    
+ [31] setosa     setosa     setosa     setosa     setosa     setosa    
+ [37] setosa     setosa     setosa     setosa     setosa     setosa    
+ [43] setosa     setosa     setosa     setosa     setosa     setosa    
+ [49] setosa     setosa     versicolor versicolor versicolor versicolor
+ [55] versicolor versicolor versicolor versicolor versicolor versicolor
+ [61] versicolor versicolor versicolor versicolor versicolor versicolor
+ [67] versicolor versicolor versicolor versicolor versicolor versicolor
+ [73] versicolor versicolor versicolor versicolor versicolor versicolor
+ [79] versicolor versicolor versicolor versicolor versicolor versicolor
+ [85] versicolor versicolor versicolor versicolor versicolor versicolor
+ [91] versicolor versicolor versicolor versicolor versicolor versicolor
+ [97] versicolor versicolor versicolor versicolor virginica  virginica 
+[103] virginica  virginica  virginica  virginica  virginica  virginica 
+[109] virginica  virginica  virginica  virginica  virginica  virginica 
+[115] virginica  virginica  virginica  virginica  virginica  virginica 
+[121] virginica  virginica  virginica  virginica  virginica  virginica 
+[127] virginica  virginica  virginica  virginica  virginica  virginica 
+[133] virginica  virginica  virginica  virginica  virginica  virginica 
+[139] virginica  virginica  virginica  virginica  virginica  virginica 
+[145] virginica  virginica  virginica  virginica  virginica  virginica 
+Levels: setosa versicolor virginica
+> 
+> format_value(3)
+[1] "3.00"
+> format_value(3, protect_integers = TRUE)
+[1] "3"
+> 
+> format_value(head(iris))
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1         5.10        3.50         1.40        0.20  setosa
+2         4.90        3.00         1.40        0.20  setosa
+3         4.70        3.20         1.30        0.20  setosa
+4         4.60        3.10         1.50        0.20  setosa
+5         5.00        3.60         1.40        0.20  setosa
+6         5.40        3.90         1.70        0.40  setosa
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_auxiliary")
+> ### * get_auxiliary
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_auxiliary
+> ### Title: Get auxiliary parameters from models
+> ### Aliases: get_auxiliary get_dispersion get_dispersion.default
+> 
+> ### ** Examples
+> 
+> # from ?glm
+> clotting <- data.frame(
++   u = c(5, 10, 15, 20, 30, 40, 60, 80, 100),
++   lot1 = c(118, 58, 42, 35, 27, 25, 21, 19, 18),
++   lot2 = c(69, 35, 26, 21, 18, 16, 13, 12, 12)
++ )
+> model <- glm(lot1 ~ log(u), data = clotting, family = Gamma())
+> get_auxiliary(model, type = "dispersion") # same as summary(model)$dispersion
+[1] 0.002446059
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_call")
+> ### * get_call
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_call
+> ### Title: Get the model's function call
+> ### Aliases: get_call
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ get_call(m)
++ 
++ m <- lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris)
++ get_call(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_call(m)
+lm(formula = mpg ~ wt + cyl + vs, data = mtcars)
+> m <- lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris)
+> get_call(m)
+lme4::lmer(formula = Sepal.Length ~ Sepal.Width + (1 | Species), 
+    data = iris)
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("get_data")
+> ### * get_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_data
+> ### Title: Get the data that was used to fit the model
+> ### Aliases: get_data get_data.default get_data.glmmTMB get_data.afex_aov
+> ###   get_data.rma
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(cbpp, package = "lme4")
++ cbpp$trials <- cbpp$size - cbpp$incidence
++ m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
++ head(get_data(m))
++ ## Don't show: 
++ }) # examplesIf
+> data(cbpp, package = "lme4")
+> cbpp$trials <- cbpp$size - cbpp$incidence
+> m <- glm(cbind(incidence, trials) ~ period, data = cbpp, family = binomial)
+> head(get_data(m))
+  incidence trials period
+1         2     12      1
+2         3      9      2
+3         4      5      3
+4         0      5      4
+5         3     19      1
+6         1     17      2
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("get_datagrid")
+> ### * get_datagrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_datagrid
+> ### Title: Create a reference grid
+> ### Aliases: get_datagrid get_datagrid.data.frame get_datagrid.numeric
+> ###   get_datagrid.factor get_datagrid.default
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("bayestestR", quietly = TRUE) && require("datawizard", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # Datagrids of variables and dataframes =====================================
++ data(iris)
++ data(mtcars)
++ 
++ # Single variable is of interest; all others are "fixed" ------------------
++ 
++ # Factors, returns all the levels
++ get_datagrid(iris, by = "Species")
++ # Specify an expression
++ get_datagrid(iris, by = "Species = c('setosa', 'versicolor')")
++ 
++ # Numeric variables, default spread length = 10
++ get_datagrid(iris, by = "Sepal.Length")
++ # change length
++ get_datagrid(iris, by = "Sepal.Length", length = 3)
++ 
++ # change non-targets fixing
++ get_datagrid(iris[2:150, ],
++   by = "Sepal.Length",
++   factors = "mode", numerics = "median"
++ )
++ 
++ # change min/max of target
++ get_datagrid(iris, by = "Sepal.Length", range = "ci", ci = 0.90)
++ 
++ # Manually change min/max
++ get_datagrid(iris, by = "Sepal.Length = c(0, 1)")
++ 
++ # -1 SD, mean and +1 SD
++ get_datagrid(iris, by = "Sepal.Length = [sd]")
++ 
++ # rounded to 1 digit
++ get_datagrid(iris, by = "Sepal.Length = [sd]", digits = 1)
++ 
++ # identical to previous line: -1 SD, mean and +1 SD
++ get_datagrid(iris, by = "Sepal.Length", range = "sd", length = 3)
++ 
++ # quartiles
++ get_datagrid(iris, by = "Sepal.Length = [quartiles]")
++ 
++ # Standardization and unstandardization
++ data <- get_datagrid(iris, by = "Sepal.Length", range = "sd", length = 3)
++ 
++ # It is a named vector (extract names with `names(out$Sepal.Length)`)
++ data$Sepal.Length
++ datawizard::standardize(data, select = "Sepal.Length")
++ 
++ # Manually specify values
++ data <- get_datagrid(iris, by = "Sepal.Length = c(-2, 0, 2)")
++ data
++ datawizard::unstandardize(data, select = "Sepal.Length")
++ 
++ 
++ # Multiple variables are of interest, creating a combination --------------
++ 
++ get_datagrid(iris, by = c("Sepal.Length", "Species"), length = 3)
++ get_datagrid(iris, by = c("Sepal.Length", "Petal.Length"), length = c(3, 2))
++ get_datagrid(iris, by = c(1, 3), length = 3)
++ get_datagrid(iris, by = c("Sepal.Length", "Species"), preserve_range = TRUE)
++ get_datagrid(iris, by = c("Sepal.Length", "Species"), numerics = 0)
++ get_datagrid(iris, by = c("Sepal.Length = 3", "Species"))
++ get_datagrid(iris, by = c("Sepal.Length = c(3, 1)", "Species = 'setosa'"))
++ 
++ # specify length individually for each focal predictor
++ # values are matched by names
++ get_datagrid(mtcars[1:4], by = c("mpg", "hp"), length = c(hp = 3, mpg = 2))
++ 
++ # Numeric and categorical variables, generating a grid for plots
++ # default spread when numerics are first: length = 10
++ get_datagrid(iris, by = c("Sepal.Length", "Species"), range = "grid")
++ 
++ # default spread when numerics are not first: length = 3 (-1 SD, mean and +1 SD)
++ get_datagrid(iris, by = c("Species", "Sepal.Length"), range = "grid")
++ 
++ # range of values
++ get_datagrid(iris, by = c("Sepal.Width = 1:5", "Petal.Width = 1:3"))
++ 
++ # With list-style by-argument
++ get_datagrid(
++   iris,
++   by = list(Sepal.Length = 1:3, Species = c("setosa", "versicolor"))
++ )
++ 
++ 
++ # With models ===============================================================
++ 
++ # Fit a linear regression
++ model <- lm(Sepal.Length ~ Sepal.Width * Petal.Length, data = iris)
++ 
++ # Get datagrid of predictors
++ data <- get_datagrid(model, length = c(20, 3), range = c("range", "sd"))
++ # same as: get_datagrid(model, range = "grid", length = 20)
++ 
++ # Add predictions
++ data$Sepal.Length <- get_predicted(model, data = data)
++ 
++ # Visualize relationships (each color is at -1 SD, Mean, and + 1 SD of Petal.Length)
++ plot(data$Sepal.Width, data$Sepal.Length,
++   col = data$Petal.Length,
++   main = "Relationship at -1 SD, Mean, and + 1 SD of Petal.Length"
++ )
++ ## Don't show: 
++ }) # examplesIf
+> data(iris)
+> data(mtcars)
+> get_datagrid(iris, by = "Species")
+     Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa     5.843333    3.057333        3.758    1.199333
+2 versicolor     5.843333    3.057333        3.758    1.199333
+3  virginica     5.843333    3.057333        3.758    1.199333
+> get_datagrid(iris, by = "Species = c('setosa', 'versicolor')")
+     Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa     5.843333    3.057333        3.758    1.199333
+2 versicolor     5.843333    3.057333        3.758    1.199333
+> get_datagrid(iris, by = "Sepal.Length")
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1           4.3    3.057333        3.758    1.199333  setosa
+2           4.7    3.057333        3.758    1.199333  setosa
+3           5.1    3.057333        3.758    1.199333  setosa
+4           5.5    3.057333        3.758    1.199333  setosa
+5           5.9    3.057333        3.758    1.199333  setosa
+6           6.3    3.057333        3.758    1.199333  setosa
+7           6.7    3.057333        3.758    1.199333  setosa
+8           7.1    3.057333        3.758    1.199333  setosa
+9           7.5    3.057333        3.758    1.199333  setosa
+10          7.9    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length", length = 3)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          4.3    3.057333        3.758    1.199333  setosa
+2          6.1    3.057333        3.758    1.199333  setosa
+3          7.9    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris[2:150, ], by = "Sepal.Length", factors = "mode", numerics = "median")
+   Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+1           4.3           3          4.4         1.3 versicolor
+2           4.7           3          4.4         1.3 versicolor
+3           5.1           3          4.4         1.3 versicolor
+4           5.5           3          4.4         1.3 versicolor
+5           5.9           3          4.4         1.3 versicolor
+6           6.3           3          4.4         1.3 versicolor
+7           6.7           3          4.4         1.3 versicolor
+8           7.1           3          4.4         1.3 versicolor
+9           7.5           3          4.4         1.3 versicolor
+10          7.9           3          4.4         1.3 versicolor
+> get_datagrid(iris, by = "Sepal.Length", range = "ci", ci = 0.9)
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1         4.600    3.057333        3.758    1.199333  setosa
+2         4.895    3.057333        3.758    1.199333  setosa
+3         5.190    3.057333        3.758    1.199333  setosa
+4         5.485    3.057333        3.758    1.199333  setosa
+5         5.780    3.057333        3.758    1.199333  setosa
+6         6.075    3.057333        3.758    1.199333  setosa
+7         6.370    3.057333        3.758    1.199333  setosa
+8         6.665    3.057333        3.758    1.199333  setosa
+9         6.960    3.057333        3.758    1.199333  setosa
+10        7.255    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length = c(0, 1)")
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1            0    3.057333        3.758    1.199333  setosa
+2            1    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length = [sd]")
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1        5.015    3.057333        3.758    1.199333  setosa
+2        5.843    3.057333        3.758    1.199333  setosa
+3        6.671    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length = [sd]", digits = 1)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.0    3.057333        3.758    1.199333  setosa
+2          5.8    3.057333        3.758    1.199333  setosa
+3          6.7    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length", range = "sd", length = 3)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1        5.015    3.057333        3.758    1.199333  setosa
+2        5.843    3.057333        3.758    1.199333  setosa
+3        6.671    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = "Sepal.Length = [quartiles]")
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1    3.057333        3.758    1.199333  setosa
+2          5.8    3.057333        3.758    1.199333  setosa
+3          6.4    3.057333        3.758    1.199333  setosa
+> data <- get_datagrid(iris, by = "Sepal.Length", range = "sd", length = 3)
+> data$Sepal.Length
+-1 SD  Mean +1 SD 
+5.015 5.843 6.671 
+> datawizard::standardize(data, select = "Sepal.Length")
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1 -1.0003226860    3.057333        3.758    1.199333  setosa
+2 -0.0004025443    3.057333        3.758    1.199333  setosa
+3  0.9995175973    3.057333        3.758    1.199333  setosa
+> data <- get_datagrid(iris, by = "Sepal.Length = c(-2, 0, 2)")
+> data
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1           -2    3.057333        3.758    1.199333  setosa
+2            0    3.057333        3.758    1.199333  setosa
+3            2    3.057333        3.758    1.199333  setosa
+> datawizard::unstandardize(data, select = "Sepal.Length")
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1     4.187201    3.057333        3.758    1.199333  setosa
+2     5.843333    3.057333        3.758    1.199333  setosa
+3     7.499466    3.057333        3.758    1.199333  setosa
+> get_datagrid(iris, by = c("Sepal.Length", "Species"), length = 3)
+  Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1          4.3     setosa    3.057333        3.758    1.199333
+2          6.1     setosa    3.057333        3.758    1.199333
+3          7.9     setosa    3.057333        3.758    1.199333
+4          4.3 versicolor    3.057333        3.758    1.199333
+5          6.1 versicolor    3.057333        3.758    1.199333
+6          7.9 versicolor    3.057333        3.758    1.199333
+7          4.3  virginica    3.057333        3.758    1.199333
+8          6.1  virginica    3.057333        3.758    1.199333
+9          7.9  virginica    3.057333        3.758    1.199333
+> get_datagrid(iris, by = c("Sepal.Length", "Petal.Length"), length = c(3, 
++     2))
+  Sepal.Length Petal.Length Sepal.Width Petal.Width Species
+1          4.3          1.0    3.057333    1.199333  setosa
+2          6.1          1.0    3.057333    1.199333  setosa
+3          7.9          1.0    3.057333    1.199333  setosa
+4          4.3          6.9    3.057333    1.199333  setosa
+5          6.1          6.9    3.057333    1.199333  setosa
+6          7.9          6.9    3.057333    1.199333  setosa
+> get_datagrid(iris, by = c(1, 3), length = 3)
+  Sepal.Length Petal.Length Sepal.Width Petal.Width Species
+1          4.3         1.00    3.057333    1.199333  setosa
+2          6.1         1.00    3.057333    1.199333  setosa
+3          7.9         1.00    3.057333    1.199333  setosa
+4          4.3         3.95    3.057333    1.199333  setosa
+5          6.1         3.95    3.057333    1.199333  setosa
+6          7.9         3.95    3.057333    1.199333  setosa
+7          4.3         6.90    3.057333    1.199333  setosa
+8          6.1         6.90    3.057333    1.199333  setosa
+9          7.9         6.90    3.057333    1.199333  setosa
+> get_datagrid(iris, by = c("Sepal.Length", "Species"), preserve_range = TRUE)
+   Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1           4.3     setosa    3.057333        3.758    1.199333
+2           4.7     setosa    3.057333        3.758    1.199333
+3           5.1     setosa    3.057333        3.758    1.199333
+4           5.5     setosa    3.057333        3.758    1.199333
+5           5.1 versicolor    3.057333        3.758    1.199333
+6           5.5 versicolor    3.057333        3.758    1.199333
+7           5.9 versicolor    3.057333        3.758    1.199333
+8           6.3 versicolor    3.057333        3.758    1.199333
+9           6.7 versicolor    3.057333        3.758    1.199333
+10          5.1  virginica    3.057333        3.758    1.199333
+11          5.5  virginica    3.057333        3.758    1.199333
+12          5.9  virginica    3.057333        3.758    1.199333
+13          6.3  virginica    3.057333        3.758    1.199333
+14          6.7  virginica    3.057333        3.758    1.199333
+15          7.1  virginica    3.057333        3.758    1.199333
+16          7.5  virginica    3.057333        3.758    1.199333
+17          7.9  virginica    3.057333        3.758    1.199333
+> get_datagrid(iris, by = c("Sepal.Length", "Species"), numerics = 0)
+   Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1           4.3     setosa           0            0           0
+2           4.7     setosa           0            0           0
+3           5.1     setosa           0            0           0
+4           5.5     setosa           0            0           0
+5           5.9     setosa           0            0           0
+6           6.3     setosa           0            0           0
+7           6.7     setosa           0            0           0
+8           7.1     setosa           0            0           0
+9           7.5     setosa           0            0           0
+10          7.9     setosa           0            0           0
+11          4.3 versicolor           0            0           0
+12          4.7 versicolor           0            0           0
+13          5.1 versicolor           0            0           0
+14          5.5 versicolor           0            0           0
+15          5.9 versicolor           0            0           0
+16          6.3 versicolor           0            0           0
+17          6.7 versicolor           0            0           0
+18          7.1 versicolor           0            0           0
+19          7.5 versicolor           0            0           0
+20          7.9 versicolor           0            0           0
+21          4.3  virginica           0            0           0
+22          4.7  virginica           0            0           0
+23          5.1  virginica           0            0           0
+24          5.5  virginica           0            0           0
+25          5.9  virginica           0            0           0
+26          6.3  virginica           0            0           0
+27          6.7  virginica           0            0           0
+28          7.1  virginica           0            0           0
+29          7.5  virginica           0            0           0
+30          7.9  virginica           0            0           0
+> get_datagrid(iris, by = c("Sepal.Length = 3", "Species"))
+  Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1            3     setosa    3.057333        3.758    1.199333
+2            3 versicolor    3.057333        3.758    1.199333
+3            3  virginica    3.057333        3.758    1.199333
+> get_datagrid(iris, by = c("Sepal.Length = c(3, 1)", "Species = 'setosa'"))
+  Sepal.Length Species Sepal.Width Petal.Length Petal.Width
+1            3  setosa    3.057333        3.758    1.199333
+2            1  setosa    3.057333        3.758    1.199333
+> get_datagrid(mtcars[1:4], by = c("mpg", "hp"), length = c(hp = 3, mpg = 2))
+   mpg    hp    cyl     disp
+1 10.4  52.0 6.1875 230.7219
+2 33.9  52.0 6.1875 230.7219
+3 10.4 193.5 6.1875 230.7219
+4 33.9 193.5 6.1875 230.7219
+5 10.4 335.0 6.1875 230.7219
+6 33.9 335.0 6.1875 230.7219
+> get_datagrid(iris, by = c("Sepal.Length", "Species"), range = "grid")
+   Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1           4.3     setosa    3.057333        3.758    1.199333
+2           4.7     setosa    3.057333        3.758    1.199333
+3           5.1     setosa    3.057333        3.758    1.199333
+4           5.5     setosa    3.057333        3.758    1.199333
+5           5.9     setosa    3.057333        3.758    1.199333
+6           6.3     setosa    3.057333        3.758    1.199333
+7           6.7     setosa    3.057333        3.758    1.199333
+8           7.1     setosa    3.057333        3.758    1.199333
+9           7.5     setosa    3.057333        3.758    1.199333
+10          7.9     setosa    3.057333        3.758    1.199333
+11          4.3 versicolor    3.057333        3.758    1.199333
+12          4.7 versicolor    3.057333        3.758    1.199333
+13          5.1 versicolor    3.057333        3.758    1.199333
+14          5.5 versicolor    3.057333        3.758    1.199333
+15          5.9 versicolor    3.057333        3.758    1.199333
+16          6.3 versicolor    3.057333        3.758    1.199333
+17          6.7 versicolor    3.057333        3.758    1.199333
+18          7.1 versicolor    3.057333        3.758    1.199333
+19          7.5 versicolor    3.057333        3.758    1.199333
+20          7.9 versicolor    3.057333        3.758    1.199333
+21          4.3  virginica    3.057333        3.758    1.199333
+22          4.7  virginica    3.057333        3.758    1.199333
+23          5.1  virginica    3.057333        3.758    1.199333
+24          5.5  virginica    3.057333        3.758    1.199333
+25          5.9  virginica    3.057333        3.758    1.199333
+26          6.3  virginica    3.057333        3.758    1.199333
+27          6.7  virginica    3.057333        3.758    1.199333
+28          7.1  virginica    3.057333        3.758    1.199333
+29          7.5  virginica    3.057333        3.758    1.199333
+30          7.9  virginica    3.057333        3.758    1.199333
+> get_datagrid(iris, by = c("Species", "Sepal.Length"), range = "grid")
+     Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa        5.015    3.057333        3.758    1.199333
+2     setosa        5.843    3.057333        3.758    1.199333
+3     setosa        6.671    3.057333        3.758    1.199333
+4 versicolor        5.015    3.057333        3.758    1.199333
+5 versicolor        5.843    3.057333        3.758    1.199333
+6 versicolor        6.671    3.057333        3.758    1.199333
+7  virginica        5.015    3.057333        3.758    1.199333
+8  virginica        5.843    3.057333        3.758    1.199333
+9  virginica        6.671    3.057333        3.758    1.199333
+> get_datagrid(iris, by = c("Sepal.Width = 1:5", "Petal.Width = 1:3"))
+   Sepal.Width Petal.Width Sepal.Length Petal.Length Species
+1            1           1     5.843333        3.758  setosa
+2            2           1     5.843333        3.758  setosa
+3            3           1     5.843333        3.758  setosa
+4            4           1     5.843333        3.758  setosa
+5            5           1     5.843333        3.758  setosa
+6            1           2     5.843333        3.758  setosa
+7            2           2     5.843333        3.758  setosa
+8            3           2     5.843333        3.758  setosa
+9            4           2     5.843333        3.758  setosa
+10           5           2     5.843333        3.758  setosa
+11           1           3     5.843333        3.758  setosa
+12           2           3     5.843333        3.758  setosa
+13           3           3     5.843333        3.758  setosa
+14           4           3     5.843333        3.758  setosa
+15           5           3     5.843333        3.758  setosa
+> get_datagrid(iris, by = list(Sepal.Length = 1:3, Species = c("setosa", 
++     "versicolor")))
+  Sepal.Length    Species Sepal.Width Petal.Length Petal.Width
+1            1     setosa    3.057333        3.758    1.199333
+2            2     setosa    3.057333        3.758    1.199333
+3            3     setosa    3.057333        3.758    1.199333
+4            1 versicolor    3.057333        3.758    1.199333
+5            2 versicolor    3.057333        3.758    1.199333
+6            3 versicolor    3.057333        3.758    1.199333
+> model <- lm(Sepal.Length ~ Sepal.Width * Petal.Length, data = iris)
+> data <- get_datagrid(model, length = c(20, 3), range = c("range", "sd"))
+> data$Sepal.Length <- get_predicted(model, data = data)
+> plot(data$Sepal.Width, data$Sepal.Length, col = data$Petal.Length, main = "Relationship at -1 SD, Mean, and + 1 SD of Petal.Length")
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:datawizard', 'package:bayestestR'
+
+> nameEx("get_datagrid.emmGrid")
+> ### * get_datagrid.emmGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_datagrid.emmGrid
+> ### Title: Extract a reference grid from objects created by '{emmeans}' and
+> ###   '{marginaleffects}'
+> ### Aliases: get_datagrid.emmGrid
+> 
+> ### ** Examples
+> 
+> data("mtcars")
+> mtcars$cyl <- factor(mtcars$cyl)
+> 
+> mod <- glm(am ~ cyl + hp + wt,
++   family = binomial("logit"),
++   data = mtcars
++ )
+> 
+> ## Don't show: 
+> if (insight::check_if_installed("emmeans", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ em1 <- emmeans::emmeans(mod, ~ cyl + hp, at = list(hp = c(100, 150)))
++ get_datagrid(em1)
++ 
++ contr1 <- emmeans::contrast(em1, method = "consec", by = "hp")
++ get_datagrid(contr1)
++ 
++ eml1 <- emmeans::emmeans(mod, pairwise ~ cyl | hp, at = list(hp = c(100, 150)))
++ get_datagrid(eml1) # not a "true" grid
++ ## Don't show: 
++ }) # examplesIf
+> em1 <- emmeans::emmeans(mod, ~cyl + hp, at = list(hp = c(100, 150)))
+> get_datagrid(em1)
+  cyl  hp
+1   4 100
+2   6 100
+3   8 100
+4   4 150
+5   6 150
+6   8 150
+> contr1 <- emmeans::contrast(em1, method = "consec", by = "hp")
+> get_datagrid(contr1)
+     contrast  hp
+1 cyl6 - cyl4 100
+2 cyl8 - cyl6 100
+3 cyl6 - cyl4 150
+4 cyl8 - cyl6 150
+> eml1 <- emmeans::emmeans(mod, pairwise ~ cyl | hp, at = list(hp = c(100, 
++     150)))
+> get_datagrid(eml1)
+    hp  cyl    contrast
+1  100    4        <NA>
+2  100    6        <NA>
+3  100    8        <NA>
+4  150    4        <NA>
+5  150    6        <NA>
+6  150    8        <NA>
+7  100 <NA> cyl4 - cyl6
+8  100 <NA> cyl4 - cyl8
+9  100 <NA> cyl6 - cyl8
+10 150 <NA> cyl4 - cyl6
+11 150 <NA> cyl4 - cyl8
+12 150 <NA> cyl6 - cyl8
+> ## End(Don't show)
+> ## Don't show: 
+> if (insight::check_if_installed("marginaleffects", quietly = TRUE, minimum_version = "0.29.0")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ mfx1 <- marginaleffects::slopes(mod, variables = "hp")
++ get_datagrid(mfx1) # not a "true" grid
++ 
++ mfx2 <- marginaleffects::slopes(mod, variables = c("hp", "wt"), by = "am")
++ get_datagrid(mfx2)
++ 
++ contr2 <- marginaleffects::avg_comparisons(mod)
++ get_datagrid(contr2) # not a "true" grid
++ ## Don't show: 
++ }) # examplesIf
+> mfx1 <- marginaleffects::slopes(mod, variables = "hp")
+> get_datagrid(mfx1)
+   term contrast cyl  hp    wt
+1    hp    dY/dX   6 110 2.620
+2    hp    dY/dX   6 110 2.875
+3    hp    dY/dX   4  93 2.320
+4    hp    dY/dX   6 110 3.215
+5    hp    dY/dX   8 175 3.440
+6    hp    dY/dX   6 105 3.460
+7    hp    dY/dX   8 245 3.570
+8    hp    dY/dX   4  62 3.190
+9    hp    dY/dX   4  95 3.150
+10   hp    dY/dX   6 123 3.440
+11   hp    dY/dX   6 123 3.440
+12   hp    dY/dX   8 180 4.070
+13   hp    dY/dX   8 180 3.730
+14   hp    dY/dX   8 180 3.780
+15   hp    dY/dX   8 205 5.250
+16   hp    dY/dX   8 215 5.424
+17   hp    dY/dX   8 230 5.345
+18   hp    dY/dX   4  66 2.200
+19   hp    dY/dX   4  52 1.615
+20   hp    dY/dX   4  65 1.835
+21   hp    dY/dX   4  97 2.465
+22   hp    dY/dX   8 150 3.520
+23   hp    dY/dX   8 150 3.435
+24   hp    dY/dX   8 245 3.840
+25   hp    dY/dX   8 175 3.845
+26   hp    dY/dX   4  66 1.935
+27   hp    dY/dX   4  91 2.140
+28   hp    dY/dX   4 113 1.513
+29   hp    dY/dX   8 264 3.170
+30   hp    dY/dX   6 175 2.770
+31   hp    dY/dX   8 335 3.570
+32   hp    dY/dX   4 109 2.780
+> mfx2 <- marginaleffects::slopes(mod, variables = c("hp", "wt"), by = "am")
+> get_datagrid(mfx2)
+  term contrast am
+1   hp    dY/dX  0
+2   hp    dY/dX  1
+3   wt    dY/dX  0
+4   wt    dY/dX  1
+> contr2 <- marginaleffects::avg_comparisons(mod)
+> get_datagrid(contr2)
+  term contrast
+1  cyl    6 - 4
+2  cyl    8 - 4
+3   hp       +1
+4   wt       +1
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_deviance")
+> ### * get_deviance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_deviance
+> ### Title: Model Deviance
+> ### Aliases: get_deviance get_deviance.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> x <- lm(mpg ~ cyl, data = mtcars)
+> get_deviance(x)
+[1] 308.3342
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_df")
+> ### * get_df
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_df
+> ### Title: Extract degrees of freedom
+> ### Aliases: get_df get_df.default
+> 
+> ### ** Examples
+> 
+> model <- lm(Sepal.Length ~ Petal.Length * Species, data = iris)
+> get_df(model) # same as df.residual(model)
+[1] 144
+> get_df(model, type = "model") # same as attr(logLik(model), "df")
+[1] 7
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_family")
+> ### * get_family
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_family
+> ### Title: A robust alternative to stats::family
+> ### Aliases: get_family
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("mgcv")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ x <- glm(vs ~ wt, data = mtcars, family = "binomial")
++ get_family(x)
++ 
++ x <- mgcv::gamm(
++   vs ~ am + s(wt),
++   random = list(cyl = ~1),
++   data = mtcars,
++   family = "binomial"
++ )
++ get_family(x)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: mgcv
+Loading required package: nlme
+This is mgcv 1.9-4. For overview type '?mgcv'.
+> data(mtcars)
+> x <- glm(vs ~ wt, data = mtcars, family = "binomial")
+> get_family(x)
+
+Family: binomial 
+Link function: logit 
+
+> x <- mgcv::gamm(vs ~ am + s(wt), random = list(cyl = ~1), data = mtcars, 
++     family = "binomial")
+
+ Maximum number of PQL iterations:  20 
+iteration 1
+iteration 2
+iteration 3
+iteration 4
+iteration 5
+iteration 6
+iteration 7
+iteration 8
+> get_family(x)
+
+Family: binomial 
+Link function: logit 
+
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:mgcv', 'package:nlme'
+
+> nameEx("get_intercept")
+> ### * get_intercept
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_intercept
+> ### Title: Get the value at the intercept
+> ### Aliases: get_intercept
+> 
+> ### ** Examples
+> 
+> get_intercept(lm(Sepal.Length ~ Petal.Width, data = iris))
+[1] 4.777629
+> get_intercept(lm(Sepal.Length ~ 0 + Petal.Width, data = iris))
+[1] NA
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ get_intercept(lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris))
++ ## Don't show: 
++ }) # examplesIf
+> get_intercept(lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris))
+[1] 3.406167
+> ## End(Don't show)
+> ## Don't show: 
+> if (require("gamm4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ get_intercept(gamm4::gamm4(Sepal.Length ~ s(Petal.Width), data = iris))
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: gamm4
+Loading required package: mgcv
+Loading required package: nlme
+
+Attaching package: 'nlme'
+
+The following object is masked from 'package:lme4':
+
+    lmList
+
+This is mgcv 1.9-4. For overview type '?mgcv'.
+This is gamm4 0.2-7
+
+> get_intercept(gamm4::gamm4(Sepal.Length ~ s(Petal.Width), data = iris))
+[1] 5.843333
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:gamm4', 'package:mgcv', 'package:nlme',
+  'package:lme4', 'package:Matrix'
+
+> nameEx("get_loglikelihood")
+> ### * get_loglikelihood
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_loglikelihood
+> ### Title: Log-Likelihood and Log-Likelihood correction
+> ### Aliases: get_loglikelihood loglikelihood get_loglikelihood_adjustment
+> ###   get_loglikelihood.lm
+> 
+> ### ** Examples
+> 
+> x <- lm(Sepal.Length ~ Petal.Width + Species, data = iris)
+> 
+> get_loglikelihood(x, estimator = "ML") # Equivalent to stats::logLik(x)
+'log Lik.' -101.0339 (df=5)
+> get_loglikelihood(x, estimator = "REML") # Equivalent to stats::logLik(x, REML=TRUE)
+'log Lik.' -107.0896 (df=5)
+> get_loglikelihood(x, estimator = "OLS")
+'log Lik.' -101.0611 (df=5)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_model")
+> ### * get_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_model
+> ### Title: Get a model objects that is saved as attribute
+> ### Aliases: get_model
+> 
+> ### ** Examples
+> 
+> # Example of using get_model
+> d <- data.frame(x = rnorm(100), y = rnorm(100))
+> # fit a model and save it as an attribute
+> model <- lm(y ~ x, data = d)
+> attr(d, "model") <- model
+> # get the model back
+> get_model(d)
+
+Call:
+lm(formula = y ~ x, data = d)
+
+Coefficients:
+(Intercept)            x  
+   -0.03769     -0.00106  
+
+> # get the coefficients of the model
+> get_model(d, element = "coefficients")
+ (Intercept)            x 
+-0.037692614 -0.001060386 
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_modelmatrix")
+> ### * get_modelmatrix
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_modelmatrix
+> ### Title: Model Matrix
+> ### Aliases: get_modelmatrix
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> 
+> model <- lm(am ~ vs, data = mtcars)
+> get_modelmatrix(model)
+                    (Intercept) vs
+Mazda RX4                     1  0
+Mazda RX4 Wag                 1  0
+Datsun 710                    1  1
+Hornet 4 Drive                1  1
+Hornet Sportabout             1  0
+Valiant                       1  1
+Duster 360                    1  0
+Merc 240D                     1  1
+Merc 230                      1  1
+Merc 280                      1  1
+Merc 280C                     1  1
+Merc 450SE                    1  0
+Merc 450SL                    1  0
+Merc 450SLC                   1  0
+Cadillac Fleetwood            1  0
+Lincoln Continental           1  0
+Chrysler Imperial             1  0
+Fiat 128                      1  1
+Honda Civic                   1  1
+Toyota Corolla                1  1
+Toyota Corona                 1  1
+Dodge Challenger              1  0
+AMC Javelin                   1  0
+Camaro Z28                    1  0
+Pontiac Firebird              1  0
+Fiat X1-9                     1  1
+Porsche 914-2                 1  0
+Lotus Europa                  1  1
+Ford Pantera L                1  0
+Ferrari Dino                  1  0
+Maserati Bora                 1  0
+Volvo 142E                    1  1
+attr(,"assign")
+[1] 0 1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.BGGM")
+> ### * get_parameters.BGGM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.BGGM
+> ### Title: Get model parameters from Bayesian models
+> ### Aliases: get_parameters.BGGM get_parameters.BFBayesFactor
+> ###   get_parameters.brmsfit
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_parameters(m)
+    Parameter   Estimate
+1 (Intercept) 38.7460642
+2          wt -3.2463673
+3         cyl -1.3641033
+4          vs  0.5241721
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters")
+> ### * get_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters
+> ### Title: Get model parameters
+> ### Aliases: get_parameters get_parameters.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_parameters(m)
+    Parameter   Estimate
+1 (Intercept) 38.7460642
+2          wt -3.2463673
+3         cyl -1.3641033
+4          vs  0.5241721
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.betamfx")
+> ### * get_parameters.betamfx
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.betamfx
+> ### Title: Get model parameters from marginal effects models
+> ### Aliases: get_parameters.betamfx
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_parameters(m)
+    Parameter   Estimate
+1 (Intercept) 38.7460642
+2          wt -3.2463673
+3         cyl -1.3641033
+4          vs  0.5241721
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.betareg")
+> ### * get_parameters.betareg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.betareg
+> ### Title: Get model parameters from models with special components
+> ### Aliases: get_parameters.betareg
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("betareg", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data("GasolineYield", package = "betareg")
++ m <- betareg::betareg(yield ~ batch + temp, data = GasolineYield)
++ get_parameters(m)
++ get_parameters(m, component = "precision")
++ ## Don't show: 
++ }) # examplesIf
+> data("GasolineYield", package = "betareg")
+> m <- betareg::betareg(yield ~ batch + temp, data = GasolineYield)
+> get_parameters(m)
+     Parameter     Estimate   Component
+1  (Intercept)  -6.15957105 conditional
+2       batch1   1.72772888 conditional
+3       batch2   1.32259692 conditional
+4       batch3   1.57230989 conditional
+5       batch4   1.05971411 conditional
+6       batch5   1.13375178 conditional
+7       batch6   1.04016181 conditional
+8       batch7   0.54369223 conditional
+9       batch8   0.49590066 conditional
+10      batch9   0.38579296 conditional
+11        temp   0.01096687 conditional
+12       (phi) 440.27838856   precision
+> get_parameters(m, component = "precision")
+   Parameter Estimate Component
+12     (phi) 440.2784 precision
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.emmGrid")
+> ### * get_parameters.emmGrid
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.emmGrid
+> ### Title: Get model parameters from estimated marginal means objects
+> ### Aliases: get_parameters.emmGrid
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("emmeans", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ model <- lm(mpg ~ wt * factor(cyl), data = mtcars)
++ 
++ emm <- emmeans(model, "cyl")
++ get_parameters(emm)
++ 
++ emm <- emmeans(model, pairwise ~ cyl)
++ get_parameters(emm)
++ ## Don't show: 
++ }) # examplesIf
+Welcome to emmeans.
+Caution: You lose important information if you filter this package's results.
+See '? untidy'
+> data(mtcars)
+> model <- lm(mpg ~ wt * factor(cyl), data = mtcars)
+> emm <- emmeans(model, "cyl")
+NOTE: Results may be misleading due to involvement in interactions
+> get_parameters(emm)
+  cyl Estimate
+1   4 21.40330
+2   6 19.46455
+3   8 16.81441
+> emm <- emmeans(model, pairwise ~ cyl)
+NOTE: Results may be misleading due to involvement in interactions
+> get_parameters(emm)
+    Parameter  Estimate Component
+1           4 21.403304   emmeans
+2           6 19.464549   emmeans
+3           8 16.814408   emmeans
+4 cyl4 - cyl6  1.938755 contrasts
+5 cyl4 - cyl8  4.588896 contrasts
+6 cyl6 - cyl8  2.650141 contrasts
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:emmeans'
+
+> nameEx("get_parameters.gamm")
+> ### * get_parameters.gamm
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.gamm
+> ### Title: Get model parameters from generalized additive models
+> ### Aliases: get_parameters.gamm
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_parameters(m)
+    Parameter   Estimate
+1 (Intercept) 38.7460642
+2          wt -3.2463673
+3         cyl -1.3641033
+4          vs  0.5241721
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.glmmTMB")
+> ### * get_parameters.glmmTMB
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.glmmTMB
+> ### Title: Get model parameters from mixed models
+> ### Aliases: get_parameters.glmmTMB
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (requireNamespace("glmmTMB", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(Salamanders, package = "glmmTMB")
++ m <- glmmTMB::glmmTMB(
++   count ~ mined + (1 | site),
++   ziformula = ~mined,
++   family = poisson(),
++   data = Salamanders
++ )
++ get_parameters(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(Salamanders, package = "glmmTMB")
+> m <- glmmTMB::glmmTMB(count ~ mined + (1 | site), ziformula = ~mined, 
++     family = poisson(), data = Salamanders)
+> get_parameters(m)
+    Parameter   Estimate     Component
+1 (Intercept)  0.0878965   conditional
+2     minedno  1.1419232   conditional
+3 (Intercept)  1.1393044 zero_inflated
+4     minedno -1.7360669 zero_inflated
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.htest")
+> ### * get_parameters.htest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.htest
+> ### Title: Get model parameters from htest-objects
+> ### Aliases: get_parameters.htest
+> 
+> ### ** Examples
+> 
+> get_parameters(t.test(1:10, y = c(7:20)))
+         Parameter Estimate
+1 1:10 and c(7:20)       -8
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_parameters.zeroinfl")
+> ### * get_parameters.zeroinfl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_parameters.zeroinfl
+> ### Title: Get model parameters from zero-inflated and hurdle models
+> ### Aliases: get_parameters.zeroinfl
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_parameters(m)
+    Parameter   Estimate
+1 (Intercept) 38.7460642
+2          wt -3.2463673
+3         cyl -1.3641033
+4          vs  0.5241721
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_predicted")
+> ### * get_predicted
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_predicted
+> ### Title: Model predictions (robust) and their confidence intervals
+> ### Aliases: get_predicted get_predicted.default get_predicted.lm
+> ###   get_predicted.stanreg get_predicted.gam get_predicted.lmerMod
+> ###   get_predicted.principal
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("boot")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ x <- lm(mpg ~ cyl + hp, data = mtcars)
++ 
++ predictions <- get_predicted(x, ci = 0.95)
++ predictions
++ 
++ # Options and methods ---------------------
++ get_predicted(x, predict = "prediction")
++ 
++ # Get CI
++ as.data.frame(predictions)
++ 
++ # Bootstrapped
++ as.data.frame(get_predicted(x, iterations = 4))
++ # Same as as.data.frame(..., keep_iterations = FALSE)
++ summary(get_predicted(x, iterations = 4))
++ 
++ # Different prediction types ------------------------
++ data(iris)
++ data <- droplevels(iris[1:100, ])
++ 
++ # Fit a logistic model
++ x <- glm(Species ~ Sepal.Length, data = data, family = "binomial")
++ 
++ # Expectation (default): response scale + CI
++ pred <- get_predicted(x, predict = "expectation", ci = 0.95)
++ head(as.data.frame(pred))
++ 
++ # Prediction: response scale + PI
++ pred <- get_predicted(x, predict = "prediction", ci = 0.95)
++ head(as.data.frame(pred))
++ 
++ # Link: link scale + CI
++ pred <- get_predicted(x, predict = "link", ci = 0.95)
++ head(as.data.frame(pred))
++ 
++ # Classification: classification "type" + PI
++ pred <- get_predicted(x, predict = "classification", ci = 0.95)
++ head(as.data.frame(pred))
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: boot
+> data(mtcars)
+> x <- lm(mpg ~ cyl + hp, data = mtcars)
+> predictions <- get_predicted(x, ci = 0.95)
+> predictions
+[34mPredicted values:
+
+[39m [1] 21.21678 21.21678 26.07124 21.21678 15.44448 21.31239 14.10597 26.66401
+ [9] 26.03299 20.96820 20.96820 15.34888 15.34888 15.34888 14.87083 14.67962
+[17] 14.39279 26.58752 26.85523 26.60665 25.99475 15.92253 15.92253 14.10597
+[25] 15.44448 26.58752 26.10948 25.68880 13.74265 19.97387 12.38501 25.76529
+[33m
+NOTE: Confidence intervals, if available, are stored as attributes and can be accessed using `as.data.frame()` on this output.
+[39m> get_predicted(x, predict = "prediction")
+[34mPredicted values:
+
+[39m [1] 21.21678 21.21678 26.07124 21.21678 15.44448 21.31239 14.10597 26.66401
+ [9] 26.03299 20.96820 20.96820 15.34888 15.34888 15.34888 14.87083 14.67962
+[17] 14.39279 26.58752 26.85523 26.60665 25.99475 15.92253 15.92253 14.10597
+[25] 15.44448 26.58752 26.10948 25.68880 13.74265 19.97387 12.38501 25.76529
+[33m
+NOTE: Confidence intervals, if available, are stored as attributes and can be accessed using `as.data.frame()` on this output.
+[39m> as.data.frame(predictions)
+   Predicted        SE    CI_low  CI_high
+1   21.21678 0.7281647 19.727518 22.70605
+2   21.21678 0.7281647 19.727518 22.70605
+3   26.07124 0.9279509 24.173366 27.96911
+4   21.21678 0.7281647 19.727518 22.70605
+5   15.44448 0.9200310 13.562810 17.32616
+6   21.31239 0.7777664 19.721680 22.90310
+7   14.10597 1.0080670 12.044237 16.16769
+8   26.66401 0.9225132 24.777260 28.55076
+9   26.03299 0.9362657 24.118117 27.94787
+10  20.96820 0.6234320 19.693139 22.24326
+11  20.96820 0.6234320 19.693139 22.24326
+12  15.34888 0.8862558 13.536280 17.16147
+13  15.34888 0.8862558 13.536280 17.16147
+14  15.34888 0.8862558 13.536280 17.16147
+15  14.87083 0.8057154 13.222961 16.51871
+16  14.67962 0.8206255 13.001249 16.35798
+17  14.39279 0.8911693 12.570146 16.21544
+18  26.58752 0.9099596 24.726448 28.44860
+19  26.85523 0.9695585 24.872258 28.83820
+20  26.60665 0.9127445 24.739874 28.47342
+21  25.99475 0.9454598 24.061069 27.92843
+22  15.92253 1.1490264 13.572504 18.27255
+23  15.92253 1.1490264 13.572504 18.27255
+24  14.10597 1.0080670 12.044237 16.16769
+25  15.44448 0.9200310 13.562810 17.32616
+26  26.58752 0.9099596 24.726448 28.44860
+27  26.10948 0.9205392 24.226768 27.99220
+28  25.68880 1.0474287 23.546572 27.83104
+29  13.74265 1.2011595 11.286007 16.19930
+30  19.97387 0.7635547 18.412227 21.53552
+31  12.38501 2.1153615  8.058613 16.71141
+32  25.76529 1.0175965 23.684073 27.84651
+> as.data.frame(get_predicted(x, iterations = 4))
+   Predicted   iter_1    iter_2   iter_3   iter_4
+1   21.33989 22.32160 21.559310 20.36186 21.11678
+2   21.33989 22.32160 21.559310 20.36186 21.11678
+3   26.10204 27.09647 26.037922 25.34597 25.92779
+4   21.33989 22.32160 21.559310 20.36186 21.11678
+5   15.44641 16.15876 14.921592 14.97310 15.73220
+6   21.45773 22.46618 21.784217 20.40401 21.17653
+7   13.79657 14.13464 11.772897 14.38300 14.89572
+8   26.83268 27.99286 27.432344 25.60730 26.29823
+9   26.05490 27.03863 25.947959 25.32911 25.90389
+10  21.03349 21.94569 20.974552 20.25227 20.96144
+11  21.03349 21.94569 20.974552 20.25227 20.96144
+12  15.32857 16.01418 14.696686 14.93095 15.67245
+13  15.32857 16.01418 14.696686 14.93095 15.67245
+14  15.32857 16.01418 14.696686 14.93095 15.67245
+15  14.73934 15.29128 13.572152 14.72020 15.37371
+16  14.50364 15.00212 13.122338 14.63590 15.25421
+17  14.15010 14.56838 12.447618 14.50945 15.07497
+18  26.73841 27.87720 27.252419 25.57358 26.25043
+19  27.06838 28.28202 27.882158 25.69161 26.41772
+20  26.76198 27.90611 27.297400 25.58201 26.26238
+21  26.00776 26.98080 25.857997 25.31225 25.87999
+22  16.03565 16.88166 16.046126 15.18386 16.03094
+23  16.03565 16.88166 16.046126 15.18386 16.03094
+24  13.79657 14.13464 11.772897 14.38300 14.89572
+25  15.44641 16.15876 14.921592 14.97310 15.73220
+26  26.73841 27.87720 27.252419 25.57358 26.25043
+27  26.14918 27.15430 26.127885 25.36283 25.95169
+28  25.63065 26.51815 25.138295 25.17737 25.68879
+29  13.34875 13.58524 10.918252 14.22283 14.66868
+30  19.80789 20.44206 18.635522 19.81390 20.34006
+31  11.67533 11.53221  7.724575 13.62429 13.82025
+32  25.72493 26.63381 25.318220 25.21109 25.73659
+> summary(get_predicted(x, iterations = 4))
+   Predicted
+1   21.46561
+2   21.46561
+3   26.49653
+4   21.46561
+5   15.33001
+6   21.58068
+7   13.71902
+8   27.20997
+9   26.45050
+10  21.16643
+11  21.16643
+12  15.21494
+13  15.21494
+14  15.21494
+15  14.63959
+16  14.40945
+17  14.06423
+18  27.11791
+19  27.44011
+20  27.14093
+21  26.40447
+22  15.90537
+23  15.90537
+24  13.71902
+25  15.33001
+26  27.11791
+27  26.54256
+28  26.03625
+29  13.28175
+30  19.96969
+31  11.64774
+32  26.12830
+> data(iris)
+> data <- droplevels(iris[1:100, ])
+> x <- glm(Species ~ Sepal.Length, data = data, family = "binomial")
+> pred <- get_predicted(x, predict = "expectation", ci = 0.95)
+> head(as.data.frame(pred))
+   Predicted         SE      CI_low    CI_high
+1 0.16579367 0.05943589 0.078854431 0.31573138
+2 0.06637193 0.03625646 0.022083989 0.18286787
+3 0.02479825 0.01843411 0.005675609 0.10175666
+4 0.01498061 0.01261461 0.002839122 0.07513285
+5 0.10623680 0.04779474 0.042437982 0.24173444
+6 0.48159935 0.07901420 0.333158095 0.63336131
+> pred <- get_predicted(x, predict = "prediction", ci = 0.95)
+> head(as.data.frame(pred))
+   Predicted       CI_low      CI_high
+1 0.16579367 2.220446e-16 1.000000e+00
+2 0.06637193 2.220446e-16 1.000000e+00
+3 0.02479825 2.220446e-16 2.220446e-16
+4 0.01498061 2.220446e-16 2.220446e-16
+5 0.10623680 2.220446e-16 1.000000e+00
+6 0.48159935 2.220446e-16 1.000000e+00
+> pred <- get_predicted(x, predict = "link", ci = 0.95)
+> head(as.data.frame(pred))
+    Predicted        SE     CI_low    CI_high
+1 -1.61573668 0.4297415 -2.4580146 -0.7734588
+2 -2.64380391 0.5850960 -3.7905709 -1.4970369
+3 -3.67187114 0.7622663 -5.1658856 -2.1778567
+4 -4.18590475 0.8548690 -5.8614172 -2.5103923
+5 -2.12977030 0.5033646 -3.1163467 -1.1431939
+6 -0.07363584 0.3164854 -0.6939359  0.5466642
+> pred <- get_predicted(x, predict = "classification", ci = 0.95)
+> head(as.data.frame(pred))
+  Predicted CI_low    CI_high
+1    setosa setosa versicolor
+2    setosa setosa versicolor
+3    setosa setosa     setosa
+4    setosa setosa     setosa
+5    setosa setosa versicolor
+6    setosa setosa versicolor
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:boot'
+
+> nameEx("get_predicted_ci")
+> ### * get_predicted_ci
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_predicted_ci
+> ### Title: Confidence intervals around predicted values
+> ### Aliases: get_predicted_ci get_predicted_ci.default
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("boot") && require("datawizard") && require("bayestestR")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ # Confidence Intervals for Model Predictions
++ # ------------------------------------------
++ 
++ data(mtcars)
++ 
++ # Linear model
++ # ------------
++ x <- lm(mpg ~ cyl + hp, data = mtcars)
++ predictions <- predict(x)
++ ci_vals <- get_predicted_ci(x, predictions, ci_type = "prediction")
++ head(ci_vals)
++ ci_vals <- get_predicted_ci(x, predictions, ci_type = "confidence")
++ head(ci_vals)
++ ci_vals <- get_predicted_ci(x, predictions, ci = c(0.8, 0.9, 0.95))
++ head(ci_vals)
++ 
++ # Bootstrapped
++ # ------------
++ predictions <- get_predicted(x, iterations = 500)
++ get_predicted_ci(x, predictions)
++ 
++ ci_vals <- get_predicted_ci(x, predictions, ci = c(0.80, 0.95))
++ head(ci_vals)
++ datawizard::reshape_ci(ci_vals)
++ 
++ ci_vals <- get_predicted_ci(x,
++   predictions,
++   dispersion_method = "MAD",
++   ci_method = "HDI"
++ )
++ head(ci_vals)
++ 
++ 
++ # Logistic model
++ # --------------
++ x <- glm(vs ~ wt, data = mtcars, family = "binomial")
++ predictions <- predict(x, type = "link")
++ ci_vals <- get_predicted_ci(x, predictions, ci_type = "prediction")
++ head(ci_vals)
++ ci_vals <- get_predicted_ci(x, predictions, ci_type = "confidence")
++ head(ci_vals)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: boot
+Loading required package: datawizard
+Loading required package: bayestestR
+> data(mtcars)
+> x <- lm(mpg ~ cyl + hp, data = mtcars)
+> predictions <- predict(x)
+> ci_vals <- get_predicted_ci(x, predictions, ci_type = "prediction")
+> head(ci_vals)
+        SE    CI_low  CI_high
+1 3.255505 14.558527 27.87504
+2 3.255505 14.558527 27.87504
+3 3.305931 19.309850 32.83263
+4 3.255505 14.558527 27.87504
+5 3.303717  8.687625 22.20134
+6 3.266957 14.630713 27.99407
+> ci_vals <- get_predicted_ci(x, predictions, ci_type = "confidence")
+> head(ci_vals)
+         SE   CI_low  CI_high
+1 0.7281647 19.72752 22.70605
+2 0.7281647 19.72752 22.70605
+3 0.9279509 24.17337 27.96911
+4 0.7281647 19.72752 22.70605
+5 0.9200310 13.56281 17.32616
+6 0.7777664 19.72168 22.90310
+> ci_vals <- get_predicted_ci(x, predictions, ci = c(0.8, 0.9, 0.95))
+> head(ci_vals)
+                         SE CI_low_0.8 CI_high_0.8 CI_low_0.9 CI_high_0.9
+Mazda RX4         0.7281647   20.26184    22.17172   19.97954    22.45403
+Mazda RX4 Wag     0.7281647   20.26184    22.17172   19.97954    22.45403
+Datsun 710        0.9279509   24.85429    27.28818   24.49453    27.64794
+Hornet 4 Drive    0.7281647   20.26184    22.17172   19.97954    22.45403
+Hornet Sportabout 0.9200310   14.23793    16.65104   13.88124    17.00773
+Valiant           0.7777664   20.29240    22.33238   19.99087    22.63391
+                  CI_low_0.95 CI_high_0.95
+Mazda RX4            19.72752     22.70605
+Mazda RX4 Wag        19.72752     22.70605
+Datsun 710           24.17337     27.96911
+Hornet 4 Drive       19.72752     22.70605
+Hornet Sportabout    13.56281     17.32616
+Valiant              19.72168     22.90310
+> predictions <- get_predicted(x, iterations = 500)
+> get_predicted_ci(x, predictions)
+          SE    CI_low  CI_high
+1  0.7169722 19.993881 22.62913
+2  0.7169722 19.993881 22.62913
+3  1.2206017 23.679693 28.43174
+4  0.7169722 19.993881 22.62913
+5  0.7157119 13.923345 16.72964
+6  0.7622569 20.039430 22.90028
+7  1.0637049 10.765521 15.35185
+8  1.2041583 24.346264 29.11852
+9  1.2285149 23.625851 28.42182
+10 0.6320417 19.708249 22.18383
+11 0.6320417 19.708249 22.18383
+12 0.6882637 13.886344 16.56972
+13 0.6882637 13.886344 16.56972
+14 0.6882637 13.886344 16.56972
+15 0.6870404 13.125914 15.96577
+16 0.7486556 12.657844 15.78592
+17 0.8880746 11.837276 15.54019
+18 1.1948380 24.263841 29.01622
+19 1.2415914 24.529540 29.36761
+20 1.1968558 24.278445 29.04027
+21 1.2372011 23.572009 28.41582
+22 0.9465343 14.139614 17.83623
+23 0.9465343 14.139614 17.83623
+24 1.0637049 10.765521 15.35185
+25 0.7157119 13.923345 16.72964
+26 1.1948380 24.263841 29.01622
+27 1.2134766 23.733536 28.45159
+28 1.3324236 22.990664 28.27268
+29 1.3153654  9.576567 15.18357
+30 0.8955240 17.718344 21.46665
+31 2.3653385  4.869263 14.70735
+32 1.3045908 23.160796 28.33068
+> ci_vals <- get_predicted_ci(x, predictions, ci = c(0.8, 0.95))
+> head(ci_vals)
+         SE CI_low_0.8 CI_high_0.8 CI_low_0.95 CI_high_0.95
+1 0.7169722   20.38938    22.19721    19.99388     22.62913
+2 0.7169722   20.38938    22.19721    19.99388     22.62913
+3 1.2206017   24.45507    27.56919    23.67969     28.43174
+4 0.7169722   20.38938    22.19721    19.99388     22.62913
+5 0.7157119   14.52781    16.30204    13.92335     16.72964
+6 0.7622569   20.44079    22.36894    20.03943     22.90028
+> datawizard::reshape_ci(ci_vals)
+          SE   CI    CI_low  CI_high
+1  0.7169722 0.80 20.389379 22.19721
+2  0.7169722 0.95 19.993881 22.62913
+3  0.7169722 0.80 20.389379 22.19721
+4  0.7169722 0.95 19.993881 22.62913
+5  1.2206017 0.80 24.455071 27.56919
+6  1.2206017 0.95 23.679693 28.43174
+7  0.7169722 0.80 20.389379 22.19721
+8  0.7169722 0.95 19.993881 22.62913
+9  0.7157119 0.80 14.527811 16.30204
+10 0.7157119 0.95 13.923345 16.72964
+11 0.7622569 0.80 20.440789 22.36894
+12 0.7622569 0.95 20.039430 22.90028
+13 1.0637049 0.80 12.471919 14.93546
+14 1.0637049 0.95 10.765521 15.35185
+15 1.2041583 0.80 25.120432 28.27681
+16 1.2041583 0.95 24.346264 29.11852
+17 1.2285149 0.80 24.377467 27.52975
+18 1.2285149 0.95 23.625851 28.42182
+19 0.6320417 0.80 20.170901 21.83008
+20 0.6320417 0.95 19.708249 22.18383
+21 0.6320417 0.80 20.170901 21.83008
+22 0.6320417 0.95 19.708249 22.18383
+23 0.6882637 0.80 14.466019 16.14046
+24 0.6882637 0.95 13.886344 16.56972
+25 0.6882637 0.80 14.466019 16.14046
+26 0.6882637 0.95 13.886344 16.56972
+27 0.6882637 0.80 14.466019 16.14046
+28 0.6882637 0.95 13.886344 16.56972
+29 0.6870404 0.80 13.889711 15.54831
+30 0.6870404 0.95 13.125914 15.96577
+31 0.7486556 0.80 13.608920 15.34142
+32 0.7486556 0.95 12.657844 15.78592
+33 0.8880746 0.80 13.012311 15.10623
+34 0.8880746 0.95 11.837276 15.54019
+35 1.1948380 0.80 25.057538 28.19837
+36 1.1948380 0.95 24.263841 29.01622
+37 1.2415914 0.80 25.300914 28.52174
+38 1.2415914 0.95 24.529540 29.36761
+39 1.1968558 0.80 25.073812 28.21673
+40 1.1968558 0.95 24.278445 29.04027
+41 1.2372011 0.80 24.308589 27.46463
+42 1.2372011 0.95 23.572009 28.41582
+43 0.9465343 0.80 14.806410 17.12412
+44 0.9465343 0.95 14.139614 17.83623
+45 0.9465343 0.80 14.806410 17.12412
+46 0.9465343 0.95 14.139614 17.83623
+47 1.0637049 0.80 12.471919 14.93546
+48 1.0637049 0.95 10.765521 15.35185
+49 0.7157119 0.80 14.527811 16.30204
+50 0.7157119 0.95 13.923345 16.72964
+51 1.1948380 0.80 25.057538 28.19837
+52 1.1948380 0.95 24.263841 29.01622
+53 1.2134766 0.80 24.496644 27.59736
+54 1.2134766 0.95 23.733536 28.45159
+55 1.3324236 0.80 23.843467 27.23329
+56 1.3324236 0.95 22.990664 28.27268
+57 1.3153654 0.80 11.717216 14.67055
+58 1.3153654 0.95  9.576567 15.18357
+59 0.8955240 0.80 18.583389 20.78840
+60 0.8955240 0.95 17.718344 21.46665
+61 2.3653385 0.80  8.669429 14.10867
+62 2.3653385 0.95  4.869263 14.70735
+63 1.3045908 0.80 23.979641 27.29592
+64 1.3045908 0.95 23.160796 28.33068
+> ci_vals <- get_predicted_ci(x, predictions, dispersion_method = "MAD", 
++     ci_method = "HDI")
+> head(ci_vals)
+         SE   CI_low  CI_high
+1 0.7484132 20.01317 22.65140
+2 0.7484132 20.01317 22.65140
+3 1.1416191 23.70606 28.45385
+4 0.7484132 20.01317 22.65140
+5 0.7331036 13.77324 16.51862
+6 0.7973898 20.03122 22.90107
+> x <- glm(vs ~ wt, data = mtcars, family = "binomial")
+> predictions <- predict(x, type = "link")
+> ci_vals <- get_predicted_ci(x, predictions, ci_type = "prediction")
+> head(ci_vals)
+                  CI_low CI_high
+Mazda RX4           -Inf     Inf
+Mazda RX4 Wag       -Inf     Inf
+Datsun 710          -Inf     Inf
+Hornet 4 Drive      -Inf     Inf
+Hornet Sportabout   -Inf     Inf
+Valiant             -Inf     Inf
+> ci_vals <- get_predicted_ci(x, predictions, ci_type = "confidence")
+> head(ci_vals)
+         SE     CI_low   CI_high
+1 0.5623444 -0.3931282 1.8112213
+2 0.4690190 -0.6974034 1.1411172
+3 0.7195076 -0.1279982 2.6924199
+4 0.4459072 -1.3016913 0.4462326
+5 0.5021936 -1.8418839 0.1266787
+6 0.5094490 -1.8943152 0.1026881
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:bayestestR', 'package:datawizard', 'package:boot'
+
+> nameEx("get_predictors")
+> ### * get_predictors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_predictors
+> ### Title: Get the data from model predictors
+> ### Aliases: get_predictors
+> 
+> ### ** Examples
+> 
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> head(get_predictors(m))
+                     wt cyl vs
+Mazda RX4         2.620   6  0
+Mazda RX4 Wag     2.875   6  0
+Datsun 710        2.320   4  1
+Hornet 4 Drive    3.215   6  1
+Hornet Sportabout 3.440   8  0
+Valiant           3.460   6  1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_priors")
+> ### * get_priors
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_priors
+> ### Title: Get summary of priors used for a model
+> ### Aliases: get_priors get_priors.brmsfit
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("rstanarm", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+This is rstanarm version 2.32.2
+- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+- For execution on a local, multicore CPU with excess RAM we recommend calling
+  options(mc.cores = parallel::detectCores())
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:rstanarm', 'package:Rcpp'
+
+> nameEx("get_random")
+> ### * get_random
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_random
+> ### Title: Get the data from random effects
+> ### Aliases: get_random
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy)
++ # prepare some data...
++ sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
++ sleepstudy$mysubgrp <- NA
++ for (i in 1:5) {
++   filter_group <- sleepstudy$mygrp == i
++   sleepstudy$mysubgrp[filter_group] <-
++     sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
++ 
++ m <- lmer(
++   Reaction ~ Days + (1 | mygrp / mysubgrp) + (1 | Subject),
++   data = sleepstudy
++ )
++ 
++ head(get_random(m))
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy)
+> sleepstudy$mygrp <- sample(1:5, size = 180, replace = TRUE)
+> sleepstudy$mysubgrp <- NA
+> for (i in 1:5) {
++     filter_group <- sleepstudy$mygrp == i
++     sleepstudy$mysubgrp[filter_group] <- sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
+> m <- lmer(Reaction ~ Days + (1 | mygrp/mysubgrp) + (1 | Subject), data = sleepstudy)
+> head(get_random(m))
+  mysubgrp mygrp Subject
+1       26     1     308
+2       23     4     308
+3        8     1     308
+4       28     2     308
+5        2     5     308
+6       18     3     308
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("get_residuals")
+> ### * get_residuals
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_residuals
+> ### Title: Extract model residuals
+> ### Aliases: get_residuals get_residuals.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_residuals(m)
+          Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+         -1.0559619          -0.2281383          -3.4822509           0.7514545 
+  Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+          2.0342659          -1.7531855          -1.9437064           0.9420887 
+           Merc 230            Merc 280           Merc 280C          Merc 450SE 
+         -0.7877660          -0.7181129          -2.1181129           1.7794773 
+         Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+          1.5757124          -0.3619692          -0.3898093           0.1750587 
+  Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+          4.2185956           5.7281850           1.8290601           6.0432610 
+      Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+         -4.3115276          -0.9060247          -1.4819660          -2.0671872 
+   Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+          3.8490446          -0.2321023          -0.3424249           1.4979307 
+     Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+         -1.7422533          -1.8690068          -1.2437064          -3.3889219 
+> 
+> m <- glm(vs ~ wt + cyl + mpg, data = mtcars, family = binomial())
+> get_residuals(m) # type = "deviance" by default
+          Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+        -0.63287224         -0.81557679          0.24153475          1.23515879 
+  Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+        -0.09537483          1.09436219         -0.09536895          0.08620842 
+           Merc 230            Merc 280           Merc 280C          Merc 450SE 
+         0.09512715          1.08274703          1.12137225         -0.17947784 
+         Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+        -0.12620688         -0.12450351         -0.53935361         -0.64596525 
+  Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+        -0.67827839          0.20117929          0.40994430          0.28751494 
+      Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+         0.21446014         -0.09381913         -0.08439431         -0.12504287 
+   Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+        -0.15299615          0.31935163         -2.59315645          0.45762007 
+     Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+        -0.06384435         -0.70853216         -0.09761985          0.15116709 
+> get_residuals(m, type = "response")
+          Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+       -0.181485065        -0.282930670         0.028748195         0.533645229 
+  Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+       -0.004537852         0.450537255        -0.004537293         0.003709050 
+           Merc 230            Merc 280           Merc 280C          Merc 450SE 
+        0.004514367         0.443545885         0.466735567        -0.015977138 
+         Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+       -0.007932459        -0.007720604        -0.135367880        -0.188308998 
+  Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+       -0.205490858         0.020033170         0.080593721         0.040489884 
+      Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+        0.022734170        -0.004391345        -0.003554867        -0.007787380 
+   Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+       -0.011635687         0.049714423        -0.965342121         0.099412603 
+     Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+       -0.002035975        -0.221984564        -0.004753484         0.011360719 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_response")
+> ### * get_response
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_response
+> ### Title: Get the values from the response variable
+> ### Aliases: get_response get_response.default get_response.nestedLogit
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(cbpp)
++ cbpp$trials <- cbpp$size - cbpp$incidence
++ dat <<- cbpp
++ 
++ m <- glm(cbind(incidence, trials) ~ period, data = dat, family = binomial)
++ head(get_response(m))
++ get_response(m, select = "incidence")
++ 
++ data(mtcars)
++ m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ get_response(m)
++ ## Don't show: 
++ }) # examplesIf
+> data(cbpp)
+> cbpp$trials <- cbpp$size - cbpp$incidence
+> dat <<- cbpp
+> m <- glm(cbind(incidence, trials) ~ period, data = dat, family = binomial)
+> head(get_response(m))
+  incidence trials
+1         2     12
+2         3      9
+3         4      5
+4         0      5
+5         3     19
+6         1     17
+> get_response(m, select = "incidence")
+[1] 2
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_response(m)
+ [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+[16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+[31] 15.0 21.4
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("get_sigma")
+> ### * get_sigma
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_sigma
+> ### Title: Get residual standard deviation from models
+> ### Aliases: get_sigma
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_sigma(m)
+[1] 2.608133
+attr(,"class")
+[1] "insight_aux" "numeric"    
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_statistic")
+> ### * get_statistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_statistic
+> ### Title: Get statistic associated with estimates
+> ### Aliases: get_statistic get_statistic.default get_statistic.glmmTMB
+> ###   get_statistic.emmGrid get_statistic.gee
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_statistic(m)
+    Parameter  Statistic
+1 (Intercept) 11.3994647
+2          wt -4.1204121
+3         cyl -2.2234114
+4          vs  0.3221477
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_transformation")
+> ### * get_transformation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_transformation
+> ### Title: Return function of transformed response variables
+> ### Aliases: get_transformation
+> 
+> ### ** Examples
+> 
+> # identity, no transformation
+> model <- lm(Sepal.Length ~ Species, data = iris)
+> get_transformation(model)
+$transformation
+function (x) 
+x
+<bytecode: 0x0000016e44da5190>
+<environment: 0x0000016e44da3580>
+
+$inverse
+function (x) 
+x
+<bytecode: 0x0000016e44da5190>
+<environment: 0x0000016e44da3580>
+
+> 
+> # log-transformation
+> model <- lm(log(Sepal.Length) ~ Species, data = iris)
+> get_transformation(model)
+$transformation
+function (x, base = exp(1))  .Primitive("log")
+
+$inverse
+function (x)  .Primitive("exp")
+
+> 
+> # log-function
+> get_transformation(model)$transformation(0.3)
+[1] -1.203973
+> log(0.3)
+[1] -1.203973
+> 
+> # inverse function is exp()
+> get_transformation(model)$inverse(0.3)
+[1] 1.349859
+> exp(0.3)
+[1] 1.349859
+> 
+> # get transformations for all model terms
+> model <- lm(mpg ~ log(wt) + I(gear^2) + exp(am), data = mtcars)
+> get_transformation(model, include_all = TRUE)
+$response
+$response$mpg
+$response$mpg$transformation
+function (x) 
+x
+<bytecode: 0x0000016e44da5190>
+<environment: 0x0000016e4597c318>
+
+$response$mpg$inverse
+function (x) 
+x
+<bytecode: 0x0000016e44da5190>
+<environment: 0x0000016e4597c318>
+
+
+
+$conditional
+$conditional$wt
+$conditional$wt$transformation
+function (x, base = exp(1))  .Primitive("log")
+
+$conditional$wt$inverse
+function (x)  .Primitive("exp")
+
+
+$conditional$gear
+$conditional$gear$transformation
+function (x) 
+x^2
+<environment: 0x0000016e45aa8128>
+
+$conditional$gear$inverse
+function (x) 
+x^(2^-1)
+<environment: 0x0000016e45aa8128>
+
+
+$conditional$am
+$conditional$am$transformation
+function (x)  .Primitive("exp")
+
+$conditional$am$inverse
+function (x, base = exp(1))  .Primitive("log")
+
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("get_varcov")
+> ### * get_varcov
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_varcov
+> ### Title: Get variance-covariance matrix from models
+> ### Aliases: get_varcov get_varcov.default get_varcov.glmgee
+> ###   get_varcov.hurdle get_varcov.aov get_varcov.mixor
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("pscl") && require("sandwich")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ get_varcov(m)
++ 
++ # vcov of zero-inflation component from hurdle-model
++ data("bioChemists", package = "pscl")
++ mod <- hurdle(art ~ phd + fem | ment, data = bioChemists, dist = "negbin")
++ get_varcov(mod, component = "zero_inflated")
++ 
++ # robust vcov of, count component from hurdle-model
++ data("bioChemists", package = "pscl")
++ mod <- hurdle(art ~ phd + fem | ment, data = bioChemists, dist = "negbin")
++ get_varcov(
++   mod,
++   component = "conditional",
++   vcov = "BS",
++   vcov_args = list(R = 50)
++ )
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: pscl
+Classes and Methods for R originally developed in the
+Political Science Computational Laboratory
+Department of Political Science
+Stanford University (2002-2015),
+by and under the direction of Simon Jackman.
+hurdle and zeroinfl functions by Achim Zeileis.
+Loading required package: sandwich
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> get_varcov(m)
+            (Intercept)         wt        cyl         vs
+(Intercept)   11.552774  0.1680680 -1.5843752 -4.7487893
+wt             0.168068  0.6207461 -0.3301421 -0.2797924
+cyl           -1.584375 -0.3301421  0.3764045  0.7257641
+vs            -4.748789 -0.2797924  0.7257641  2.6475113
+> data("bioChemists", package = "pscl")
+> mod <- hurdle(art ~ phd + fem | ment, data = bioChemists, dist = "negbin")
+> get_varcov(mod, component = "zero_inflated")
+              (Intercept)          ment
+(Intercept)  0.0115917010 -0.0009744732
+ment        -0.0009744732  0.0001561139
+> data("bioChemists", package = "pscl")
+> mod <- hurdle(art ~ phd + fem | ment, data = bioChemists, dist = "negbin")
+> get_varcov(mod, component = "conditional", vcov = "BS", vcov_args = list(R = 50))
+                  count_(Intercept)     count_phd count_femWomen
+count_(Intercept)       0.031982043 -0.0074250922  -0.0056110262
+count_phd              -0.007425092  0.0022783299   0.0004894141
+count_femWomen         -0.005611026  0.0004894141   0.0100827061
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:sandwich', 'package:pscl'
+
+> nameEx("get_variance")
+> ### * get_variance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_variance
+> ### Title: Get variance components from random effects models
+> ### Aliases: get_variance get_variance.merMod get_variance.glmmTMB
+> ###   get_variance_residual get_variance_fixed get_variance_random
+> ###   get_variance_distribution get_variance_dispersion
+> ###   get_variance_intercept get_variance_slope
+> ###   get_correlation_slope_intercept get_correlation_slopes
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("get_weights")
+> ### * get_weights
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: get_weights
+> ### Title: Get the values from model weights
+> ### Aliases: get_weights get_weights.default
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> set.seed(123)
+> mtcars$weight <- rnorm(nrow(mtcars), 1, .3)
+> 
+> # LMs
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars, weights = weight)
+> get_weights(m)
+ [1] 0.8318573 0.9309468 1.4676125 1.0211525 1.0387863 1.5145195 1.1382749
+ [8] 0.6204816 0.7939441 0.8663014 1.3672245 1.1079441 1.1202314 1.0332048
+[15] 0.8332477 1.5360739 1.1493551 0.4100149 1.2104068 0.8581626 0.6796529
+[22] 0.9346075 0.6921987 0.7813326 0.8124882 0.4939920 1.2513361 1.0460119
+[29] 0.6585589 1.3761445 1.1279393 0.9114786
+> 
+> get_weights(lm(mpg ~ wt, data = mtcars), null_as_ones = TRUE)
+ [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+> 
+> # GLMs
+> m <- glm(vs ~ disp + mpg, data = mtcars, weights = weight, family = quasibinomial)
+> get_weights(m)
+          Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+          0.8318573           0.9309468           1.4676125           1.0211525 
+  Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+          1.0387863           1.5145195           1.1382749           0.6204816 
+           Merc 230            Merc 280           Merc 280C          Merc 450SE 
+          0.7939441           0.8663014           1.3672245           1.1079441 
+         Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+          1.1202314           1.0332048           0.8332477           1.5360739 
+  Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+          1.1493551           0.4100149           1.2104068           0.8581626 
+      Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+          0.6796529           0.9346075           0.6921987           0.7813326 
+   Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+          0.8124882           0.4939920           1.2513361           1.0460119 
+     Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+          0.6585589           1.3761445           1.1279393           0.9114786 
+> m <- glm(cbind(cyl, gear) ~ mpg, data = mtcars, weights = weight, family = binomial)
+> get_weights(m)
+          Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+           8.318573            9.309468           11.740900            9.190373 
+  Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+          11.426650           13.630675           12.521023            4.963853 
+           Merc 230            Merc 280           Merc 280C          Merc 450SE 
+           6.351553            8.663014           13.672245           12.187386 
+         Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+          12.322546           11.365253            9.165724           16.896813 
+  Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+          12.642907            3.280119            9.683254            6.865301 
+      Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+           4.757570           10.280683            7.614185            8.594659 
+   Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+           8.937370            3.951936           11.262025            9.414107 
+     Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+           8.561266           15.137589           14.663210            7.291828 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("has_intercept")
+> ### * has_intercept
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: has_intercept
+> ### Title: Checks if model has an intercept
+> ### Aliases: has_intercept
+> 
+> ### ** Examples
+> 
+> model <- lm(mpg ~ 0 + gear, data = mtcars)
+> has_intercept(model)
+[1] FALSE
+> 
+> model <- lm(mpg ~ gear, data = mtcars)
+> has_intercept(model)
+[1] TRUE
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ model <- lmer(Reaction ~ 0 + Days + (Days | Subject), data = sleepstudy)
++ has_intercept(model)
++ 
++ model <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
++ has_intercept(model)
++ ## Don't show: 
++ }) # examplesIf
+> model <- lmer(Reaction ~ 0 + Days + (Days | Subject), data = sleepstudy)
+> has_intercept(model)
+[1] FALSE
+> model <- lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+> has_intercept(model)
+[1] TRUE
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("is_bayesian_model")
+> ### * is_bayesian_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_bayesian_model
+> ### Title: Checks if a model is a Bayesian model
+> ### Aliases: is_bayesian_model
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("rstanarm", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+This is rstanarm version 2.32.2
+- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+- For execution on a local, multicore CPU with excess RAM we recommend calling
+  options(mc.cores = parallel::detectCores())
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:rstanarm', 'package:Rcpp'
+
+> nameEx("is_converged")
+> ### * is_converged
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_converged
+> ### Title: Convergence test for mixed effects models
+> ### Aliases: is_converged is_converged.merMod
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ library(lme4)
++ data(cbpp)
++ set.seed(1)
++ cbpp$x <- rnorm(nrow(cbpp))
++ cbpp$x2 <- runif(nrow(cbpp))
++ 
++ model <- glmer(
++   cbind(incidence, size - incidence) ~ period + x + x2 + (1 + x | herd),
++   data = cbpp,
++   family = binomial()
++ )
++ 
++ is_converged(model)
++ ## Don't show: 
++ }) # examplesIf
+> library(lme4)
+> data(cbpp)
+> set.seed(1)
+> cbpp$x <- rnorm(nrow(cbpp))
+> cbpp$x2 <- runif(nrow(cbpp))
+> model <- glmer(cbind(incidence, size - incidence) ~ period + x + x2 + 
++     (1 + x | herd), data = cbpp, family = binomial())
+boundary (singular) fit: see help('isSingular')
+> is_converged(model)
+[1] TRUE
+attr(,"gradient")
+[1] NA
+> ## End(Don't show)
+> ## Don't show: 
+> if (getOption("warn") < 2L && require("glmmTMB")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: glmmTMB
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:glmmTMB', 'package:lme4', 'package:Matrix'
+
+> nameEx("is_empty_object")
+> ### * is_empty_object
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_empty_object
+> ### Title: Check if object is empty
+> ### Aliases: is_empty_object
+> 
+> ### ** Examples
+> 
+> is_empty_object(c(1, 2, 3, NA))
+[1] FALSE
+> is_empty_object(list(NULL, c(NA, NA)))
+[1] FALSE
+> is_empty_object(list(NULL, NA))
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("is_gam_model")
+> ### * is_gam_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_gam_model
+> ### Title: Checks if a model is a generalized additive model
+> ### Aliases: is_gam_model
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("mgcv")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(iris)
++ model1 <- lm(Petal.Length ~ Petal.Width + Sepal.Length, data = iris)
++ model2 <- mgcv::gam(Petal.Length ~ Petal.Width + s(Sepal.Length), data = iris)
++ is_gam_model(model1)
++ is_gam_model(model2)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: mgcv
+Loading required package: nlme
+This is mgcv 1.9-4. For overview type '?mgcv'.
+> data(iris)
+> model1 <- lm(Petal.Length ~ Petal.Width + Sepal.Length, data = iris)
+> model2 <- mgcv::gam(Petal.Length ~ Petal.Width + s(Sepal.Length), data = iris)
+> is_gam_model(model1)
+[1] FALSE
+> is_gam_model(model2)
+[1] TRUE
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:mgcv', 'package:nlme'
+
+> nameEx("is_mixed_model")
+> ### * is_mixed_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_mixed_model
+> ### Title: Checks if a model is a mixed effects model
+> ### Aliases: is_mixed_model
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(mtcars)
++ model <- lm(mpg ~ wt + cyl + vs, data = mtcars)
++ is_mixed_model(model)
++ 
++ data(sleepstudy, package = "lme4")
++ model <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
++ is_mixed_model(model)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: lme4
+Loading required package: Matrix
+> data(mtcars)
+> model <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> is_mixed_model(model)
+[1] FALSE
+> data(sleepstudy, package = "lme4")
+> model <- lme4::lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+> is_mixed_model(model)
+[1] TRUE
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("is_model")
+> ### * is_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_model
+> ### Title: Checks if an object is a regression model or statistical test
+> ###   object
+> ### Aliases: is_model is_regression_model
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> 
+> is_model(m)
+[1] TRUE
+> is_model(mtcars)
+[1] FALSE
+> 
+> test <- t.test(1:10, y = c(7:20))
+> is_model(test)
+[1] TRUE
+> is_regression_model(test)
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("is_model_supported")
+> ### * is_model_supported
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_model_supported
+> ### Title: Checks if a regression model object is supported by the insight
+> ###   package
+> ### Aliases: is_model_supported supported_models
+> 
+> ### ** Examples
+> 
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> 
+> is_model_supported(m)
+[1] TRUE
+> is_model_supported(mtcars)
+[1] FALSE
+> 
+> # to see all supported models
+> supported_models()
+  [1] "AKP"                     "Anova.mlm"              
+  [3] "Arima"                   "BBmm"                   
+  [5] "BBreg"                   "BFBayesFactor"          
+  [7] "BGGM"                    "DirichletRegModel"      
+  [9] "Gam"                     "Glm"                    
+ [11] "HLfit"                   "LORgee"                 
+ [13] "MANOVA"                  "MCMCglmm"               
+ [15] "MixMod"                  "PMCMR"                  
+ [17] "RM"                      "Rchoice"                
+ [19] "Sarlm"                   "SemiParBIV"             
+ [21] "aareg"                   "afex_aov"               
+ [23] "anova.rms"               "aov"                    
+ [25] "aovlist"                 "asym"                   
+ [27] "averaging"               "bamlss"                 
+ [29] "bamlss.frame"            "bayesQR"                
+ [31] "bayesx"                  "bcplm"                  
+ [33] "betamfx"                 "betaor"                 
+ [35] "betareg"                 "bfsl"                   
+ [37] "bife"                    "bifeAPEs"               
+ [39] "bigglm"                  "biglm"                  
+ [41] "blavaan"                 "blrm"                   
+ [43] "bracl"                   "brglm"                  
+ [45] "brmsfit"                 "brmultinom"             
+ [47] "btergm"                  "censReg"                
+ [49] "cgam"                    "cgamm"                  
+ [51] "cglm"                    "clm"                    
+ [53] "clm2"                    "clmm"                   
+ [55] "clmm2"                   "clogit"                 
+ [57] "coeftest"                "complmrob"              
+ [59] "confusionMatrix"         "coxme"                  
+ [61] "coxph"                   "coxph.penal"            
+ [63] "coxph_weightit"          "coxr"                   
+ [65] "cpglm"                   "cpglmm"                 
+ [67] "crch"                    "crq"                    
+ [69] "crqs"                    "crr"                    
+ [71] "dep.effect"              "draws"                  
+ [73] "drc"                     "eglm"                   
+ [75] "elm"                     "emmGrid"                
+ [77] "epi.2by2"                "ergm"                   
+ [79] "estimate_contrasts"      "estimate_means"         
+ [81] "estimate_slopes"         "externVar"              
+ [83] "externX"                 "fdm"                    
+ [85] "feglm"                   "feis"                   
+ [87] "felm"                    "fitdistr"               
+ [89] "fixest"                  "flac"                   
+ [91] "flexsurvreg"             "flic"                   
+ [93] "gam"                     "gamlss"                 
+ [95] "gamm"                    "gamm4"                  
+ [97] "garch"                   "gbm"                    
+ [99] "gee"                     "geeglm"                 
+[101] "ggcomparisons"           "glht"                   
+[103] "glimML"                  "glm"                    
+[105] "glmRob"                  "glm_weightit"           
+[107] "glmerMod"                "glmgee"                 
+[109] "glmm"                    "glmmPQL"                
+[111] "glmmTMB"                 "glmmadmb"               
+[113] "glmrob"                  "glmx"                   
+[115] "gls"                     "gmnl"                   
+[117] "hglm"                    "htest"                  
+[119] "hurdle"                  "ivFixed"                
+[121] "iv_robust"               "ivprobit"               
+[123] "ivreg"                   "joint"                  
+[125] "lavaan"                  "lcmm"                   
+[127] "lm"                      "lmRob"                  
+[129] "lm_robust"               "lme"                    
+[131] "lmerMod"                 "lmerModLmerTest"        
+[133] "lmodel2"                 "lmrob"                  
+[135] "logistf"                 "logitmfx"               
+[137] "logitor"                 "logitr"                 
+[139] "lqm"                     "lqmm"                   
+[141] "lrm"                     "manova"                 
+[143] "marginaleffects"         "marginaleffects.summary"
+[145] "margins"                 "maxLik"                 
+[147] "mblogit"                 "mclogit"                
+[149] "mcmc"                    "mcmc.list"              
+[151] "mcp1"                    "mcp12"                  
+[153] "mcp2"                    "med1way"                
+[155] "mediate"                 "merMod"                 
+[157] "merModList"              "meta_bma"               
+[159] "meta_fixed"              "meta_random"            
+[161] "metaplus"                "mhurdle"                
+[163] "mipo"                    "mira"                   
+[165] "mixed"                   "mixor"                  
+[167] "mjoint"                  "mle"                    
+[169] "mle2"                    "mlm"                    
+[171] "mlogit"                  "mmclogit"               
+[173] "mmlogit"                 "mmrm"                   
+[175] "mmrm_fit"                "mmrm_tmb"               
+[177] "model_fit"               "multinom"               
+[179] "multinom_weightit"       "mvord"                  
+[181] "negbinirr"               "negbinmfx"              
+[183] "nestedLogit"             "ols"                    
+[185] "onesampb"                "oohbchoice"             
+[187] "ordinal_weightit"        "orm"                    
+[189] "pgmm"                    "phyloglm"               
+[191] "phylolm"                 "plm"                    
+[193] "poissonirr"              "poissonmfx"             
+[195] "polr"                    "probitmfx"              
+[197] "psm"                     "ridgelm"                
+[199] "riskRegression"          "rjags"                  
+[201] "rlm"                     "rlmerMod"               
+[203] "rma"                     "rma.uni"                
+[205] "rms"                     "robmixglm"              
+[207] "robtab"                  "rq"                     
+[209] "rqs"                     "rqss"                   
+[211] "rvar"                    "scam"                   
+[213] "sdmTMB"                  "selection"              
+[215] "sem"                     "semLm"                  
+[217] "semLme"                  "seqanova.svyglm"        
+[219] "serp"                    "slm"                    
+[221] "speedglm"                "speedlm"                
+[223] "stanfit"                 "stanmvreg"              
+[225] "stanreg"                 "summary.lm"             
+[227] "survfit"                 "survreg"                
+[229] "svy2lme"                 "svy_vglm"               
+[231] "svychisq"                "svycoxph"               
+[233] "svyglm"                  "svyolr"                 
+[235] "svysurvreg"              "systemfit"              
+[237] "t1way"                   "tobit"                  
+[239] "trimcibt"                "truncreg"               
+[241] "vgam"                    "vglm"                   
+[243] "wbgee"                   "wblm"                   
+[245] "wbm"                     "wmcpAKP"                
+[247] "yuen"                    "yuend"                  
+[249] "zcpglm"                  "zeroinfl"               
+[251] "zerotrunc"              
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("is_multivariate")
+> ### * is_multivariate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_multivariate
+> ### Title: Checks if an object stems from a multivariate response model
+> ### Aliases: is_multivariate
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("rstanarm", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+This is rstanarm version 2.32.2
+- See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
+- Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
+- For execution on a local, multicore CPU with excess RAM we recommend calling
+  options(mc.cores = parallel::detectCores())
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:rstanarm', 'package:Rcpp'
+
+> nameEx("is_nested_models")
+> ### * is_nested_models
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_nested_models
+> ### Title: Checks whether a list of models are nested models
+> ### Aliases: is_nested_models
+> 
+> ### ** Examples
+> 
+> m1 <- lm(Sepal.Length ~ Petal.Width + Species, data = iris)
+> m2 <- lm(Sepal.Length ~ Species, data = iris)
+> m3 <- lm(Sepal.Length ~ Petal.Width, data = iris)
+> m4 <- lm(Sepal.Length ~ 1, data = iris)
+> 
+> is_nested_models(m1, m2, m4)
+[1] TRUE
+attr(,"is_nested_increasing")
+[1] FALSE
+attr(,"is_nested_decreasing")
+[1] TRUE
+> is_nested_models(m4, m2, m1)
+[1] TRUE
+attr(,"is_nested_increasing")
+[1] TRUE
+attr(,"is_nested_decreasing")
+[1] FALSE
+> is_nested_models(m1, m2, m3)
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("is_nullmodel")
+> ### * is_nullmodel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is_nullmodel
+> ### Title: Checks if model is a null-model (intercept-only)
+> ### Aliases: is_nullmodel
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ model <- lm(mpg ~ 1, data = mtcars)
++ is_nullmodel(model)
++ 
++ model <- lm(mpg ~ gear, data = mtcars)
++ is_nullmodel(model)
++ 
++ data(sleepstudy, package = "lme4")
++ model <- lme4::lmer(Reaction ~ 1 + (Days | Subject), data = sleepstudy)
++ is_nullmodel(model)
++ 
++ model <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
++ is_nullmodel(model)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: lme4
+Loading required package: Matrix
+> model <- lm(mpg ~ 1, data = mtcars)
+> is_nullmodel(model)
+[1] TRUE
+> model <- lm(mpg ~ gear, data = mtcars)
+> is_nullmodel(model)
+[1] FALSE
+> data(sleepstudy, package = "lme4")
+> model <- lme4::lmer(Reaction ~ 1 + (Days | Subject), data = sleepstudy)
+> is_nullmodel(model)
+[1] TRUE
+> model <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+> is_nullmodel(model)
+[1] FALSE
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("link_function")
+> ### * link_function
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: link_function
+> ### Title: Get link-function from model object
+> ### Aliases: link_function link_function.betamfx link_function.gamlss
+> ###   link_function.betareg link_function.DirichletRegModel
+> 
+> ### ** Examples
+> 
+> # example from ?stats::glm
+> counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
+> outcome <- gl(3, 1, 9)
+> treatment <- gl(3, 3)
+> m <- glm(counts ~ outcome + treatment, family = poisson())
+> 
+> link_function(m)(0.3)
+[1] -1.203973
+> # same as
+> log(0.3)
+[1] -1.203973
+> 
+> 
+> 
+> cleanEx()
+> nameEx("link_inverse")
+> ### * link_inverse
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: link_inverse
+> ### Title: Get link-inverse function from model object
+> ### Aliases: link_inverse link_inverse.betareg
+> ###   link_inverse.DirichletRegModel link_inverse.betamfx
+> ###   link_inverse.gamlss
+> 
+> ### ** Examples
+> 
+> # example from ?stats::glm
+> counts <- c(18, 17, 15, 20, 10, 20, 25, 13, 12)
+> outcome <- gl(3, 1, 9)
+> treatment <- gl(3, 3)
+> m <- glm(counts ~ outcome + treatment, family = poisson())
+> 
+> link_inverse(m)(0.3)
+[1] 1.349859
+> # same as
+> exp(0.3)
+[1] 1.349859
+> 
+> 
+> 
+> cleanEx()
+> nameEx("model_info")
+> ### * model_info
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: model_info
+> ### Title: Access information from model objects
+> ### Aliases: model_info model_info.default model_info.brmsfit
+> 
+> ### ** Examples
+> 
+> ldose <- rep(0:5, 2)
+> numdead <- c(1, 4, 9, 13, 18, 20, 0, 2, 6, 10, 12, 16)
+> sex <- factor(rep(c("M", "F"), c(6, 6)))
+> SF <- cbind(numdead, numalive = 20 - numdead)
+> dat <- data.frame(ldose, sex, SF, stringsAsFactors = FALSE)
+> m <- glm(SF ~ sex * ldose, family = binomial)
+> 
+> # logistic regression
+> model_info(m)
+$is_binomial
+[1] TRUE
+
+$is_bernoulli
+[1] FALSE
+
+$is_count
+[1] FALSE
+
+$is_poisson
+[1] FALSE
+
+$is_negbin
+[1] FALSE
+
+$is_beta
+[1] FALSE
+
+$is_betabinomial
+[1] FALSE
+
+$is_orderedbeta
+[1] FALSE
+
+$is_dirichlet
+[1] FALSE
+
+$is_exponential
+[1] FALSE
+
+$is_logit
+[1] TRUE
+
+$is_probit
+[1] FALSE
+
+$is_censored
+[1] FALSE
+
+$is_truncated
+[1] FALSE
+
+$is_survival
+[1] FALSE
+
+$is_linear
+[1] FALSE
+
+$is_tweedie
+[1] FALSE
+
+$is_zeroinf
+[1] FALSE
+
+$is_zero_inflated
+[1] FALSE
+
+$is_dispersion
+[1] FALSE
+
+$is_hurdle
+[1] FALSE
+
+$is_ordinal
+[1] FALSE
+
+$is_cumulative
+[1] FALSE
+
+$is_multinomial
+[1] FALSE
+
+$is_categorical
+[1] FALSE
+
+$is_mixed
+[1] FALSE
+
+$is_multivariate
+[1] FALSE
+
+$is_trial
+[1] FALSE
+
+$is_bayesian
+[1] FALSE
+
+$is_gam
+[1] FALSE
+
+$is_anova
+[1] FALSE
+
+$is_timeseries
+[1] FALSE
+
+$is_ttest
+[1] FALSE
+
+$is_correlation
+[1] FALSE
+
+$is_onewaytest
+[1] FALSE
+
+$is_chi2test
+[1] FALSE
+
+$is_ranktest
+[1] FALSE
+
+$is_levenetest
+[1] FALSE
+
+$is_variancetest
+[1] FALSE
+
+$is_xtab
+[1] FALSE
+
+$is_proptest
+[1] FALSE
+
+$is_binomtest
+[1] FALSE
+
+$is_ftest
+[1] FALSE
+
+$is_meta
+[1] FALSE
+
+$is_wiener
+[1] FALSE
+
+$is_rtchoice
+[1] FALSE
+
+$is_mixture
+[1] FALSE
+
+$link_function
+[1] "logit"
+
+$family
+[1] "binomial"
+
+$n_obs
+[1] 12
+
+$n_grouplevels
+NULL
+
+> 
+> # t-test
+> m <- t.test(1:10, y = c(7:20))
+> model_info(m)
+$is_binomial
+[1] FALSE
+
+$is_bernoulli
+[1] FALSE
+
+$is_count
+[1] FALSE
+
+$is_poisson
+[1] FALSE
+
+$is_negbin
+[1] FALSE
+
+$is_beta
+[1] FALSE
+
+$is_betabinomial
+[1] FALSE
+
+$is_orderedbeta
+[1] FALSE
+
+$is_dirichlet
+[1] FALSE
+
+$is_exponential
+[1] FALSE
+
+$is_logit
+[1] FALSE
+
+$is_probit
+[1] FALSE
+
+$is_censored
+[1] FALSE
+
+$is_truncated
+[1] FALSE
+
+$is_survival
+[1] FALSE
+
+$is_linear
+[1] TRUE
+
+$is_tweedie
+[1] FALSE
+
+$is_zeroinf
+[1] FALSE
+
+$is_zero_inflated
+[1] FALSE
+
+$is_dispersion
+[1] FALSE
+
+$is_hurdle
+[1] FALSE
+
+$is_ordinal
+[1] FALSE
+
+$is_cumulative
+[1] FALSE
+
+$is_multinomial
+[1] FALSE
+
+$is_categorical
+[1] FALSE
+
+$is_mixed
+[1] FALSE
+
+$is_multivariate
+[1] FALSE
+
+$is_trial
+[1] FALSE
+
+$is_bayesian
+[1] FALSE
+
+$is_gam
+[1] FALSE
+
+$is_anova
+[1] FALSE
+
+$is_timeseries
+[1] FALSE
+
+$is_ttest
+[1] TRUE
+
+$is_correlation
+[1] FALSE
+
+$is_onewaytest
+[1] FALSE
+
+$is_chi2test
+[1] FALSE
+
+$is_ranktest
+[1] FALSE
+
+$is_levenetest
+[1] FALSE
+
+$is_variancetest
+[1] FALSE
+
+$is_xtab
+[1] FALSE
+
+$is_proptest
+[1] FALSE
+
+$is_binomtest
+[1] FALSE
+
+$is_ftest
+[1] FALSE
+
+$is_meta
+[1] FALSE
+
+$is_wiener
+[1] FALSE
+
+$is_rtchoice
+[1] FALSE
+
+$is_mixture
+[1] FALSE
+
+$link_function
+[1] "identity"
+
+$family
+[1] "gaussian"
+
+$n_obs
+NULL
+
+$n_grouplevels
+NULL
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("model_name")
+> ### * model_name
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: model_name
+> ### Title: Name the model
+> ### Aliases: model_name model_name.default
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ m <- lm(Sepal.Length ~ Petal.Width, data = iris)
++ model_name(m)
++ model_name(m, include_formula = TRUE)
++ model_name(m, include_call = TRUE)
++ 
++ model_name(lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris))
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: lme4
+Loading required package: Matrix
+> m <- lm(Sepal.Length ~ Petal.Width, data = iris)
+> model_name(m)
+[1] "lm"
+> model_name(m, include_formula = TRUE)
+[1] "lm(Sepal.Length ~ Petal.Width)"
+> model_name(m, include_call = TRUE)
+[1] "lm(formula = Sepal.Length ~ Petal.Width, data = iris)"
+> model_name(lme4::lmer(Sepal.Length ~ Sepal.Width + (1 | Species), data = iris))
+[1] "lmerMod"
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("n_grouplevels")
+> ### * n_grouplevels
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: n_grouplevels
+> ### Title: Count number of random effect levels in a mixed model
+> ### Aliases: n_grouplevels
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy, package = "lme4")
++ set.seed(12345)
++ sleepstudy$grp <- sample(1:5, size = 180, replace = TRUE)
++ sleepstudy$subgrp <- NA
++ for (i in 1:5) {
++   filter_group <- sleepstudy$grp == i
++   sleepstudy$subgrp[filter_group] <-
++     sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
++ model <- lme4::lmer(
++   Reaction ~ Days + (1 | grp / subgrp) + (1 | Subject),
++   data = sleepstudy
++ )
++ n_grouplevels(model)
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: lme4
+Loading required package: Matrix
+> data(sleepstudy, package = "lme4")
+> set.seed(12345)
+> sleepstudy$grp <- sample(1:5, size = 180, replace = TRUE)
+> sleepstudy$subgrp <- NA
+> for (i in 1:5) {
++     filter_group <- sleepstudy$grp == i
++     sleepstudy$subgrp[filter_group] <- sample(1:30, size = sum(filter_group), replace = TRUE)
++ }
+> model <- lme4::lmer(Reaction ~ Days + (1 | grp/subgrp) + (1 | Subject), 
++     data = sleepstudy)
+> n_grouplevels(model)
+Group      | N_levels
+---------------------
+subgrp     |       30
+grp        |        5
+Subject    |       18
+subgrp:grp |      108
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("n_obs")
+> ### * n_obs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: n_obs
+> ### Title: Get number of observations from a model
+> ### Aliases: n_obs n_obs.glm n_obs.svyolr n_obs.afex_aov n_obs.stanmvreg
+> 
+> ### ** Examples
+> 
+> data(mtcars)
+> m <- lm(mpg ~ wt + cyl + vs, data = mtcars)
+> n_obs(m)
+[1] 32
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(cbpp, package = "lme4")
++ m <- glm(
++   cbind(incidence, size - incidence) ~ period,
++   data = cbpp,
++   family = binomial(link = "logit")
++ )
++ n_obs(m)
++ n_obs(m, disaggregate = TRUE)
++ ## Don't show: 
++ }) # examplesIf
+> data(cbpp, package = "lme4")
+> m <- glm(cbind(incidence, size - incidence) ~ period, data = cbpp, family = binomial(link = "logit"))
+> n_obs(m)
+[1] 56
+> n_obs(m, disaggregate = TRUE)
+[1] 842
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("n_parameters")
+> ### * n_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: n_parameters
+> ### Title: Count number of parameters in a model
+> ### Aliases: n_parameters n_parameters.default n_parameters.merMod
+> ###   n_parameters.glmmTMB
+> 
+> ### ** Examples
+> 
+> data(iris)
+> model <- lm(Sepal.Length ~ Sepal.Width * Species, data = iris)
+> n_parameters(model)
+[1] 6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("null_model")
+> ### * null_model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: null_model
+> ### Title: Compute intercept-only model for regression models
+> ### Aliases: null_model null_model.default
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("lme4", quietly = TRUE)) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ data(sleepstudy)
++ m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
++ summary(m)
++ summary(null_model(m))
++ ## Don't show: 
++ }) # examplesIf
+> data(sleepstudy)
+> m <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+> summary(m)
+Linear mixed model fit by REML ['lmerMod']
+Formula: Reaction ~ Days + (1 + Days | Subject)
+   Data: sleepstudy
+
+REML criterion at convergence: 1743.6
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.9536 -0.4634  0.0231  0.4634  5.1793 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ Subject  (Intercept) 612.10   24.741       
+          Days         35.07    5.922   0.07
+ Residual             654.94   25.592       
+Number of obs: 180, groups:  Subject, 18
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  251.405      6.825  36.838
+Days          10.467      1.546   6.771
+
+Correlation of Fixed Effects:
+     (Intr)
+Days -0.138
+> summary(null_model(m))
+Linear mixed model fit by REML ['lmerMod']
+Formula: Reaction ~ (1 + Days | Subject)
+   Data: structure(list(Reaction = c(249.56, 258.7047, 250.8006, 321.4398,  
+356.8519, 414.6901, 382.2038, 290.1486, 430.5853, 466.3535, 222.7339,  
+205.2658, 202.9778, 204.707, 207.7161, 215.9618, 213.6303, 217.7272,  
+224.2957, 237.3142, 199.0539, 194.3322, 234.32, 232.8416, 229.3074,  
+220.4579, 235.4208, 255.7511, 261.0125, 247.5153, 321.5426, 300.4002,  
+283.8565, 285.133, 285.7973, 297.5855, 280.2396, 318.2613, 305.3495,  
+354.0487, 287.6079, 285, 301.8206, 320.1153, 316.2773, 293.3187,  
+290.075, 334.8177, 293.7469, 371.5811, 234.8606, 242.8118, 272.9613,  
+309.7688, 317.4629, 309.9976, 454.1619, 346.8311, 330.3003, 253.8644,  
+283.8424, 289.555, 276.7693, 299.8097, 297.171, 338.1665, 332.0265,  
+348.8399, 333.36, 362.0428, 265.4731, 276.2012, 243.3647, 254.6723,  
+279.0244, 284.1912, 305.5248, 331.5229, 335.7469, 377.299, 241.6083,  
+273.9472, 254.4907, 270.8021, 251.4519, 254.6362, 245.4523, 235.311,  
+235.7541, 237.2466, 312.3666, 313.8058, 291.6112, 346.1222, 365.7324,  
+391.8385, 404.2601, 416.6923, 455.8643, 458.9167, 236.1032, 230.3167,  
+238.9256, 254.922, 250.7103, 269.7744, 281.5648, 308.102, 336.2806,  
+351.6451, 256.2968, 243.4543, 256.2046, 255.5271, 268.9165, 329.7247,  
+379.4445, 362.9184, 394.4872, 389.0527, 250.5265, 300.0576, 269.8939,  
+280.5891, 271.8274, 304.6336, 287.7466, 266.5955, 321.5418, 347.5655,  
+221.6771, 298.1939, 326.8785, 346.8555, 348.7402, 352.8287, 354.4266,  
+360.4326, 375.6406, 388.5417, 271.9235, 268.4369, 257.2424, 277.6566,  
+314.8222, 317.2135, 298.1353, 348.1229, 340.28, 366.5131, 225.264,  
+234.5235, 238.9008, 240.473, 267.5373, 344.1937, 281.1481, 347.5855,  
+365.163, 372.2288, 269.8804, 272.4428, 277.8989, 281.7895, 279.1705,  
+284.512, 259.2658, 304.6306, 350.7807, 369.4692, 269.4117, 273.474,  
+297.5968, 310.6316, 287.1726, 329.6076, 334.4818, 343.2199, 369.1417,  
+364.1236), Days = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3,  
+4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4,  
+5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5,  
+6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6,  
+7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7,  
+8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8,  
+9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0,  
+1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), Subject = structure(c(1L,  
+1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 2L, 2L, 2L,  
+2L, 2L, 2L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 3L, 4L, 4L, 4L,  
+4L, 4L, 4L, 4L, 4L, 4L, 4L, 5L, 5L, 5L, 5L, 5L, 5L, 5L, 5L, 5L,  
+5L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 6L, 7L, 7L, 7L, 7L, 7L,  
+7L, 7L, 7L, 7L, 7L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 8L, 9L,  
+9L, 9L, 9L, 9L, 9L, 9L, 9L, 9L, 9L, 10L, 10L, 10L, 10L, 10L,  
+10L, 10L, 10L, 10L, 10L, 11L, 11L, 11L, 11L, 11L, 11L, 11L, 11L,  
+11L, 11L, 12L, 12L, 12L, 12L, 12L, 12L, 12L, 12L, 12L, 12L, 13L,  
+13L, 13L, 13L, 13L, 13L, 13L, 13L, 13L, 13L, 14L, 14L, 14L, 14L,  
+14L, 14L, 14L, 14L, 14L, 14L, 15L, 15L, 15L, 15L, 15L, 15L, 15L,  
+15L, 15L, 15L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L, 16L,  
+17L, 17L, 17L, 17L, 17L, 17L, 17L, 17L, 17L, 17L, 18L, 18L, 18L,  
+18L, 18L, 18L, 18L, 18L, 18L, 18L), levels = c("308", "309",  
+"310", "330", "331", "332", "333", "334", "335", "337", "349",  
+"350", "351", "352", "369", "370", "371", "372"), class = "factor")), row.names = c(NA,  
+180L), class = "data.frame")
+
+REML criterion at convergence: 1769.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-4.0449 -0.4486  0.0089  0.4819  5.2186 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr 
+ Subject  (Intercept) 651.6    25.53         
+          Days        142.2    11.93    -0.18
+ Residual             654.9    25.59         
+Number of obs: 180, groups:  Subject, 18
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   257.76       6.76   38.13
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:lme4', 'package:Matrix'
+
+> nameEx("object_has_names")
+> ### * object_has_names
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: object_has_names
+> ### Title: Check names and rownames
+> ### Aliases: object_has_names object_has_rownames
+> 
+> ### ** Examples
+> 
+> 
+> # check if specified names are present in the given object
+> object_has_names(mtcars, "am")
+[1] TRUE
+> object_has_names(anscombe, c("x1", "z1", "y1"))
+[1]  TRUE FALSE  TRUE
+> object_has_names(list("x" = 1, "y" = 2), c("x", "a"))
+[1]  TRUE FALSE
+> 
+> # check if a dataframe has rownames
+> object_has_rownames(mtcars)
+[1] TRUE
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("print_color")
+> ### * print_color
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: print_color
+> ### Title: Coloured console output
+> ### Aliases: print_color print_colour color_text colour_text color_theme
+> 
+> ### ** Examples
+> 
+> print_color("I'm blue dabedi dabedei", "blue")
+[34mI'm blue dabedi dabedei[39m> 
+> 
+> 
+> cleanEx()
+> nameEx("print_parameters")
+> ### * print_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: print_parameters
+> ### Title: Prepare summary statistics of model parameters for printing
+> ### Aliases: print_parameters
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("curl", quietly = TRUE) && curl::has_internet() && all(insight::check_if_installed(c("bayestestR", "httr2", "brms"), quietly = TRUE))) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ ## Don't show: 
++ }) # examplesIf
+Using libcurl 8.14.1 with Schannel
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:curl'
+
+> nameEx("standardize_column_order")
+> ### * standardize_column_order
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: standardize_column_order
+> ### Title: Standardize column order
+> ### Aliases: standardize_column_order
+> ###   standardize_column_order.parameters_model
+> 
+> ### ** Examples
+> 
+> # easystats conventions
+> df1 <- cbind.data.frame(
++   CI_low      = -2.873,
++   t           = 5.494,
++   CI_high     = -1.088,
++   p           = 0.00001,
++   Parameter   = -1.980,
++   CI          = 0.95,
++   df          = 29.234,
++   Method      = "Student's t-test"
++ )
+> 
+> standardize_column_order(df1, style = "easystats")
+  Parameter   CI CI_low CI_high           Method     t     df     p
+1     -1.98 0.95 -2.873  -1.088 Student's t-test 5.494 29.234 1e-05
+> 
+> # broom conventions
+> df2 <- cbind.data.frame(
++   conf.low   = -2.873,
++   statistic  = 5.494,
++   conf.high  = -1.088,
++   p.value    = 0.00001,
++   estimate   = -1.980,
++   conf.level = 0.95,
++   df         = 29.234,
++   method     = "Student's t-test"
++ )
+> 
+> standardize_column_order(df2, style = "broom")
+  estimate conf.level conf.low conf.high           method statistic     df
+1    -1.98       0.95   -2.873    -1.088 Student's t-test     5.494 29.234
+  p.value
+1   1e-05
+> 
+> 
+> 
+> cleanEx()
+> nameEx("standardize_names")
+> ### * standardize_names
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: standardize_names
+> ### Title: Standardize column names
+> ### Aliases: standardize_names standardize_names.parameters_model
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (require("parameters")) withAutoprint({ # examplesIf
++ ## End(Don't show)
++ model <- lm(mpg ~ wt + cyl, data = mtcars)
++ mp <- model_parameters(model)
++ 
++ as.data.frame(mp)
++ standardize_names(mp)
++ standardize_names(mp, style = "broom")
++ ## Don't show: 
++ }) # examplesIf
+Loading required package: parameters
+> model <- lm(mpg ~ wt + cyl, data = mtcars)
+> mp <- model_parameters(model)
+> as.data.frame(mp)
+    Parameter Coefficient        SE   CI    CI_low    CI_high         t
+1 (Intercept)   39.686261 1.7149840 0.95 36.178725 43.1937976 23.140893
+2          wt   -3.190972 0.7569065 0.95 -4.739020 -1.6429245 -4.215808
+3         cyl   -1.507795 0.4146883 0.95 -2.355928 -0.6596622 -3.635972
+  df_error            p
+1       29 3.043182e-20
+2       29 2.220200e-04
+3       29 1.064282e-03
+> standardize_names(mp)
+    Parameter Coefficient        SE   CI    CI_low    CI_high Statistic df
+1 (Intercept)   39.686261 1.7149840 0.95 36.178725 43.1937976 23.140893 29
+2          wt   -3.190972 0.7569065 0.95 -4.739020 -1.6429245 -4.215808 29
+3         cyl   -1.507795 0.4146883 0.95 -2.355928 -0.6596622 -3.635972 29
+             p
+1 3.043182e-20
+2 2.220200e-04
+3 1.064282e-03
+> standardize_names(mp, style = "broom")
+         term  estimate std.error conf.level  conf.low  conf.high statistic
+1 (Intercept) 39.686261 1.7149840       0.95 36.178725 43.1937976 23.140893
+2          wt -3.190972 0.7569065       0.95 -4.739020 -1.6429245 -4.215808
+3         cyl -1.507795 0.4146883       0.95 -2.355928 -0.6596622 -3.635972
+  df.error      p.value
+1       29 3.043182e-20
+2       29 2.220200e-04
+3       29 1.064282e-03
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+
+detaching 'package:parameters'
+
+> nameEx("text_remove_backticks")
+> ### * text_remove_backticks
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: text_remove_backticks
+> ### Title: Remove backticks from a string
+> ### Aliases: text_remove_backticks text_remove_backticks.data.frame
+> 
+> ### ** Examples
+> 
+> # example model
+> data(iris)
+> iris$`a m` <- iris$Species
+> iris$`Sepal Width` <- iris$Sepal.Width
+> model <- lm(`Sepal Width` ~ Petal.Length + `a m`, data = iris)
+> 
+> # remove backticks from string
+> names(coef(model))
+[1] "(Intercept)"     "Petal.Length"    "`a m`versicolor" "`a m`virginica" 
+> text_remove_backticks(names(coef(model)))
+[1] "(Intercept)"   "Petal.Length"  "a mversicolor" "a mvirginica" 
+> 
+> # remove backticks from character variable in a data frame
+> # column defaults to "Parameter".
+> d <- data.frame(
++   Parameter = names(coef(model)),
++   Estimate = unname(coef(model))
++ )
+> d
+        Parameter  Estimate
+1     (Intercept)  2.991869
+2    Petal.Length  0.298311
+3 `a m`versicolor -1.492674
+4  `a m`virginica -1.674092
+> text_remove_backticks(d)
+      Parameter  Estimate
+1   (Intercept)  2.991869
+2  Petal.Length  0.298311
+3 a mversicolor -1.492674
+4  a mvirginica -1.674092
+> 
+> 
+> 
+> cleanEx()
+> nameEx("trim_ws")
+> ### * trim_ws
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: trim_ws
+> ### Title: Small helper functions
+> ### Aliases: trim_ws trim_ws.data.frame n_unique n_unique.default
+> ###   safe_deparse safe_deparse_symbol has_single_value
+> 
+> ### ** Examples
+> 
+> trim_ws("  no space!  ")
+[1] "no space!"
+> n_unique(iris$Species)
+[1] 3
+> has_single_value(c(1, 1, 2))
+[1] FALSE
+> 
+> # safe_deparse_symbol() compared to deparse(substitute())
+> safe_deparse_symbol(as.name("test"))
+[1] "test"
+> deparse(substitute(as.name("test")))
+[1] "as.name(\"test\")"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("validate_argument")
+> ### * validate_argument
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: validate_argument
+> ### Title: Validate arguments against a given set of options
+> ### Aliases: validate_argument
+> 
+> ### ** Examples
+> 
+> foo <- function(test = "small") {
++   validate_argument(test, c("small", "medium", "large"))
++ }
+> foo("small")
+[1] "small"
+> # errors:
+> # foo("masll")
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  8.22 0.86 9.96 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

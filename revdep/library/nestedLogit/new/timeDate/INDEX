@@ -1,0 +1,69 @@
+.endpoints              Endpoints indexes
+DaylightSavingTime      Daylight Saving Time Rules
+Easter                  Date of Easter
+Sys.timeDate            System time as 'timeDate' object
+align                   Align a 'timeDate' object to regular date/time
+                        stamps
+blockStart              Equally sized 'timeDate' blocks
+c                       Concatenating 'timeDate' objects
+coerceToOther           Coercion from 'timeDate' to other classes
+currentYear             Current year
+dayOfWeek               Day of the week
+dayOfYear               Day of the year
+diff                    Lagged 'timeDate' differences
+difftimeDate            Difference of two 'timeDate' objects
+earlyCloseNYSE          Early closings of the New York Stock exchange
+finCenter               Financial Center of a timeDate object
+firstDay                First and last days
+format                  Format methods
+holiday                 Holiday dates
+holidayDate             Public and ecclesiastical holidays
+holidayLONDON           London Bank Holidays
+holidayNERC             NERC holiday calendar
+holidayNYSE             NYSE holiday calendar
+holidayTSX              TSX holiday calendar
+holidayZURICH           Zurich holiday calendar
+in_int                  Set operations on timeInterval objects
+is.na-methods           Methods for 'is.na'
+isBizday                Check if dates are business or holidays
+isRegular               Checks if a date/time vector is regular
+isWeekday               Weekdays and weekends
+julian                  Julian counts and calendar atoms
+kurtosis                Kurtosis
+length                  Length of a 'timeDate' object
+listFinCenter           List of financial centers
+listHolidays            List of holidays
+midnightStandard        Midnight standard
+myFinCenter             myFinCenter variable
+myUnits                 Frequency of date/time units
+nDay                    n-th n-day dates
+names-methods           The names of a 'timeDate' object
+onOrAfter               On-or-after/before dates
+pasteMat                Concatenate matrix columns, keeping NAs
+periods                 Rolling periods
+plot,timeDate-method    Plot methods
+rep                     Replicating 'timeDate' objects
+rev                     Reverse 'timeDate' objects
+round                   Rounding and truncating 'timeDate' objects
+rulesFinCenter          Financial centers DST rules
+sample                  Resampling 'timeDate' objects
+setRmetricsOptions      Rmetrics option settings
+show-methods            Show methods
+skewness                Skewness
+sort                    Sorting 'timeDate' objects
+specialHolidayGB        Dates of special one-off holidays in the UK
+start                   Terminal times and range
+subset                  Subsetting a 'timeDate' object
+summary.timeDate        Summary method
+timeCalendar            'timeDate' from calendar atoms
+timeCeiling             Ceiling (round up) for data-time objects
+timeDate                Create 'timeDate' objects
+timeDate-class          Class "timeDate"
+timeDate-package        Calendar and date utilities and tools
+timeDateMathOps         Mathematical operations with 'timeDate' objects
+timeInterval-class      Class 'timeInterval'
+timeInterval-methods    Create 'timeInterval' objects
+timeSequence            Regularly spaced 'timeDate' objects
+unique                  Remove duplicated dates from 'timeDate' objects
+whichFormat             Format recognition
+window                  Time windows

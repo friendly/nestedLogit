@@ -16,7 +16,7 @@ knitr::set_alias(w = "fig.width",
                  h = "fig.height",
                  cap = "fig.cap")
 
-# colorize text
+# colorize text: use inline as `r colorize(text, color)`
 colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
@@ -31,7 +31,7 @@ set.seed(47)
 .opts <- options(digits = 4)
 
 # packages to be cited here. Code at the end automatically updates packages.bib
-to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath")
+.to.cite <- c("nnet", "car", "broom", "ggplot2", "geomtextpath", "ggeffects")
 
 # removed: "equatiomatic" -- now in references.bib
 
@@ -42,6 +42,7 @@ library(car)            # Companion to Applied Regression
 library(nnet)           # Feed-Forward Neural Networks and Multinomial Log-Linear Models
 library(broom)          # Convert Statistical Objects into Tidy Tibbles
 library(dplyr)          # A Grammar of Data Manipulation
+library(effects)        # Effect Displays for Linear, Generalized Linear, and Other Models
 
 ## -----------------------------------------------------------------------------
 knitr::include_graphics("nested.jpg")
@@ -156,15 +157,31 @@ new <- expand.grid(hincome=seq(0, 45, length=4),
 wlf.new <- predict(wlf.nested, new)
 
 ## -----------------------------------------------------------------------------
-as.data.frame(wlf.new, newdata = new) 
+as.data.frame(wlf.new) 
 
 ## ----wlf-plot-----------------------------------------------------------------
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)                  # ggplot discrete colors
+plot(wlf.nested, "hincome",                  # left panel
+     other = list(children="absent"),
+     xlab = "Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested, "hincome",                  # right panel
+     other = list(children="present"),
+     xlab = "Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
+
+## ----wlf-effect-plot-1--------------------------------------------------------
+plot(predictorEffects(wlf.nested))
+
+## ----wlf-effect-plot-2--------------------------------------------------------
+plot(predictorEffects(wlf.nested),
+     axes=list(y=list(style="stacked")),
+     lines=list(col=scales::hue_pal()(3)))
+
+## ----wlf-ggeff----------------------------------------------------------------
+#  ggpredict(wlf.nested, c("hincome[all]", "children")) |> plot()
 
 ## ----alt-model----------------------------------------------------------------
 wlf.nested.alt <- nestedLogit(partic ~ hincome + children,
@@ -193,10 +210,15 @@ AIC(wlf.nested, wlf.nested.alt)
 
 ## ----wlf-alt-plot-------------------------------------------------------------
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
-plot(wlf.nested.alt, "hincome", list(children="absent"), # left panel
-     xlab="Husband's Income", legend.location="top")
-plot(wlf.nested.alt, "hincome", list(children="present"), # right panel
-     xlab="Husband's Income", legend=FALSE)
+col <- scales::hue_pal()(3)
+plot(wlf.nested.alt, "hincome",           # left panel
+     others = list(children="absent"), 
+     xlab="Husband's Income", 
+     legend.location="top", col = col)
+plot(wlf.nested.alt, "hincome",           # right panel
+     others = list(children="present"),
+     xlab="Husband's Income", 
+     legend=FALSE, col = col)
 par(op)
 
 ## -----------------------------------------------------------------------------
@@ -212,7 +234,7 @@ max(abs(fit2 - fit3))
 
 ## ----write-bib, echo = FALSE--------------------------------------------------
 # write a packages.bib file of the packages (.packages()) that have been used here
-pkgs <- unique(c(to.cite, .packages()))
+pkgs <- unique(c(.to.cite, .packages()))
 knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
 
 ## ---- include = FALSE---------------------------------------------------------

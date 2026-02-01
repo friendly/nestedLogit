@@ -1,2 +1,10 @@
 package,old,new,delta
-nestedLogit,0.3.0,0.3.2,*
+nestedLogit,0.3.2,0.3.4,*
+broom,NA,1.0.12,*
+carData,NA,3.0-6,*
+cpp11,NA,0.5.3,*
+insight,NA,1.4.5,*
+rbibutils,NA,2.4.1,*
+Rdpack,NA,2.6.5,*
+timeDate,NA,4052.112,*
+vctrs,NA,0.7.1,*
