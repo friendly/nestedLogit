@@ -1,5 +1,7 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file.
+     When version changes, install the package before re-kniting so the deve version is up-to-date
+-->
 
 <!-- badges: start -->
 
@@ -10,25 +12,27 @@ Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https:/
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-project.org/package=nestedLogit)
 [![Downloads](https://cranlogs.r-pkg.org/badges/nestedLogit?color=brightgreen)](https://www.r-pkg.org:443/pkg/nestedLogit)
-[![](https://img.shields.io/badge/pkgdown%20site-blue)](https://friendly.github.io/nestedLogit)
+[![Docs](https://img.shields.io/badge/pkgdown%20site-blue)](https://friendly.github.io/nestedLogit)
 
 <!-- badges: end -->
 
 # nestedLogit <img src="man/figures/logo.png" style="float:right; height:200px;" />
 
-**Version 0.3.4**
+<!-- **Version 0.3.4** -->
+
+**Version 0.3.4**; documentation built for `pkgdown` 2026-02-01
 
 The `nestedLogit` package provides functions for fitting *nested
-dichotomy* logistic regression models for a **polytomous** response (\>2
-categories), such as:
+dichotomy* logistic regression models for a **polytomous** response
+(with $m > 2$ categories), such as:
 
 - support for political party in Canada (PC, Liberal, NDP, Green, BQ),
 - preferred mode of transport (foot, bus, bike, train, plane),
 - womens’ working status (not working, part-time, full-time).
 
-The figure below shows two different ways that a four-category
+The figure below shows two different ways that a $m=4$-category
 polytomous response $Y = \{1, 2, 3, 4\}$ can be decomposed as three
-nested dichotomies among the levels.
+($m-1$) nested dichotomies among the levels.
 
 - In the case shown at the left of the figure, the response categories
   are divided first as $\{1, 2\}$ vs. $\{3, 4\}$. Then these compound
@@ -57,22 +61,42 @@ differences among the response categories as a set nested comparisons
 among subsets of the categories, the approach of nested dichotomies is
 simpler, because:
 
-- Nested dichotomies are statistically independent, and hence
+- Nested dichotomies are statistically independent, and hence:
+- the likelihood chi-square statistics for the sub-models are additive;
 - they provide an additive decomposition of tests for the overall
   polytomous response.
+- You can think of this as breaking up the overall question of “How do
+  the response categories differ?” into $m-1$ sub-questions that answer
+  the global one.
 
 When the dichotomies make sense substantively, this method can be a
 simpler alternative to the standard **multinomial logistic model** which
 compares response categories to a reference level. This choice is
-similar to using orthogonal contrasts among factor categories in an
+similar to using **orthogonal contrasts** among factor categories in an
 ANOVA, as opposed to using the default reference-level coding.
+
+### Ordered categories
+
+Note that when the response catgegories are **ordered**, as in education
+attained: “HS” \< “College” \< “BA” \< “MA” \< “Phd”, another attractive
+model is the **proportional odds** model (e.g., fit by `MASS::polr()`).
+This is a simpler model, but achieves that simplicity by making the
+additional assumption that the coefficients for the predictors are the
+same for all categories.
 
 ## Installation
 
-|                     |                                                   |
-|---------------------|---------------------------------------------------|
-| CRAN version        | `install.packages("nestedLogit")`                 |
-| Development version | `remotes::install_github("friendly/nestedLogit")` |
+You can install the current published version (0.3.2) from
+[CRAN](https://cran.r-project.org/package=nestedLogit), or the
+development version (0.3.4) from either
+[R-universe](https://friendly.r-universe.dev/nestedLogit) or
+[Github](https://github.com/friendly/nestedLogit)
+
+|  |  |
+|----|----|
+| CRAN version | `install.packages("nestedLogit")` |
+| R-universe | `install.packages('nestedLogit', repos = 'https://friendly.r-universe.dev')` |
+| Github | `remotes::install_github("friendly/nestedLogit")` |
 
 ## Package overview
 

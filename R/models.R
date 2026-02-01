@@ -4,6 +4,9 @@
 #' @aliases models models.nestedLogit
 #'
 #' @description
+#' Nested logit models represent an overall models for a polytomous response (>2 categories)
+#' by a set of binary logit models corresponding to nested dichotomies among the response
+#' categories.
 #' \code{models} is used to extract \code{"glm"} objects representing binary logit
 #' models from a \code{"nestedLogit"} object.
 #'
@@ -31,10 +34,20 @@
 #'                    dichotomies = comparisons,
 #'                    data=Womenlf)
 #'
-#'   # extract a binomial logit model
-#'   models(m, "work")
+#'   # extract both submodels, as a list
+#'   models(m, c("work", "full"))
+#'
+#'   # extract the binomial logit model for working vs. non-working
+#'   m_work <- models(m, "work")
+#'
 #'   # use that to plot residuals
-#'   plot(density(residuals(models(m, "work"))))
+#'   plot(density(residuals(m_work)))
+#'
+#'   # or plot that model -- gives the 'regression quartet' for a glm()
+#'   op <- par(mfrow = c(2,2))
+#'   plot(m_work)
+#'   par(op)
+
 #' @export
 #'
 models <- function(model, select, as.list=FALSE){

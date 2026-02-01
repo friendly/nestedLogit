@@ -1,6 +1,9 @@
-#' Extract glm() objects from a nestedLogit object
+#' Extract `glm()` objects from a `"nestedLogit"` object
 #'
-#' \code{models} is used to extract \code{"glm"} objects representing binary logit
+#' Nested logit models represent an overall models for a polytomous response (>2 categories)
+#' by a set of binary logit models corresponding to nested dichotomies among the response
+#' categories.
+#' \code{models} is used to extract the individual \code{"glm"} objects representing binary logit
 #' models from a \code{"nestedLogit"} object.
 #'
 #' @export
