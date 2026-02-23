@@ -1,3 +1,7 @@
+## nestedLogit 0.3.5
+
+* add gators data, food choice of aligators from Agresti
+
 ## nestedLogit 0.3.4
 
 This is a minor release, improving documentation 

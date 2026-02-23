@@ -1,0 +1,36 @@
+#' @name gators
+#' @docType data
+#'
+#' @title Alligator Food Choice
+#'
+#' @description Agresti (1996, p. 207) gives this data on 59 alligators sampled
+#' from a lake in Florida. It has the length of the alligator in meters and the
+#' primary food type found in the alligator's stomach. The food type was classified
+#' into three categories: "Fish", "Invertebrates", and "Other".
+#'
+#' Of interest is whether or not the length of an alligator is associated with the
+#' primary food type. Does knowing the length of an alligator give us some indication
+#' about its primary food type? If so, how is length associated with the choice of
+#' food type?
+#'
+#' @usage data("gators", package = "nestedLogit")
+#'
+#' @format A data frame with 59 rows and 2 columns.
+#' \describe{
+#'   \item{food}{Primary food type found in the alligator's stomach, a factor with
+#'   levels \code{"Other"}, \code{"Fish"}, and \code{"Invertebrates"}.}
+#'   \item{length}{Length of the alligator in meters, a numeric vector.}
+#'   }
+#'
+#' @source Agresti, A. (1996). \emph{An Introduction to Categorical Data Analysis}. Wiley.
+#'
+#' @references
+#' An example using this from \url{https://data.library.virginia.edu/getting-started-with-multinomial-logit-models/}.
+#'
+#' @seealso \code{\link{nestedLogit}}.
+#'
+#' @examples
+#' data(gators)
+#' table(gators$food)
+#' with(gators, tapply(length, food, mean))
+NULL

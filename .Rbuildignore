@@ -11,4 +11,6 @@ README.*
 Makefile
 old/
 revdep/
+data-raw/
+dev/
 
