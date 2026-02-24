@@ -1,6 +1,6 @@
 ---
 title: "Using ggeffects with nestedLogit models"
-author: "Michael Friendly and John Fox"
+author: "Michael Friendly"
 date: "`r Sys.Date()`"
 package: nestedLogit
 output:
@@ -8,6 +8,10 @@ output:
   fig_caption: yes
 bibliography: ["../references.bib", "../packages.bib"]
 csl: ../apa.csl
+vignette: >
+  %\VignetteIndexEntry{Using ggeffects with nestedLogit models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -36,7 +40,7 @@ Load the packages we'll use here:
 ```{r setup}
 library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
 library(ggeffects)      # Create Tidy Data Frames of Marginal Effects
-library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
 ```
 
 ## Overview
@@ -167,10 +171,11 @@ As you can see the main thing going on here is that larger alligators prefer fis
 For comparison, the basic `nestedLogit::plot()` method using default arguments gives a similar plot, with the three curves 
 overlaid in a single panel (it uses `graphics::matplot()`).
 
-```{r gators-plot}
+```{r gators-plot, echo=-1}
 #| out.width = "100%",
-#| fig.height = 4,
+#| fig.height = 5,
 #| fig.cap = "Predicted food choice probabilities for alligators by length."
+par(mar = c(4, 4, 1, 1) + 0.5)
 plot(gators.nested, x.var = "length", 
      legend.bty = "o")
 ```

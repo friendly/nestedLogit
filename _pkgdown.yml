@@ -7,3 +7,31 @@ template:
     heading_font: {google: "Roboto Slab"}
     code_font: {google: "JetBrains Mono"}
 
+reference:
+- title: Fitting nested logit models
+  desc: Core functions for specifying dichotomies and fitting nested logit models.
+  contents:
+  - nestedLogit
+  - nestedMethods
+  - models
+  - plot.nestedLogit
+  - as.data.frame.predictNestedLogit
+
+- title: Hypothesis tests
+  desc: Anova, linear hypothesis, and likelihood ratio tests for nested logit models.
+  contents:
+  - nestedHypotheses
+
+- title: Support for other packages
+  desc: Methods for broom and effects packages.
+  contents:
+  - broomMethods
+  - Effect.nestedLogit
+
+- title: Datasets
+  desc: Example datasets included in the package.
+  contents:
+  - GSS
+  - HealthInsurance
+  - gators
+

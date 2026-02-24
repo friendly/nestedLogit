@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,8 @@
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -37,9 +38,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="fitting-nested-logit-models">Fitting nested logit models<a class="anchor" aria-label="anchor" href="#fitting-nested-logit-models"></a></h2>
 
-
+      <div class="section-desc"><p>Core functions for specifying dichotomies and fitting nested logit models.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -47,55 +48,6 @@
 
 
       <dl><dt>
-
-          <code><a href="as.data.frame.predictNestedLogit.html">as.data.frame(<i>&lt;predictNestedLogit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Convert a Predicted Objects to a data.frame</dd>
-
-        <dt>
-
-          <code><a href="broomMethods.html">glance(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="broomMethods.html">tidy(<i>&lt;nestedLogit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Broom Related Methods</dd>
-
-        <dt>
-
-          <code><a href="Effect.nestedLogit.html">Effect(<i>&lt;nestedLogit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Effect Displays for Nested Logit Models</dd>
-
-        <dt>
-
-          <code><a href="GSS.html">GSS</a></code>
-
-        </dt>
-        <dd>Data From the U.S. General Social Survey 1972-2016</dd>
-
-        <dt>
-
-          <code><a href="HealthInsurance.html">HealthInsurance</a></code>
-
-        </dt>
-        <dd>Choice of Health Insurance Product</dd>
-
-        <dt>
-
-          <code><a href="models.html">models()</a></code>
-
-        </dt>
-        <dd>Extract Binary Logit Models from a <code>nestedLogit</code> Object</dd>
-
-        <dt>
-
-          <code><a href="nestedHypotheses.html">Anova(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">print(<i>&lt;Anova.nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">linearHypothesis(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">anova(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">print(<i>&lt;anova.nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">logLik(<i>&lt;nestedLogit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Hypothesis-Testing and Related Methods for <code>"nestedLogit"</code> Objects</dd>
-
-        <dt>
 
           <code><a href="nestedLogit.html">nestedLogit()</a></code> <code><a href="nestedLogit.html">logits()</a></code> <code><a href="nestedLogit.html">dichotomy()</a></code> <code><a href="nestedLogit.html">continuationLogits()</a></code>
 
@@ -111,12 +63,96 @@
 
         <dt>
 
+          <code><a href="models.html">models()</a></code>
+
+        </dt>
+        <dd>Extract Binary Logit Models from a <code>nestedLogit</code> Object</dd>
+
+        <dt>
+
           <code><a href="plot.nestedLogit.html">plot(<i>&lt;nestedLogit&gt;</i>)</a></code>
 
         </dt>
         <dd>Plotting Nested Logit Models</dd>
+
+        <dt>
+
+          <code><a href="as.data.frame.predictNestedLogit.html">as.data.frame(<i>&lt;predictNestedLogit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Convert a Predicted Objects to a data.frame</dd>
+      </dl></div><div class="section level2">
+      <h2 id="hypothesis-tests">Hypothesis tests<a class="anchor" aria-label="anchor" href="#hypothesis-tests"></a></h2>
+
+      <div class="section-desc"><p>Anova, linear hypothesis, and likelihood ratio tests for nested logit models.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="nestedHypotheses.html">Anova(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">print(<i>&lt;Anova.nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">linearHypothesis(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">anova(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">print(<i>&lt;anova.nestedLogit&gt;</i>)</a></code> <code><a href="nestedHypotheses.html">logLik(<i>&lt;nestedLogit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Hypothesis-Testing and Related Methods for <code>"nestedLogit"</code> Objects</dd>
+      </dl></div><div class="section level2">
+      <h2 id="support-for-other-packages">Support for other packages<a class="anchor" aria-label="anchor" href="#support-for-other-packages"></a></h2>
+
+      <div class="section-desc"><p>Methods for broom and effects packages.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="broomMethods.html">glance(<i>&lt;nestedLogit&gt;</i>)</a></code> <code><a href="broomMethods.html">tidy(<i>&lt;nestedLogit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Broom Related Methods</dd>
+
+        <dt>
+
+          <code><a href="Effect.nestedLogit.html">Effect(<i>&lt;nestedLogit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Effect Displays for Nested Logit Models</dd>
+      </dl></div><div class="section level2">
+      <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
+
+      <div class="section-desc"><p>Example datasets included in the package.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="GSS.html">GSS</a></code>
+
+        </dt>
+        <dd>Data From the U.S. General Social Survey 1972-2016</dd>
+
+        <dt>
+
+          <code><a href="HealthInsurance.html">HealthInsurance</a></code>
+
+        </dt>
+        <dd>Choice of Health Insurance Product</dd>
+
+        <dt>
+
+          <code><a href="gators.html">gators</a></code>
+
+        </dt>
+        <dd>Alligator Food Choice</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

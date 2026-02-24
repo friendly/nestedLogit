@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,8 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -38,7 +39,12 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.4" id="nestedlogit-034">nestedLogit 0.3.4<a class="anchor" aria-label="anchor" href="#nestedlogit-034"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.5" id="nestedlogit-035">nestedLogit 0.3.5<a class="anchor" aria-label="anchor" href="#nestedlogit-035"></a></h2>
+<ul><li>add gators data, food choice of aligators from Agresti</li>
+<li>added an article illustrating use of the <code>ggeffects</code> package for nestedLogit models</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.4" id="nestedlogit-034">nestedLogit 0.3.4<a class="anchor" aria-label="anchor" href="#nestedlogit-034"></a></h2><p class="text-muted">CRAN release: 2026-02-01</p>
 <p>This is a minor release, improving documentation</p>
 <ul><li>add link to <code>pkgdown</code> documentation in DESCRIPTION</li>
 <li>edit description of nested dichotomies in README to include examples and relations with other models</li>
@@ -68,7 +74,7 @@
 <ul><li>The <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> method now computes standard errors for probabilities and logits using the delta method. These can be obtained for either the response probabilities (and equivalent logits) or for the predicted log odds of the individual dichotomies.</li>
 <li>A <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for the result of <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> generates the corresponding confidence intervals.</li>
 <li>
-<code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using <code>ggplot()</code>.</li>
+<code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> methods for predicted values, either for the nested logit model or for the separate dichotomies converts these to a data frame in long format, handy for using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</li>
 <li>Added a <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code> method for predicted probabilities and logits</li>
 <li>The <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>"nestedLogit"</code> objects now plots confidence intervals for predicted probabilities.</li>
 <li>A new vignette, “standard-errors”, describes the mathematics behind the standard error calculations.</li>
@@ -92,7 +98,7 @@
 <ul><li>Now allow dichotomies to be specified by a nested (recursive) of binary splits of the categories [suggestion of Achim Zeileis]</li>
 <li>The model object is now of class “nestedLogit” for uniformity.</li>
 <li>A basic <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method now operational</li>
-<li>Added a <code>linearHypothesis()</code> method to give Wald tests for hypotheses about coefficients or their linear combinations.</li>
+<li>Added a <code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis()</a></code> method to give Wald tests for hypotheses about coefficients or their linear combinations.</li>
 <li>Expanded vignette to illustrate some other methods.</li>
 <li>Added a <code><a href="../reference/models.html">models()</a></code> generic and method to extract separate models from the <code>"nestedLogit"</code> object</li>
 <li>Added a <code>logLike()</code> method, and through it, gets <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>

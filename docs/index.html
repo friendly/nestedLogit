@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
+<li><a class="dropdown-item" href="articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
   </ul>
 </li>
@@ -71,7 +72,7 @@
 </h1>
 </div>
 <!-- **Version 0.3.4** -->
-<p><strong>Version 0.3.4</strong>; documentation built for <code>pkgdown</code> 2026-02-01</p>
+<p><strong>Version 0.3.5</strong>; documentation built for <code>pkgdown</code> 2026-02-24</p>
 <p>The <code>nestedLogit</code> package provides functions for fitting <em>nested dichotomy</em> logistic regression models for a <strong>polytomous</strong> response (with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m &gt; 2</annotation></semantics></math> categories), such as:</p>
 <ul>
 <li>support for political party in Canada (PC, Liberal, NDP, Green, BQ),</li>
@@ -84,7 +85,7 @@
 <li>Alternatively, as shown at the right of the figure, the response categories are divided progressively: first as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{1\}</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{2, 3, 4\}</annotation></semantics></math>; next as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>2</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{2\}</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{3, 4\}</annotation></semantics></math>; and and finally <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>3</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{3\}</annotation></semantics></math> vs. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>4</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{4\}</annotation></semantics></math>.</li>
 </ul>
 <div class="figure">
-<img src="articles/fig/nested.jpg" alt="**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies." width="80%"><p class="caption">
+<img src="reference/figures/nested.jpg" alt="**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies." width="80%"><p class="caption">
 <strong>Nested dichotomies</strong>: The boxes show two different ways a four-category response can be represented as three nested dichotomies.
 </p>
 </div>
@@ -104,7 +105,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the current published version (0.3.2) from <a href="https://cran.r-project.org/package=nestedLogit" class="external-link">CRAN</a>, or the development version (0.3.4) from either <a href="https://friendly.r-universe.dev/nestedLogit" class="external-link">R-universe</a> or <a href="https://github.com/friendly/nestedLogit" class="external-link">Github</a></p>
+<p>You can install the current published version (0.3.4) from <a href="https://cran.r-project.org/package=nestedLogit" class="external-link">CRAN</a>, or the development version (0.3.5) from either <a href="https://friendly.r-universe.dev/nestedLogit" class="external-link">R-universe</a> or <a href="https://github.com/friendly/nestedLogit" class="external-link">Github</a></p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -386,6 +387,7 @@
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 <li><a href="https://github.com/friendly/nestedLogit" class="external-link"><img src="https://img.shields.io/github/last-commit/friendly/nestedLogit" alt="Last Commit"></a></li>
 <li><a href="https://cran.r-project.org/package=nestedLogit" class="external-link"><img src="https://www.r-pkg.org/badges/version/nestedLogit" alt="CRAN status"></a></li>
+<li><a href="https://friendly.r-universe.dev" class="external-link"><img src="https://friendly.r-universe.dev/badges/nestedLogit" alt="R-Universe"></a></li>
 <li><a href="https://www.r-pkg.org:443/pkg/nestedLogit" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/nestedLogit?color=brightgreen" alt="Downloads"></a></li>
 <li><a href="https://friendly.github.io/nestedLogit"><img src="https://img.shields.io/badge/pkgdown%20site-blue" alt="Docs"></a></li>
 </ul>

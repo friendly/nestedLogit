@@ -11,6 +11,7 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 Commit](https://img.shields.io/github/last-commit/friendly/nestedLogit)](https://github.com/friendly/nestedLogit)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-project.org/package=nestedLogit)
+[![R-Universe](https://friendly.r-universe.dev/badges/nestedLogit)](https://friendly.r-universe.dev)
 [![Downloads](https://cranlogs.r-pkg.org/badges/nestedLogit?color=brightgreen)](https://www.r-pkg.org:443/pkg/nestedLogit)
 [![Docs](https://img.shields.io/badge/pkgdown%20site-blue)](https://friendly.github.io/nestedLogit)
 
@@ -20,7 +21,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 <!-- **Version 0.3.4** -->
 
-**Version 0.3.4**; documentation built for `pkgdown` 2026-02-01
+**Version 0.3.5**; documentation built for `pkgdown` 2026-02-24
 
 The `nestedLogit` package provides functions for fitting *nested
 dichotomy* logistic regression models for a **polytomous** response
@@ -45,7 +46,7 @@ polytomous response $Y = \{1, 2, 3, 4\}$ can be decomposed as three
 
 <div class="figure">
 
-<img src="vignettes/fig/nested.jpg" alt="**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies." width="80%" />
+<img src="man/figures/nested.jpg" alt="**Nested dichotomies**: The boxes show two different ways a four-category response can be represented as three nested dichotomies." width="80%" />
 <p class="caption">
 
 **Nested dichotomies**: The boxes show two different ways a
@@ -86,9 +87,9 @@ same for all categories.
 
 ## Installation
 
-You can install the current published version (0.3.2) from
+You can install the current published version (0.3.4) from
 [CRAN](https://cran.r-project.org/package=nestedLogit), or the
-development version (0.3.4) from either
+development version (0.3.5) from either
 [R-universe](https://friendly.r-universe.dev/nestedLogit) or
 [Github](https://github.com/friendly/nestedLogit)
 
