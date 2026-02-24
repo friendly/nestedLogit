@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:scales.r-lib.org)",
+      "WebFetch(domain:ggplot2.tidyverse.org)",
+      "WebFetch(domain:ggplot2-book.org)",
+      "WebFetch(domain:stat.ethz.ch)"
+    ]
+  }
+}

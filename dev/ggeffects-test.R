@@ -1,7 +1,8 @@
 # test ggeffects
 
-install.packages("ggeffects", repos = "https://strengejacke.r-universe.dev")
-install.packages("insight", repos = "https://easystats.r-universe.dev")
+# install.packages("ggeffects", repos = "https://strengejacke.r-universe.dev")
+# install.packages("insight", repos = "https://easystats.r-universe.dev")
+#
 library(ggeffects)
 library(insight)
 packageVersion("ggeffects")

@@ -32,5 +32,19 @@
 #' @examples
 #' data(gators)
 #' table(gators$food)
+#' # average length of gators by food
 #' with(gators, tapply(length, food, mean))
+#'
+#' # create dichotomies
+#' dichot <- logits(d1=dichotomy("Other", c("Fish", "Invertebrates")),
+#'                  d2=dichotomy("Fish", "Invertebrates"))
+#'
+#' gators.nested <- nestedLogit(food ~ length,
+#'                             dichotomies = dichot,
+#'                             data = gators)
+#' car::Anova(gators.nested)
+#'
+#' # use the plot method
+#' plot(gators.nested, x.var = "length")
+
 NULL

@@ -19,10 +19,14 @@ wlf.pred <- predict_response(wlf.nested,
 
 # 3. Plot the results
 # This automatically handles facets or colors for the different response levels
-theme_ggeffects(base_size = 14)
+# TODO: How to plot the logits or probabilities for the dichotomies? This gives plots of the probabilities
+#       of the separate response categories.
+
 plot(wlf.pred,
      line_size = 2) +
-  labs(title = "Predicted Probabilities by Husband's Income",
+  labs(title = "Predicted Probabilities of Work by Husband's Income",
        y = "Probability",
-       x = "Husband's Income")
+       x = "Husband's Income") +
+  theme_ggeffects(base_size = 16) +
+  theme(legend.position = "top")
 
