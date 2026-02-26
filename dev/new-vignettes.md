@@ -15,4 +15,12 @@ or log odds for the two dichotomies, `work`, `full` against husband's income, wi
 * **parameters**: Uses it to process and format model parameters and coefficients.
 * **performance**: Uses it for calculating various model performance indices and quality 
 
-See `dev/easystats-test.R`
+See `dev/easystats-test.R`: 
+
+* Attempts using `estimate_expectation()` don't work. What function will let me illustrate plots
+of predicted values on the probability and logit scales?
+
+* What other features of these packages can be illustrated beyond what is available with the nestedLogit package?
+
+* Can we make diagnostic plots to assess model fit or influential observations with these functions?
+

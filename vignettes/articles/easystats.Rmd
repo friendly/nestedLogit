@@ -1,0 +1,305 @@
+---
+title: "Using easystats with nestedLogit models"
+author: "Michael Friendly"
+date: "`r Sys.Date()`"
+package: nestedLogit
+output:
+  rmarkdown::html_vignette:
+  fig_caption: yes
+bibliography: ["../references.bib", "../packages.bib"]
+csl: ../apa.csl
+vignette: >
+  %\VignetteIndexEntry{Using easystats with nestedLogit models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.height = 6,
+  fig.width = 7,
+  fig.path = "fig/",
+  dev = "png",
+  comment = "#>"
+)
+
+# save some typing
+knitr::set_alias(w = "fig.width",
+                 h = "fig.height",
+                 cap = "fig.cap")
+
+set.seed(47)
+.opts <- options(digits = 4)
+```
+
+Load the packages we'll use here:
+```{r setup}
+library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
+library(insight)        # Easy Access to Model Information
+library(parameters)     # Processing of Model Parameters
+library(performance)    # Assessment of Regression Models Performance
+library(see)            # Visualisation Toolbox for easystats
+library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
+```
+
+## Overview
+
+The [easystats](https://easystats.github.io/easystats/) project [@easystats2022] is a collection
+of R packages that provides a unified, consistent framework for working with statistical models.
+Three of its core packages offer direct support for `"nestedLogit"` objects:
+
+- **insight** [@R-insight]: Extracts model information --- formulas, data, parameters, variance-covariance
+  matrices --- through a unified interface.
+- **parameters** [@R-parameters]: Computes and formats model parameter tables with confidence intervals,
+  standardized coefficients, and bootstrap estimates.
+- **performance** [@R-performance]: Calculates model performance indices such as R-squared measures
+  and fit statistics.
+
+These packages work by iterating over the individual binary logit sub-models that
+comprise a nested dichotomy model, combining the results into tidy tables with a
+`Response` column identifying each dichotomy. This means you get a unified view
+of all dichotomies without having to process them individually.
+
+Additionally, the `see` package provides `plot()` methods for the output of
+`parameters` and `performance`, enabling visual summaries like forest plots.
+
+## Women's labor force participation
+
+We use the standard `Womenlf` example. The response `partic` has three categories ---
+not working, working part-time, and working full-time --- modeled as nested dichotomies
+against husband's income and presence of young children.
+
+```{r wlf-model}
+data(Womenlf, package = "carData")
+comparisons <- logits(work = dichotomy("not.work", c("parttime", "fulltime")),
+                      full = dichotomy("parttime", "fulltime"))
+
+wlf.nested <- nestedLogit(partic ~ hincome + children,
+                          dichotomies = comparisons,
+                          data = Womenlf)
+```
+
+## Model information with `insight`
+
+The `insight` package provides accessor functions that work uniformly across many
+model types. For `nestedLogit` models, these extract information from the overall
+model and, where applicable, from each dichotomy sub-model.
+
+### Model type and formula
+
+`model_info()` retrieves information about a given model. The model family (binomial) and link function (logit)
+are recorded, as well as various `is_*` properties.
+
+```{r insight-model-info}
+info <- insight::model_info(wlf.nested)
+
+names(info)
+
+info$is_binomial
+info$family
+info$link_function
+```
+
+`find_formula()` returns the model formula. With `dichotomies = TRUE`, it returns
+the formula for each sub-model:
+
+```{r insight-formula}
+insight::find_formula(wlf.nested)
+insight::find_formula(wlf.nested, dichotomies = TRUE)
+```
+
+### Parameters and data
+
+`find_parameters()` lists all parameter names across the dichotomies:
+
+```{r insight-params}
+insight::find_parameters(wlf.nested)
+```
+
+`get_varcov()` returns the variance-covariance matrix for each sub-model.
+The `component` argument lets you select a specific dichotomy:
+
+```{r insight-vcov}
+insight::get_varcov(wlf.nested)
+```
+
+
+## Model parameters with `parameters`
+
+### Basic parameter table
+
+The `model_parameters()` function produces a formatted summary of all coefficients
+across the dichotomies. The printed output includes estimates, standard errors, confidence
+intervals, and test statistics. The data structure contains a `Response` column identifying which dichotomy
+each row belongs to:
+
+```{r params-basic}
+mp <- model_parameters(wlf.nested)
+mp
+```
+
+### Forest plot of coefficients
+
+The `see` package provides a `plot()` method for parameter tables, producing a
+forest plot of the coefficient estimates with confidence intervals.
+This gives a visual comparison of the effects across the two dichotomies.
+
+There is a small incompatibility to work around: `see::plot.parameters_model()`
+internally passes `Response` column values to `gsub()` as regular expression patterns.
+The curly-brace notation that `nestedLogit` uses to label multi-category dichotomy
+sides (e.g., `{parttime} vs. {fulltime}`) contains `{` and `}` characters that are
+invalid regex quantifiers, causing an error. Stripping the braces before plotting
+resolves this:
+
+```{r params-forest, out.width="100%", fig.height=5, fig.cap="Forest plot of model coefficients from `model_parameters()`."}
+mp_plot <- mp
+mp_plot$Response <- gsub("[{}]", "", mp_plot$Response)
+plot(mp_plot)
+```
+
+Note that the two predictors are on very different scales: `hincome` is a continuous
+variable (measured in thousands of dollars) while `children` is binary (present/absent).
+This makes direct visual comparison of their coefficient sizes within the same panel
+potentially misleading. The `model_parameters()` function offers a `standardize = "refit"`
+argument that re-fits the model on z-scored predictors, which would put all coefficients
+on a common standard-deviation scale. Unfortunately, this option does not currently
+produce a visibly different result for `nestedLogit` objects, suggesting that
+standardization is not yet fully propagated through the nested structure. Until this
+is resolved, the `compare_parameters()` approach in the next section --- which works
+directly on the individual `glm` sub-models --- is more reliable for visual comparison.
+
+### Comparing dichotomies
+
+`compare_parameters()` places the estimates from different sub-models side by side,
+making it easy to see how the same predictors operate differently across the
+nested dichotomies. Here we extract the individual `glm` sub-models using
+`models()` and compare them:
+
+```{r params-compare}
+cp <- compare_parameters(models(wlf.nested, "work"),
+                         models(wlf.nested, "full"),
+                         column_names = c("Work", "Full"))
+cp
+```
+
+```{r params-compare-plot, out.width="100%", fig.height=5, fig.cap="Comparison of coefficients across the two dichotomy sub-models."}
+plot(cp)
+```
+
+### Bootstrap confidence intervals
+
+`model_parameters()` supports bootstrap-based inference. This re-fits the model
+on resampled data to produce non-parametric bootstrap confidence intervals,
+which can be more robust than the default Wald intervals for smaller samples:
+
+```{r params-bootstrap}
+model_parameters(wlf.nested, bootstrap = TRUE, iterations = 500)
+```
+
+
+## Model performance with `performance`
+
+### Performance summary
+
+`model_performance()` provides a one-line summary of fit statistics for each
+dichotomy sub-model, including AIC, BIC, Tjur's R-squared, RMSE, and
+log-likelihood:
+
+```{r perf-summary}
+model_performance(wlf.nested)
+```
+
+### R-squared measures
+
+Several R-squared variants are available for logistic regression models.
+Tjur's R-squared (also known as the coefficient of discrimination) is the
+default for binomial models:
+
+```{r perf-r2}
+r2(wlf.nested)
+```
+
+Other R-squared measures provide alternative perspectives on model fit:
+
+```{r perf-r2-other}
+r2_nagelkerke(wlf.nested)
+r2_coxsnell(wlf.nested)
+```
+
+
+## Diagnostics for individual dichotomies
+
+While the easystats functions above work on the `nestedLogit` object as a whole,
+some diagnostic tools (such as `check_model()`) require a standard `glm` object.
+The `models()` function extracts individual dichotomy sub-models, which are
+ordinary `glm` objects that work with the full range of easystats diagnostic tools.
+
+### Extracting sub-models
+
+```{r submodel-extract}
+wlf_work <- models(wlf.nested, "work")  # working vs. not working
+wlf_full <- models(wlf.nested, "full")  # full-time vs. part-time
+
+class(wlf_work)
+```
+
+### Visual diagnostics with `check_model()`
+
+`performance::check_model()` produces a comprehensive set of diagnostic plots
+for a `glm` object, including checks for influential observations, collinearity,
+and the distribution of residuals.
+
+```{r diag-work, out.width="100%", fig.height=8, fig.cap="Diagnostic plots for the work vs. not-work dichotomy."}
+check_model(wlf_work)
+```
+
+```{r diag-full, out.width="100%", fig.height=8, fig.cap="Diagnostic plots for the full-time vs. part-time dichotomy."}
+check_model(wlf_full)
+```
+
+### Binned residual plot
+
+For binomial models, `performance::binned_residuals()` provides a binned
+residual plot, a more appropriate residual diagnostic than raw residuals.
+Points falling outside the error bounds suggest potential model misfit:
+
+```{r diag-binned-work, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the work dichotomy."}
+check_work <- binned_residuals(wlf_work)
+plot(check_work)
+```
+
+```{r diag-binned-full, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the full-time dichotomy."}
+check_full <- binned_residuals(wlf_full)
+plot(check_full)
+```
+
+
+## Limitations
+
+The easystats ecosystem provides substantial support for `nestedLogit` models
+through `insight`, `parameters`, and `performance`. However, some packages
+in the ecosystem do not currently support `nestedLogit`:
+
+- **modelbased**: Functions like `estimate_expectation()` and `estimate_prediction()`
+  do not work with `nestedLogit` objects. For predicted probabilities and marginal
+  effects, use the `ggeffects` package instead (see
+  `vignette("ggeffects", package = "nestedLogit")`).
+
+- **Diagnostic plots**: `check_model()` does not work directly on `nestedLogit`
+  objects, but as shown above, it can be applied to the individual `glm`
+  sub-models extracted with `models()`.
+
+For plotting predicted probabilities of the response categories, see
+`vignette("ggeffects", package = "nestedLogit")`. For fully customized
+`ggplot2` plots including the dichotomy-level predictions, see
+`vignette("plotting-ggplot", package = "nestedLogit")`.
+
+## References
+
+```{r, include = FALSE}
+options(.opts)
+```
