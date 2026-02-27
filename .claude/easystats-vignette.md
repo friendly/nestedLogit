@@ -27,11 +27,17 @@ unstandardized one. Likely cause: no `standardize_parameters()` method for
 `nestedLogit` objects. A draft GitHub issue is at `dev/parameters-issue.md`.
 **Needs review before filing.**
 
-### 3. `binned_residuals()` — NOT YET TESTED
+### 3. `binned_residuals()` — WORKAROUND IN PLACE, needs test run
 
-The two `diag-binned-*` chunks were uncommented this session but not yet
-run. Still need to verify whether `binned_residuals(wlf_work)` and
-`binned_residuals(wlf_full)` work and produce good plots.
+Root cause identified: `nestedLogit` stores sub-model `call$data` as the
+original dataset name (e.g. `Womenlf`), but the binary response column was
+only ever in a temporary local data frame during fitting. `insight::get_data()`
+retrieves `Womenlf` which lacks the binary response column, causing
+"undefined columns selected".
+
+Workaround: reconstruct proper `glm` objects with binary response in the data.
+The `diag-binned-*` chunks now do this explicitly. Still need a test knit to
+confirm the plots render correctly.
 
 ## Chunks that are confirmed working
 

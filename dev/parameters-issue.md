@@ -1,16 +1,14 @@
-# Draft GitHub issue for parameters/see
-
-**Target repo**: https://github.com/easystats/parameters (or https://github.com/easystats/see)
+# Draft GitHub issues for easystats packages
 
 ---
 
-## Title
+## Issue A — `see` / `parameters`
 
-`standardize = "refit"` in `model_parameters()` has no visible effect on forest plots for multi-response models; also, `plot()` fails on dichotomy names containing `{}`
+**Target repo**: https://github.com/easystats/see (Issue 1) and https://github.com/easystats/parameters (Issue 2)
 
----
+**Title**: `plot()` fails on dichotomy names containing `{}`; `standardize = "refit"` has no visible effect
 
-## Description
+### Description
 
 When calling `model_parameters()` on a `nestedLogit` model and then plotting with
 `see::plot()`, two issues arise:
@@ -76,6 +74,74 @@ continuous scale, vs. `children`, which is binary).
 **Likely cause**: `standardize_parameters()` may not have a method for `nestedLogit`
 objects, so the `standardize` argument in `plot.parameters_model()` either silently
 fails or is not passed through correctly.
+
+---
+
+## Issue B — `performance` / `insight`
+
+**Target repo**: https://github.com/easystats/performance
+
+**Title**: `binned_residuals()` errors on `glm` sub-models extracted from `nestedLogit` — "undefined columns selected"
+
+### Description
+
+Calling `binned_residuals()` on a `glm` sub-model extracted from a `nestedLogit`
+object via `models()` errors with:
+
+```
+Error in `[.data.frame`(model_data, , rn, drop = FALSE) :
+  undefined columns selected
+```
+
+### Root cause
+
+`nestedLogit` builds each binary sub-model by creating a temporary response column
+(`..y`) in a local copy of the data, fitting the `glm`, then **renaming** the
+formula's response to the dichotomy name (e.g. `work`) and resetting `call$data`
+to the name of the original dataset (e.g. `Womenlf`). The binary response column
+is never written back to the original data frame.
+
+When `binned_residuals()` calls `insight::get_data(model)`, it evaluates
+`call$data` and retrieves the original dataset — which does not contain the
+binary response column. `insight::find_response(model)` then returns `"work"`,
+and selecting `model_data[, "work"]` fails because the column does not exist.
+
+### Reproducible example
+
+```r
+library(nestedLogit)
+library(performance)
+
+data(Womenlf, package = "carData")
+wlf.nested <- nestedLogit(partic ~ hincome + children,
+                          dichotomies = logits(
+                            work = dichotomy("not.work", c("parttime", "fulltime")),
+                            full = dichotomy("parttime", "fulltime")),
+                          data = Womenlf)
+
+wlf_work <- models(wlf.nested, "work")   # class "glm"
+binned_residuals(wlf_work)               # Error: undefined columns selected
+```
+
+### Workaround (user-side)
+
+Reconstruct a proper `glm` with the binary response explicitly in the data:
+
+```r
+df_work <- within(Womenlf, work <- as.integer(partic != "not.work"))
+glm_work2 <- glm(work ~ hincome + children, data = df_work, family = binomial)
+plot(binned_residuals(glm_work2))
+```
+
+### Possible fix
+
+In `insight::get_data()`, fall back to `model.frame(model)` when the response
+column named by `find_response()` is absent from the data retrieved via
+`call$data`. The stored model frame (`model$model`) contains the correct binary
+response under its original name (`..y`), though that name also won't match
+`find_response()`. A more robust fix would require `nestedLogit` to store the
+binary response columns in the data, or for `insight` to add a
+`get_data.nestedLogit_glm` method.
 
 ---
 

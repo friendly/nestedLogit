@@ -36,16 +36,6 @@ set.seed(47)
 .opts <- options(digits = 4)
 ```
 
-Load the packages we'll use here:
-```{r setup}
-library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
-library(insight)        # Easy Access to Model Information
-library(parameters)     # Processing of Model Parameters
-library(performance)    # Assessment of Regression Models Performance
-library(see)            # Visualisation Toolbox for easystats
-library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
-```
-
 ## Overview
 
 The [easystats](https://easystats.github.io/easystats/) project [@easystats2022] is a collection
@@ -66,6 +56,19 @@ of all dichotomies without having to process them individually.
 
 Additionally, the `see` package provides `plot()` methods for the output of
 `parameters` and `performance`, enabling visual summaries like forest plots.
+
+This vignette describes some ways to enhance what is available in the [nestedLogit](https://friendly.github.io/nestedLogit/)
+package using [easystats](https://easystats.github.io/easystats/) capabilities.
+
+Load the packages we'll use here:
+```{r setup}
+library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
+library(insight)        # Easy Access to Model Information
+library(parameters)     # Processing of Model Parameters
+library(performance)    # Assessment of Regression Models Performance
+library(see)            # Visualisation Toolbox for easystats
+library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
+```
 
 ## Women's labor force participation
 
@@ -98,7 +101,10 @@ are recorded, as well as various `is_*` properties.
 info <- insight::model_info(wlf.nested)
 
 names(info)
+```
 
+The relevant values here are:
+```{r insight-model-info2}
 info$is_binomial
 info$family
 info$link_function
@@ -142,18 +148,19 @@ mp <- model_parameters(wlf.nested)
 mp
 ```
 
-### Forest plot of coefficients
+### Plot of coefficients
 
 The `see` package provides a `plot()` method for parameter tables, producing a
 forest plot of the coefficient estimates with confidence intervals.
-This gives a visual comparison of the effects across the two dichotomies.
+This is intended to give a visual comparison of the effects across the two dichotomies.
 
-There is a small incompatibility to work around: `see::plot.parameters_model()`
-internally passes `Response` column values to `gsub()` as regular expression patterns.
-The curly-brace notation that `nestedLogit` uses to label multi-category dichotomy
+There is a small incompatibility to work around: 
+
+* `see::plot.parameters_model()` internally passes `Response` column values to `gsub()` as regular expression patterns.
+* The curly-brace notation that `nestedLogit` uses to label multi-category dichotomy
 sides (e.g., `{parttime} vs. {fulltime}`) contains `{` and `}` characters that are
-invalid regex quantifiers, causing an error. Stripping the braces before plotting
-resolves this:
+invalid regex quantifiers, causing an error. 
+* Stripping the braces before plotting resolves this:
 
 ```{r params-forest, out.width="100%", fig.height=5, fig.cap="Forest plot of model coefficients from `model_parameters()`."}
 mp_plot <- mp
@@ -166,7 +173,9 @@ variable (measured in thousands of dollars) while `children` is binary (present/
 This makes direct visual comparison of their coefficient sizes within the same panel
 potentially misleading. The `model_parameters()` function offers a `standardize = "refit"`
 argument that re-fits the model on z-scored predictors, which would put all coefficients
-on a common standard-deviation scale. Unfortunately, this option does not currently
+on a common standard-deviation scale. 
+
+Unfortunately, this option does not currently
 produce a visibly different result for `nestedLogit` objects, suggesting that
 standardization is not yet fully propagated through the nested structure. Until this
 is resolved, the `compare_parameters()` approach in the next section --- which works
@@ -185,6 +194,9 @@ cp <- compare_parameters(models(wlf.nested, "work"),
                          column_names = c("Work", "Full"))
 cp
 ```
+
+There is a plot method for the result, which plots the coefficients for the two sup-models
+in a single plot.
 
 ```{r params-compare-plot, out.width="100%", fig.height=5, fig.cap="Comparison of coefficients across the two dichotomy sub-models."}
 plot(cp)
@@ -251,7 +263,15 @@ class(wlf_work)
 
 `performance::check_model()` produces a comprehensive set of diagnostic plots
 for a `glm` object, including checks for influential observations, collinearity,
-and the distribution of residuals.
+and the distribution of residuals. 
+
+<!--
+Here, I only show the influence plot 
+(poorly named: `check = "outliers"`).
+
+I get error when I only try to plot the outliers/influence plot
+check_model(wlf_work, check = "outliers", residual_type = "normal")
+-->
 
 ```{r diag-work, out.width="100%", fig.height=8, fig.cap="Diagnostic plots for the work vs. not-work dichotomy."}
 check_model(wlf_work)
@@ -265,21 +285,34 @@ check_model(wlf_full)
 
 For binomial models, `performance::binned_residuals()` provides a binned
 residual plot, a more appropriate residual diagnostic than raw residuals.
-Points falling outside the error bounds suggest potential model misfit:
+Points falling outside the error bounds suggest potential model misfit.
 
-<!-- these give errors:
-! Failed to render vignettes/articles/easystats.Rmd.
-✖ Quitting from easystats.Rmd:270-273 [diag-binned-work]
--->
+`binned_residuals()` requires the binary response variable to be present as a
+named column in the model's data. The sub-models returned by `models()` have
+their `call$data` reset to the original dataset (`Womenlf`), which does not
+contain the binary response columns --- those were created internally as a
+temporary variable during model fitting and were never added back to the
+original data. As a result, `insight::get_data()` cannot find the response
+column and errors.
 
-```{r diag-binned-work, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the work dichotomy."}
-# check_work <- binned_residuals(wlf_work)
-# plot(check_work)
+The workaround is to construct small data frames with the binary response
+defined explicitly, matching the logic used by `nestedLogit` internally:
+
+```{r diag-binned-work, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the work vs. not-work dichotomy."}
+# work dichotomy: all cases, not.work = 0, parttime or fulltime = 1
+df_work <- within(Womenlf, work <- as.integer(partic != "not.work"))
+glm_work2 <- glm(work ~ hincome + children, data = df_work, family = binomial)
+check_work <- binned_residuals(glm_work2)
+plot(check_work)
 ```
 
-```{r diag-binned-full, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the full-time dichotomy."}
-# check_full <- binned_residuals(wlf_full)
-# plot(check_full)
+```{r diag-binned-full, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the full-time vs. part-time dichotomy."}
+# full dichotomy: workers only, parttime = 0, fulltime = 1
+df_full <- subset(Womenlf, partic != "not.work")
+df_full$full <- as.integer(df_full$partic == "fulltime")
+glm_full2 <- glm(full ~ hincome + children, data = df_full, family = binomial)
+check_full <- binned_residuals(glm_full2)
+plot(check_full)
 ```
 
 

@@ -1,5 +1,4 @@
 # Using ggeffects,
-#    easystats:: insight, parameters, performance
 
 library(nestedLogit)
 library(ggeffects)
@@ -30,3 +29,12 @@ plot(wlf.pred,
   theme_ggeffects(base_size = 16) +
   theme(legend.position = "top")
 
+
+# Use nestedLogit predict methods
+wlf.pred.nested <- predict(wlf.nested, model = "nested")
+str(wlf.pred.nested)
+
+wlf.pred.dichot <- predict(wlf.nested, model = "dichotomies")
+str(wlf.pred.dichot)
+
+# Can we use this with `ggeffects`?
