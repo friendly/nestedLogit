@@ -267,14 +267,19 @@ For binomial models, `performance::binned_residuals()` provides a binned
 residual plot, a more appropriate residual diagnostic than raw residuals.
 Points falling outside the error bounds suggest potential model misfit:
 
+<!-- these give errors:
+! Failed to render vignettes/articles/easystats.Rmd.
+✖ Quitting from easystats.Rmd:270-273 [diag-binned-work]
+-->
+
 ```{r diag-binned-work, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the work dichotomy."}
-check_work <- binned_residuals(wlf_work)
-plot(check_work)
+# check_work <- binned_residuals(wlf_work)
+# plot(check_work)
 ```
 
 ```{r diag-binned-full, out.width="100%", fig.height=5, fig.cap="Binned residual plot for the full-time dichotomy."}
-check_full <- binned_residuals(wlf_full)
-plot(check_full)
+# check_full <- binned_residuals(wlf_full)
+# plot(check_full)
 ```
 
 

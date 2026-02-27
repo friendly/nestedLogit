@@ -45,7 +45,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+<li><a class="dropdown-item" href="articles/easystats.html">Using easystats with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
     <li><a class="dropdown-item" href="articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
   </ul>
@@ -150,9 +151,9 @@
 <span><span class="co">#&gt; AB.CD: {A, B} vs. {C, D}</span></span>
 <span><span class="co">#&gt; A.B: {A} vs. {B}</span></span>
 <span><span class="co">#&gt; C.D: {C} vs. {D}</span></span></code></pre></div>
-<p>These dichotomies are effectively a tree structure of lists, which can be displayed simply using <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code>.</p>
+<p>These dichotomies are effectively a tree structure of lists, which can be displayed simply using <code>lobstr::tree()</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span><span class="va">ABCD</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu">tree</span><span class="op">(</span><span class="va">ABCD</span><span class="op">)</span></span>
 <span><span class="co">#&gt; S3&lt;dichotomies&gt;</span></span>
 <span><span class="co">#&gt; ├─AB.CD: &lt;list&gt;</span></span>
 <span><span class="co">#&gt; │ ├─&lt;chr [2]&gt;"A", "B"</span></span>
@@ -172,7 +173,7 @@
 <span>    private <span class="op">=</span> <span class="st">"car"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span><span class="va">transport</span><span class="op">)</span></span>
+<span><span class="fu">lobstr</span><span class="fu">::</span><span class="fu">tree</span><span class="op">(</span><span class="va">transport</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;list&gt;</span></span>
 <span><span class="co">#&gt; ├─air: "plane"</span></span>
 <span><span class="co">#&gt; └─ground: &lt;list&gt;</span></span>
@@ -261,9 +262,9 @@
 <span><span class="co">#&gt; (Intercept)      1.33582979  3.4777735</span></span>
 <span><span class="co">#&gt; hincome         -0.04230843 -0.1072679</span></span>
 <span><span class="co">#&gt; childrenpresent -1.57564843 -2.6514557</span></span></code></pre></div>
-<p>The <code>"nestedLogit"</code> object contains the components of the fitted model. The structure can be shown nicely using <code><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">lobstr::tree()</a></code>:</p>
+<p>The <code>"nestedLogit"</code> object contains the components of the fitted model. The structure can be shown nicely using <code>lobstr::tree()</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">m</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span>max_depth<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">m</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu">tree</span><span class="op">(</span>max_depth<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; S3&lt;nestedLogit&gt;</span></span>
 <span><span class="co">#&gt; ├─models: &lt;list&gt;...</span></span>
 <span><span class="co">#&gt; ├─formula: S3&lt;formula&gt; partic ~ hincome + children...</span></span>
@@ -275,7 +276,7 @@
 <span><span class="co">#&gt; └─contrasts.print: "NULL"</span></span></code></pre></div>
 <p>The separate models for the <code>work</code> and <code>full</code> dichotomies can be extracted via <code><a href="reference/models.html">models()</a></code>. These are the binomial <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> models.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/models.html">models</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu"><a href="https://lobstr.r-lib.org/reference/tree.html" class="external-link">tree</a></span><span class="op">(</span>max_depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/models.html">models</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">lobstr</span><span class="fu">::</span><span class="fu">tree</span><span class="op">(</span>max_depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;list&gt;</span></span>
 <span><span class="co">#&gt; ├─work: S3&lt;glm/lm&gt;...</span></span>
 <span><span class="co">#&gt; └─full: S3&lt;glm/lm&gt;...</span></span></code></pre></div>

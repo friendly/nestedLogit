@@ -2,11 +2,12 @@ pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  articles/easystats: easystats.html
   articles/ggeffects: ggeffects.html
   nestedLogit: nestedLogit.html
   plotting-ggplot: plotting-ggplot.html
   standard-errors: standard-errors.html
-last_built: 2026-02-24T18:05Z
+last_built: 2026-02-27T14:53Z
 urls:
   reference: https://friendly.github.io/nestedLogit/reference
   article: https://friendly.github.io/nestedLogit/articles
