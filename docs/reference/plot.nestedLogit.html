@@ -80,6 +80,9 @@ By default, a 95% pointwise confidence envelope is added to the plot.</p>
 <span>  legend.bty <span class="op">=</span> <span class="st">"n"</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  conf.alpha <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  label <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  label.x <span class="op">=</span> <span class="st">"max"</span>,</span>
+<span>  label.cex <span class="op">=</span> <span class="fl">1.25</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -153,7 +156,7 @@ values in <code>others</code>).</p></dd>
 
 <dt id="arg-legend">legend<a class="anchor" aria-label="anchor" href="#arg-legend"></a></dt>
 <dd><p>if <code>TRUE</code> (the default), add a legend for the
-response levels to the graph.</p></dd>
+response levels to the graph. Ignored when <code>label = TRUE</code>.</p></dd>
 
 
 <dt id="arg-legend-inset">legend.inset<a class="anchor" aria-label="anchor" href="#arg-legend-inset"></a></dt>
@@ -178,6 +181,24 @@ the default is <code>.0.95</code>. If <code>NULL</code>, the confidence envelope
 <dd><p>the opacity of the confidence envelopes; the default is <code>0.3</code>.</p></dd>
 
 
+<dt id="arg-label">label<a class="anchor" aria-label="anchor" href="#arg-label"></a></dt>
+<dd><p>if <code>TRUE</code>, label the curves directly instead of using a legend.
+Default is <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-label-x">label.x<a class="anchor" aria-label="anchor" href="#arg-label-x"></a></dt>
+<dd><p>where to place the label for each curve. Either a single string,
+<code>"min"</code> or <code>"max"</code> (applied to all curves), or a character vector of
+length equal to the number of response categories with each element being
+<code>"min"</code> or <code>"max"</code>, e.g. <code>label.x = c("min", "max", "max")</code>.
+<code>"min"</code> places the label at the left end of the curve;
+<code>"max"</code> (the default) places it at the right end.</p></dd>
+
+
+<dt id="arg-label-cex">label.cex<a class="anchor" aria-label="anchor" href="#arg-label-cex"></a></dt>
+<dd><p>character expansion factor for direct labels; default <code>1.25</code>.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>arguments to be passed to <code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></code>.</p></dd>
 
@@ -192,7 +213,7 @@ the default is <code>.0.95</code>. If <code>NULL</code>, the confidence envelope
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>John Fox <a href="mailto:jfox@mcmaster.ca">jfox@mcmaster.ca</a></p>
+    <p>John Fox, Michael Friendly</p>
     </div>
 
     <div class="section level2">
@@ -213,6 +234,27 @@ the default is <code>.0.95</code>. If <code>NULL</code>, the confidence envelope
 <span class="r-in"><span>     xlab<span class="op">=</span><span class="st">"Husband's Income"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.nestedLogit-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Gators example: direct curve labels instead of a legend</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"gators"</span>, package <span class="op">=</span> <span class="st">"nestedLogit"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data set 'gators' not found</span>
+<span class="r-in"><span><span class="va">gators.nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">food</span> <span class="op">~</span> <span class="va">length</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="nestedLogit.html">logits</a></span><span class="op">(</span>d1 <span class="op">=</span> <span class="fu"><a href="nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"Other"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fish"</span>, <span class="st">"Invertebrates"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         d2 <span class="op">=</span> <span class="fu"><a href="nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"Fish"</span>, <span class="st">"Invertebrates"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">gators</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'gators' not found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># All labels at the right end (default)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gators.nested</span>, x.var <span class="op">=</span> <span class="st">"length"</span>, label <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>     xlab <span class="op">=</span> <span class="st">"Alligator length (m)"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'gators.nested' not found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Mixed placement: Other and Invertebrates labeled at left, Fish at right</span></span></span>
+<span class="r-in"><span><span class="co"># (food levels are: "Other", "Fish", "Invertebrates")</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gators.nested</span>, x.var <span class="op">=</span> <span class="st">"length"</span>, label <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>     label.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"min"</span>, <span class="st">"max"</span>, <span class="st">"min"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>     xlab <span class="op">=</span> <span class="st">"Alligator length (m)"</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'gators.nested' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

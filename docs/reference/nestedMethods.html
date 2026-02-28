@@ -8,18 +8,16 @@ update
 Re-fit a "nestedLogit" model with a change in any of the formula, dichotomies,
 data, subset, or contrasts, arguments.
 
-predict, fitted
-Computes predicted values from a fitted "nestedLogit" model.
+summary
+Summarize a "nestedLogit" model, giving the summary for each binary logit model in the
+nested dichotomies.
 
-confint
-Compute point-wise confidence limits for predicted response-category
-probabilities or logits.
+print
+Print the model or a summary of the model.
 
-glance
-Construct a single row summaries for the dichotomies "nestedLogit" model.
-
-tidy
-Summarizes the terms in "nestedLogit" model.
+as.matrix, as.character, as.dichotomies
+Coerce
+dichotomy-related objects to matrices, character vectors, and dichotomies objects.
 
 
 
@@ -32,18 +30,16 @@ update
 Re-fit a "nestedLogit" model with a change in any of the formula, dichotomies,
 data, subset, or contrasts, arguments.
 
-predict, fitted
-Computes predicted values from a fitted "nestedLogit" model.
+summary
+Summarize a "nestedLogit" model, giving the summary for each binary logit model in the
+nested dichotomies.
 
-confint
-Compute point-wise confidence limits for predicted response-category
-probabilities or logits.
+print
+Print the model or a summary of the model.
 
-glance
-Construct a single row summaries for the dichotomies "nestedLogit" model.
-
-tidy
-Summarizes the terms in "nestedLogit" model.
+as.matrix, as.character, as.dichotomies
+Coerce
+dichotomy-related objects to matrices, character vectors, and dichotomies objects.
 
 
 
@@ -97,18 +93,16 @@ Most of these are the standard methods for a model-fitting function.</p><dl><dt>
 <dd><p>Re-fit a <code>"nestedLogit"</code> model with a change in any of the <code>formula</code>, <code>dichotomies</code>,
 <code>data</code>, <code>subset</code>, or <code>contrasts</code>, arguments.</p></dd>
 
-<dt><code>predict</code>, <code>fitted</code></dt>
-<dd><p>Computes predicted values from a fitted <code>"nestedLogit"</code> model.</p></dd>
+<dt><code>summary</code></dt>
+<dd><p>Summarize a <code>"nestedLogit"</code> model, giving the summary for each binary logit model in the
+nested dichotomies.</p></dd>
 
-<dt><code>confint</code></dt>
-<dd><p>Compute point-wise confidence limits for predicted response-category
-probabilities or logits.</p></dd>
+<dt><code>print</code></dt>
+<dd><p>Print the model or a summary of the model.</p></dd>
 
-<dt><code>glance</code></dt>
-<dd><p>Construct a single row summaries for the dichotomies <code>"nestedLogit"</code> model.</p></dd>
-
-<dt><code>tidy</code></dt>
-<dd><p>Summarizes the terms in <code>"nestedLogit"</code> model.</p></dd>
+<dt><code>as.matrix</code>, <code>as.character</code>, <code>as.dichotomies</code></dt>
+<dd><p>Coerce
+dichotomy-related objects to matrices, character vectors, and dichotomies objects.</p></dd>
 
 
 </dl></div>
@@ -126,27 +120,6 @@ probabilities or logits.</p></dd>
 <span></span>
 <span><span class="co"># S3 method for class 'dichotomies'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'nestedLogit'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nested"</span>, <span class="st">"dichotomies"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'predictNestedLogit'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fl">10L</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">p</span><span class="op">)</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'predictNestedLogit'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  parm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"logit"</span><span class="op">)</span>,</span>
-<span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  conf.limits.logit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'predictDichotomies'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">10L</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'nestedLogit'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">object</span>, model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nested"</span>, <span class="st">"dichotomies"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'nestedLogit'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">object</span>, as.matrix <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -182,39 +155,6 @@ probabilities or logits.</p></dd>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>arguments to be passed down.</p></dd>
-
-
-<dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
-<dd><p>For the <code>predict</code> method, a data frame containing combinations of values of the predictors
-at which fitted probabilities (or other quantities) are to be computed.</p></dd>
-
-
-<dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
-<dd><p>For the <code>predict</code> and <code>fitted</code> methods, either <code>"nested"</code> (the default), in which case fitted probabilities
-under the nested logit model are returned, or <code>"dichotomies"</code>, in which case
-<code><a href="https://rdrr.io/r/stats/predict.glm.html" class="external-link">predict.glm</a></code> is invoked for each binary logit model fit to the nested
-dichotomies and a named list of the results is returned.</p></dd>
-
-
-<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>For the print method of <code>predict.nestedLogit</code>
-or <code>predictDichotomies</code>, an integer or <code>"all"</code>
-to control how many rows are printed for each of the probabilities of
-response categories, corresponding logits and their standard errors.</p></dd>
-
-
-<dt id="arg-parm">parm<a class="anchor" aria-label="anchor" href="#arg-parm"></a></dt>
-<dd><p>For the <code>confint</code> method, one of <code>"prob"</code> or <code>"logit"</code>,
-indicating whether to generate confidence intervals for probabilities or logits
-of the responses.</p></dd>
-
-
-<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
-<dd><p>Confidence level for the <code>confint</code> method</p></dd>
-
-
-<dt id="arg-conf-limits-logit">conf.limits.logit<a class="anchor" aria-label="anchor" href="#arg-conf-limits-logit"></a></dt>
-<dd><p>When <code>parm = "prob"</code> ?????</p></dd>
 
 
 <dt id="arg-as-matrix">as.matrix<a class="anchor" aria-label="anchor" href="#arg-as-matrix"></a></dt>
@@ -253,10 +193,6 @@ with one element for each dichotomy.</p></dd>
 coefficients and their covariances, respectively.</p></li>
 <li><p>The <code>update</code> method returns an object of class <code>"nestedLogit"</code> (see <code><a href="nestedLogit.html">nestedLogit</a></code>)
 derived from the original nested-logit model.</p></li>
-<li><p>The <code>predict</code> and <code>fitted</code> methods return an object of class <code>"predictNested"</code>
-or <code>"predictDichotomies"</code>, which contain the predicted probabilities, predicted logits,
-and other information, such as standard errors of predicted values, and, if supplied,
-the <code>newdata</code> on which predictions are based.</p></li>
 <li><p>The <code>summary</code> method returns an object of class <code>"summary.nestedLogit"</code>, which is
 a list of summaries of the <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></code> objects that comprise the nested-dichotomies model; the
 object is normally printed.</p></li>
@@ -265,15 +201,9 @@ various objects to matrices, character vectors, and dichotomies objects.</p></li
 <li><p>The various <code>print</code> methods invisibly return their <code>x</code> arguments.</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code>predict</code> method provides predicted values for two representations of the model.
-<code>model = "nested"</code> gives the fitted probabilities for each of the response categories.
-<code>model = "dichotomies"</code> gives the fitted log odds for each binary logit models in the
-dichotomies.</p>
-    </div>
-    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="nestedLogit.html">nestedLogit</a></code>, <code><a href="plot.nestedLogit.html">plot.nestedLogit</a></code>,
+    <div class="dont-index"><p><code><a href="nestedLogit.html">nestedLogit</a></code>, <code><a href="predict.nestedLogit.html">predict.nestedLogit</a></code>,
+<code><a href="plot.nestedLogit.html">plot.nestedLogit</a></code>,
 <code><a href="broomMethods.html">glance.nestedLogit</a></code>, <code><a href="broomMethods.html">tidy.nestedLogit</a></code></p></div>
     </div>
     <div class="section level2">
@@ -347,7 +277,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0016570885 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002e427469f90&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000017c673b3468&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
@@ -391,7 +321,7 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual Deviance: 14050 	AIC: 14060</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002e427469f90&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000017c673b3468&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -464,218 +394,6 @@ dichotomies.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># broom methods</span></span></span>
-<span class="r-in"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   response      null.deviance df.null  logLik    AIC    BIC deviance df.residual</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> above_l.t.hi…        <span style="text-decoration: underline;">40</span>989.   <span style="text-decoration: underline;">44</span>090 -<span style="color: #BB0000; text-decoration: underline;">16</span><span style="color: #BB0000;">440.</span> <span style="text-decoration: underline;">32</span>890. <span style="text-decoration: underline;">32</span>934.   <span style="text-decoration: underline;">32</span>880.       <span style="text-decoration: underline;">44</span>086</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> above_highsc…        <span style="text-decoration: underline;">44</span>729.   <span style="text-decoration: underline;">36</span>343 -<span style="color: #BB0000; text-decoration: underline;">20</span><span style="color: #BB0000;">346.</span> <span style="text-decoration: underline;">40</span>703. <span style="text-decoration: underline;">40</span>745.   <span style="text-decoration: underline;">40</span>693.       <span style="text-decoration: underline;">36</span>339</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> above_college        <span style="text-decoration: underline;">14</span>195.   <span style="text-decoration: underline;">11</span>098  -<span style="color: #BB0000; text-decoration: underline;">7</span><span style="color: #BB0000;">023.</span> <span style="text-decoration: underline;">14</span>055. <span style="text-decoration: underline;">14</span>092.   <span style="text-decoration: underline;">14</span>045.       <span style="text-decoration: underline;">11</span>094</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: nobs &lt;int&gt;</span></span>
-<span class="r-in"><span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    response             term              estimate std.error statistic   p.value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> above_l.t.highschool (Intercept)       -<span style="color: #BB0000;">4.26</span><span style="color: #949494;">e</span>+1  2.22        -<span style="color: #BB0000;">19.2</span>  6.23<span style="color: #949494;">e</span><span style="color: #BB0000;">- 82</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> above_l.t.highschool parentdeghighsch…  1.96<span style="color: #949494;">e</span>+0  0.031<span style="text-decoration: underline;">4</span>       62.6  0   <span style="color: #949494;"> </span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> above_l.t.highschool parentdegcollege   3.10<span style="color: #949494;">e</span>+0  0.092<span style="text-decoration: underline;">8</span>       33.4  5.64<span style="color: #949494;">e</span><span style="color: #BB0000;">-245</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> above_l.t.highschool parentdeggraduate  3.35<span style="color: #949494;">e</span>+0  0.128        26.3  4.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-152</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> above_l.t.highschool year               2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.001<span style="text-decoration: underline;">12</span>      19.4  1.63<span style="color: #949494;">e</span><span style="color: #BB0000;">- 83</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> above_highschool     (Intercept)       -<span style="color: #BB0000;">2.62</span><span style="color: #949494;">e</span>+1  1.95        -<span style="color: #BB0000;">13.5</span>  2.33<span style="color: #949494;">e</span><span style="color: #BB0000;">- 41</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> above_highschool     parentdeghighsch…  6.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.033<span style="text-decoration: underline;">5</span>       18.0  3.70<span style="color: #949494;">e</span><span style="color: #BB0000;">- 72</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> above_highschool     parentdegcollege   1.71<span style="color: #949494;">e</span>+0  0.041<span style="text-decoration: underline;">0</span>       41.6  0   <span style="color: #949494;"> </span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> above_highschool     parentdeggraduate  2.21<span style="color: #949494;">e</span>+0  0.046<span style="text-decoration: underline;">9</span>       47.2  0   <span style="color: #949494;"> </span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> above_highschool     year               1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>  0.000<span style="text-decoration: underline;">977</span>     12.6  1.87<span style="color: #949494;">e</span><span style="color: #BB0000;">- 36</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> above_college        (Intercept)       -<span style="color: #BB0000;">1.83</span><span style="color: #949494;">e</span>+1  3.30         -<span style="color: #BB0000;">5.53</span> 3.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> above_college        parentdeghighsch… -<span style="color: #BB0000;">3.45</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.063<span style="text-decoration: underline;">0</span>       -<span style="color: #BB0000;">5.48</span> 4.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> above_college        parentdegcollege  -<span style="color: #BB0000;">4.15</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.070<span style="text-decoration: underline;">4</span>       -<span style="color: #BB0000;">5.89</span> 3.82<span style="color: #949494;">e</span><span style="color: #BB0000;">-  9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> above_college        parentdeggraduate  1.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  0.070<span style="text-decoration: underline;">9</span>        2.06 3.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-  2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> above_college        year               8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>  0.001<span style="text-decoration: underline;">66</span>       5.38 7.59<span style="color: #949494;">e</span><span style="color: #BB0000;">-  8</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># predicted probabilities and ploting</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="co"># fitted probabilities for first few cases;</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> First 10 of 44091 rows:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> predicted response-category probabilties</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    l.t.highschool highschool    college   graduate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.48669496  0.4481946 0.04326738 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.48669496  0.4481946 0.04326738 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.04093763  0.5328723 0.31960957 0.10658049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.48669496  0.4481946 0.04326738 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.03215663  0.4161182 0.34830386 0.20342132</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.04093763  0.5328723 0.31960957 0.10658049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.04093763  0.5328723 0.31960957 0.10658049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.11747919  0.6976573 0.13619288 0.04867067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.48669496  0.4481946 0.04326738 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     0.48669496  0.4481946 0.04326738 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   . . .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> predicted response-category logits</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    l.t.highschool highschool    college  graduate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     -0.05323272 -0.2079679 -3.0961249 -3.801787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     -0.05323272 -0.2079679 -3.0961249 -3.801787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     -3.15390636  0.1316792 -0.7555666 -2.126156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     -0.05323272 -0.2079679 -3.0961249 -3.801787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     -3.40445160 -0.3387293 -0.6265031 -1.365047</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     -3.15390636  0.1316792 -0.7555666 -2.126156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     -3.15390636  0.1316792 -0.7555666 -2.126156</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     -2.01652113  0.8361667 -1.8472774 -2.972784</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    -0.05323272 -0.2079679 -3.0961249 -3.801787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    -0.05323272 -0.2079679 -3.0961249 -3.801787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   . . .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> standard errors of predicted probabilities</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    l.t.highschool  highschool     college    graduate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.006302163 0.005851716 0.001707529 0.001183908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.006302163 0.005851716 0.001707529 0.001183908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     0.003707404 0.009246535 0.008481557 0.005474035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.006302163 0.005851716 0.001707529 0.001183908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     0.004011760 0.010684551 0.010589359 0.009031287</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7     0.003707404 0.009246535 0.008481557 0.005474035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     0.003707404 0.009246535 0.008481557 0.005474035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     0.003595434 0.005098858 0.003676266 0.002182298</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10    0.006302163 0.005851716 0.001707529 0.001183908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13    0.006302163 0.005851716 0.001707529 0.001183908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   . . .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> standard errors of predicted logits</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    l.t.highschool highschool    college   graduate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.02522651 0.02366087 0.04124933 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.02522651 0.02366087 0.04124933 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      0.09442790 0.03714670 0.03900296 0.05748764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5      0.02522651 0.02366087 0.04124933 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      0.12890190 0.04397589 0.04665157 0.05573455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7      0.09442790 0.03714670 0.03900296 0.05748764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8      0.09442790 0.03714670 0.03900296 0.05748764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      0.03467891 0.02417304 0.03124897 0.04713199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     0.02522651 0.02366087 0.04124933 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13     0.02522651 0.02366087 0.04124933 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   . . .</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>parentdeg<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l.t.highschool"</span>,  <span class="st">"highschool"</span>,</span></span>
-<span class="r-in"><span>                               <span class="st">"college"</span>, <span class="st">"graduate"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   year<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1972</span>, <span class="fl">2016</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, newdata<span class="op">=</span><span class="va">new</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">new</span>, <span class="va">fit</span><span class="op">)</span> <span class="co"># fitted probabilities at specific values of predictors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         parentdeg year      parentdeg year       response          p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  l.t.highschool 1972 l.t.highschool 1972 l.t.highschool 0.48669496</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      highschool 1972 l.t.highschool 1972     highschool 0.44819461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         college 1972 l.t.highschool 1972        college 0.04326738</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        graduate 1972 l.t.highschool 1972       graduate 0.02184305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  l.t.highschool 2016     highschool 1972 l.t.highschool 0.11747919</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      highschool 2016     highschool 1972     highschool 0.69765725</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7         college 2016     highschool 1972        college 0.13619288</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        graduate 2016     highschool 1972       graduate 0.04867067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  l.t.highschool 1972        college 1972 l.t.highschool 0.04093763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     highschool 1972        college 1972     highschool 0.53287231</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        college 1972        college 1972        college 0.31960957</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12       graduate 1972        college 1972       graduate 0.10658049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 l.t.highschool 2016       graduate 1972 l.t.highschool 0.03215663</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     highschool 2016       graduate 1972     highschool 0.41611819</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15        college 2016       graduate 1972        college 0.34830386</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16       graduate 2016       graduate 1972       graduate 0.20342132</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 l.t.highschool 1972 l.t.highschool 2016 l.t.highschool 0.26785921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18     highschool 1972 l.t.highschool 2016     highschool 0.58583139</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19        college 1972 l.t.highschool 2016        college 0.08374198</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20       graduate 1972 l.t.highschool 2016       graduate 0.06256742</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 l.t.highschool 2016     highschool 2016 l.t.highschool 0.04885547</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22     highschool 2016     highschool 2016     highschool 0.65346585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23        college 2016     highschool 2016        college 0.19470249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24       graduate 2016     highschool 2016       graduate 0.10297618</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 l.t.highschool 1972        college 2016 l.t.highschool 0.01620361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26     highschool 1972        college 2016     highschool 0.41423386</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27        college 1972        college 2016        college 0.38135421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28       graduate 1972        college 2016       graduate 0.18820832</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 l.t.highschool 2016       graduate 2016 l.t.highschool 0.01265796</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30     highschool 2016       graduate 2016     highschool 0.30107340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31        college 2016       graduate 2016        college 0.36810041</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32       graduate 2016       graduate 2016       graduate 0.31816823</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           se.p       logit   se.logit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.006302163 -0.05323272 0.02522651</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.005851716 -0.20796791 0.02366087</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.001707529 -3.09612491 0.04124933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.001183908 -3.80178733 0.05541104</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.003595434 -2.01652113 0.03467891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.005098858  0.83616665 0.02417304</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.003676266 -1.84727739 0.03124897</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.002182298 -2.97278366 0.04713199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.003707404 -3.15390636 0.09442790</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.009246535  0.13167918 0.03714670</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.008481557 -0.75556665 0.03900296</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.005474035 -2.12615578 0.05748764</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.004011760 -3.40445160 0.12890190</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.010684551 -0.33872927 0.04397589</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 0.010589359 -0.62650313 0.04665157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 0.009031287 -1.36504661 0.05573455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.006798108 -1.00551133 0.03466465</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 0.006948958  0.34675885 0.02863979</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 0.003523212 -2.39255756 0.04591745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.003072415 -2.70690014 0.05238314</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 0.001733643 -2.96879974 0.03730782</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 0.005313294  0.63430892 0.02346361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 0.004494391 -1.41973906 0.02866441</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 0.003441931 -2.16458467 0.03726159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 0.001500524 -4.10618498 0.09412952</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 0.008148392 -0.34648993 0.03358165</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 0.008510405 -0.48380426 0.03607278</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 0.007056246 -1.46169432 0.04618387</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 0.001605067 -4.35673022 0.12842860</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30 0.008518703 -0.84219163 0.04048270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31 0.009972667 -0.54037476 0.04287429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32 0.009700566 -0.76220268 0.04471601</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># predicted logits for dichotomies</span></span></span>
-<span class="r-in"><span><span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">m</span>, newdata<span class="op">=</span><span class="va">new</span>, model<span class="op">=</span><span class="st">"dichotomies"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">predictions</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  predictions for binary logit models from nested logit model: m </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_l.t.highschool </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.05323272 0.02522651              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.01652113 0.03467891              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3.15390636 0.09442790              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3.40445160 0.12890190              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.00551133 0.03466465              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 2.96879974 0.03730782              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 4.10618498 0.09412952              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 4.35673022 0.12842860              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_highschool </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -1.9291427 0.03501272              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -1.3281099 0.02896659              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.2233964 0.03806677              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.2820807 0.04445165              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -1.3873084 0.03693667              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.7862756 0.02531886              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.3184379 0.03387511              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.8239151 0.04064027              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: above_college </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          fit     se.fit residual.scale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 -0.6835162 0.06476680              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -1.0289955 0.05203322              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -1.0981997 0.06219778              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -0.5377960 0.06313624              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -0.2914957 0.06656676              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 -0.6369750 0.04354779              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 -0.7061792 0.05173419              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8 -0.1457755 0.05184601              1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  dichotomy: .data </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        parentdeg year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 l.t.highschool 1972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2     highschool 1972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        college 1972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       graduate 1972</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 l.t.highschool 2016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     highschool 2016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        college 2016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8       graduate 2016</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
