@@ -73,7 +73,7 @@
 </h1>
 </div>
 <!-- **Version 0.3.4** -->
-<p><strong>Version 0.3.5</strong>; documentation built for <code>pkgdown</code> 2026-02-24</p>
+<p><strong>Version 0.3.5</strong>; documentation built for <code>pkgdown</code> 2026-02-28</p>
 <p>The <code>nestedLogit</code> package provides functions for fitting <em>nested dichotomy</em> logistic regression models for a <strong>polytomous</strong> response (with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m &gt; 2</annotation></semantics></math> categories), such as:</p>
 <ul>
 <li>support for political party in Canada (PC, Liberal, NDP, Green, BQ),</li>
@@ -90,18 +90,24 @@
 <strong>Nested dichotomies</strong>: The boxes show two different ways a four-category response can be represented as three nested dichotomies.
 </p>
 </div>
-<p>The basic model for this situation is the standard <strong>multinomial logistic model</strong> (fit by: e.g., <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">nnet::multinom()</a></code>) which compares response categories to a <em>reference level</em>. When you can think of the differences among the response categories as a set nested comparisons among subsets of the categories, the approach of nested dichotomies is simpler, because:</p>
+<div class="section level2">
+<h2 id="releated-models-for-a-polytomous-response">Releated models for a polytomous response<a class="anchor" aria-label="anchor" href="#releated-models-for-a-polytomous-response"></a>
+</h2>
+<p>The basic model for this situation (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m &gt; 2</annotation></semantics></math> response categories) is the standard <a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression" class="external-link"><strong>multinomial logistic model</strong></a> (fit by: e.g., <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">nnet::multinom()</a></code>) which compares response categories to a <em>reference level</em>.</p>
+<p>When you can think of the differences among the response categories as a set nested comparisons among subsets of the categories, the approach of nested dichotomies is simpler, because:</p>
 <ul>
-<li>Nested dichotomies are statistically independent, and hence:</li>
-<li>the likelihood chi-square statistics for the sub-models are additive;</li>
-<li>they provide an additive decomposition of tests for the overall polytomous response.</li>
-<li>You can think of this as breaking up the overall question of “How do the response categories differ?” into <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math> sub-questions that answer the global one.</li>
+<li>Nested dichotomies are <strong>statistically independent</strong>, and hence:</li>
+<li>the likelihood chi-square statistics for the sub-models are <strong>additive</strong>;</li>
+<li>they provide an additive decomposition of tests for the <strong>overall</strong> polytomous response.</li>
+<li>You can think of this as breaking up the overall question of “How do the response categories differ?” into <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math> non-overlapping sub-questions that answer the global one.</li>
 </ul>
 <p>When the dichotomies make sense substantively, this method can be a simpler alternative to the standard <strong>multinomial logistic model</strong> which compares response categories to a reference level. This choice is similar to using <strong>orthogonal contrasts</strong> among factor categories in an ANOVA, as opposed to using the default reference-level coding.</p>
+<p>The benefit is that, with nested logit models, you get to ask substantively more interesting questions <strong>directly</strong> than you can with the multinomial logit model. The results (for overall tests) are nearly equivalent. But, you get to <strong>think better</strong> about your problem with the nested logit model.</p>
 <div class="section level3">
 <h3 id="ordered-categories">Ordered categories<a class="anchor" aria-label="anchor" href="#ordered-categories"></a>
 </h3>
 <p>Note that when the response catgegories are <strong>ordered</strong>, as in education attained: “HS” &lt; “College” &lt; “BA” &lt; “MA” &lt; “Phd”, another attractive model is the <strong>proportional odds</strong> model (e.g., fit by <code><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">MASS::polr()</a></code>). This is a simpler model, but achieves that simplicity by making the additional assumption that the coefficients for the predictors are the same for all categories.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -131,7 +137,13 @@
 <div class="section level2">
 <h2 id="package-overview">Package overview<a class="anchor" aria-label="anchor" href="#package-overview"></a>
 </h2>
-<p>The package provides one main function, <code><a href="reference/nestedLogit.html">nestedLogit()</a></code> for fitting the set of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(m-1)</annotation></semantics></math> binary logistic regression models for a polytomous response with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> levels. These can be specified using helper functions,</p>
+<p>The package provides one main function, <code><a href="reference/nestedLogit.html">nestedLogit()</a></code> for fitting the set of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(m-1)</annotation></semantics></math> binary logistic regression models for a polytomous response with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> levels. It has the full suited of methods associated with <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> and other model fitting methods.</p>
+<p>What is novel in R software design are aspects of a grammar for specifying dichotomies in model formulas, and the idea of fitting an overall model, which is composed of submodels that we want to also consider, test, plot, …</p>
+<div class="section level3">
+<h3 id="specifying-dichotomies">Specifying dichotomies<a class="anchor" aria-label="anchor" href="#specifying-dichotomies"></a>
+</h3>
+<p>The essential idea here is to have a simple notation expressing a dichotomy amongst response levels, like <code>{{A, B}, {C, D}}</code>, and then a way to specify a collection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math> of these that can be used productively in data analysis and visualization.</p>
+<p>In the <code>nestedLogit</code> package these can be specified using helper functions:</p>
 <ul>
 <li>
 <code><a href="reference/nestedLogit.html">dichotomy()</a></code>: constructs a <em>single</em> dichotomy among the levels of a response factor;</li>
@@ -192,6 +204,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">ABCD</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "AB.CD = {{A B}} {{C D}}; A.B = {{A}} {{B}}; C.D = {{C}} {{D}}"</span></span></code></pre></div>
 <p>The result of <code><a href="reference/nestedLogit.html">nestedLogit()</a></code> is an object of class <code>"nestedLogit"</code>. It contains the set of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(m-1)</annotation></semantics></math><code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> models fit to the dichotomies.</p>
+</div>
 <div class="section level3">
 <h3 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
 </h3>
@@ -327,9 +340,9 @@
 <h2 id="vignettes">Vignettes<a class="anchor" aria-label="anchor" href="#vignettes"></a>
 </h2>
 <ul>
-<li><p>A more general discussion of nested dichotomies logistic regression and detailed examples can be found in <code><a href="articles/nestedLogit.html">vignette("nestedLogit")</a></code></p></li>
-<li><p>A variety of other plots can be produced using <code>ggplot()</code>, as described in the vignette, <code><a href="articles/plotting-ggplot.html">vignette("plotting-ggplot")</a></code>.</p></li>
-<li><p>A new vignette, “<code><a href="articles/standard-errors.html">vignette("standard-errors")</a></code>, describes the mathematics behind the calculation of standard errors using the delta method.</p></li>
+<li><p>A more general discussion of nested dichotomies logistic regression and detailed examples can be found in <code><a href="articles/nestedLogit.html">vignette("nestedLogit", package="nestedLogit")</a></code> and in the <a href="https://friendly.github.io/nestedLogit/articles/nestedLogit.html">pkgdown documentation</a>.</p></li>
+<li><p>A variety of other plots can be produced using <code>ggplot()</code>, as described in the vignette, <code><a href="articles/plotting-ggplot.html">vignette("plotting-ggplot")</a></code> and in the <a href="https://friendly.github.io/nestedLogit/articles/plotting-ggplot.html">pkgdown documentation</a>.</p></li>
+<li><p>Figuring out how to calculate uncertainty estimates for nested logit models was solved John Fox. The vignette, “<code><a href="articles/standard-errors.html">vignette("standard-errors")</a></code>, describes the mathematics behind the calculation of standard errors using the delta method.</p></li>
 </ul>
 </div>
 <div class="section level2">

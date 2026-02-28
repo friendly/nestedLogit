@@ -13,10 +13,15 @@ reference:
   contents:
   - nestedLogit
   - nestedMethods
-  - predict.nestedLogit
   - models
-  - plot.nestedLogit
   - as.data.frame.predictNestedLogit
+
+- title: Plotting methods
+  desc: Methods for constructing plots of nested logit models.
+  contents:
+  - predict.nestedLogit
+  - plot.nestedLogit
+  - Effect.nestedLogit
 
 - title: Hypothesis tests
   desc: Anova, linear hypothesis, and likelihood ratio tests for nested logit models.
