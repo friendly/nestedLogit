@@ -18,7 +18,7 @@
   pch = 1L:length(response.levels),
   lwd = 3,
   lty = 1L:length(response.levels),
-  col = palette()[1L:length(response.levels)],
+  col = (scales::hue_pal())(length(response.levels)),
   legend = TRUE,
   legend.inset = 0.01,
   legend.location = "topleft",

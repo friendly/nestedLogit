@@ -1,3 +1,5 @@
+# DONE: changed default colors to use scales::hue_pal()
+
 #' Plotting Nested Logit Models
 #'
 #' @description A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
@@ -83,6 +85,7 @@
 #' @importFrom grDevices palette adjustcolor
 #' @importFrom graphics axis box matplot title arrows polygon text
 #' @importFrom stats formula
+#' @importFrom scales hue_pal
 #' @rdname plot.nestedLogit
 #' @return NULL Used for its side-effect of producing a plot
 #' @export
@@ -94,7 +97,8 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              pch=1L:length(response.levels),
                              lwd=3,
                              lty=1L:length(response.levels),
-                             col=palette()[1L:length(response.levels)],
+#                             col=palette()[1L:length(response.levels)],
+                             col=scales::hue_pal()(length(response.levels)),
                              legend=TRUE, legend.inset=0.01,
                              legend.location="topleft",
                              legend.bty = "n", conf.level=0.95,

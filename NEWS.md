@@ -6,6 +6,7 @@
 * re-factored `predict.nestedLogit()` and related to its own file for improved documentation
 * added ability for direct labels in `plot.nested-ci.R`
 * Better description of nested logit and other models in README
+* changed default colors for `plot.nestedLogit()` to use scales::hue_pal() for consistency with ggplot
 
 ## nestedLogit 0.3.4
 
