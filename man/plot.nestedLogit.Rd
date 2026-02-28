@@ -25,6 +25,9 @@
   legend.bty = "n",
   conf.level = 0.95,
   conf.alpha = 0.3,
+  label = FALSE,
+  label.x = "max",
+  label.cex = 1.25,
   ...
 )
 }
@@ -65,7 +68,7 @@ values in \code{others}).}
 \item{col}{line colors (see \code{\link{par}}).}
 
 \item{legend}{if \code{TRUE} (the default), add a legend for the
-response levels to the graph.}
+response levels to the graph. Ignored when \code{label = TRUE}.}
 
 \item{legend.inset}{default \code{0.01} (see \code{\link{legend}}).}
 
@@ -78,6 +81,18 @@ see \code{\link{legend}}).}
 the default is \code{.0.95}. If \code{NULL}, the confidence envelopes are suppressed.}
 
 \item{conf.alpha}{the opacity of the confidence envelopes; the default is \code{0.3}.}
+
+\item{label}{if \code{TRUE}, label the curves directly instead of using a legend.
+Default is \code{FALSE}.}
+
+\item{label.x}{where to place the label for each curve. Either a single string,
+\code{"min"} or \code{"max"} (applied to all curves), or a character vector of
+length equal to the number of response categories with each element being
+\code{"min"} or \code{"max"}, e.g. \code{label.x = c("min", "max", "max")}.
+\code{"min"} places the label at the left end of the curve;
+\code{"max"} (the default) places it at the right end.}
+
+\item{label.cex}{character expansion factor for direct labels; default \code{1.25}.}
 
 \item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }
@@ -105,10 +120,27 @@ plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 par(op)
 
+# Gators example: direct curve labels instead of a legend
+data("gators", package = "nestedLogit")
+gators.nested <- nestedLogit(food ~ length,
+  logits(d1 = dichotomy("Other", c("Fish", "Invertebrates")),
+         d2 = dichotomy("Fish", "Invertebrates")),
+  data = gators)
+
+# All labels at the right end (default)
+plot(gators.nested, x.var = "length", label = TRUE,
+     xlab = "Alligator length (m)")
+
+# Mixed placement: Other and Invertebrates labeled at left, Fish at right
+# (food levels are: "Other", "Fish", "Invertebrates")
+plot(gators.nested, x.var = "length", label = TRUE,
+     label.x = c("min", "max", "min"),
+     xlab = "Alligator length (m)")
+
 }
 \seealso{
 \code{\link{nestedLogit}}, \code{\link[graphics]{matplot}}
 }
 \author{
-John Fox \email{jfox@mcmaster.ca}
+John Fox, Michael Friendly
 }

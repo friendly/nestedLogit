@@ -30,7 +30,7 @@
 #' @param lty line types (see \code{\link{par}}).
 #' @param col line colors (see \code{\link{par}}).
 #' @param legend if \code{TRUE} (the default), add a legend for the
-#'        response levels to the graph. Ignored when \code{label = TRUE}.
+#'        response levels to the graph.
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
@@ -38,17 +38,8 @@
 #' @param conf.level the level for pointwise confidence envelopes around the predicted response probabilities;
 #' the default is \code{.0.95}. If \code{NULL}, the confidence envelopes are suppressed.
 #' @param conf.alpha the opacity of the confidence envelopes; the default is \code{0.3}.
-#' @param label if \code{TRUE}, label the curves directly instead of using a legend.
-#'        Default is \code{FALSE}.
-#' @param label.x where to place the label for each curve. Either a single string,
-#'        \code{"min"} or \code{"max"} (applied to all curves), or a character vector of
-#'        length equal to the number of response categories with each element being
-#'        \code{"min"} or \code{"max"}, e.g. \code{label.x = c("min", "max", "max")}.
-#'        \code{"min"} places the label at the left end of the curve;
-#'        \code{"max"} (the default) places it at the right end.
-#' @param label.cex character expansion factor for direct labels; default \code{1.25}.
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
-#' @author John Fox, Michael Friendly
+#' @author John Fox \email{jfox@mcmaster.ca}
 #' @examples
 #' data("Womenlf", package = "carData")
 #' m <- nestedLogit(partic ~ hincome + children,
@@ -63,44 +54,23 @@
 #'      xlab="Husband's Income")
 #' par(op)
 #'
-#' # Gators example: direct curve labels instead of a legend
-#' data("gators", package = "nestedLogit")
-#' gators.nested <- nestedLogit(food ~ length,
-#'   logits(d1 = dichotomy("Other", c("Fish", "Invertebrates")),
-#'          d2 = dichotomy("Fish", "Invertebrates")),
-#'   data = gators)
-#'
-#' # All labels at the right end (default)
-#' plot(gators.nested, x.var = "length", label = TRUE,
-#'      xlab = "Alligator length (m)")
-#'
-#' # Mixed placement: Other and Invertebrates labeled at left, Fish at right
-#' # (food levels are: "Other", "Fish", "Invertebrates")
-#' plot(gators.nested, x.var = "length", label = TRUE,
-#'      label.x = c("min", "max", "min"),
-#'      xlab = "Alligator length (m)")
-#'
 #' @importFrom grDevices palette adjustcolor
-#' @importFrom graphics axis box matplot title arrows polygon text
+#' @importFrom graphics axis box matplot title arrows polygon
 #' @importFrom stats formula
 #' @rdname plot.nestedLogit
 #' @return NULL Used for its side-effect of producing a plot
 #' @export
 plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              xlab=x.var, ylab="Fitted Probability",
-                             main, cex.main=1,
-                             digits.main=getOption("digits") - 2L,
+                             main, cex.main=1, digits.main=getOption("digits") - 2L,
                              font.main=1L,
                              pch=1L:length(response.levels),
-                             lwd=3,
-                             lty=1L:length(response.levels),
+                             lwd=3, lty=1L:length(response.levels),
                              col=palette()[1L:length(response.levels)],
                              legend=TRUE, legend.inset=0.01,
                              legend.location="topleft",
                              legend.bty = "n", conf.level=0.95,
-                             conf.alpha=0.3,
-                             label=FALSE, label.x="max", label.cex=1.25,
-                             ...){
+                             conf.alpha=0.3, ...){
   data <- x$data
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
@@ -166,22 +136,10 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   } else {
     new <- cbind(new, predictions$p)
   }
-
-  # column names for fitted probabilities (depends on whether CIs are computed)
-  p_cols <- if (!is.null(conf.level)) paste0(response.levels, ".p") else response.levels
-
-  # validate label.x
-  if (label) {
-    if (length(label.x) == 1L) label.x <- rep(label.x, length(response.levels))
-    if (length(label.x) != length(response.levels))
-      stop("label.x must be length 1 or the same length as the number of response categories")
-    if (!all(label.x %in% c("min", "max")))
-      stop('each element of label.x must be "min" or "max"')
-  }
-
   if (numeric.x){
     matplot(new[, x.var],
-            new[, p_cols],
+            if (!is.null(conf.level)) new[, paste0(response.levels, ".p")] else
+              new[, response.levels],
             type="l", lwd=lwd,
             col=col, xlab=xlab, ylab=ylab,
             ylim=if (!is.null(conf.level)) c(ymin, ymax) else NULL, ...)
@@ -194,30 +152,16 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                 col=adjustcolor(col[i], alpha.f=conf.alpha), border=NA)
       }
     }
-    if (label) {
-      for (i in seq_along(response.levels)) {
-        if (label.x[i] == "max") {
-          idx <- nrow(new)
-          adj <- c(1, -0.1)    # right edge of text at curve end, slightly above
-        } else {               # "min"
-          idx <- 1L
-          adj <- c(0, -0.1)    # left edge of text at curve start, slightly above
-        }
-        text(new[idx, x.var], new[idx, p_cols[i]],
-             labels = response.levels[i],
-             adj = adj, col = col[i], cex = label.cex)
-      }
-    } else if (legend) {
-      legend(legend.location, legend=response.levels,
-             lty=lty, lwd=lwd,
-             col=col, inset=legend.inset,
-             bty = legend.bty,
-             xpd=TRUE)
-    }
+    if (legend) legend(legend.location, legend=response.levels,
+                       lty=lty, lwd=lwd,
+                       col=col, inset=legend.inset,
+                       bty = legend.bty,
+                       xpd=TRUE)
   } else {
     n.x.levels <- nrow(new)
     matplot(1L:n.x.levels,
-            new[, p_cols],
+            if (!is.null(conf.level)) new[, paste0(response.levels, ".p")] else
+              new[, response.levels],
             type="b", lwd=lwd,
             pch=pch, col=col, xlab=xlab, ylab=ylab, axes=FALSE,
             ylim= if (!is.null(conf.level)) c(ymin, ymax) else NULL,
@@ -236,27 +180,12 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
         }
       }
     }
-    if (label) {
-      for (i in seq_along(response.levels)) {
-        if (label.x[i] == "max") {
-          idx <- n.x.levels
-          adj <- c(1, -0.1)    # right edge of text at curve end, slightly above
-        } else {               # "min"
-          idx <- 1L
-          adj <- c(0, -0.1)    # left edge of text at curve start, slightly above
-        }
-        text(idx, new[idx, p_cols[i]],
-             labels = response.levels[i],
-             adj = adj, col = col[i], cex = label.cex)
-      }
-    } else if (legend) {
-      legend(legend.location, legend=response.levels,
-             lty=lty, lwd=lwd,
-             col=col, pch=pch,
-             inset=legend.inset,
-             bty = legend.bty,
-             xpd=TRUE)
-    }
+    if (legend) legend(legend.location, legend=response.levels,
+                       lty=lty, lwd=lwd,
+                       col=col, pch=pch,
+                       inset=legend.inset,
+                       bty = legend.bty,
+                       xpd=TRUE)
   }
   if (!missing(main)) {
     title(main, cex.main=cex.main, font.main=font.main)

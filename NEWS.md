@@ -4,6 +4,7 @@
 * added an article illustrating use of the `ggeffects` package for nestedLogit models
 * added an article showing use of the `easystats` packages for nestedLogit models
 * move `predict.nestedLogit()` and related to its own file for improved documentation
+* added ability for direct labels in plot.nested-ci.R
 
 ## nestedLogit 0.3.4
 
