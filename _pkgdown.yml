@@ -13,6 +13,7 @@ reference:
   contents:
   - nestedLogit
   - nestedMethods
+  - predict.nestedLogit
   - models
   - plot.nestedLogit
   - as.data.frame.predictNestedLogit

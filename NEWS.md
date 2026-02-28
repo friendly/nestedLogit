@@ -1,8 +1,9 @@
 ## nestedLogit 0.3.5
 
-* add gators data, food choice of aligators from Agresti
+* add gators data, food choice of alligators from Agresti
 * added an article illustrating use of the `ggeffects` package for nestedLogit models
 * added an article showing use of the `easystats` packages for nestedLogit models
+* move `predict.nestedLogit()` and related to its own file for improved documentation
 
 ## nestedLogit 0.3.4
 
