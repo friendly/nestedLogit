@@ -49,7 +49,6 @@ Suggests:
     parameters,
     performance,
     rmarkdown,
-    scales,
     see,
     spelling,
     testthat,

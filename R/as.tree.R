@@ -25,6 +25,7 @@
 #' arguments to \code{\link{dichotomy}} when present, and are otherwise
 #' generated automatically as \code{\{level1, level2, ...\}}.
 #'
+#' @importFrom stats setNames
 #' @return Invisibly returns \code{x}; called for its side effect of printing.
 #'
 #' @seealso \code{\link{logits}}, \code{\link{continuationLogits}},
