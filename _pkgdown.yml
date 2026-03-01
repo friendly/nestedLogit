@@ -14,12 +14,13 @@ reference:
   - nestedLogit
   - nestedMethods
   - models
-  - as.data.frame.predictNestedLogit
+  - as.tree
 
 - title: Plotting methods
   desc: Methods for constructing plots of nested logit models.
   contents:
   - predict.nestedLogit
+  - as.data.frame.predictNestedLogit
   - plot.nestedLogit
   - Effect.nestedLogit
 

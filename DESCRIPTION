@@ -34,7 +34,8 @@ Imports:
     grDevices,
     stats,
     stringr,
-    tibble
+    tibble,
+    scales
 Suggests:
     carData,
     geomtextpath,

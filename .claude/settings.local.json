@@ -5,7 +5,10 @@
       "WebFetch(domain:scales.r-lib.org)",
       "WebFetch(domain:ggplot2.tidyverse.org)",
       "WebFetch(domain:ggplot2-book.org)",
-      "WebFetch(domain:stat.ethz.ch)"
+      "WebFetch(domain:stat.ethz.ch)",
+      "Bash(Rscript:*)",
+      "Bash(/c/R/R-4.4.1/bin/Rscript:*)",
+      "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\":*)"
     ]
   }
 }
