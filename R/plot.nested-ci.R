@@ -1,9 +1,14 @@
 # DONE: changed default colors to use scales::hue_pal()
+# DONE: Allow to plot results on the logit scale, using logit = log(p/1-p), as in the
+#       example "Plotting log-odds" in `vignettes/plotting-ggplot.Rmd`
+#       Added argument `scale = c("prob", "logit")` where "prob" gives the current behavior
+# TODO: Allow to facet the plots with a by= variable, rather than producing separate plots by conditioning as in the womenlf example
 
 #' Plotting Nested Logit Models
 #'
 #' @description A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
-#' \code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
+#' \code{\link{nestedLogit}} function. Fitted probabilities under the model,
+#' or the corresponding logits are plotted
 #' for each level of the polytomous response variable, with one of the explanatory variables
 #' on the horizontal axis and other explanatory variables fixed to particular values.
 #' By default, a 95% pointwise confidence envelope is added to the plot.
@@ -20,8 +25,11 @@
 #'        specified for each variable in \code{others}.
 #' @param n.x.values the number of evenly spaced values of \code{x.var} at which
 #'        to evaluate fitted probabilities to be plotted (default \code{100}).
+#' @param scale character string; \code{"prob"} (the default) plots fitted probabilities
+#'        on the y-axis; \code{"logit"} plots fitted log odds (logits), i.e., \eqn{\log(p/(1-p))}.
 #' @param xlab label for the x-axis (defaults to the value of \code{x.var}).
-#' @param ylab label for the y-axis (defaults to \code{"Fitted Probability"}).
+#' @param ylab label for the y-axis (defaults to \code{"Fitted Probability"} when
+#'        \code{scale = "prob"} and \code{"Fitted Log Odds"} when \code{scale = "logit"}).
 #' @param main main title for the graph (if missing, constructed from the variables and
 #'        values in \code{others}).
 #' @param cex.main size of main title (see \code{\link{par}}).
@@ -37,8 +45,8 @@
 #' @param legend.location position of the legend (default \code{"topleft"},
 #'        see \code{\link{legend}}).
 #' @param legend.bty  the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".
-#' @param conf.level the level for pointwise confidence envelopes around the predicted response probabilities;
-#' the default is \code{.0.95}. If \code{NULL}, the confidence envelopes are suppressed.
+#' @param conf.level the level for pointwise confidence envelopes around the predicted values;
+#' the default is \code{0.95}. If \code{NULL}, the confidence envelopes are suppressed.
 #' @param conf.alpha the opacity of the confidence envelopes; the default is \code{0.3}.
 #' @param label if \code{TRUE}, label the curves directly instead of using a legend.
 #'        Default is \code{FALSE}.
@@ -58,12 +66,17 @@
 #'                         full=dichotomy("parttime", "fulltime")),
 #'                         data=Womenlf)
 #' plot(m, legend.location="top")
+#'
 #' op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 #' plot(m, "hincome", list(children="absent"),
 #'      xlab="Husband's Income", legend=FALSE)
 #' plot(m, "hincome", list(children="present"),
 #'      xlab="Husband's Income")
 #' par(op)
+#'
+#' # Plot on the logit (log-odds) scale
+#' plot(m, "hincome", list(children="absent"), scale = "logit",
+#'      xlab = "Husband's Income")
 #'
 #' # Gators example: direct curve labels instead of a legend
 #' data("gators", package = "nestedLogit")
@@ -89,8 +102,11 @@
 #' @rdname plot.nestedLogit
 #' @return NULL Used for its side-effect of producing a plot
 #' @export
-plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
-                             xlab=x.var, ylab="Fitted Probability",
+plot.nestedLogit <- function(x,
+                             x.var, others,
+                             n.x.values=100L,
+                             scale=c("prob", "logit"),
+                             xlab=x.var, ylab=NULL,
                              main, cex.main=1,
                              digits.main=getOption("digits") - 2L,
                              font.main=1L,
@@ -105,6 +121,8 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
                              conf.alpha=0.3,
                              label=FALSE, label.x="max", label.cex=1.25,
                              ...){
+  scale <- match.arg(scale)
+  if (is.null(ylab)) ylab <- if (scale == "prob") "Fitted Probability" else "Fitted Log Odds"
   data <- x$data
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
@@ -160,19 +178,23 @@ plot.nestedLogit <- function(x, x.var, others, n.x.values=100L,
   response.levels <- levels(data[[response]])
   lower.upper <- paste0(".", c(round((1 - conf.level)/2, 4L),
                                 round(1 - (1 - conf.level)/2, 4L)))
+  # suffix for point-estimate columns returned by confint()
+  pt_suffix <- if (scale == "logit") ".logit" else ".p"
+
   if (!is.null(conf.level)){
-    ci <- confint(predictions, level=conf.level)
-    new <- cbind(new, ci[, paste0(response.levels, ".p")],
+    ci <- confint(predictions, level=conf.level,
+                  parm=if (scale == "logit") "logit" else "prob")
+    new <- cbind(new, ci[, paste0(response.levels, pt_suffix)],
                  ci[, paste0(response.levels, lower.upper[1L])],
                  ci[, paste0(response.levels, lower.upper[2L])])
     ymin <- min(new[, paste0(response.levels, lower.upper[1L])])
     ymax <- max(new[, paste0(response.levels, lower.upper[2L])])
   } else {
-    new <- cbind(new, predictions$p)
+    new <- cbind(new, if (scale == "logit") predictions$logit else predictions$p)
   }
 
-  # column names for fitted probabilities (depends on whether CIs are computed)
-  p_cols <- if (!is.null(conf.level)) paste0(response.levels, ".p") else response.levels
+  # column names for point estimates (depends on scale and whether CIs are computed)
+  p_cols <- if (!is.null(conf.level)) paste0(response.levels, pt_suffix) else response.levels
 
   # validate label.x
   if (label) {

@@ -9,8 +9,9 @@
   x.var,
   others,
   n.x.values = 100L,
+  scale = c("prob", "logit"),
   xlab = x.var,
-  ylab = "Fitted Probability",
+  ylab = NULL,
   main,
   cex.main = 1,
   digits.main = getOption("digits") - 2L,
@@ -46,9 +47,13 @@ specified for each variable in \code{others}.}
 \item{n.x.values}{the number of evenly spaced values of \code{x.var} at which
 to evaluate fitted probabilities to be plotted (default \code{100}).}
 
+\item{scale}{character string; \code{"prob"} (the default) plots fitted probabilities
+on the y-axis; \code{"logit"} plots fitted log odds (logits), i.e., \eqn{\log(p/(1-p))}.}
+
 \item{xlab}{label for the x-axis (defaults to the value of \code{x.var}).}
 
-\item{ylab}{label for the y-axis (defaults to \code{"Fitted Probability"}).}
+\item{ylab}{label for the y-axis (defaults to \code{"Fitted Probability"} when
+\code{scale = "prob"} and \code{"Fitted Log Odds"} when \code{scale = "logit"}).}
 
 \item{main}{main title for the graph (if missing, constructed from the variables and
 values in \code{others}).}
@@ -77,8 +82,8 @@ see \code{\link{legend}}).}
 
 \item{legend.bty}{the type of box to be drawn around the legend. The allowed values are "o" (the default) and "n".}
 
-\item{conf.level}{the level for pointwise confidence envelopes around the predicted response probabilities;
-the default is \code{.0.95}. If \code{NULL}, the confidence envelopes are suppressed.}
+\item{conf.level}{the level for pointwise confidence envelopes around the predicted values;
+the default is \code{0.95}. If \code{NULL}, the confidence envelopes are suppressed.}
 
 \item{conf.alpha}{the opacity of the confidence envelopes; the default is \code{0.3}.}
 
@@ -101,7 +106,8 @@ NULL Used for its side-effect of producing a plot
 }
 \description{
 A \code{\link{plot}} method for \code{"nestedLogit"} objects produced by the
-\code{\link{nestedLogit}} function. Fitted probabilities under the model are plotted
+\code{\link{nestedLogit}} function. Fitted probabilities under the model,
+or the corresponding logits are plotted
 for each level of the polytomous response variable, with one of the explanatory variables
 on the horizontal axis and other explanatory variables fixed to particular values.
 By default, a 95\% pointwise confidence envelope is added to the plot.
@@ -113,12 +119,17 @@ m <- nestedLogit(partic ~ hincome + children,
                         full=dichotomy("parttime", "fulltime")),
                         data=Womenlf)
 plot(m, legend.location="top")
+
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
 plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 par(op)
+
+# Plot on the logit (log-odds) scale
+plot(m, "hincome", list(children="absent"), scale = "logit",
+     xlab = "Husband's Income")
 
 # Gators example: direct curve labels instead of a legend
 data("gators", package = "nestedLogit")

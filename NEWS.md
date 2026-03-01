@@ -7,6 +7,7 @@
 * added ability for direct labels in `plot.nested-ci.R`
 * Better description of nested logit and other models in README
 * changed default colors for `plot.nestedLogit()` to use scales::hue_pal() for consistency with ggplot
+* added `scale` argument to `plot.nestedLogit()` to allow plotting on the logit (log-odds) scale (`scale = "logit"`) in addition to the default probability scale (`scale = "prob"`)
 
 ## nestedLogit 0.3.4
 
