@@ -187,8 +187,10 @@ plot.nestedLogit <- function(x,
     new <- cbind(new, ci[, paste0(response.levels, pt_suffix)],
                  ci[, paste0(response.levels, lower.upper[1L])],
                  ci[, paste0(response.levels, lower.upper[2L])])
-    ymin <- min(new[, paste0(response.levels, lower.upper[1L])])
-    ymax <- max(new[, paste0(response.levels, lower.upper[2L])])
+    lower_mat <- as.matrix(new[, paste0(response.levels, lower.upper[1L])])
+    upper_mat <- as.matrix(new[, paste0(response.levels, lower.upper[2L])])
+    ymin <- min(lower_mat[is.finite(lower_mat)])
+    ymax <- max(upper_mat[is.finite(upper_mat)])
   } else {
     new <- cbind(new, if (scale == "logit") predictions$logit else predictions$p)
   }
@@ -214,9 +216,12 @@ plot.nestedLogit <- function(x,
     if (!is.null(conf.level)){
       for (i in seq_along(response.levels)){
         level <- response.levels[i]
+        lower_y <- new[, paste0(level, lower.upper[1L])]
+        upper_y <- new[, paste0(level, lower.upper[2L])]
+        lower_y[!is.finite(lower_y)] <- ymin
+        upper_y[!is.finite(upper_y)] <- ymax
         polygon(c(new[, x.var], rev(new[, x.var])),
-                c(new[, paste0(level, lower.upper[1L])],
-                  rev(new[, paste0(level, lower.upper[2L])])),
+                c(lower_y, rev(upper_y)),
                 col=adjustcolor(col[i], alpha.f=conf.alpha), border=NA)
       }
     }

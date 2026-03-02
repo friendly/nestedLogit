@@ -1,0 +1,516 @@
+---
+title: "Other Examples of Nested Logit Models"
+author: "Michael Friendly and John Fox"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    fig_caption: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  fig.align = "center",
+  fig.height = 5,
+  fig.width  = 7,
+  comment   = "#>"
+)
+```
+
+# Introduction
+
+This document explores datasets beyond those already packaged with `nestedLogit`
+(`Womenlf`, `GSS`, `gators`, `HealthInsurance`) that could profit from treatment
+as nested logit models, either because:
+
+- the response categories have a natural **hierarchical tree structure** and the
+  independence-of-irrelevant-alternatives (IIA) assumption of plain multinomial
+  logit is implausible across nests, or
+- the response is **ordinal** and **continuation logits** (a special case of
+  nested dichotomies) are a natural model.
+
+The best candidates identified are:
+
+| Dataset | Package | Response levels | Structure | N |
+|---------|---------|-----------------|-----------|---|
+| `Chile` | carData | A/N/U/Y | two competing trees | 2700 |
+| `TravelMode` | AER | air/train/bus/car | IIA violation | 210 |
+| `Fishing` | mlogit | beach/pier/boat/charter | shore vs. vessel | 1182 |
+| `Arthritis` | vcd | None/Some/Marked | ordinal continuation | 84 |
+| `survey$Smoke` | MASS | Never/Occas/Regul/Heavy | ordinal continuation | 237 |
+| `pneumo` | VGAM | normal/mild/severe | ordinal continuation | 8 |
+
+```{r load-packages}
+library(nestedLogit)
+library(nnet)       # multinom()
+library(car)        # Anova()
+library(ggplot2)
+```
+
+---
+
+# Chilean plebiscite voting intent (`carData::Chile`) {#chile}
+
+## Data
+
+The 1988 Chilean national plebiscite asked citizens whether Pinochet should
+remain in power for another eight years. Voting intention was recorded as:
+
+- **Y** (yes, support Pinochet)
+- **N** (no, oppose Pinochet)
+- **U** (undecided)
+- **A** (abstain)
+
+`Chile` is in `carData`, which is already a dependency of `nestedLogit`, so
+no extra package is needed.
+
+```{r chile-data}
+data("Chile", package = "carData")
+
+# Drop the 168 rows with missing vote so all models use the same cases
+chile <- Chile[!is.na(Chile$vote), ]
+nrow(chile)
+table(chile$vote)
+```
+
+The strong predictor `statusquo` is a scale measuring attitude toward the
+political status quo (higher = more supportive of Pinochet's regime).
+
+```{r chile-eda}
+# statusquo distribution by vote
+boxplot(statusquo ~ vote, data = chile,
+        xlab = "Vote", ylab = "Attitude toward status quo",
+        main  = "Chile 1988: status quo attitude by voting intention")
+```
+
+## Two competing tree structures
+
+The key theoretical question is the **ordering of the decision process**.
+
+### Engagement-first tree
+
+The voter first decides whether to participate meaningfully (cast a Y or N
+vote) vs. disengage (abstain or remain undecided). Engagement is then governed
+by demographic/civic variables; direction by political attitude.
+
+```
+          vote
+         /    \
+     engaged  disengaged
+      /   \     /    \
+     Y     N   A      U
+```
+
+```{r chile-dichots-eng}
+dichots_eng <- logits(
+  engage    = dichotomy(engaged    = c("Y", "N"),
+                        disengaged = c("A", "U")),
+  direction = dichotomy("Y", "N"),
+  disengage = dichotomy("A", "U")
+)
+dichots_eng
+```
+
+### Direction-first tree
+
+The voter first forms a political opinion (pro or anti status quo) and only
+then decides whether to act on it. `statusquo` should dominate the direction
+split; demographics should govern the two engagement splits.
+
+```
+         vote
+        /    \
+      pro    anti
+     /   \   /   \
+    Y     U N     A
+```
+
+```{r chile-dichots-dir}
+dichots_dir <- logits(
+  direction  = dichotomy(pro  = c("Y", "U"),
+                         anti = c("N", "A")),
+  engage_pro = dichotomy("Y", "U"),
+  engage_ant = dichotomy("N", "A")
+)
+dichots_dir
+```
+
+## Fitting the models
+
+```{r chile-fit}
+f <- vote ~ statusquo + age + sex + education + income
+
+# Multinomial logit baseline (reference = "N")
+chile2 <- within(chile, vote <- relevel(vote, ref = "N"))
+chile_multi <- multinom(f, data = chile2, trace = FALSE)
+
+# Nested logit: engagement-first tree
+chile_eng <- nestedLogit(f, dichotomies = dichots_eng, data = chile)
+
+# Nested logit: direction-first tree
+chile_dir <- nestedLogit(f, dichotomies = dichots_dir, data = chile)
+```
+
+```{r chile-summaries}
+summary(chile_eng)
+summary(chile_dir)
+```
+
+### Omnibus tests
+
+```{r chile-anova}
+Anova(chile_eng)
+Anova(chile_dir)
+```
+
+## Which tree fits better?
+
+Both nested models have identical parameter counts (5 predictors × 3 sub-models
+= 15 slopes plus 3 intercepts), so AIC is a fair comparison.
+
+```{r chile-aic}
+data.frame(
+  model   = c("Multinomial", "Engagement tree", "Direction tree"),
+  logLik  = c(logLik(chile_multi), logLik(chile_eng), logLik(chile_dir)),
+  AIC     = c(AIC(chile_multi),    AIC(chile_eng),    AIC(chile_dir))
+)
+```
+
+The direction-first tree should fit better if `statusquo` is primarily a
+predictor of political opinion (Y/N vs. U/A) rather than of engagement. We can
+check this by inspecting the `statusquo` coefficients in each sub-model of the
+engagement tree: they should be large in `direction` and small in `engage` and
+`disengage`.
+
+## Predicted probabilities
+
+```{r chile-newdata}
+new_chile <- data.frame(
+  statusquo = seq(-1.5, 1.5, by = 0.25),
+  age       = median(chile$age,    na.rm = TRUE),
+  sex       = factor("F",  levels = levels(chile$sex)),
+  education = factor("S",  levels = levels(chile$education)),
+  income    = median(chile$income, na.rm = TRUE)
+)
+```
+
+```{r chile-predict}
+pred_eng <- as.data.frame(predict(chile_eng, newdata = new_chile))
+pred_dir <- as.data.frame(predict(chile_dir, newdata = new_chile))
+```
+
+```{r chile-plot, fig.height=5, fig.width=9}
+# as.data.frame() returns long format: one row per (observation × response level)
+# with predictor columns, plus 'response', 'p', 'se.p', 'logit', 'se.logit'
+pred_long <- rbind(
+  transform(pred_eng, model = "Engagement-first tree"),
+  transform(pred_dir, model = "Direction-first tree")
+)
+
+ggplot(pred_long, aes(x = statusquo, y = p, colour = response)) +
+  geom_line(linewidth = 1.2) +
+  facet_wrap(~ model) +
+  labs(x      = "Attitude toward status quo",
+       y      = "Predicted probability",
+       colour = "Vote",
+       title  = "Chile 1988: predicted vote probabilities by tree structure") +
+  theme_bw()
+```
+
+```{r chile-plot-logit, fig.height=5, fig.width=6}
+# Logit-scale plot using the new scale= argument
+plot(chile_eng, "statusquo",
+     others = list(age       = median(chile$age, na.rm = TRUE),
+                   sex       = "F",
+                   education = "S",
+                   income    = median(chile$income, na.rm = TRUE)),
+     scale  = "logit",
+     xlab   = "Attitude toward status quo",
+     main   = "Engagement-first tree")
+```
+
+---
+
+# Travel mode choice (`AER::TravelMode`) {#travel}
+
+```{r travel-pkg, include=FALSE}
+have_AER <- requireNamespace("AER",   quietly = TRUE)
+have_dplyr <- requireNamespace("dplyr", quietly = TRUE)
+```
+
+This section requires the `AER` and `dplyr` packages.
+
+```{r travel-eval, eval=have_AER && have_dplyr}
+library(AER)
+library(dplyr)
+data("TravelMode", package = "AER")
+```
+
+## Data structure
+
+`TravelMode` is in **long format**: 840 rows = 210 individuals × 4 travel
+alternatives (air, train, bus, car). Variables such as `wait` and `gcost` are
+*alternative-specific* — they differ across modes for the same individual.
+
+`nestedLogit()` requires **one row per individual** with the chosen mode as the
+response. Only **individual-specific** predictors (`income`, `size`) work here
+directly; alternative-specific costs would require a different approach.
+
+```{r travel-reshape, eval=have_AER && have_dplyr}
+tm <- TravelMode |>
+  filter(choice == "yes") |>
+  select(mode, income, size) |>
+  mutate(mode = relevel(factor(mode), ref = "car"))
+
+table(tm$mode)
+```
+
+## Nesting structure
+
+The canonical nested structure separates *private* (car) from *public* transit,
+then within public separates *air* from *ground*, then *train* from *bus*.
+This reflects the IIA problem: adding a near-identical alternative (e.g., a
+second bus service) should not equally reduce the probability of choosing car.
+
+```{r travel-dichots, eval=have_AER && have_dplyr}
+travel_dichots <- logits(
+  pvt_pub  = dichotomy("car", public = c("air", "train", "bus")),
+  air_grnd = dichotomy("air", ground = c("train", "bus")),
+  tr_bus   = dichotomy("train", "bus")
+)
+travel_dichots
+```
+
+## Fitting
+
+```{r travel-fit, eval=have_AER && have_dplyr}
+tm_multi  <- multinom(mode ~ income + size, data = tm, trace = FALSE)
+tm_nested <- nestedLogit(mode ~ income + size,
+                         dichotomies = travel_dichots,
+                         data = tm)
+summary(tm_nested)
+Anova(tm_nested)
+```
+
+## Predicted probabilities
+
+```{r travel-predict, eval=have_AER && have_dplyr}
+new_tm <- data.frame(income = seq(10, 60, by = 10), size = 1)
+
+# as.data.frame() returns long format; reshape to wide for comparison
+pred_tm_nested_long <- as.data.frame(predict(tm_nested, newdata = new_tm))
+nested_wide <- reshape(
+  pred_tm_nested_long[, c("income", "size", "response", "p")],
+  idvar     = c("income", "size"),
+  timevar   = "response",
+  direction = "wide"
+)
+names(nested_wide) <- sub("^p\\.", "", names(nested_wide))
+
+pred_tm_multi <- as.data.frame(predict(tm_multi, newdata = new_tm,
+                                       type = "probs"))
+
+cat("Nested logit:\n")
+cbind(income = new_tm$income, round(nested_wide[, levels(tm$mode)], 3))
+
+cat("Multinomial logit:\n")
+cbind(income = new_tm$income, round(pred_tm_multi[, levels(tm$mode)], 3))
+```
+
+## Model comparison
+
+```{r travel-aic, eval=have_AER && have_dplyr}
+data.frame(
+  model  = c("Multinomial", "Nested"),
+  logLik = c(logLik(tm_multi), logLik(tm_nested)),
+  AIC    = c(AIC(tm_multi),    AIC(tm_nested))
+)
+```
+
+---
+
+# Fishing mode choice (`mlogit::Fishing`) {#fishing}
+
+```{r fishing-pkg, include=FALSE}
+have_mlogit <- requireNamespace("mlogit", quietly = TRUE)
+```
+
+This section requires the `mlogit` package.
+
+```{r fishing-load, eval=have_mlogit}
+data("Fishing", package = "mlogit")
+```
+
+## Overview
+
+1182 US recreational anglers each chose one of four fishing modes:
+`beach`, `pier`, `boat`, `charter`. The natural nesting separates
+*shore-based* from *vessel-based* alternatives:
+
+```
+       fishing
+      /        \
+   shore      vessel
+  /     \    /      \
+beach  pier boat  charter
+```
+
+Shore-based modes share unobserved attributes (no boat required, lower cost
+and commitment) that vessel-based modes do not, so IIA is plausible within
+but not across groups.
+
+`Fishing` is in long format (4 rows per individual) with alternative-specific
+`price` and `catch` variables. As with `TravelMode`, only the individual-
+specific variable `income` can be used directly with `nestedLogit()`.
+
+```{r fishing-reshape, eval=have_mlogit}
+fishing_wide <- Fishing[Fishing$mode == Fishing$mode[1], ]  # placeholder
+# TODO: proper reshape to one-row-per-person with chosen mode as response
+# The mlogit package stores data differently; reshaping requires care.
+# head(Fishing)
+```
+
+The `mlogit`-specific long format requires reshaping before `nestedLogit()`
+can be applied. This is left as a TODO pending a clean data preparation step.
+
+---
+
+# Arthritis treatment outcome (`vcd::Arthritis`) {#arthritis}
+
+```{r arthritis-pkg, include=FALSE}
+have_vcd <- requireNamespace("vcd", quietly = TRUE)
+```
+
+```{r arthritis-load, eval=have_vcd}
+data("Arthritis", package = "vcd")
+str(Arthritis)
+table(Arthritis$Improved)
+```
+
+## Overview
+
+84 patients in a double-blind clinical trial received either an active treatment
+or a placebo. The outcome `Improved` is *ordinal*:
+
+```
+      Improved
+     /        \
+  None      Any improvement
+            /             \
+         Some           Marked
+```
+
+Continuation logits are natural here: dichotomy 1 asks whether the patient
+improved at all; dichotomy 2 asks, given improvement, whether it was marked
+rather than merely some. Treated patients should have higher probabilities at
+both transitions.
+
+```{r arthritis-dichots, eval=have_vcd}
+arth_dichots <- continuationLogits(c("None", "Some", "Marked"))
+arth_dichots
+```
+
+```{r arthritis-fit, eval=have_vcd}
+arth_nested <- nestedLogit(Improved ~ Treatment + Sex + Age,
+                           dichotomies = arth_dichots,
+                           data = Arthritis)
+summary(arth_nested)
+Anova(arth_nested)
+```
+
+```{r arthritis-plot, eval=have_vcd}
+plot(arth_nested, x.var = "Age",
+     others = list(Treatment = "Treated", Sex = "Female"),
+     xlab   = "Age",
+     main   = "Arthritis: Treatment = Treated, Sex = Female")
+```
+
+---
+
+# Smoking status (`MASS::survey`) {#smoking}
+
+```{r survey-load}
+data("survey", package = "MASS")
+# Drop NAs on Smoke
+sv <- survey[!is.na(survey$Smoke), ]
+table(sv$Smoke)
+```
+
+## Overview
+
+237 Australian university students. `Smoke` is ordinal:
+`Never` < `Occas` < `Regul` < `Heavy`.
+
+Continuation logits:
+- Dichotomy 1: Never vs. ever smoked
+- Dichotomy 2: Occasional vs. regular+
+- Dichotomy 3: Regular vs. heavy
+
+```{r smoke-dichots}
+smoke_dichots <- continuationLogits(c("Never", "Occas", "Regul", "Heavy"))
+smoke_dichots
+```
+
+```{r smoke-fit}
+smoke_nested <- nestedLogit(Smoke ~ Sex + Age + Exer,
+                            dichotomies = smoke_dichots,
+                            data = sv)
+summary(smoke_nested)
+Anova(smoke_nested)
+```
+
+```{r smoke-plot}
+plot(smoke_nested, x.var = "Age",
+     others = list(Sex = "Female", Exer = "Some"),
+     xlab   = "Age",
+     main   = "Smoking: Female students, some exercise")
+```
+
+**Note**: With only 237 observations and modest predictors, results are
+illustrative rather than definitive.
+
+---
+
+# Ordinal examples — brief sketches
+
+## Pneumoconiosis severity (`VGAM::pneumo`)
+
+```{r pneumo-pkg, include=FALSE}
+have_VGAM <- requireNamespace("VGAM", quietly = TRUE)
+```
+
+```{r pneumo-show, eval=have_VGAM}
+data("pneumo", package = "VGAM")
+pneumo
+```
+
+8 grouped observations on coal miners. Response: `normal` / `mild` / `severe`.
+Predictor: `duration` (years of dust exposure).  Very small data but the story
+is clean — continuation logits on an ordinal severity scale vs. a single
+continuous dose predictor.
+
+```{r pneumo-fit, eval=have_VGAM}
+# pneumo is aggregated; nestedLogit() needs individual-level data or
+# frequency weights — requires expansion or a weighted interface.
+# Placeholder: would use continuationLogits(c("normal", "mild", "severe"))
+```
+
+## Mental health status (Agresti)
+
+Mental health status (`Well`, `Mild`, `Moderate`, `Impaired`) vs. SES and
+life events — Table 9.1 in Agresti *Categorical Data Analysis* (2002).
+May be available via `vcdExtra::Mental` or must be entered from the book.
+Classic illustration of continuation logits for an ordinal psychiatric outcome.
+
+---
+
+# Session info
+
+```{r session-info}
+sessionInfo()
+```
