@@ -5,15 +5,15 @@ Load the packages we’ll use here:
 ``` r
 library(nestedLogit)    # Nested Dichotomy Logistic Regression Models
 library(ggeffects)      # Create Tidy Data Frames of Marginal Effects
-library(ggplot2)        # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
 ```
 
 ## Overview
 
-The `ggeffects` package (Lüdecke, 2018, 2025) provides a simple and
-unified interface for computing and plotting adjusted predictions and
-marginal effects from a wide variety of regression models. Its main
-function,
+The `ggeffects` package (**R-ggeffects?**; **ggeffects2018?**) provides
+a simple and unified interface for computing and plotting adjusted
+predictions and marginal effects from a wide variety of regression
+models. Its main function,
 [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html),
 returns a tidy data frame of model predictions that can be plotted
 directly with a built-in
@@ -253,11 +253,3 @@ which describes a manual workflow using
 construct fully customized `ggplot2` plots.
 
 ## References
-
-Lüdecke, D. (2018). Ggeffects: Tidy data frames of marginal effects from
-regression models. *Journal of Open Source Software*, *3*(26), 772.
-http://doi.org/[10.21105/joss.00772](https://doi.org/10.21105/joss.00772)
-
-Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
-effects for ggplot from model outputs*. Retrieved from
-<https://strengejacke.github.io/ggeffects/>

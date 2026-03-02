@@ -60,7 +60,7 @@ names(pred.nested)
 ```
 
 As explained in
-[`help(predict.nestedLogit)`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md),
+[`help(predict.nestedLogit)`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md),
 the predict method returns a complicated structure – a list of four data
 frames corresponding to the predicted probabilities for the response
 categories, the corresponding logits, and each of their standard errors.
@@ -134,8 +134,7 @@ observations.
 
 Plot legends are somewhat hard to read and take up unnecessary space in
 the plot, so it is often better to label the curves directly. The
-`geomtextpath` package (Cameron & van den Brand, 2025) produces a nicer
-plot.
+`geomtextpath` package (**R-geomtextpath?**) produces a nicer plot.
 
 ``` r
 gg1 + geom_textline(aes(label = response), 
@@ -351,9 +350,6 @@ particular it is clear that neither husband’s income nor having young
 children has any effect on the decision to work part-time.
 
 ## References
-
-Cameron, A., & van den Brand, T. (2025). *Geomtextpath: Curved text in
-ggplot2*. Retrieved from <https://allancameron.github.io/geomtextpath/>
 
 Wickham, H., Chang, W., Henry, L., Pedersen, T. L., Takahashi, K.,
 Wilke, C., … van den Brand, T. (2026). *ggplot2: Create elegant data

@@ -190,7 +190,7 @@ data("Womenlf", package = "carData")
                    data=Womenlf)
   print(summary(m))
 #> Nested logit models: partic ~ hincome + children
-#> <environment: 0x000001ce7e664178>
+#> <environment: 0x000002556af0d078>
 #> 
 #> Response work: {not.work} vs. working{parttime, fulltime}
 #> Call:
@@ -273,7 +273,7 @@ data("Womenlf", package = "carData")
                                  working=list("parttime", "fulltime")),
               data=Womenlf)
 #> Nested logit models: partic ~ hincome + children
-#> <environment: 0x000001ce7e664178>
+#> <environment: 0x000002556af0d078>
 #> 
 #> Call:  glm(formula = not.work_v_working ~ hincome + children, family = binomial, 
 #>     data = Womenlf, contrasts = contrasts)

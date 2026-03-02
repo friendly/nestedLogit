@@ -92,7 +92,7 @@ car::Anova(m.GSS)
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 summary(m.GSS)
 #> Nested logit models: degree ~ parentdeg * year
-#> <environment: 0x000001ce834bb3e0>
+#> <environment: 0x0000025563d85190>
 #> 
 #> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
 #> Call:

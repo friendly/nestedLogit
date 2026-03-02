@@ -2,9 +2,31 @@
 
 ## nestedLogit 0.3.5
 
-- add gators data, food choice of aligators from Agresti
+This is a major release of the package adding considerable functionality
+for plotting and other features
+
+- add `gators` data, food choice of alligators from Agresti
 - added an article illustrating use of the `ggeffects` package for
+  nestedLogit models \[only an article, because work on this is
+  continuing\]
+- added an article showing use of the `easystats` packages for
   nestedLogit models
+- re-factored
+  [`predict.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md)
+  and related to its own file for improved documentation
+- added ability for direct labels in `plot.nested-ci.R`
+- Better description of nested logit and other models in README
+- changed default colors for
+  [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
+  to use scales::hue_pal() for consistency with ggplot
+- added `scale` argument to
+  [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
+  to allow plotting on the logit (log-odds) scale (`scale = "logit"`) in
+  addition to the default probability scale (`scale = "prob"`)
+- added
+  [`as.tree()`](https://friendly.github.io/nestedLogit/reference/as.tree.md)
+  method for ASCII printing of the tree of nested dichotomies
+- Added vignette: “Other Examples of Nested Logit Models”
 
 ## nestedLogit 0.3.4
 
@@ -32,7 +54,7 @@ CRAN release: 2023-06-22
 ## nestedLogit 0.3.1
 
 - correct buglet in `as.data.frame` method when `newdata` has one column
-- [`predict.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md)
+- [`predict.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md)
   now includes the `newdata` data frame as an additional component
   (`.data`) in its result. Consequently, the `newdata` argument is no
   longer required in the `as.data.frame` method.

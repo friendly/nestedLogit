@@ -1,6 +1,6 @@
 # nestedLogit
 
-**Version 0.3.5**; documentation built for `pkgdown` 2026-02-24
+**Version 0.3.5**; documentation built for `pkgdown` 2026-02-28
 
 The `nestedLogit` package provides functions for fitting *nested
 dichotomy* logistic regression models for a **polytomous** response
@@ -30,27 +30,39 @@ dichotomies.](reference/figures/nested.jpg)
 **Nested dichotomies**: The boxes show two different ways a
 four-category response can be represented as three nested dichotomies.
 
-The basic model for this situation is the standard **multinomial
-logistic model** (fit by: e.g.,
-[`nnet::multinom()`](https://rdrr.io/pkg/nnet/man/multinom.html)) which
-compares response categories to a *reference level*. When you can think
-of the differences among the response categories as a set nested
-comparisons among subsets of the categories, the approach of nested
-dichotomies is simpler, because:
+## Releated models for a polytomous response
 
-- Nested dichotomies are statistically independent, and hence:
-- the likelihood chi-square statistics for the sub-models are additive;
-- they provide an additive decomposition of tests for the overall
+The basic model for this situation ($`m > 2`$ response categories) is
+the standard [**multinomial logistic
+model**](https://en.wikipedia.org/wiki/Multinomial_logistic_regression)
+(fit by: e.g.,
+[`nnet::multinom()`](https://rdrr.io/pkg/nnet/man/multinom.html)) which
+compares response categories to a *reference level*.
+
+When you can think of the differences among the response categories as a
+set nested comparisons among subsets of the categories, the approach of
+nested dichotomies is simpler, because:
+
+- Nested dichotomies are **statistically independent**, and hence:
+- the likelihood chi-square statistics for the sub-models are
+  **additive**;
+- they provide an additive decomposition of tests for the **overall**
   polytomous response.
 - You can think of this as breaking up the overall question of “How do
-  the response categories differ?” into $`m-1`$ sub-questions that
-  answer the global one.
+  the response categories differ?” into $`m-1`$ non-overlapping
+  sub-questions that answer the global one.
 
 When the dichotomies make sense substantively, this method can be a
 simpler alternative to the standard **multinomial logistic model** which
 compares response categories to a reference level. This choice is
 similar to using **orthogonal contrasts** among factor categories in an
 ANOVA, as opposed to using the default reference-level coding.
+
+The benefit is that, with nested logit models, you get to ask
+substantively more interesting questions **directly** than you can with
+the multinomial logit model. The results (for overall tests) are nearly
+equivalent. But, you get to **think better** about your problem with the
+nested logit model.
 
 ### Ordered categories
 
@@ -81,8 +93,24 @@ development version (0.3.5) from either
 The package provides one main function,
 [`nestedLogit()`](https://friendly.github.io/nestedLogit/reference/nestedLogit.md)
 for fitting the set of $`(m-1)`$ binary logistic regression models for a
-polytomous response with $`m`$ levels. These can be specified using
-helper functions,
+polytomous response with $`m`$ levels. It has the full suited of methods
+associated with [`glm()`](https://rdrr.io/r/stats/glm.html) and other
+model fitting methods.
+
+What is novel in R software design are aspects of a grammar for
+specifying dichotomies in model formulas, and the idea of fitting an
+overall model, which is composed of submodels that we want to also
+consider, test, plot, …
+
+### Specifying dichotomies
+
+The essential idea here is to have a simple notation expressing a
+dichotomy amongst response levels, like `{{A, B}, {C, D}}`, and then a
+way to specify a collection of $`m-1`$ of these that can be used
+productively in data analysis and visualization.
+
+In the `nestedLogit` package these can be specified using helper
+functions:
 
 - [`dichotomy()`](https://friendly.github.io/nestedLogit/reference/nestedLogit.md):
   constructs a *single* dichotomy among the levels of a response factor;
@@ -371,13 +399,18 @@ plot(m, "hincome", list(children="present"),
 
 - A more general discussion of nested dichotomies logistic regression
   and detailed examples can be found in
-  [`vignette("nestedLogit")`](https://friendly.github.io/nestedLogit/articles/nestedLogit.md)
+  [`vignette("nestedLogit", package="nestedLogit")`](https://friendly.github.io/nestedLogit/articles/nestedLogit.md)
+  and in the [pkgdown
+  documentation](https://friendly.github.io/nestedLogit/articles/nestedLogit.html).
 
 - A variety of other plots can be produced using `ggplot()`, as
   described in the vignette,
-  [`vignette("plotting-ggplot")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md).
+  [`vignette("plotting-ggplot")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md)
+  and in the [pkgdown
+  documentation](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.html).
 
-- A new vignette,
+- Figuring out how to calculate uncertainty estimates for nested logit
+  models was solved John Fox. The vignette,
   “[`vignette("standard-errors")`](https://friendly.github.io/nestedLogit/articles/standard-errors.md),
   describes the mathematics behind the calculation of standard errors
   using the delta method.

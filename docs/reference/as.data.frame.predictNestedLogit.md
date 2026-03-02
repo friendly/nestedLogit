@@ -1,7 +1,7 @@
 # Convert a Predicted Objects to a data.frame
 
 These functions provide simple ways to convert the results of
-[`predict.nestedLogit`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md)
+[`predict.nestedLogit`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md)
 to a data frame in a consistent format for plotting and other actions.
 
 ## Usage

@@ -3,11 +3,11 @@
 A [`plot`](https://rdrr.io/r/graphics/plot.default.html) method for
 `"nestedLogit"` objects produced by the
 [`nestedLogit`](https://friendly.github.io/nestedLogit/reference/nestedLogit.md)
-function. Fitted probabilities under the model are plotted for each
-level of the polytomous response variable, with one of the explanatory
-variables on the horizontal axis and other explanatory variables fixed
-to particular values. By default, a 95% pointwise confidence envelope is
-added to the plot.
+function. Fitted probabilities under the model, or the corresponding
+logits are plotted for each level of the polytomous response variable,
+with one of the explanatory variables on the horizontal axis and other
+explanatory variables fixed to particular values. By default, a 95%
+pointwise confidence envelope is added to the plot.
 
 ## Usage
 
@@ -18,8 +18,9 @@ plot(
   x.var,
   others,
   n.x.values = 100L,
+  scale = c("prob", "logit"),
   xlab = x.var,
-  ylab = "Fitted Probability",
+  ylab = NULL,
   main,
   cex.main = 1,
   digits.main = getOption("digits") - 2L,
@@ -27,13 +28,16 @@ plot(
   pch = 1L:length(response.levels),
   lwd = 3,
   lty = 1L:length(response.levels),
-  col = palette()[1L:length(response.levels)],
+  col = (scales::hue_pal())(length(response.levels)),
   legend = TRUE,
   legend.inset = 0.01,
   legend.location = "topleft",
   legend.bty = "n",
   conf.level = 0.95,
   conf.alpha = 0.3,
+  label = FALSE,
+  label.x = "max",
+  label.cex = 1.25,
   ...
 )
 ```
@@ -63,13 +67,20 @@ plot(
   the number of evenly spaced values of `x.var` at which to evaluate
   fitted probabilities to be plotted (default `100`).
 
+- scale:
+
+  character string; `"prob"` (the default) plots fitted probabilities on
+  the y-axis; `"logit"` plots fitted log odds (logits), i.e.,
+  \\\log(p/(1-p))\\.
+
 - xlab:
 
   label for the x-axis (defaults to the value of `x.var`).
 
 - ylab:
 
-  label for the y-axis (defaults to `"Fitted Probability"`).
+  label for the y-axis (defaults to `"Fitted Probability"` when
+  `scale = "prob"` and `"Fitted Log Odds"` when `scale = "logit"`).
 
 - main:
 
@@ -109,7 +120,7 @@ plot(
 - legend:
 
   if `TRUE` (the default), add a legend for the response levels to the
-  graph.
+  graph. Ignored when `label = TRUE`.
 
 - legend.inset:
 
@@ -129,12 +140,30 @@ plot(
 - conf.level:
 
   the level for pointwise confidence envelopes around the predicted
-  response probabilities; the default is `.0.95`. If `NULL`, the
-  confidence envelopes are suppressed.
+  values; the default is `0.95`. If `NULL`, the confidence envelopes are
+  suppressed.
 
 - conf.alpha:
 
   the opacity of the confidence envelopes; the default is `0.3`.
+
+- label:
+
+  if `TRUE`, label the curves directly instead of using a legend.
+  Default is `FALSE`.
+
+- label.x:
+
+  where to place the label for each curve. Either a single string,
+  `"min"` or `"max"` (applied to all curves), or a character vector of
+  length equal to the number of response categories with each element
+  being `"min"` or `"max"`, e.g. `label.x = c("min", "max", "max")`.
+  `"min"` places the label at the left end of the curve; `"max"` (the
+  default) places it at the right end.
+
+- label.cex:
+
+  character expansion factor for direct labels; default `1.25`.
 
 - ...:
 
@@ -152,7 +181,7 @@ NULL Used for its side-effect of producing a plot
 
 ## Author
 
-John Fox <jfox@mcmaster.ca>
+John Fox, Michael Friendly
 
 ## Examples
 
@@ -166,6 +195,7 @@ plot(m, legend.location="top")
 #> Note: hincome will be used for the horizontal axis
 #> Note: missing predictor children set to its first level, 'absent'
 
+
 op <- par(mfcol=c(1, 2), mar=c(4, 4, 3, 1) + 0.1)
 plot(m, "hincome", list(children="absent"),
      xlab="Husband's Income", legend=FALSE)
@@ -173,4 +203,28 @@ plot(m, "hincome", list(children="present"),
      xlab="Husband's Income")
 
 par(op)
+
+# Plot on the logit (log-odds) scale
+plot(m, "hincome", list(children="absent"), scale = "logit",
+     xlab = "Husband's Income")
+
+
+# Gators example: direct curve labels instead of a legend
+data("gators", package = "nestedLogit")
+gators.nested <- nestedLogit(food ~ length,
+  logits(d1 = dichotomy("Other", c("Fish", "Invertebrates")),
+         d2 = dichotomy("Fish", "Invertebrates")),
+  data = gators)
+
+# All labels at the right end (default)
+plot(gators.nested, x.var = "length", label = TRUE,
+     xlab = "Alligator length (m)")
+
+
+# Mixed placement: Other and Invertebrates labeled at left, Fish at right
+# (food levels are: "Other", "Fish", "Invertebrates")
+plot(gators.nested, x.var = "length", label = TRUE,
+     label.x = c("min", "max", "min"),
+     xlab = "Alligator length (m)")
+
 ```

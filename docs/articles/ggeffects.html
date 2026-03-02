@@ -44,6 +44,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/easystats.html">Using easystats with nestedLogit models</a></li>
     <li><a class="dropdown-item" href="../articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="../articles/other-examples.html">Other Examples of Nested Logit Models</a></li>
     <li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
   </ul>
@@ -71,7 +72,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly</h4>
             
-            <h4 data-toc-skip class="date">2026-02-27</h4>
+            <h4 data-toc-skip class="date">2026-03-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/articles/ggeffects.Rmd" class="external-link"><code>vignettes/articles/ggeffects.Rmd</code></a></small>
       <div class="d-none name"><code>ggeffects.Rmd</code></div>
@@ -87,10 +88,10 @@ Friendly</h4>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <code>ggeffects</code> package <span class="citation">(Lüdecke,
-2018, 2025)</span> provides a simple and unified interface for computing
-and plotting adjusted predictions and marginal effects from a wide
-variety of regression models. Its main function,
+<p>The <code>ggeffects</code> package <span class="citation">(<strong>R-ggeffects?</strong>;
+<strong>ggeffects2018?</strong>)</span> provides a simple and unified
+interface for computing and plotting adjusted predictions and marginal
+effects from a wide variety of regression models. Its main function,
 <code><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response()</a></code>, returns a tidy data frame of model
 predictions that can be plotted directly with a built-in
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method or further customized with
@@ -311,20 +312,9 @@ describes a manual workflow using <code><a href="https://rdrr.io/r/stats/predict
 <code>model = "dichotomies"</code> and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> to
 construct fully customized <code>ggplot2</code> plots.</p>
 </div>
-<div class="section level2 unnumbered">
-<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
-<div id="ref-ggeffects2018" class="csl-entry">
-Lüdecke, D. (2018). Ggeffects: Tidy data frames of marginal effects from
-regression models. <em>Journal of Open Source Software</em>,
-<em>3</em>(26), 772. http://doi.org/<a href="https://doi.org/10.21105/joss.00772" class="external-link">10.21105/joss.00772</a>
-</div>
-<div id="ref-R-ggeffects" class="csl-entry">
-Lüdecke, D. (2025). <em>Ggeffects: Create tidy data frames of marginal
-effects for ggplot from model outputs</em>. Retrieved from <a href="https://strengejacke.github.io/ggeffects/" class="external-link">https://strengejacke.github.io/ggeffects/</a>
-</div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

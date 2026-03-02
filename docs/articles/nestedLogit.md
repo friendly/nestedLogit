@@ -590,9 +590,8 @@ linearHypothesis(wlf.nested, c("hincome", "childrenpresent"))
 #> Chisq = 57.813, Df = 4, Pr(>Chisq) = 8.4e-12
 ```
 
-**Tidy summaries**: The **broom** package (Robinson, Hayes, Couch, &
-Hvitfeldt, 2026) provides functions for compact and tidy summaries of
-fitted models. The
+**Tidy summaries**: The **broom** package (**R-broom?**) provides
+functions for compact and tidy summaries of fitted models. The
 [`glance()`](https://generics.r-lib.org/reference/glance.html) method
 for a `"nestedLogit"` model produces a one-line summary of the
 statistics for each dichotomy. The
@@ -873,14 +872,15 @@ full-time
 
 We provide a `"nestedLogit"` method for the
 [`Effect()`](https://rdrr.io/pkg/effects/man/effect.html) function in
-the **effects** package (Fox, 2003; Fox & Weisberg, 2019). Because
-[`Effect()`](https://rdrr.io/pkg/effects/man/effect.html) is the basic
-building block for other functions in the **effects** package, such as
+the **effects** package (Fox & Weisberg, 2019; **effects2003?**).
+Because [`Effect()`](https://rdrr.io/pkg/effects/man/effect.html) is the
+basic building block for other functions in the **effects** package,
+such as
 [`predictorEffects()`](https://rdrr.io/pkg/effects/man/predictorEffects.html)
-(Fox & Weisberg, 2018), the full range of capabilities of the
-**effects** package is available; in particular, it’s possible to
-produce effect plots similar to those for multinomial logistic
-regression models (Fox & Hong, 2009).
+(**effects2018?**), the full range of capabilities of the **effects**
+package is available; in particular, it’s possible to produce effect
+plots similar to those for multinomial logistic regression models
+(**effects2009?**).
 
 We illustrate with the nested-logit model fit to the `Womenlf` data set:
 
@@ -931,9 +931,9 @@ The computation and display of effect graphs are highly customizable.
 For details, see the documentation for the **effects** package.
 
 Effect plots for nestedLogit models are also supported in the
-**ggeffects** package (Lüdecke, 2025). For example, the following (not
-run) produces plots of predicted probabilities for the same model with
-separate panels for the levels of `partic`.
+**ggeffects** package (**R-ggeffects?**). For example, the following
+(not run) produces plots of predicted probabilities for the same model
+with separate panels for the levels of `partic`.
 
 ``` r
 ggpredict(wlf.nested, c("hincome[all]", "children")) |> plot()
@@ -1170,23 +1170,9 @@ data* (Second edition). Cambridge, MA: MIT Press.
 Fox, J. (1984). *Linear statistical models and related methods*. New
 York: Wiley.
 
-Fox, J. (2003). Effect displays in R for generalised linear models.
-*Journal of Statistical Software*, *8*(15), 1–27.
-http://doi.org/[10.18637/jss.v008.i15](https://doi.org/10.18637/jss.v008.i15)
-
 Fox, J. (2016). *Applied regression analysis and generalized linear
 models* (Third edition). Thousand Oaks CA: SAGE. Retrieved from
 <https://www.john-fox.ca/AppliedRegression/index.html>
-
-Fox, J., & Hong, J. (2009). Effect displays in R for multinomial and
-proportional-odds logit models: Extensions to the effects package.
-*Journal of Statistical Software*, *32*(1), 1–24.
-http://doi.org/[10.18637/jss.v032.i01](https://doi.org/10.18637/jss.v032.i01)
-
-Fox, J., & Weisberg, S. (2018). Visualizing fit and lack of fit in
-complex regression models with predictor effect plots and partial
-residuals. *Journal of Statistical Software*, *87*(9), 1–27.
-http://doi.org/[10.18637/jss.v087.i09](https://doi.org/10.18637/jss.v087.i09)
 
 Fox, J., & Weisberg, S. (2019). *An R companion to applied regression*
 (Third edition). Thousand Oaks CA: Sage. Retrieved from
@@ -1202,14 +1188,6 @@ applied regression data sets*. Retrieved from
 Friendly, M., & Meyer, D. (2016). *Discrete data analysis with R:
 Visualization and modeling techniques for categorical and count data*.
 Boca Raton, FL: Chapman & Hall/CRC.
-
-Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
-effects for ggplot from model outputs*. Retrieved from
-<https://strengejacke.github.io/ggeffects/>
-
-Robinson, D., Hayes, A., Couch, S., & Hvitfeldt, E. (2026). *Broom:
-Convert statistical objects into tidy tibbles*. Retrieved from
-<https://broom.tidymodels.org/>
 
 Venables, W. N., & Ripley, B. D. (2002). *Modern applied statistics with
 s* (Fourth). New York: Springer. Retrieved from

@@ -1,9 +1,11 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://friendly.github.io/nestedLogit/404.html</loc></url>
+<url><loc>https://friendly.github.io/nestedLogit/articles/easystats.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/ggeffects.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/index.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/nestedLogit.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/nestedLogits.html</loc></url>
+<url><loc>https://friendly.github.io/nestedLogit/articles/other-examples.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/partials/methods-2.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/partials/methods.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/articles/plotting-ggplot.html</loc></url>
@@ -13,6 +15,7 @@
 <url><loc>https://friendly.github.io/nestedLogit/index.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/news/index.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/as.data.frame.predictNestedLogit.html</loc></url>
+<url><loc>https://friendly.github.io/nestedLogit/reference/as.tree.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/broomMethods.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/Effect.nestedLogit.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/gators.html</loc></url>
@@ -24,5 +27,6 @@
 <url><loc>https://friendly.github.io/nestedLogit/reference/nestedLogit.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/nestedMethods.html</loc></url>
 <url><loc>https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.html</loc></url>
+<url><loc>https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.html</loc></url>
 </urlset>
 
