@@ -37,6 +37,7 @@ Imports:
     tibble,
     scales
 Suggests:
+    AER,
     carData,
     geomtextpath,
     ggplot2,

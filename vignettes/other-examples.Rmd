@@ -2,12 +2,18 @@
 title: "Other Examples of Nested Logit Models"
 author: "Michael Friendly"
 date: "`r Sys.Date()`"
+package: nestedLogit
 output:
-  html_document:
+  rmarkdown::html_vignette:
     toc: true
-    toc_float: true
     number_sections: true
-    fig_caption: yes
+fig_caption: yes
+bibliography: ["references.bib", "packages.bib"]
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Other Examples of Nested Logit Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -18,8 +24,14 @@ knitr::opts_chunk$set(
   fig.align = "center",
   fig.height = 5,
   fig.width  = 7,
-  comment   = "#>"
+  fig.path   = "fig/",
+  dev        = "png",
+  comment    = "#>"
 )
+
+# packages to be cited in packages.bib
+.to.cite <- c("nestedLogit", "nnet", "car", "ggplot2", "AER", "dplyr",
+               "mlogit", "vcd", "MASS")
 ```
 
 # Introduction
@@ -313,15 +325,12 @@ plot(chile_eng, "statusquo",
 
 # Travel mode choice (`AER::TravelMode`) {#travel}
 
-The dataset `AER::TravelMode` is a classic in econometrics, originally from Greene (2003).
+The dataset `AER::TravelMode` is a classic in econometrics, originally from @Greene:2003.
 It relates to the mode of travel chosen by individuals for travel between
 Sydney and Melbourne, Australia.
 
 * Do they choose to go by "car", "air", "train", or "bus"?
 * How do variables like cost, waiting time, household income influence that choice?
-
-<!-- DONE: Reference added below. -->
-Greene, W.H. (2003). *Econometric Analysis*, 5th edition. Upper Saddle River, NJ: Prentice Hall.
 
 ```{r travel-pkg, include=FALSE}
 have_AER <- requireNamespace("AER",   quietly = TRUE)
@@ -432,11 +441,7 @@ predictor `income`; the choice-specific `price.*` / `catch.*` variables require 
 logit / nested logit framework such as `mlogit`. This section shows the simple nested-dichotomy
 fit and notes the limitation. -->
 
-References:
-
-Cameron A, Trivedi P (2005). Microeconometrics. Cambridge University Press. doi:10.1017/CBO9780511811241.
-
-Herriges JA, Kling CL (1999). “Nonlinear Income Effects in Random Utility Models.” The Review of Economics and Statistics, 81(1), 62-72. doi:10.1162/003465399767923827, https://doi.org/10.1162/003465399767923827.
+The dataset is from @HerrgesKling:1999; see also @CameronTrivedi:2005 for an econometric treatment.
 
 
 ```{r fishing-pkg, include=FALSE}
@@ -626,7 +631,7 @@ continuous dose predictor.
 ## Mental health status (Agresti)
 
 Mental health status (`Well`, `Mild`, `Moderate`, `Impaired`) vs. SES and
-life events — Table 9.1 in Agresti *Categorical Data Analysis* (2002).
+life events — Table 9.1 in @Agresti:2002.
 May be available via `vcdExtra::Mental` or must be entered from the book.
 Classic illustration of continuation logits for an ordinal psychiatric outcome.
 
@@ -637,3 +642,10 @@ Classic illustration of continuation logits for an ordinal psychiatric outcome.
 ```{r session-info}
 sessionInfo()
 ```
+
+```{r write-bib, echo=FALSE}
+pkgs <- unique(c(.to.cite, .packages()))
+knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
+
+## References

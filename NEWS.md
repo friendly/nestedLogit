@@ -2,7 +2,7 @@
 
 This is a major release of the package adding considerable functionality for plotting and other features
 
-* add gators data, food choice of alligators from Agresti
+* add `gators` data, food choice of alligators from Agresti
 * added an article illustrating use of the `ggeffects` package for nestedLogit models [only an article, because work on this is continuing]
 * added an article showing use of the `easystats` packages for nestedLogit models
 * re-factored `predict.nestedLogit()` and related to its own file for improved documentation
@@ -11,6 +11,7 @@ This is a major release of the package adding considerable functionality for plo
 * changed default colors for `plot.nestedLogit()` to use scales::hue_pal() for consistency with ggplot
 * added `scale` argument to `plot.nestedLogit()` to allow plotting on the logit (log-odds) scale (`scale = "logit"`) in addition to the default probability scale (`scale = "prob"`)
 * added `as.tree()` method for ASCII printing of the tree of nested dichotomies
+* Added vignette: "Other Examples of Nested Logit Models"
 
 ## nestedLogit 0.3.4
 

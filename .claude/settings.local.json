@@ -11,7 +11,8 @@
       "Bash(\"/c/Program Files/R/R-4.5.2/bin/Rscript.exe\":*)",
       "Bash(cmd:*)",
       "Bash(\"C:/Program Files/R/R-4.5.2/bin/Rscript.exe\":*)",
-      "Bash(/c/R/R-4.5.2/bin/Rscript.exe:*)"
+      "Bash(/c/R/R-4.5.2/bin/Rscript.exe:*)",
+      "Bash(/tmp/test_vote2.R:*)"
     ]
   }
 }
