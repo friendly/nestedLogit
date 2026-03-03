@@ -290,6 +290,7 @@ ggplot(pred_long, aes(x = statusquo, y = p, colour = response, fill = response))
                   ymax = pmin(1, p + 1.96 * se.p)),
               alpha = 0.15, colour = NA) +
   geom_line(linewidth = 1.2) +
+  geom_point(color = "blacK") +
   facet_wrap(~ model) +
   labs(x      = "Attitude toward status quo",
        y      = "Predicted probability",
