@@ -34,10 +34,11 @@ plot(
   legend.location = "topleft",
   legend.bty = "n",
   conf.level = 0.95,
-  conf.alpha = 0.3,
+  conf.alpha = 0.25,
   label = FALSE,
   label.x = "max",
   label.cex = 1.25,
+  label.col = col,
   ...
 )
 ```
@@ -115,7 +116,8 @@ plot(
 
 - col:
 
-  line colors (see [`par`](https://rdrr.io/r/graphics/par.html)).
+  line colors for the response levels (see
+  [`par`](https://rdrr.io/r/graphics/par.html)).
 
 - legend:
 
@@ -164,6 +166,12 @@ plot(
 - label.cex:
 
   character expansion factor for direct labels; default `1.25`.
+
+- label.col:
+
+  colors for direct labels; defaults to `col`, so labels match their
+  curves. Supply a vector of length equal to the number of response
+  categories to use different colors for the labels.
 
 - ...:
 

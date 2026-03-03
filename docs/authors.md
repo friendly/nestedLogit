@@ -16,13 +16,13 @@ Source:
 [`DESCRIPTION`](https://github.com/friendly/nestedLogit/blob/HEAD/DESCRIPTION)
 
 Fox J, Friendly M (2026). *nestedLogit: Nested Dichotomy Logistic
-Regression Models*. R package version 0.3.5,
+Regression Models*. R package version 0.4.0,
 <https://github.com/friendly/nestedLogit>.
 
     @Manual{,
       title = {nestedLogit: Nested Dichotomy Logistic Regression Models},
       author = {John Fox and Michael Friendly},
       year = {2026},
-      note = {R package version 0.3.5},
+      note = {R package version 0.4.0},
       url = {https://github.com/friendly/nestedLogit},
     }

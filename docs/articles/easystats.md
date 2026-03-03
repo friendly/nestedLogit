@@ -456,7 +456,7 @@ packages in the ecosystem do not currently support `nestedLogit`:
   `estimate_prediction()` do not work with `nestedLogit` objects. For
   predicted probabilities and marginal effects, use the `ggeffects`
   package instead (see
-  `vignette("ggeffects", package = "nestedLogit")`).
+  [`vignette("ggeffects", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/ggeffects.md)).
 
 - **Diagnostic plots**:
   [`check_model()`](https://easystats.github.io/performance/reference/check_model.html)
@@ -465,8 +465,9 @@ packages in the ecosystem do not currently support `nestedLogit`:
   [`models()`](https://friendly.github.io/nestedLogit/reference/models.md).
 
 For plotting predicted probabilities of the response categories, see
-`vignette("ggeffects", package = "nestedLogit")`. For fully customized
-`ggplot2` plots including the dichotomy-level predictions, see
+[`vignette("ggeffects", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/ggeffects.md).
+For fully customized `ggplot2` plots including the dichotomy-level
+predictions, see
 [`vignette("plotting-ggplot", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md).
 
 ## References

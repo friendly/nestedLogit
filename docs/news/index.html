@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,19 +41,23 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.5" id="nestedlogit-035">nestedLogit 0.3.5<a class="anchor" aria-label="anchor" href="#nestedlogit-035"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.0" id="nestedlogit-040">nestedLogit 0.4.0<a class="anchor" aria-label="anchor" href="#nestedlogit-040"></a></h2>
 <p>This is a major release of the package adding considerable functionality for plotting and other features</p>
 <ul><li>add <code>gators</code> data, food choice of alligators from Agresti</li>
-<li>added an article illustrating use of the <code>ggeffects</code> package for nestedLogit models [only an article, because work on this is continuing]</li>
-<li>added an article showing use of the <code>easystats</code> packages for nestedLogit models</li>
+<li>added a vignette illustrating use of the <code>ggeffects</code> package for nestedLogit models</li>
+<li>added an article showing use of the <code>easystats</code> packages for nestedLogit models [not yet a vignette, because work on this is continuing]</li>
 <li>re-factored <code><a href="../reference/predict.nestedLogit.html">predict.nestedLogit()</a></code> and related to its own file for improved documentation</li>
 <li>added ability for direct labels in <code>plot.nested-ci.R</code>
 </li>
 <li>Better description of nested logit and other models in README</li>
-<li>changed default colors for <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code> to use scales::hue_pal() for consistency with ggplot</li>
+<li>changed default colors for <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code> to use <code><a href="https://scales.r-lib.org/reference/pal_hue.html" class="external-link">scales::hue_pal()</a></code> for consistency with ggplot</li>
 <li>added <code>scale</code> argument to <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code> to allow plotting on the logit (log-odds) scale (<code>scale = "logit"</code>) in addition to the default probability scale (<code>scale = "prob"</code>)</li>
 <li>added <code><a href="../reference/as.tree.html">as.tree()</a></code> method for ASCII printing of the tree of nested dichotomies</li>
 <li>Added vignette: “Other Examples of Nested Logit Models”</li>
+<li>In the <code>GSS</code> data, “l.t.highschool” changed to “&lt;highschool”</li>
+<li>Fixed problem with <code>lty</code> not passed to <code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot()</a></code> in <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code>
+</li>
+<li>In <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code>, added <code>label.col</code> argument (defaulting to the value of <code>col</code> in the call), to control the color of the curve label</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.4" id="nestedlogit-034">nestedLogit 0.3.4<a class="anchor" aria-label="anchor" href="#nestedlogit-034"></a></h2><p class="text-muted">CRAN release: 2026-02-01</p>

@@ -17,8 +17,8 @@ A data frame with 44091 rows and 3 columns.
 
   A factor representing parents' attained level of education (highest
   "degree" obtained), recording the higher of mother's and father's
-  education, with levels `"l.t.highschool"`, `"highschool"`,
-  `"college"`, and `"graduate"`.
+  education, with levels `"<highschool"`, `"highschool"`, `"college"`,
+  and `"graduate"`.
 
 - degree:
 
@@ -42,21 +42,21 @@ https://www.norc.org/Research/Projects/Pages/general-social-survey.aspx.
 
 ``` r
 round(100*with(GSS, prop.table(table(degree, parentdeg), 2)))
-#>                 parentdeg
-#> degree           l.t.highschool highschool college graduate
-#>   l.t.highschool             39          8       2        2
-#>   highschool                 51         68      47       35
-#>   college                     6         17      36       36
-#>   graduate                    4          7      15       27
+#>              parentdeg
+#> degree        <highschool highschool college graduate
+#>   <highschool          39          8       2        2
+#>   highschool           51         68      47       35
+#>   college               6         17      36       36
+#>   graduate              4          7      15       27
 m.GSS <- nestedLogit(degree ~ parentdeg*year,
-                     continuationLogits(c("l.t.highschool",  "highschool",
+                     continuationLogits(c("<highschool",  "highschool",
                                            "college", "graduate")),
                      data=GSS)
 car::Anova(m.GSS)
 #> 
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #>                LR Chisq Df Pr(>Chisq)    
 #> parentdeg        6604.2  3     <2e-16 ***
 #> year              383.3  1     <2e-16 ***
@@ -92,11 +92,11 @@ car::Anova(m.GSS)
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 summary(m.GSS)
 #> Nested logit models: degree ~ parentdeg * year
-#> <environment: 0x0000025563d85190>
+#> <environment: 0x0000029150db1778>
 #> 
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #> Call:
-#> glm(formula = above_l.t.highschool ~ parentdeg * year, family = binomial, 
+#> glm(formula = above_.highschool ~ parentdeg * year, family = binomial, 
 #>     data = GSS, contrasts = contrasts)
 #> 
 #> Coefficients:
@@ -174,4 +174,15 @@ summary(m.GSS)
 #> 
 #> Number of Fisher Scoring iterations: 4
 #> 
+
+# plot fitted probabilities
+plot(m.GSS, x.var = "year",
+            others = list(parentdeg = "<highschool"),
+            lty = 1,
+            label = TRUE)
+
+plot(m.GSS, x.var = "year",
+            others = list(parentdeg = "graduate"),
+            lty = 1,
+            label = TRUE)
 ```

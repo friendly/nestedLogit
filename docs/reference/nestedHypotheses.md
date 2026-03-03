@@ -94,7 +94,7 @@ John Fox
 
 ``` r
 # define continuation dichotomies for level of education
-cont.dichots <- continuationLogits(c("l.t.highschool",
+cont.dichots <- continuationLogits(c("<highschool",
                                      "highschool",
                                      "college",
                                      "graduate"))
@@ -108,7 +108,7 @@ car::Anova(m) # type-II (partial) tests
 #> 
 #>  Analysis of Deviance Tables (Type II tests)
 #>  
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #>           LR Chisq Df Pr(>Chisq)    
 #> parentdeg   6604.2  3  < 2.2e-16 ***
 #> year         383.3  1  < 2.2e-16 ***
@@ -145,7 +145,7 @@ anova(update(m, . ~ . - year), m) # model comparison
 #>  Model 1: degree ~ parentdeg
 #>  Model 2: degree ~ parentdeg + year 
 #>  
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #>   Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
 #> 1     44087      33263                          
 #> 2     44086      32880  1   383.29 < 2.2e-16 ***
@@ -188,7 +188,7 @@ car::linearHypothesis(m, c("parentdeghighschool", "parentdegcollege",
 #> Model 1: restricted model
 #> Model 2: degree ~ parentdeg + year 
 #>  
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate} 
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate} 
 #>   Res.Df Df Chisq Pr(>Chisq)    
 #> 1  44089                        
 #> 2  44086  3  5085  < 2.2e-16 ***

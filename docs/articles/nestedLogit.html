@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly and John Fox</h4>
             
-            <h4 data-toc-skip class="date">2026-03-02</h4>
+            <h4 data-toc-skip class="date">2026-03-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/nestedLogit.Rmd" class="external-link"><code>vignettes/nestedLogit.Rmd</code></a></small>
       <div class="d-none name"><code>nestedLogit.Rmd</code></div>
@@ -153,7 +153,7 @@ are unaffected by choice of reference level, much as choice of reference
 level for dummy regressors created from a factor predictor doesn’t
 affect the fit of a regression model. The standard implementation of
 this model in R is <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">multinom()</a></code> in the <strong>nnet</strong>
-package <span class="citation">(Venables &amp; Ripley, 2002)</span>,
+package <span class="citation">(<strong>nnet2002?</strong>)</span>,
 which takes the first level of the response as the omitted reference
 category.</p>
 </div>
@@ -270,13 +270,12 @@ diagnostic categories might be represented by nested dichotomies.
 <h2 id="example-womens-labor-force-participation">Example: Women’s labor-force participation<a class="anchor" aria-label="anchor" href="#example-womens-labor-force-participation"></a>
 </h2>
 <p>For a principal example, we consider the data set
-<code>Womenlf</code> from the <strong>carData</strong> package <span class="citation">(Fox, Weisberg, &amp; Price, 2026b)</span>. The data
-give the responses of 263 young married women, 21–30 years old, drawn
-from a 1977 survey carried out by the York University Institute for
-Social Research <span class="citation">(Atkinson, Blishen, Ornstein,
-&amp; Stevenson, 1984)</span>. This example was originally developed by
-<span class="citation">Fox (1984, sec. 5.1.5)</span>. The variables in
-the model are:</p>
+<code>Womenlf</code> from the <strong>carData</strong> package <span class="citation">(<strong>R-carData?</strong>)</span>. The data give the
+responses of 263 young married women, 21–30 years old, drawn from a 1977
+survey carried out by the York University Institute for Social Research
+<span class="citation">(Atkinson, Blishen, Ornstein, &amp; Stevenson,
+1984)</span>. This example was originally developed by <span class="citation">Fox (1984, sec. 5.1.5)</span>. The variables in the
+model are:</p>
 <ul>
 <li>
 <code>partic</code>: labor force participation, the response, with
@@ -608,9 +607,9 @@ young children also decreases the odds of both working and working
 full-time, by about 79% and 93% respectively.</p>
 <p><strong>Analysis of deviance</strong>: A method for the
 <code><a href="https://rdrr.io/pkg/car/man/Anova.html" class="external-link">Anova()</a></code> function from the <strong>car</strong> package
-<span class="citation">(Fox, Weisberg, &amp; Price, 2026a)</span>
-computes Type II or III likelihood-ratio or Wald tests for each term in
-the model. Note that the likelihood-ratio or Wald
+<span class="citation">(<strong>R-car?</strong>)</span> computes Type II
+or III likelihood-ratio or Wald tests for each term in the model. Note
+that the likelihood-ratio or Wald
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>χ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\chi^2</annotation></semantics></math>
 and degrees of freedom for the <code>Combined Responses</code> is the
 sum of their values for the separate dichotomies:</p>
@@ -1027,10 +1026,10 @@ the <code>Womenlf</code> data
 For details, see the documentation for the <strong>effects</strong>
 package.</p>
 <p>Effect plots for nestedLogit models are also supported in the
-<strong>ggeffects</strong> package <span class="citation">(<strong>R-ggeffects?</strong>)</span>. For example,
-the following (not run) produces plots of predicted probabilities for
-the same model with separate panels for the levels of
-<code>partic</code>.</p>
+<strong>ggeffects</strong> package <span class="citation">(Lüdecke,
+2025)</span>. For example, the following (not run) produces plots of
+predicted probabilities for the same model with separate panels for the
+levels of <code>partic</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html" class="external-link">ggpredict</a></span><span class="op">(</span><span class="va">wlf.nested</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hincome[all]"</span>, <span class="st">"children"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1257,22 +1256,14 @@ Fox, J., &amp; Weisberg, S. (2019). <em>An <span>R</span> companion to
 applied regression</em> (Third edition). Thousand Oaks <span>CA</span>:
 Sage. Retrieved from <a href="https://www.john-fox.ca/Companion/index.html" class="external-link">https://www.john-fox.ca/Companion/index.html</a>
 </div>
-<div id="ref-R-car" class="csl-entry">
-Fox, J., Weisberg, S., &amp; Price, B. (2026a). <em>Car: Companion to
-applied regression</em>. Retrieved from <a href="https://github.com/bprice2652/car_repo" class="external-link">https://github.com/bprice2652/car_repo</a>
-</div>
-<div id="ref-R-carData" class="csl-entry">
-Fox, J., Weisberg, S., &amp; Price, B. (2026b). <em>carData: Companion
-to applied regression data sets</em>. Retrieved from <a href="https://r-forge.r-project.org/projects/car/" class="external-link">https://r-forge.r-project.org/projects/car/</a>
-</div>
 <div id="ref-FriendlyMeyer:2016:DDAR" class="csl-entry">
 Friendly, M., &amp; Meyer, D. (2016). <em>Discrete data analysis with
 <span>R</span>: Visualization and modeling techniques for categorical
 and count data</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.
 </div>
-<div id="ref-nnet2002" class="csl-entry">
-Venables, W. N., &amp; Ripley, B. D. (2002). <em>Modern applied
-statistics with s</em> (Fourth). New York: Springer. Retrieved from <a href="https://www.stats.ox.ac.uk/pub/MASS4/" class="external-link">https://www.stats.ox.ac.uk/pub/MASS4/</a>
+<div id="ref-R-ggeffects" class="csl-entry">
+Lüdecke, D. (2025). <em>Ggeffects: Create tidy data frames of marginal
+effects for ggplot from model outputs</em>. Retrieved from <a href="https://strengejacke.github.io/ggeffects/" class="external-link">https://strengejacke.github.io/ggeffects/</a>
 </div>
 </div>
 </div>

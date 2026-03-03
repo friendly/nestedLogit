@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly</h4>
             
-            <h4 data-toc-skip class="date">2026-03-02</h4>
+            <h4 data-toc-skip class="date">2026-03-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/articles/easystats.Rmd" class="external-link"><code>vignettes/articles/easystats.Rmd</code></a></small>
       <div class="d-none name"><code>easystats.Rmd</code></div>
@@ -512,14 +512,14 @@ packages in the ecosystem do not currently support
 <code>estimate_prediction()</code> do not work with
 <code>nestedLogit</code> objects. For predicted probabilities and
 marginal effects, use the <code>ggeffects</code> package instead (see
-<code>vignette("ggeffects", package = "nestedLogit")</code>).</p></li>
+<code><a href="../articles/ggeffects.html">vignette("ggeffects", package = "nestedLogit")</a></code>).</p></li>
 <li><p><strong>Diagnostic plots</strong>: <code><a href="https://easystats.github.io/performance/reference/check_model.html" class="external-link">check_model()</a></code>
 does not work directly on <code>nestedLogit</code> objects, but as shown
 above, it can be applied to the individual <code>glm</code> sub-models
 extracted with <code><a href="../reference/models.html">models()</a></code>.</p></li>
 </ul>
 <p>For plotting predicted probabilities of the response categories, see
-<code>vignette("ggeffects", package = "nestedLogit")</code>. For fully
+<code><a href="../articles/ggeffects.html">vignette("ggeffects", package = "nestedLogit")</a></code>. For fully
 customized <code>ggplot2</code> plots including the dichotomy-level
 predictions, see
 <code><a href="../articles/plotting-ggplot.html">vignette("plotting-ggplot", package = "nestedLogit")</a></code>.</p>

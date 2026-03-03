@@ -45,7 +45,7 @@ the military government of Augusto Pinochet should remain in power for
 another eight years. Six months before that, the independent research
 center FLASCO/Chile conducted a national survey of 27000 randomly
 selected voters. The main question concerned their intention to vote
-(`vote`) in the plebicite, which was recorded as:
+(`vote`) in the plebiscite, which was recorded as:
 
 - **Yes** (support Pinochet)
 - **No** (oppose Pinochet)
@@ -369,7 +369,7 @@ new_chile <- data.frame(
 ```
 
 We can get the predicted probabilities for these separate models for the
-dichotomites using
+dichotomies using
 [`predict.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md)
 and turning these into data frames for plotting with `ggplot2`.
 
@@ -391,6 +391,7 @@ ggplot(pred_long, aes(x = statusquo, y = p, colour = response, fill = response))
                   ymax = pmin(1, p + 1.96 * se.p)),
               alpha = 0.15, colour = NA) +
   geom_line(linewidth = 1.2) +
+  geom_point(color = "blacK") +
   facet_wrap(~ model) +
   labs(x      = "Attitude toward status quo",
        y      = "Predicted probability",
@@ -1198,7 +1199,7 @@ sessionInfo()
 #> other attached packages:
 #>  [1] dplyr_1.2.0       AER_1.2-16        survival_3.8-6    sandwich_3.1-1   
 #>  [5] lmtest_0.9-40     zoo_1.8-15        ggplot2_4.0.2     car_3.1-5        
-#>  [9] carData_3.0-6     nnet_7.3-20       nestedLogit_0.3.5
+#>  [9] carData_3.0-6     nnet_7.3-20       nestedLogit_0.4.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.6       xfun_0.56          bslib_0.10.0       htmlwidgets_1.6.4 

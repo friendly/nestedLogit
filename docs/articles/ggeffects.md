@@ -10,10 +10,10 @@ library(ggplot2)        # Data Visualisations Using the Grammar of Graphics
 
 ## Overview
 
-The `ggeffects` package (**R-ggeffects?**; **ggeffects2018?**) provides
-a simple and unified interface for computing and plotting adjusted
-predictions and marginal effects from a wide variety of regression
-models. Its main function,
+The `ggeffects` package (Lüdecke, 2018, 2025) provides a simple and
+unified interface for computing and plotting adjusted predictions and
+marginal effects from a wide variety of regression models. Its main
+function,
 [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html),
 returns a tidy data frame of model predictions that can be plotted
 directly with a built-in
@@ -25,7 +25,7 @@ visualize predicted probabilities for each response category across
 levels of the predictors, without the manual data wrangling described in
 [`vignette("plotting-ggplot", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md).
 
-## Women’s labor force participation
+## 👩 Women’s labor force participation
 
 We use the standard `Womenlf` example from the main vignette. The
 response `partic` has three categories — not working, working part-time,
@@ -42,13 +42,15 @@ wlf.nested <- nestedLogit(partic ~ hincome + children,
                           data = Womenlf)
 ```
 
-## Predicted probabilities with `predict_response()`
+### Predicted probabilities with `predict_response()`
 
 The simplest way to obtain predicted probabilities and a plot is with
 [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html),
 specifying the focal predictors in the `terms` argument. This returns
 predicted probabilities for each response level, with confidence
-intervals, averaged over the non-focal predictors.
+intervals, averaged over the non-focal predictors. The default print
+method displays these (“prettified”) for a small subset of values of the
+quantitative predictor, `hincome`.
 
 ``` r
 wlf.pred <- predict_response(wlf.nested, terms = c("hincome", "children"))
@@ -117,7 +119,8 @@ wlf.pred
 ```
 
 The default [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
-method produces a panel for each response category:
+method produces a faceted plot with one panel for each response category
+and separate curves for the levels of the other predictor (`children`).
 
 ``` r
 plot(wlf.pred)
@@ -130,7 +133,7 @@ Predicted probabilities from
 [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html)
 with default plot.
 
-## Customizing the plot
+### Customizing the plot
 
 The [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method
 returns a `ggplot` object, so it can be further customized with standard
@@ -143,7 +146,7 @@ plot(wlf.pred,
   labs(title = "Predicted Probabilities of Work by Husband's Income",
        y = "Probability",
        x = "Husband's Income") +
-  theme_ggeffects(base_size = 16) +
+  theme_ggeffects(base_size = 14) +
   theme(legend.position = "top")
 ```
 
@@ -152,7 +155,7 @@ theme.](fig/wlf-ggeffects-plot2-1.png)
 
 Customized `ggeffects` plot with adjusted labels and theme.
 
-## Plotting on the logit scale
+### Plotting on the logit scale
 
 `ggplot2` provides a built-in `"logit"` transformation for axes via
 `scale_y_continuous(transform = "logit")`. This displays predicted
@@ -187,24 +190,46 @@ scale.](fig/wlf-logit-scale-1.png)
 
 Predicted probabilities on the logit scale.
 
-## Alligator food choice
+These plots show something different, and simpler than what appears on
+the probability scale. For both the `not.work` and `fulltime` response
+categories, the effect of children is essentially an additive one, with
+having small children reducing the probability. The response category
+`parttime` shows an interactive pattern, with different shapes for those
+with children present vs. absent.
+
+## 🐊 Alligator food choice
 
 As a simpler example with a single continuous predictor, we fit a nested
-logit model to the `gators` data, predicting primary food choice from
-alligator length. The first dichotomy contrasts {Other} vs. {Fish,
-Invertebrates}, and the second contrasts {Fish} vs. {Invertebrates}.
+logit model to the `gators` data (originally from Agresti (2002))
+predicting primary food choice from alligator length. The first
+dichotomy contrasts {Other} vs. {Fish, Invertebrates}, and the second
+contrasts {Fish} vs. {Invertebrates}.
 
 ``` r
 data(gators)
+
+# setup the dichotomies
+gators.dichots = logits(
+     other   = dichotomy("Other", c("Fish", "Invertebrates")),
+     fish_inv = dichotomy("Fish", "Invertebrates"))
+
+as.tree(gators.dichots)
+#>     (response)
+#>    /           \
+#> Other {Fish, Invertebrates}
+#>          /              \
+#>       Fish         Invertebrates
+
+# fit the model
 gators.nested <- nestedLogit(food ~ length,
-                             dichotomies = logits(
-                               other   = dichotomy("Other", c("Fish", "Invertebrates")),
-                               fish_inv = dichotomy("Fish", "Invertebrates")),
+                             dichotomies = gators.dichots,
                              data = gators)
 ```
 
+Now, get the predicted response probabilities, and plot them:
+
 ``` r
-predict_response(gators.nested, terms = "length") |> 
+predict_response(gators.nested, terms = "length") |>
   plot(line_size = 2)
 ```
 
@@ -213,8 +238,9 @@ length.](fig/gators-ggeffects-1.png)
 
 Predicted food choice probabilities for alligators by length.
 
-As you can see the main thing going on here is that larger alligators
-prefer fish, which smaller ones prefer invertebrates.
+As you can see, the main thing going on here is that larger alligators
+prefer fish, which smaller ones prefer invertebrates. This makes perfect
+sense if you’re an alligator!
 
 For comparison, the basic
 [`nestedLogit::plot()`](https://rdrr.io/r/graphics/plot.default.html)
@@ -223,8 +249,9 @@ curves overlaid in a single panel (it uses
 [`graphics::matplot()`](https://rdrr.io/r/graphics/matplot.html)).
 
 ``` r
-plot(gators.nested, x.var = "length", 
-     legend.bty = "o")
+plot(gators.nested, x.var = "length",
+     lty=1, lwd = 4,
+     label = TRUE, label.col = "black", cex.lab = 1.3)
 ```
 
 ![Predicted food choice probabilities for alligators by
@@ -242,7 +269,8 @@ transformation.
 However, `ggeffects` does not currently provide access to the individual
 dichotomy sub-models that comprise the nested logit — for example,
 plotting predicted values for the `work` and `full` dichotomies
-separately.
+separately. (This is due to a conflict in the names of arguments
+(`model`), and may be resolved in a future version of `nestedLogit`.)
 
 For these more specialized displays, see
 [`vignette("plotting-ggplot", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md),
@@ -253,3 +281,14 @@ which describes a manual workflow using
 construct fully customized `ggplot2` plots.
 
 ## References
+
+Agresti, A. (2002). *Categorical data analysis* (Second edition).
+Hoboken, NJ: Wiley.
+
+Lüdecke, D. (2018). Ggeffects: Tidy data frames of marginal effects from
+regression models. *Journal of Open Source Software*, *3*(26), 772.
+http://doi.org/[10.21105/joss.00772](https://doi.org/10.21105/joss.00772)
+
+Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
+effects for ggplot from model outputs*. Retrieved from
+<https://strengejacke.github.io/ggeffects/>

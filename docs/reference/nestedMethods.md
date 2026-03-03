@@ -141,23 +141,23 @@ John Fox and Michael Friendly
 
 ``` r
 # define continuation dichotomies for level of education
-cont.dichots <- continuationLogits(c("l.t.highschool",
+cont.dichots <- continuationLogits(c("<highschool",
                                      "highschool",
                                      "college",
                                      "graduate"))
 
 # Show dichotomies in various forms
 print(cont.dichots)
-#> above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #> above_highschool: {highschool} vs. {college, graduate}
 #> above_college: {college} vs. {graduate}
 as.matrix(cont.dichots)
-#>                      l.t.highschool highschool college graduate
-#> above_l.t.highschool              0          1       1        1
-#> above_highschool                 NA          0       1        1
-#> above_college                    NA         NA       0        1
+#>                   <highschool highschool college graduate
+#> above_.highschool           0          1       1        1
+#> above_highschool           NA          0       1        1
+#> above_college              NA         NA       0        1
 as.character(cont.dichots)
-#> [1] "above_l.t.highschool = {{l.t.highschool}} {{highschool college graduate}}; above_highschool = {{highschool}} {{college graduate}}; above_college = {{college}} {{graduate}}"
+#> [1] "above_.highschool = {{<highschool}} {{highschool college graduate}}; above_highschool = {{highschool}} {{college graduate}}; above_college = {{college}} {{graduate}}"
 
 # fit a nested model for the GSS data examining education degree in relation to parent & year
 m <- nestedLogit(degree ~ parentdeg + year,
@@ -165,48 +165,34 @@ m <- nestedLogit(degree ~ parentdeg + year,
                  data=GSS)
 
 coef(m)                             # coefficient estimates
-#>                     above_l.t.highschool above_highschool above_college
-#> (Intercept)                  -42.6261632     -26.21317138 -18.253162254
-#> parentdeghighschool            1.9632884       0.60103280  -0.345479234
-#> parentdegcollege               3.1006736       1.70574631  -0.414683439
-#> parentdeggraduate              3.3512189       2.21122349   0.145720269
-#> year                           0.0216427       0.01231442   0.008909557
+#>                     above_.highschool above_highschool above_college
+#> (Intercept)               -42.6261632     -26.21317138 -18.253162254
+#> parentdeghighschool         1.9632884       0.60103280  -0.345479234
+#> parentdegcollege            3.1006736       1.70574631  -0.414683439
+#> parentdeggraduate           3.3512189       2.21122349   0.145720269
+#> year                        0.0216427       0.01231442   0.008909557
 sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
-#>         above_l.t.highschool.(Intercept) 
-#>                             2.2232428045 
-#> above_l.t.highschool.parentdeghighschool 
-#>                             0.0313786223 
-#>    above_l.t.highschool.parentdegcollege 
-#>                             0.0927607066 
-#>   above_l.t.highschool.parentdeggraduate 
-#>                             0.1275872686 
-#>                above_l.t.highschool.year 
-#>                             0.0011178164 
-#>             above_highschool.(Intercept) 
-#>                             1.9459383633 
-#>     above_highschool.parentdeghighschool 
-#>                             0.0334567993 
-#>        above_highschool.parentdegcollege 
-#>                             0.0410059198 
-#>       above_highschool.parentdeggraduate 
-#>                             0.0468809978 
-#>                    above_highschool.year 
-#>                             0.0009765976 
-#>                above_college.(Intercept) 
-#>                             3.3030647705 
-#>        above_college.parentdeghighschool 
-#>                             0.0630462422 
-#>           above_college.parentdegcollege 
-#>                             0.0703836929 
-#>          above_college.parentdeggraduate 
-#>                             0.0708577702 
-#>                       above_college.year 
-#>                             0.0016570885 
+#>         above_.highschool.(Intercept) above_.highschool.parentdeghighschool 
+#>                          2.2232428045                          0.0313786223 
+#>    above_.highschool.parentdegcollege   above_.highschool.parentdeggraduate 
+#>                          0.0927607066                          0.1275872686 
+#>                above_.highschool.year          above_highschool.(Intercept) 
+#>                          0.0011178164                          1.9459383633 
+#>  above_highschool.parentdeghighschool     above_highschool.parentdegcollege 
+#>                          0.0334567993                          0.0410059198 
+#>    above_highschool.parentdeggraduate                 above_highschool.year 
+#>                          0.0468809978                          0.0009765976 
+#>             above_college.(Intercept)     above_college.parentdeghighschool 
+#>                          3.3030647705                          0.0630462422 
+#>        above_college.parentdegcollege       above_college.parentdeggraduate 
+#>                          0.0703836929                          0.0708577702 
+#>                    above_college.year 
+#>                          0.0016570885 
 print(m)
 #> Nested logit models: degree ~ parentdeg + year
-#> <environment: 0x000002556acb51c8>
+#> <environment: 0x000002915b110340>
 #> 
-#> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, 
+#> Call:  glm(formula = above_.highschool ~ parentdeg + year, family = binomial, 
 #>     data = GSS, contrasts = contrasts)
 #> 
 #> Coefficients:
@@ -248,11 +234,11 @@ print(m)
 #> Residual Deviance: 14050     AIC: 14060
 summary(m)
 #> Nested logit models: degree ~ parentdeg + year
-#> <environment: 0x000002556acb51c8>
+#> <environment: 0x000002915b110340>
 #> 
-#> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}
+#> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #> Call:
-#> glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, 
+#> glm(formula = above_.highschool ~ parentdeg + year, family = binomial, 
 #>     data = GSS, contrasts = contrasts)
 #> 
 #> Coefficients:

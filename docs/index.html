@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
 </h1>
 </div>
 <!-- **Version 0.3.4** -->
-<p><strong>Version 0.3.5</strong>; documentation built for <code>pkgdown</code> 2026-02-28</p>
+<p><strong>Version 0.4.0</strong>; documentation built for <code>pkgdown</code> 2026-03-02</p>
 <p>The <code>nestedLogit</code> package provides functions for fitting <em>nested dichotomy</em> logistic regression models for a <strong>polytomous</strong> response (with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m &gt; 2</annotation></semantics></math> categories), such as:</p>
 <ul>
 <li>support for political party in Canada (PC, Liberal, NDP, Green, BQ),</li>
@@ -92,7 +92,7 @@
 </p>
 </div>
 <div class="section level2">
-<h2 id="releated-models-for-a-polytomous-response">Releated models for a polytomous response<a class="anchor" aria-label="anchor" href="#releated-models-for-a-polytomous-response"></a>
+<h2 id="related-models-for-a-polytomous-response">Related models for a polytomous response<a class="anchor" aria-label="anchor" href="#related-models-for-a-polytomous-response"></a>
 </h2>
 <p>The basic model for this situation (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m &gt; 2</annotation></semantics></math> response categories) is the standard <a href="https://en.wikipedia.org/wiki/Multinomial_logistic_regression" class="external-link"><strong>multinomial logistic model</strong></a> (fit by: e.g., <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html" class="external-link">nnet::multinom()</a></code>) which compares response categories to a <em>reference level</em>.</p>
 <p>When you can think of the differences among the response categories as a set nested comparisons among subsets of the categories, the approach of nested dichotomies is simpler, because:</p>
@@ -107,13 +107,13 @@
 <div class="section level3">
 <h3 id="ordered-categories">Ordered categories<a class="anchor" aria-label="anchor" href="#ordered-categories"></a>
 </h3>
-<p>Note that when the response catgegories are <strong>ordered</strong>, as in education attained: “HS” &lt; “College” &lt; “BA” &lt; “MA” &lt; “Phd”, another attractive model is the <strong>proportional odds</strong> model (e.g., fit by <code><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">MASS::polr()</a></code>). This is a simpler model, but achieves that simplicity by making the additional assumption that the coefficients for the predictors are the same for all categories.</p>
+<p>Note that when the response categories are <strong>ordered</strong>, as in education attained: “HS” &lt; “College” &lt; “BA” &lt; “MA” &lt; “PhD”, another attractive model is the <strong>proportional odds</strong> model (e.g., fit by <code><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">MASS::polr()</a></code>). This is a simpler model, but achieves that simplicity by making the additional assumption that the coefficients for the predictors are the same for all categories.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the current published version (0.3.4) from <a href="https://cran.r-project.org/package=nestedLogit" class="external-link">CRAN</a>, or the development version (0.3.5) from either <a href="https://friendly.r-universe.dev/nestedLogit" class="external-link">R-universe</a> or <a href="https://github.com/friendly/nestedLogit" class="external-link">Github</a></p>
+<p>You can install the current published version (0.3.4) from <a href="https://cran.r-project.org/package=nestedLogit" class="external-link">CRAN</a>, or the development version (0.4.0) from either <a href="https://friendly.r-universe.dev/nestedLogit" class="external-link">R-universe</a> or <a href="https://github.com/friendly/nestedLogit" class="external-link">Github</a></p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -143,7 +143,7 @@
 <div class="section level3">
 <h3 id="specifying-dichotomies">Specifying dichotomies<a class="anchor" aria-label="anchor" href="#specifying-dichotomies"></a>
 </h3>
-<p>The essential idea here is to have a simple notation expressing a dichotomy amongst response levels, like <code>{{A, B}, {C, D}}</code>, and then a way to specify a collection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math> of these that can be used productively in data analysis and visualization.</p>
+<p>The essential idea here is to have a simple notation expressing a dichotomy among response levels, like <code>{{A, B}, {C, D}}</code>, and then a way to specify a collection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m-1</annotation></semantics></math> of these that can be used productively in data analysis and visualization.</p>
 <p>In the <code>nestedLogit</code> package these can be specified using helper functions:</p>
 <ul>
 <li>

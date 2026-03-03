@@ -17,7 +17,7 @@ By default, a 95% pointwise confidence envelope is added to the plot.'><meta pro
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,10 +84,11 @@ By default, a 95% pointwise confidence envelope is added to the plot.</p>
 <span>  legend.location <span class="op">=</span> <span class="st">"topleft"</span>,</span>
 <span>  legend.bty <span class="op">=</span> <span class="st">"n"</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  conf.alpha <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  conf.alpha <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  label <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  label.x <span class="op">=</span> <span class="st">"max"</span>,</span>
 <span>  label.cex <span class="op">=</span> <span class="fl">1.25</span>,</span>
+<span>  label.col <span class="op">=</span> <span class="va">col</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -162,7 +163,7 @@ values in <code>others</code>).</p></dd>
 
 
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
-<dd><p>line colors (see <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></code>).</p></dd>
+<dd><p>line colors for the response levels (see <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></code>).</p></dd>
 
 
 <dt id="arg-legend">legend<a class="anchor" aria-label="anchor" href="#arg-legend"></a></dt>
@@ -208,6 +209,12 @@ length equal to the number of response categories with each element being
 
 <dt id="arg-label-cex">label.cex<a class="anchor" aria-label="anchor" href="#arg-label-cex"></a></dt>
 <dd><p>character expansion factor for direct labels; default <code>1.25</code>.</p></dd>
+
+
+<dt id="arg-label-col">label.col<a class="anchor" aria-label="anchor" href="#arg-label-col"></a></dt>
+<dd><p>colors for direct labels; defaults to <code>col</code>, so labels match
+their curves. Supply a vector of length equal to the number of response
+categories to use different colors for the labels.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

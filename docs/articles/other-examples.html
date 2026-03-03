@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly</h4>
             
-            <h4 data-toc-skip class="date">2026-03-02</h4>
+            <h4 data-toc-skip class="date">2026-03-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/other-examples.Rmd" class="external-link"><code>vignettes/other-examples.Rmd</code></a></small>
       <div class="d-none name"><code>other-examples.Rmd</code></div>
@@ -177,7 +177,7 @@ whether the military government of Augusto Pinochet should remain in
 power for another eight years. Six months before that, the independent
 research center FLASCO/Chile conducted a national survey of 27000
 randomly selected voters. The main question concerned their intention to
-vote (<code>vote</code>) in the plebicite, which was recorded as:</p>
+vote (<code>vote</code>) in the plebiscite, which was recorded as:</p>
 <ul>
 <li>
 <strong>Yes</strong> (support Pinochet)</li>
@@ -489,7 +489,7 @@ display in a given plot</p>
 <span>  income    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">chile</span><span class="op">$</span><span class="va">income</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can get the predicted probabilities for these separate models for
-the dichotomites using <code><a href="../reference/predict.nestedLogit.html">predict.nestedLogit()</a></code> and turning
+the dichotomies using <code><a href="../reference/predict.nestedLogit.html">predict.nestedLogit()</a></code> and turning
 these into data frames for plotting with <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pred_eng</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">chile_eng</span>, newdata <span class="op">=</span> <span class="va">new_chile</span><span class="op">)</span><span class="op">)</span></span>
@@ -508,6 +508,7 @@ these into data frames for plotting with <code>ggplot2</code>.</p>
 <span>                  ymax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmin</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">p</span> <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> <span class="va">se.p</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>              alpha <span class="op">=</span> <span class="fl">0.15</span>, colour <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"blacK"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">model</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x      <span class="op">=</span> <span class="st">"Attitude toward status quo"</span>,</span>
 <span>       y      <span class="op">=</span> <span class="st">"Predicted probability"</span>,</span>
@@ -1283,7 +1284,7 @@ psychiatric outcome.</p>
 <span><span class="co">#&gt; other attached packages:</span></span>
 <span><span class="co">#&gt;  [1] dplyr_1.2.0       AER_1.2-16        survival_3.8-6    sandwich_3.1-1   </span></span>
 <span><span class="co">#&gt;  [5] lmtest_0.9-40     zoo_1.8-15        ggplot2_4.0.2     car_3.1-5        </span></span>
-<span><span class="co">#&gt;  [9] carData_3.0-6     nnet_7.3-20       nestedLogit_0.3.5</span></span>
+<span><span class="co">#&gt;  [9] carData_3.0-6     nnet_7.3-20       nestedLogit_0.4.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] gtable_0.3.6       xfun_0.56          bslib_0.10.0       htmlwidgets_1.6.4 </span></span>

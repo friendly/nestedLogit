@@ -59,6 +59,9 @@ when present, and are otherwise generated automatically as
 [`logits`](https://friendly.github.io/nestedLogit/reference/nestedLogit.md),
 [`continuationLogits`](https://friendly.github.io/nestedLogit/reference/nestedLogit.md),
 [`print.dichotomies`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md)
+Other conversions:
+[`as.matrix.dichotomies`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md),
+[`as.character.dichotomies`](https://friendly.github.io/nestedLogit/reference/nestedMethods.md)
 
 ## Examples
 
@@ -75,27 +78,32 @@ as.tree(comparisons, response = "partic")
 #>          parttime fulltime 
 
 ## GSS: continuation logits for ordered education levels
-cont <- continuationLogits(c("l.t.highschool", "highschool",
+cont <- continuationLogits(c("<highschool", "highschool",
                              "college", "graduate"))
 as.tree(cont, response = "degree")
-#>                degree
-#>         /                    \
-#> l.t.highschool {highschool, college, graduate}
-#>                      /                  \
-#>                highschool       {college, graduate}
-#>                                     /          \
-#>                                 college     graduate 
+#>              degree
+#>       /                   \
+#> <highschool {highschool, college, graduate}
+#>                   /                  \
+#>             highschool       {college, graduate}
+#>                                  /          \
+#>                              college     graduate 
 
-## Chile: named groups on both branches
-chile.dichots <- logits(
-  engage    = dichotomy(engaged    = c("Y", "N"),
-                        disengaged = c("A", "U")),
-  direction = dichotomy("Y", "N"),
-  disengage = dichotomy("A", "U"))
-as.tree(chile.dichots, response = "vote")
-#>       vote
-#>     /        \
-#> engaged  disengaged
-#>  /    \   /       \
-#> Y      N A         U 
+## gators data: Food choice
+# create dichotomies
+gators.dichots <- logits(d1=dichotomy("Other", c("Fish", "Invertebrates")),
+                         d2=dichotomy("Fish", "Invertebrates"))
+as.tree(gators.dichots, response = "Food")
+#>        Food
+#>    /           \
+#> Other {Fish, Invertebrates}
+#>          /              \
+#>       Fish         Invertebrates 
+as.tree(gators.dichots, response = "Food", lobstr = TRUE)
+#> <list>
+#> └─Food: <list>
+#>   ├─Other: "Other"
+#>   └─{Fish, Invertebrates}: <list>
+#>     ├─Fish: "Fish"
+#>     └─Invertebrates: "Invertebrates"
 ```

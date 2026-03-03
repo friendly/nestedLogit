@@ -63,8 +63,8 @@ level, much as choice of reference level for dummy regressors created
 from a factor predictor doesn’t affect the fit of a regression model.
 The standard implementation of this model in R is
 [`multinom()`](https://rdrr.io/pkg/nnet/man/multinom.html) in the
-**nnet** package (Venables & Ripley, 2002), which takes the first level
-of the response as the omitted reference category.
+**nnet** package (**nnet2002?**), which takes the first level of the
+response as the omitted reference category.
 
 ### Nested-dichotomies logit model
 
@@ -152,12 +152,11 @@ categories might be represented by nested dichotomies.
 ## Example: Women’s labor-force participation
 
 For a principal example, we consider the data set `Womenlf` from the
-**carData** package (Fox, Weisberg, & Price, 2026b). The data give the
-responses of 263 young married women, 21–30 years old, drawn from a 1977
-survey carried out by the York University Institute for Social Research
-(Atkinson, Blishen, Ornstein, & Stevenson, 1984). This example was
-originally developed by Fox (1984, sec. 5.1.5). The variables in the
-model are:
+**carData** package (**R-carData?**). The data give the responses of 263
+young married women, 21–30 years old, drawn from a 1977 survey carried
+out by the York University Institute for Social Research (Atkinson,
+Blishen, Ornstein, & Stevenson, 1984). This example was originally
+developed by Fox (1984, sec. 5.1.5). The variables in the model are:
 
 - `partic`: labor force participation, the response, with levels:
   - `"fulltime"`: working full-time
@@ -511,11 +510,10 @@ full-time, by about 79% and 93% respectively.
 
 **Analysis of deviance**: A method for the
 [`Anova()`](https://rdrr.io/pkg/car/man/Anova.html) function from the
-**car** package (Fox, Weisberg, & Price, 2026a) computes Type II or III
-likelihood-ratio or Wald tests for each term in the model. Note that the
-likelihood-ratio or Wald $`\chi^2`$ and degrees of freedom for the
-`Combined Responses` is the sum of their values for the separate
-dichotomies:
+**car** package (**R-car?**) computes Type II or III likelihood-ratio or
+Wald tests for each term in the model. Note that the likelihood-ratio or
+Wald $`\chi^2`$ and degrees of freedom for the `Combined Responses` is
+the sum of their values for the separate dichotomies:
 
 ``` r
 Anova(wlf.nested)
@@ -931,9 +929,9 @@ The computation and display of effect graphs are highly customizable.
 For details, see the documentation for the **effects** package.
 
 Effect plots for nestedLogit models are also supported in the
-**ggeffects** package (**R-ggeffects?**). For example, the following
-(not run) produces plots of predicted probabilities for the same model
-with separate panels for the levels of `partic`.
+**ggeffects** package (Lüdecke, 2025). For example, the following (not
+run) produces plots of predicted probabilities for the same model with
+separate panels for the levels of `partic`.
 
 ``` r
 ggpredict(wlf.nested, c("hincome[all]", "children")) |> plot()
@@ -1178,17 +1176,10 @@ Fox, J., & Weisberg, S. (2019). *An R companion to applied regression*
 (Third edition). Thousand Oaks CA: Sage. Retrieved from
 <https://www.john-fox.ca/Companion/index.html>
 
-Fox, J., Weisberg, S., & Price, B. (2026a). *Car: Companion to applied
-regression*. Retrieved from <https://github.com/bprice2652/car_repo>
-
-Fox, J., Weisberg, S., & Price, B. (2026b). *carData: Companion to
-applied regression data sets*. Retrieved from
-<https://r-forge.r-project.org/projects/car/>
-
 Friendly, M., & Meyer, D. (2016). *Discrete data analysis with R:
 Visualization and modeling techniques for categorical and count data*.
 Boca Raton, FL: Chapman & Hall/CRC.
 
-Venables, W. N., & Ripley, B. D. (2002). *Modern applied statistics with
-s* (Fourth). New York: Springer. Retrieved from
-<https://www.stats.ox.ac.uk/pub/MASS4/>
+Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
+effects for ggplot from model outputs*. Retrieved from
+<https://strengejacke.github.io/ggeffects/>

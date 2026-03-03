@@ -51,7 +51,7 @@ dichotomy-related objects to matrices, character vectors, and dichotomies object
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -215,23 +215,23 @@ various objects to matrices, character vectors, and dichotomies objects.</p></li
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># define continuation dichotomies for level of education</span></span></span>
-<span class="r-in"><span><span class="va">cont.dichots</span> <span class="op">&lt;-</span> <span class="fu"><a href="nestedLogit.html">continuationLogits</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l.t.highschool"</span>,</span></span>
+<span class="r-in"><span><span class="va">cont.dichots</span> <span class="op">&lt;-</span> <span class="fu"><a href="nestedLogit.html">continuationLogits</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&lt;highschool"</span>,</span></span>
 <span class="r-in"><span>                                     <span class="st">"highschool"</span>,</span></span>
 <span class="r-in"><span>                                     <span class="st">"college"</span>,</span></span>
 <span class="r-in"><span>                                     <span class="st">"graduate"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Show dichotomies in various forms</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cont.dichots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> above_.highschool: {&lt;highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> above_highschool: {highschool} vs. {college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> above_college: {college} vs. {graduate}</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">cont.dichots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      l.t.highschool highschool college graduate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> above_l.t.highschool              0          1       1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> above_highschool                 NA          0       1        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> above_college                    NA         NA       0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;highschool highschool college graduate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> above_.highschool           0          1       1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> above_highschool           NA          0       1        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> above_college              NA         NA       0        1</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">cont.dichots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "above_l.t.highschool = {{l.t.highschool}} {{highschool college graduate}}; above_highschool = {{highschool}} {{college graduate}}; above_college = {{college}} {{graduate}}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "above_.highschool = {{&lt;highschool}} {{highschool college graduate}}; above_highschool = {{highschool}} {{college graduate}}; above_college = {{college}} {{graduate}}"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit a nested model for the GSS data examining education degree in relation to parent &amp; year</span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">degree</span> <span class="op">~</span> <span class="va">parentdeg</span> <span class="op">+</span> <span class="va">year</span>,</span></span>
@@ -239,48 +239,34 @@ various objects to matrices, character vectors, and dichotomies objects.</p></li
 <span class="r-in"><span>                 data<span class="op">=</span><span class="va">GSS</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span>                             <span class="co"># coefficient estimates</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     above_l.t.highschool above_highschool above_college</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)                  -42.6261632     -26.21317138 -18.253162254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parentdeghighschool            1.9632884       0.60103280  -0.345479234</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parentdegcollege               3.1006736       1.70574631  -0.414683439</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parentdeggraduate              3.3512189       2.21122349   0.145720269</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> year                           0.0216427       0.01231442   0.008909557</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     above_.highschool above_highschool above_college</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)               -42.6261632     -26.21317138 -18.253162254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parentdeghighschool         1.9632884       0.60103280  -0.345479234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parentdegcollege            3.1006736       1.70574631  -0.414683439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parentdeggraduate           3.3512189       2.21122349   0.145720269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> year                        0.0216427       0.01231442   0.008909557</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">m</span>, as.matrix<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># standard errors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         above_l.t.highschool.(Intercept) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             2.2232428045 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> above_l.t.highschool.parentdeghighschool </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0313786223 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    above_l.t.highschool.parentdegcollege </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0927607066 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   above_l.t.highschool.parentdeggraduate </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.1275872686 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                above_l.t.highschool.year </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0011178164 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             above_highschool.(Intercept) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             1.9459383633 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     above_highschool.parentdeghighschool </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0334567993 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        above_highschool.parentdegcollege </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0410059198 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       above_highschool.parentdeggraduate </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0468809978 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    above_highschool.year </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0009765976 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                above_college.(Intercept) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             3.3030647705 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        above_college.parentdeghighschool </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0630462422 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           above_college.parentdegcollege </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0703836929 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          above_college.parentdeggraduate </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0708577702 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                       above_college.year </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                             0.0016570885 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         above_.highschool.(Intercept) above_.highschool.parentdeghighschool </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          2.2232428045                          0.0313786223 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    above_.highschool.parentdegcollege   above_.highschool.parentdeggraduate </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0927607066                          0.1275872686 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                above_.highschool.year          above_highschool.(Intercept) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0011178164                          1.9459383633 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  above_highschool.parentdeghighschool     above_highschool.parentdegcollege </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0334567993                          0.0410059198 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    above_highschool.parentdeggraduate                 above_highschool.year </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0468809978                          0.0009765976 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             above_college.(Intercept)     above_college.parentdeghighschool </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          3.3030647705                          0.0630462422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        above_college.parentdegcollege       above_college.parentdeggraduate </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0703836929                          0.0708577702 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    above_college.year </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          0.0016570885 </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002556acb51c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002915b110340&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = above_.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
@@ -322,11 +308,11 @@ various objects to matrices, character vectors, and dichotomies objects.</p></li
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual Deviance: 14050 	AIC: 14060</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: degree ~ parentdeg + year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002556acb51c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x000002915b110340&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Response above_l.t.highschool: {l.t.highschool} vs. {highschool, college, graduate}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Response above_.highschool: {&lt;highschool} vs. {highschool, college, graduate}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = above_l.t.highschool ~ parentdeg + year, family = binomial, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = above_.highschool ~ parentdeg + year, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = GSS, contrasts = contrasts)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>

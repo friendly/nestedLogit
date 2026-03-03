@@ -1,6 +1,6 @@
 # nestedLogit
 
-**Version 0.3.5**; documentation built for `pkgdown` 2026-02-28
+**Version 0.4.0**; documentation built for `pkgdown` 2026-03-02
 
 The `nestedLogit` package provides functions for fitting *nested
 dichotomy* logistic regression models for a **polytomous** response
@@ -30,7 +30,7 @@ dichotomies.](reference/figures/nested.jpg)
 **Nested dichotomies**: The boxes show two different ways a
 four-category response can be represented as three nested dichotomies.
 
-## Releated models for a polytomous response
+## Related models for a polytomous response
 
 The basic model for this situation ($`m > 2`$ response categories) is
 the standard [**multinomial logistic
@@ -66,8 +66,8 @@ nested logit model.
 
 ### Ordered categories
 
-Note that when the response catgegories are **ordered**, as in education
-attained: “HS” \< “College” \< “BA” \< “MA” \< “Phd”, another attractive
+Note that when the response categories are **ordered**, as in education
+attained: “HS” \< “College” \< “BA” \< “MA” \< “PhD”, another attractive
 model is the **proportional odds** model (e.g., fit by
 [`MASS::polr()`](https://rdrr.io/pkg/MASS/man/polr.html)). This is a
 simpler model, but achieves that simplicity by making the additional
@@ -78,7 +78,7 @@ categories.
 
 You can install the current published version (0.3.4) from
 [CRAN](https://cran.r-project.org/package=nestedLogit), or the
-development version (0.3.5) from either
+development version (0.4.0) from either
 [R-universe](https://friendly.r-universe.dev/nestedLogit) or
 [Github](https://github.com/friendly/nestedLogit)
 
@@ -105,8 +105,8 @@ consider, test, plot, …
 ### Specifying dichotomies
 
 The essential idea here is to have a simple notation expressing a
-dichotomy amongst response levels, like `{{A, B}, {C, D}}`, and then a
-way to specify a collection of $`m-1`$ of these that can be used
+dichotomy among response levels, like `{{A, B}, {C, D}}`, and then a way
+to specify a collection of $`m-1`$ of these that can be used
 productively in data analysis and visualization.
 
 In the `nestedLogit` package these can be specified using helper

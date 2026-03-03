@@ -1,16 +1,16 @@
 # Changelog
 
-## nestedLogit 0.3.5
+## nestedLogit 0.4.0
 
 This is a major release of the package adding considerable functionality
 for plotting and other features
 
 - add `gators` data, food choice of alligators from Agresti
-- added an article illustrating use of the `ggeffects` package for
-  nestedLogit models \[only an article, because work on this is
-  continuing\]
-- added an article showing use of the `easystats` packages for
+- added a vignette illustrating use of the `ggeffects` package for
   nestedLogit models
+- added an article showing use of the `easystats` packages for
+  nestedLogit models \[not yet a vignette, because work on this is
+  continuing\]
 - re-factored
   [`predict.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/predict.nestedLogit.md)
   and related to its own file for improved documentation
@@ -18,7 +18,9 @@ for plotting and other features
 - Better description of nested logit and other models in README
 - changed default colors for
   [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
-  to use scales::hue_pal() for consistency with ggplot
+  to use
+  [`scales::hue_pal()`](https://scales.r-lib.org/reference/pal_hue.html)
+  for consistency with ggplot
 - added `scale` argument to
   [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
   to allow plotting on the logit (log-odds) scale (`scale = "logit"`) in
@@ -27,6 +29,14 @@ for plotting and other features
   [`as.tree()`](https://friendly.github.io/nestedLogit/reference/as.tree.md)
   method for ASCII printing of the tree of nested dichotomies
 - Added vignette: “Other Examples of Nested Logit Models”
+- In the `GSS` data, “l.t.highschool” changed to “\<highschool”
+- Fixed problem with `lty` not passed to
+  [`matplot()`](https://rdrr.io/r/graphics/matplot.html) in
+  [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
+- In
+  [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md),
+  added `label.col` argument (defaulting to the value of `col` in the
+  call), to control the color of the curve label
 
 ## nestedLogit 0.3.4
 
