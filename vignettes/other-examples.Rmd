@@ -75,7 +75,7 @@ library(ggplot2)
 The September, 1988 Chilean national plebiscite asked citizens whether the military government of
 Augusto Pinochet should remain in power for another eight years. Six months before that,
 the independent research center FLASCO/Chile conducted a national survey of 27000 randomly
-selected voters. The main question concerned their intention to vote (`vote`) in the plebicite, which was
+selected voters. The main question concerned their intention to vote (`vote`) in the plebiscite, which was
 recorded as:
 
 - **Yes** (support Pinochet)
@@ -267,7 +267,7 @@ new_chile <- data.frame(
 )
 ```
 
-We can get the predicted probabilities for these separate models for the dichotomites using `predict.nestedLogit()`
+We can get the predicted probabilities for these separate models for the dichotomies using `predict.nestedLogit()`
 and turning these into data frames for plotting with `ggplot2`.
 
 ```{r chile-predict}

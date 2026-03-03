@@ -66,5 +66,5 @@ as.tree(gators.dichots, response = "Food", lobstr = TRUE)
 \code{\link{logits}}, \code{\link{continuationLogits}},
 \code{\link{print.dichotomies}}
 Other conversions:
-\code{as.matrix.dichotomies}}, \code{as.character.dichotomies}}
+\code{\link{as.matrix.dichotomies}}, \code{\link{as.character.dichotomies}}
 }
