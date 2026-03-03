@@ -54,16 +54,17 @@ cont <- continuationLogits(c("l.t.highschool", "highschool",
                              "college", "graduate"))
 as.tree(cont, response = "degree")
 
-## Chile: named groups on both branches
-chile.dichots <- logits(
-  engage    = dichotomy(engaged    = c("Y", "N"),
-                        disengaged = c("A", "U")),
-  direction = dichotomy("Y", "N"),
-  disengage = dichotomy("A", "U"))
-as.tree(chile.dichots, response = "vote")
+## gators data: Food choice
+# create dichotomies
+gators.dichots <- logits(d1=dichotomy("Other", c("Fish", "Invertebrates")),
+                         d2=dichotomy("Fish", "Invertebrates"))
+as.tree(gators.dichots, response = "Food")
+as.tree(gators.dichots, response = "Food", lobstr = TRUE)
 
 }
 \seealso{
 \code{\link{logits}}, \code{\link{continuationLogits}},
 \code{\link{print.dichotomies}}
+Other conversions:
+\code{as.matrix.dichotomies}}, \code{as.character.dichotomies}}
 }

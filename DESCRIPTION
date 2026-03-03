@@ -1,7 +1,7 @@
 Package: nestedLogit
 Title: Nested Dichotomy Logistic Regression Models
-Version: 0.3.5
-Date: 2026-02-23
+Version: 0.4.0
+Date: 2026-03-01
 Authors@R: c(
     person("John", "Fox", , "jfox@mcmaster.ca", role = "aut",
            comment = c(ORCID = "0000-0002-1196-8012")),
@@ -53,7 +53,11 @@ Suggests:
     see,
     spelling,
     testthat,
-    tidyr
+    tidyr,
+    MASS,
+    VGAM,
+    mlogit,
+    vcd
 VignetteBuilder: 
     knitr,
     rmarkdown

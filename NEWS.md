@@ -1,4 +1,4 @@
-## nestedLogit 0.3.5
+## nestedLogit 0.4.0
 
 This is a major release of the package adding considerable functionality for plotting and other features
 

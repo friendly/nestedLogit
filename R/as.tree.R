@@ -54,6 +54,7 @@
 #
 #'
 #' @export
+#' @importFrom stats setNames
 as.tree <- function(x, ...) UseMethod("as.tree")
 
 #' @rdname as.tree
