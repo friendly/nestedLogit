@@ -25,10 +25,11 @@
   legend.location = "topleft",
   legend.bty = "n",
   conf.level = 0.95,
-  conf.alpha = 0.3,
+  conf.alpha = 0.25,
   label = FALSE,
   label.x = "max",
   label.cex = 1.25,
+  label.col = col,
   ...
 )
 }
@@ -70,7 +71,7 @@ values in \code{others}).}
 
 \item{lty}{line types (see \code{\link{par}}).}
 
-\item{col}{line colors (see \code{\link{par}}).}
+\item{col}{line colors for the response levels (see \code{\link{par}}).}
 
 \item{legend}{if \code{TRUE} (the default), add a legend for the
 response levels to the graph. Ignored when \code{label = TRUE}.}
@@ -98,6 +99,10 @@ length equal to the number of response categories with each element being
 \code{"max"} (the default) places it at the right end.}
 
 \item{label.cex}{character expansion factor for direct labels; default \code{1.25}.}
+
+\item{label.col}{colors for direct labels; defaults to \code{col}, so labels match
+their curves. Supply a vector of length equal to the number of response
+categories to use different colors for the labels.}
 
 \item{\dots}{arguments to be passed to \code{\link{matplot}}.}
 }

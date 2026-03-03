@@ -36,6 +36,16 @@ m.GSS <- nestedLogit(degree ~ parentdeg*year,
                      data=GSS)
 car::Anova(m.GSS)
 summary(m.GSS)
+
+# plot fitted probabilities
+plot(m.GSS, x.var = "year",
+            others = list(parentdeg = "<highschool"),
+            lty = 1,
+            label = TRUE)
+plot(m.GSS, x.var = "year",
+            others = list(parentdeg = "graduate"),
+            lty = 1,
+            label = TRUE)
 }
 \seealso{
 \code{\link{nestedLogit}}.
