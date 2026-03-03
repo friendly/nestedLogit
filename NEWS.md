@@ -3,15 +3,18 @@
 This is a major release of the package adding considerable functionality for plotting and other features
 
 * add `gators` data, food choice of alligators from Agresti
-* added an article illustrating use of the `ggeffects` package for nestedLogit models [only an article, because work on this is continuing]
-* added an article showing use of the `easystats` packages for nestedLogit models
+* added a vignette illustrating use of the `ggeffects` package for nestedLogit models 
+* added an article showing use of the `easystats` packages for nestedLogit models [not yet a vignette, because work on this is continuing]
 * re-factored `predict.nestedLogit()` and related to its own file for improved documentation
 * added ability for direct labels in `plot.nested-ci.R`
 * Better description of nested logit and other models in README
-* changed default colors for `plot.nestedLogit()` to use scales::hue_pal() for consistency with ggplot
+* changed default colors for `plot.nestedLogit()` to use `scales::hue_pal()` for consistency with ggplot
 * added `scale` argument to `plot.nestedLogit()` to allow plotting on the logit (log-odds) scale (`scale = "logit"`) in addition to the default probability scale (`scale = "prob"`)
 * added `as.tree()` method for ASCII printing of the tree of nested dichotomies
 * Added vignette: "Other Examples of Nested Logit Models"
+* In the `GSS` data, "l.t.highschool" changed to "<highschool"
+* Fixed problem with `lty` not passed to `matplot()` in `plot.nestedLogit()`
+* In `plot.nestedLogit()`, added `label.col` arg (defaulting to the value of `col` in the call), to control the color of the curve label
 
 ## nestedLogit 0.3.4
 

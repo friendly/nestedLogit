@@ -41,7 +41,7 @@
 #' as.tree(comparisons, response = "partic")
 #'
 #' ## GSS: continuation logits for ordered education levels
-#' cont <- continuationLogits(c("l.t.highschool", "highschool",
+#' cont <- continuationLogits(c("<highschool", "highschool",
 #'                              "college", "graduate"))
 #' as.tree(cont, response = "degree")
 #'

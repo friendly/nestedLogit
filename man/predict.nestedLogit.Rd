@@ -109,7 +109,7 @@ probability scale, which may extend outside \eqn{[0, 1]}.
 }
 \examples{
 # define continuation dichotomies for level of education
-cont.dichots <- continuationLogits(c("l.t.highschool",
+cont.dichots <- continuationLogits(c("<highschool",
                                      "highschool",
                                      "college",
                                      "graduate"))
@@ -123,7 +123,7 @@ m <- nestedLogit(degree ~ parentdeg + year,
 predict(m)
 
 # predicted probabilities at specific values of predictors
-new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool",
+new <- expand.grid(parentdeg=c("<highschool",  "highschool",
                                "college", "graduate"),
                    year=c(1972, 2016))
 

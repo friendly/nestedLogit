@@ -1,11 +1,11 @@
 # test that nestedLogit()/predict.nestedLogit() correctly compute fitted probabilities
 
 m2 <- nestedLogit(degree ~ parentdeg + year, 
-                  continuationLogits(c("l.t.highschool",  "highschool", 
+                  continuationLogits(c("<highschool",  "highschool", 
                                        "college", "graduate")),
                   data=GSS)
 
-new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool", 
+new <- expand.grid(parentdeg=c("<highschool",  "highschool", 
                                "college", "graduate"),
                    year=1972:2016)
 pred.GSS <- as.matrix(predict(m2, new)$p)
@@ -15,7 +15,7 @@ p.m2.2 <- predict(models(m2, 2), newdata=new, type="response")
 p.m2.3 <- predict(models(m2, 3), newdata=new, type="response")
 
 test_that("fitted probabilities computed correctly, test 1", {
-  expect_equal(1 - p.m2.1, pred.GSS[, "l.t.highschool"])
+  expect_equal(1 - p.m2.1, pred.GSS[, "<highschool"])
 })
 
 test_that("fitted probabilities computed correctly, test 2", {

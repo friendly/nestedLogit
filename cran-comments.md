@@ -1,6 +1,6 @@
 ## Test environments
 * local Windows 10, R version 4.5.2 (2025-10-31 ucrt)
-* win-builder R Under development (unstable) (2026-01-31 r89365 ucrt)
+* win-builder R Under development (unstable) (2026-03-02 r89513 ucrt)
 * Rhub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
 * Rhub: Windows Server 2022, R-devel, 64 bit
 

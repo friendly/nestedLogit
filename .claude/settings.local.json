@@ -12,7 +12,10 @@
       "Bash(cmd:*)",
       "Bash(\"C:/Program Files/R/R-4.5.2/bin/Rscript.exe\":*)",
       "Bash(/c/R/R-4.5.2/bin/Rscript.exe:*)",
-      "Bash(/tmp/test_vote2.R:*)"
+      "Bash(/tmp/test_vote2.R:*)",
+      "Bash(/tmp/update_gss.R:*)",
+      "Bash(/tmp/run_tests.R:*)",
+      "Bash(/tmp/test_labelcol.R:*)"
     ]
   }
 }

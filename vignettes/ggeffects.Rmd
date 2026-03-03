@@ -6,8 +6,8 @@ package: nestedLogit
 output:
   rmarkdown::html_vignette:
   fig_caption: yes
-bibliography: ["../references.bib", "../packages.bib"]
-csl: ../apa.csl
+bibliography: ["references.bib", "packages.bib"]
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Using ggeffects with nestedLogit models}
   %\VignetteEngine{knitr::rmarkdown}
@@ -34,6 +34,9 @@ knitr::set_alias(w = "fig.width",
 
 set.seed(47)
 .opts <- options(digits = 4)
+
+# packages to be cited in packages.bib
+.to.cite <- c("nestedLogit", "ggeffects", "ggplot2")
 ```
 
 Load the packages we'll use here:
@@ -55,7 +58,7 @@ The package now supports `"nestedLogit"` objects, making it easy to visualize pr
 probabilities for each response category across levels of the predictors, without the
 manual data wrangling described in `vignette("plotting-ggplot", package = "nestedLogit")`.
 
-## Women's labor force participation
+## 👩 Women's labor force participation
 
 We use the standard `Womenlf` example from the main vignette. The response `partic` has
 three categories --- not working, working part-time, and working full-time --- modeled
@@ -71,19 +74,21 @@ wlf.nested <- nestedLogit(partic ~ hincome + children,
                           data = Womenlf)
 ```
 
-## Predicted probabilities with `predict_response()`
+### Predicted probabilities with `predict_response()`
 
 The simplest way to obtain predicted probabilities and a plot is with
 `predict_response()`, specifying the focal predictors in the `terms` argument.
 This returns predicted probabilities for each response level, with confidence intervals,
-averaged over the non-focal predictors.
+averaged over the non-focal predictors. The default print method displays these ("prettified") for a
+small subset of values of the quantitative predictor, `hincome`.
 
 ```{r wlf-predict-response}
 wlf.pred <- predict_response(wlf.nested, terms = c("hincome", "children"))
 wlf.pred
 ```
 
-The default `plot()` method produces a panel for each response category:
+The default `plot()` method produces a faceted plot with one panel for each response category
+and separate curves for the levels of the other predictor (`children`).
 
 ```{r wlf-ggeffects-plot1}
 #| out.width = "100%",
@@ -92,7 +97,7 @@ The default `plot()` method produces a panel for each response category:
 plot(wlf.pred)
 ```
 
-## Customizing the plot
+### Customizing the plot
 
 The `plot()` method returns a `ggplot` object, so it can be further customized with
 standard `ggplot2` functions. For example, we can adjust the line size, labels,
@@ -107,11 +112,11 @@ plot(wlf.pred,
   labs(title = "Predicted Probabilities of Work by Husband's Income",
        y = "Probability",
        x = "Husband's Income") +
-  theme_ggeffects(base_size = 16) +
+  theme_ggeffects(base_size = 14) +
   theme(legend.position = "top")
 ```
 
-## Plotting on the logit scale
+### Plotting on the logit scale
 
 `ggplot2` provides a built-in `"logit"` transformation for axes via
 `scale_y_continuous(transform = "logit")`. This displays predicted probabilities
@@ -142,33 +147,48 @@ plot(wlf.pred,
   theme(legend.position = "top")
 ```
 
-## Alligator food choice
+These plots show something different, and simpler than what appears on the probability scale. For both the `not.work`
+and `fulltime` response categories, the effect of children is essentially an additive one, with having small children
+reducing the probability. The response category `parttime` shows an interactive pattern, with different shapes
+for those with children present vs. absent.
+
+## 🐊 Alligator food choice
 
 As a simpler example with a single continuous predictor, we fit a nested logit model to the
-`gators` data, predicting primary food choice from alligator length.
+`gators` data (originally from @Agresti:2002)
+predicting primary food choice from alligator length.
 The first dichotomy contrasts {Other} vs. {Fish, Invertebrates}, and the second
 contrasts {Fish} vs. {Invertebrates}.
 
 ```{r gators-model}
 data(gators)
+
+# setup the dichotomies
+gators.dichots = logits(
+     other   = dichotomy("Other", c("Fish", "Invertebrates")),
+     fish_inv = dichotomy("Fish", "Invertebrates"))
+
+as.tree(gators.dichots)
+
+# fit the model
 gators.nested <- nestedLogit(food ~ length,
-                             dichotomies = logits(
-                               other   = dichotomy("Other", c("Fish", "Invertebrates")),
-                               fish_inv = dichotomy("Fish", "Invertebrates")),
+                             dichotomies = gators.dichots,
                              data = gators)
 ```
 
+Now, get the predicted response probabilities, and plot them:
 ```{r gators-ggeffects}
 #| out.width = "100%",
 #| fig.height = 4,
 #| fig.cap = "Predicted food choice probabilities for alligators by length."
-predict_response(gators.nested, terms = "length") |> 
+predict_response(gators.nested, terms = "length") |>
   plot(line_size = 2)
 ```
 
-As you can see the main thing going on here is that larger alligators prefer fish, which smaller ones prefer invertebrates.
+As you can see, the main thing going on here is that larger alligators prefer fish, which smaller ones prefer invertebrates.
+This makes perfect sense if you're an alligator!
 
-For comparison, the basic `nestedLogit::plot()` method using default arguments gives a similar plot, with the three curves 
+For comparison, the basic `nestedLogit::plot()` method using default arguments gives a similar plot, with the three curves
 overlaid in a single panel (it uses `graphics::matplot()`).
 
 ```{r gators-plot, echo=-1}
@@ -176,8 +196,10 @@ overlaid in a single panel (it uses `graphics::matplot()`).
 #| fig.height = 5,
 #| fig.cap = "Predicted food choice probabilities for alligators by length."
 par(mar = c(4, 4, 1, 1) + 0.5)
-plot(gators.nested, x.var = "length", 
-     legend.bty = "o")
+plot(gators.nested, x.var = "length",
+     lty=1, lwd = 4,
+     label = TRUE, label.col = "black", cex.lab = 1.3)
+
 ```
 
 ## Limitations
@@ -189,10 +211,17 @@ displayed on the logit scale using `ggplot2`'s built-in axis transformation.
 However, `ggeffects` does not currently provide access to the individual
 dichotomy sub-models that comprise the nested logit --- for example, plotting
 predicted values for the `work` and `full` dichotomies separately.
+(This is due to a conflict in the names of arguments (`model`), and may be resolved
+in a future version of `nestedLogit`.)
 
 For these more specialized displays, see `vignette("plotting-ggplot", package = "nestedLogit")`,
 which describes a manual workflow using `predict()` with `model = "dichotomies"` and
 `as.data.frame()` to construct fully customized `ggplot2` plots.
+
+```{r write-bib, echo=FALSE}
+pkgs <- unique(c(.to.cite, .packages()))
+knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
 
 ## References
 

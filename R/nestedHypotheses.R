@@ -37,7 +37,7 @@
 #' @keywords regression
 #' @examples
 #' # define continuation dichotomies for level of education
-#' cont.dichots <- continuationLogits(c("l.t.highschool",
+#' cont.dichots <- continuationLogits(c("<highschool",
 #'                                      "highschool",
 #'                                      "college",
 #'                                      "graduate"))

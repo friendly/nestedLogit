@@ -12,7 +12,7 @@
 #' \describe{
 #'   \item{parentdeg}{A factor representing parents' attained level of education
 #'   (highest "degree" obtained), recording
-#'   the higher of mother's and father's education, with levels \code{"l.t.highschool"},
+#'   the higher of mother's and father's education, with levels \code{"<highschool"},
 #'   \code{"highschool"}, \code{"college"}, and \code{"graduate"}.}
 #'   \item{degree}{The respondent's level of education, a factor with the same levels
 #'   as \code{parentdeg}.}
@@ -28,9 +28,19 @@
 #' @examples
 #' round(100*with(GSS, prop.table(table(degree, parentdeg), 2)))
 #' m.GSS <- nestedLogit(degree ~ parentdeg*year,
-#'                      continuationLogits(c("l.t.highschool",  "highschool",
+#'                      continuationLogits(c("<highschool",  "highschool",
 #'                                            "college", "graduate")),
 #'                      data=GSS)
 #' car::Anova(m.GSS)
 #' summary(m.GSS)
+#'
+#' # plot fitted probabilities
+#' plot(m.GSS, x.var = "year",
+#'             others = list(parentdeg = "<highschool"),
+#'             lty = 1,
+#'             label = TRUE)
+#' plot(m.GSS, x.var = "year",
+#'             others = list(parentdeg = "graduate"),
+#'             lty = 1,
+#'             label = TRUE)
 "GSS"

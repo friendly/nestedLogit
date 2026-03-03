@@ -9,7 +9,7 @@ A data frame with 44091 rows and 3 columns.
 \describe{
 \item{parentdeg}{A factor representing parents' attained level of education
 (highest "degree" obtained), recording
-the higher of mother's and father's education, with levels \code{"l.t.highschool"},
+the higher of mother's and father's education, with levels \code{"<highschool"},
 \code{"highschool"}, \code{"college"}, and \code{"graduate"}.}
 \item{degree}{The respondent's level of education, a factor with the same levels
 as \code{parentdeg}.}
@@ -31,7 +31,7 @@ between 1972 and 2016.
 \examples{
 round(100*with(GSS, prop.table(table(degree, parentdeg), 2)))
 m.GSS <- nestedLogit(degree ~ parentdeg*year,
-                     continuationLogits(c("l.t.highschool",  "highschool",
+                     continuationLogits(c("<highschool",  "highschool",
                                            "college", "graduate")),
                      data=GSS)
 car::Anova(m.GSS)

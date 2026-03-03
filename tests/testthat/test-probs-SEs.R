@@ -1,16 +1,16 @@
 # test that predict.nestedLogit() correctly computes SEs of fitted probabilities
 
 m.gss <- nestedLogit(degree ~ parentdeg + year, 
-                     continuationLogits(c("l.t.highschool",  "highschool", 
+                     continuationLogits(c("<highschool",  "highschool", 
                                           "college", "graduate")),
                      data=GSS)
 
-new <- expand.grid(parentdeg=c("l.t.highschool",  "highschool", 
+new <- expand.grid(parentdeg=c("<highschool",  "highschool", 
                                "college", "graduate"),
                    year=seq(1972, 2016, length=5))
 pred.gss <- predict(m.gss, new)
 
-GSS$y1 <- with(GSS, ifelse(degree == "l.t.highschool", 0, 1))
+GSS$y1 <- with(GSS, ifelse(degree == "<highschool", 0, 1))
 GSS$y2 <- with(GSS, ifelse(y1 == 0, NA,
                            ifelse(degree == "highschool", 0, 1)))
 GSS$y3 <- with(GSS, ifelse(degree == "college", 0,

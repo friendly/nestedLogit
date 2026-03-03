@@ -2,7 +2,9 @@
 # DONE: Allow to plot results on the logit scale, using logit = log(p/1-p), as in the
 #       example "Plotting log-odds" in `vignettes/plotting-ggplot.Rmd`
 #       Added argument `scale = c("prob", "logit")` where "prob" gives the current behavior
-# TODO: Allow to facet the plots with a by= variable, rather than producing separate plots by conditioning as in the womenlf example
+# TODO: Allow to facet the plots with a by= variable, rather than producing separate plots by conditioning as in the womenlf example.
+#       This should produce a single plot with separate panels, using `par(mfrow=())`
+# DONE: Added `label.col` arg (defaulting to the value of `col` in the call), to control the color of the curve label
 
 #' Plotting Nested Logit Models
 #'
@@ -38,7 +40,7 @@
 #' @param pch plotting characters (see \code{\link{par}}).
 #' @param lwd line width (see \code{\link{par}}).
 #' @param lty line types (see \code{\link{par}}).
-#' @param col line colors (see \code{\link{par}}).
+#' @param col line colors for the response levels (see \code{\link{par}}).
 #' @param legend if \code{TRUE} (the default), add a legend for the
 #'        response levels to the graph. Ignored when \code{label = TRUE}.
 #' @param legend.inset default \code{0.01} (see \code{\link{legend}}).
@@ -57,6 +59,9 @@
 #'        \code{"min"} places the label at the left end of the curve;
 #'        \code{"max"} (the default) places it at the right end.
 #' @param label.cex character expansion factor for direct labels; default \code{1.25}.
+#' @param label.col colors for direct labels; defaults to \code{col}, so labels match
+#'        their curves. Supply a vector of length equal to the number of response
+#'        categories to use different colors for the labels.
 #' @param \dots arguments to be passed to \code{\link{matplot}}.
 #' @author John Fox, Michael Friendly
 #' @examples
@@ -118,8 +123,10 @@ plot.nestedLogit <- function(x,
                              legend=TRUE, legend.inset=0.01,
                              legend.location="topleft",
                              legend.bty = "n", conf.level=0.95,
-                             conf.alpha=0.3,
-                             label=FALSE, label.x="max", label.cex=1.25,
+                             conf.alpha=0.25,
+                             label=FALSE,
+                             label.x="max", label.cex=1.25,
+                             label.col=col,
                              ...){
   scale <- match.arg(scale)
   if (is.null(ylab)) ylab <- if (scale == "prob") "Fitted Probability" else "Fitted Log Odds"
@@ -210,7 +217,7 @@ plot.nestedLogit <- function(x,
   if (numeric.x){
     matplot(new[, x.var],
             new[, p_cols],
-            type="l", lwd=lwd,
+            type="l", lwd=lwd, lty=lty,
             col=col, xlab=xlab, ylab=ylab,
             ylim=if (!is.null(conf.level)) c(ymin, ymax) else NULL, ...)
     if (!is.null(conf.level)){
@@ -236,7 +243,7 @@ plot.nestedLogit <- function(x,
         }
         text(new[idx, x.var], new[idx, p_cols[i]],
              labels = response.levels[i],
-             adj = adj, col = col[i], cex = label.cex)
+             adj = adj, col = label.col[i], cex = label.cex)
       }
     } else if (legend) {
       legend(legend.location, legend=response.levels,
@@ -249,7 +256,7 @@ plot.nestedLogit <- function(x,
     n.x.levels <- nrow(new)
     matplot(1L:n.x.levels,
             new[, p_cols],
-            type="b", lwd=lwd,
+            type="b", lwd=lwd, lty=lty,
             pch=pch, col=col, xlab=xlab, ylab=ylab, axes=FALSE,
             ylim= if (!is.null(conf.level)) c(ymin, ymax) else NULL,
             ...)
@@ -278,7 +285,7 @@ plot.nestedLogit <- function(x,
         }
         text(idx, new[idx, p_cols[i]],
              labels = response.levels[i],
-             adj = adj, col = col[i], cex = label.cex)
+             adj = adj, col = label.col[i], cex = label.cex)
       }
     } else if (legend) {
       legend(legend.location, legend=response.levels,
