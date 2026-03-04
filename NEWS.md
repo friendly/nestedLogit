@@ -15,6 +15,8 @@ This is a major release of the package adding considerable functionality for plo
 * In the `GSS` data, "l.t.highschool" changed to "<highschool"
 * Fixed problem with `lty` not passed to `matplot()` in `plot.nestedLogit()`
 * In `plot.nestedLogit()`, added `label.col` argument (defaulting to the value of `col` in the call), to control the color of the curve label
+* Add example of plotting predictions for dichotomies to `ggeffects` vignette
+* Fixed problem in `ggeffects` vignette with `predict_response()` for nestedLogit models; see [ggeffects issue #671](https://github.com/strengejacke/ggeffects/issues/671)
 
 ## nestedLogit 0.3.4
 
