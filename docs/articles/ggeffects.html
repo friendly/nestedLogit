@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly</h4>
             
-            <h4 data-toc-skip class="date">2026-03-03</h4>
+            <h4 data-toc-skip class="date">2026-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/ggeffects.Rmd" class="external-link"><code>vignettes/ggeffects.Rmd</code></a></small>
       <div class="d-none name"><code>ggeffects.Rmd</code></div>
@@ -89,7 +89,7 @@ Friendly</h4>
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The <code>ggeffects</code> package <span class="citation">(Lüdecke,
-2018, 2025)</span> provides a simple and unified interface for computing
+2018, 2026)</span> provides a simple and unified interface for computing
 and plotting adjusted predictions and marginal effects from a wide
 variety of regression models. Its main function,
 <code><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response()</a></code>, returns a tidy data frame of model
@@ -101,6 +101,10 @@ it easy to visualize predicted probabilities for each response category
 across levels of the predictors, without the manual data wrangling
 described in
 <code><a href="../articles/plotting-ggplot.html">vignette("plotting-ggplot", package = "nestedLogit")</a></code>.</p>
+<p><strong>Note</strong>:: <code>ggeffects</code> will at some point be
+superseded by the <a href="https://easystats.github.io/modelbased/" class="external-link"><code>modelbased</code></a>
+package from the <a href="https://easystats.github.io/easystats/" class="external-link"><code>easystats</code></a>
+project.</p>
 </div>
 <div class="section level2">
 <h2 id="womens-labor-force-participation">👩 Women’s labor force participation<a class="anchor" aria-label="anchor" href="#womens-labor-force-participation"></a>
@@ -197,9 +201,9 @@ of the other predictor (<code>children</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.pred</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="fig/wlf-ggeffects-plot1-1.png" class="r-plt" alt="Predicted probabilities from `predict_response()` with default plot." width="100%"><p class="caption">
+<img src="fig/wlf-ggeffects-plot1-1.png" class="r-plt" alt="Predicted probabilities from `predict_response()` with default `ggeffects` plot." width="100%"><p class="caption">
 Predicted probabilities from <code><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response()</a></code> with
-default plot.
+default <code>ggeffects</code> plot.
 </p>
 </div>
 </div>
@@ -266,6 +270,43 @@ probability. The response category <code>parttime</code> shows an
 interactive pattern, with different shapes for those with children
 present vs. absent.</p>
 </div>
+<div class="section level3">
+<h3 id="plotting-the-dichotomies">Plotting the dichotomies<a class="anchor" aria-label="anchor" href="#plotting-the-dichotomies"></a>
+</h3>
+<p>Recent updates<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;I’m grateful to Daniel Lüdecke for considering &lt;a href="https://github.com/strengejacke/ggeffects/issues/671" class="external-link"&gt;this
+problem&lt;/a&gt; and revising the &lt;code&gt;ggeffects&lt;/code&gt; package to more
+fully accommodate nestedLogit models.&lt;/p&gt;'><sup>1</sup></a> to <code>ggeffects</code> now make it
+possible to calculate and plot the predicted probabilities for the
+sub-models that comprise the nested logit — for example, plotting
+predicted values for the <code>work</code> and <code>full</code>
+dichotomies separately. This is done by passing the argument
+<code>submodels = "dichotomies"</code> to
+<code><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response()</a></code>.</p>
+<p>In such plots, it is sometimes useful to show explicitly the points
+on the grid of predictor values used in estimation. Just add
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code> for this. You can also achieve greater
+resolution in the plot by moving the legend inside the plot as shown
+below.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wlf.pred.dichot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response</a></span><span class="op">(</span><span class="va">wlf.nested</span>, terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hincome"</span>, <span class="st">"children"</span><span class="op">)</span>,</span>
+<span>                             submodel <span class="op">=</span> <span class="st">"dichotomies"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">wlf.pred.dichot</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"inside"</span>,</span>
+<span>        legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.40</span>, <span class="fl">.85</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="fig/unnamed-chunk-2-1.png" class="r-plt" alt="Predicted probabilities for the two dichotomies." width="100%"><p class="caption">
+Predicted probabilities for the two dichotomies.
+</p>
+</div>
+<p>In this view, we see that the decision to work or not varies in a
+simple decreasing manner with husband’s income, and there is a large
+decrement in the probability of working when there are young children in
+the home.</p>
+<p>For those women who are working, the distinction between working
+fulltime vs. parttime is also simple to describe.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="alligator-food-choice">🐊 Alligator food choice<a class="anchor" aria-label="anchor" href="#alligator-food-choice"></a>
@@ -276,7 +317,7 @@ nested logit model to the <code>gators</code> data (originally from
 choice from alligator length. The first dichotomy contrasts {Other}
 vs. {Fish, Invertebrates}, and the second contrasts {Fish}
 vs. {Invertebrates}.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gators</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># setup the dichotomies</span></span>
@@ -296,7 +337,7 @@ vs. {Invertebrates}.</p>
 <span>                             dichotomies <span class="op">=</span> <span class="va">gators.dichots</span>,</span>
 <span>                             data <span class="op">=</span> <span class="va">gators</span><span class="op">)</span></span></code></pre></div>
 <p>Now, get the predicted response probabilities, and plot them:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response</a></span><span class="op">(</span><span class="va">gators.nested</span>, terms <span class="op">=</span> <span class="st">"length"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>line_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
@@ -309,9 +350,11 @@ alligators prefer fish, which smaller ones prefer invertebrates. This
 makes perfect sense if you’re an alligator!</p>
 <p>For comparison, the basic <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">nestedLogit::plot()</a></code> method
 using default arguments gives a similar plot, with the three curves
-overlaid in a single panel (it uses
-<code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">graphics::matplot()</a></code>).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+overlaid in a single panel (it uses <code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">graphics::matplot()</a></code>). A
+new feature of the plot method is to dispense with a legend entirely, by
+using direct labels (<code>label = TRUE</code>) on the predicted
+curves.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">gators.nested</span>, x.var <span class="op">=</span> <span class="st">"length"</span>,</span>
 <span>     lty<span class="op">=</span><span class="fl">1</span>, lwd <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>     label <span class="op">=</span> <span class="cn">TRUE</span>, label.col <span class="op">=</span> <span class="st">"black"</span>, cex.lab <span class="op">=</span> <span class="fl">1.3</span><span class="op">)</span></span></code></pre></div>
@@ -322,19 +365,22 @@ Predicted food choice probabilities for alligators by length.
 </div>
 </div>
 <div class="section level2">
-<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
+<h2 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h2>
 <p>The <code>ggeffects</code> package computes and plots predicted
 probabilities for the <em>response categories</em> of a nested logit
 model. As shown above, these can be displayed on the logit scale using
-<code>ggplot2</code>’s built-in axis transformation.</p>
-<p>However, <code>ggeffects</code> does not currently provide access to
-the individual dichotomy sub-models that comprise the nested logit — for
-example, plotting predicted values for the <code>work</code> and
-<code>full</code> dichotomies separately. (This is due to a conflict in
-the names of arguments (<code>model</code>), and may be resolved in a
-future version of <code>nestedLogit</code>.)</p>
-<p>For these more specialized displays, see
+<code>ggplot2</code>’s built-in axis transformation. You can now also
+display the predicted probabilities for the separate dichotomies (e.g.,
+<code>work</code> and <code>full</code>) as illustrated above.</p>
+<!--
+However, `ggeffects` does not currently provide access to the individual
+dichotomy sub-models that comprise the nested logit --- for example, plotting
+predicted values for the `work` and `full` dichotomies separately.
+(This is due to a conflict in the names of arguments (`model`), and may be resolved
+in a future version of `nestedLogit`.)
+-->
+<p>For more specialized displays, see
 <code><a href="../articles/plotting-ggplot.html">vignette("plotting-ggplot", package = "nestedLogit")</a></code>, which
 describes a manual workflow using <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> with
 <code>model = "dichotomies"</code> and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> to
@@ -354,11 +400,12 @@ regression models. <em>Journal of Open Source Software</em>,
 <em>3</em>(26), 772. http://doi.org/<a href="https://doi.org/10.21105/joss.00772" class="external-link">10.21105/joss.00772</a>
 </div>
 <div id="ref-R-ggeffects" class="csl-entry">
-Lüdecke, D. (2025). <em>Ggeffects: Create tidy data frames of marginal
+Lüdecke, D. (2026). <em>Ggeffects: Create tidy data frames of marginal
 effects for ggplot from model outputs</em>. Retrieved from <a href="https://strengejacke.github.io/ggeffects/" class="external-link">https://strengejacke.github.io/ggeffects/</a>
 </div>
 </div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
