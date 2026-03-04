@@ -21,7 +21,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 <!-- **Version 0.3.4** -->
 
-**Version 0.4.0**; documentation built for `pkgdown` 2026-03-02
+**Version 0.4.0**; documentation built for `pkgdown` 2026-03-03
 
 The `nestedLogit` package provides functions for fitting *nested
 dichotomy* logistic regression models for a **polytomous** response
@@ -55,7 +55,7 @@ four-category response can be represented as three nested dichotomies.
 
 </div>
 
-## Related models for a polytomous response
+## ⚙️ Related models for a polytomous response
 
 The basic model for this situation ($m > 2$ response categories) is the
 standard [**multinomial logistic
@@ -97,7 +97,7 @@ This is a simpler model, but achieves that simplicity by making the
 additional assumption that the coefficients for the predictors are the
 same for all categories.
 
-## Installation
+## 🚀 Installation
 
 You can install the current published version (0.3.4) from
 [CRAN](https://cran.r-project.org/package=nestedLogit), or the
@@ -111,7 +111,7 @@ development version (0.4.0) from either
 | R-universe | `install.packages('nestedLogit', repos = 'https://friendly.r-universe.dev')` |
 | Github | `remotes::install_github("friendly/nestedLogit")` |
 
-## Package overview
+## ✨ Package overview
 
 The package provides one main function, `nestedLogit()` for fitting the
 set of $(m-1)$ binary logistic regression models for a polytomous
@@ -262,7 +262,7 @@ hypotheses about and comparing nested-logit models:
 - Through `logLik()`, the `AIC()` and `BIC()` functions compute the
   Akaike and Bayesian information criteria model-comparison statistics.
 
-## Examples
+## 🎨 Examples
 
 This example uses data on women’s labor force participation to fit a
 nested logit model for the response, `partic`, representing categories
@@ -378,7 +378,7 @@ plot(m, "hincome", list(children="present"),
 
 <img src="man/figures/README-wlf-plot-1.png" alt="" width="100%" />
 
-## Vignettes
+## 📜 Vignettes
 
 - A more general discussion of nested dichotomies logistic regression
   and detailed examples can be found in
@@ -392,8 +392,13 @@ plot(m, "hincome", list(children="present"),
 
 - Figuring out how to calculate uncertainty estimates for nested logit
   models was solved John Fox. The vignette,
-  “`vignette("standard-errors")`, describes the mathematics behind the
+  `vignette("standard-errors")`, describes the mathematics behind the
   calculation of standard errors using the delta method.
+
+- A collection of other examples of datasets for which nested logit
+  models are useful, described in `vignette("other-examples")` and
+  [pkgdown
+  documentation](https://friendly.github.io/nestedLogit/articles/other-examples.html).
 
 ## Authors
 
