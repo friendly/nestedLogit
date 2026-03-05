@@ -15,7 +15,9 @@
       "Bash(/tmp/test_vote2.R:*)",
       "Bash(/tmp/update_gss.R:*)",
       "Bash(/tmp/run_tests.R:*)",
-      "Bash(/tmp/test_labelcol.R:*)"
+      "Bash(/tmp/test_labelcol.R:*)",
+      "WebFetch(domain:r-hub.github.io)",
+      "WebFetch(domain:blog.r-hub.io)"
     ]
   }
 }
