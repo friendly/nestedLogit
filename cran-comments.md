@@ -14,6 +14,7 @@
 [1] "ggeffects"   "insight"     "parameters"  "performance"
 
 ## revdepcheck results
+> revdepcheck::revdep_check(num_workers=4)
 
 We checked 4 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
