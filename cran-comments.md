@@ -45,6 +45,8 @@ built cleanly on local Windows machines and `win-builder` because
 
 No other changes; version not bumped.
 
+Added `rhub::rhub_check()` workflow
+
 ---
 
 ## nestedLogit 0.4.0
@@ -66,3 +68,5 @@ This is a major release of the package adding considerable functionality for plo
 * In `plot.nestedLogit()`, added `label.col` argument (defaulting to the value of `col` in the call), to control the color of the curve label
 * Add example of plotting predictions for dichotomies to `ggeffects` vignette
 * Fixed problem in `ggeffects` vignette with `predict_response()` for nestedLogit models; see [ggeffects issue #671](https://github.com/strengejacke/ggeffects/issues/671)
+* Fixed problem in `other-examples` vignette traced to tibble not handled well in `plot.nestedLogit`
+* Added `rhub::rhub_check()` workflow.
