@@ -1,5 +1,5 @@
 
-R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+R version 4.5.1 (2025-06-13 ucrt) -- "Great Square Root"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
@@ -16,6 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(testthat)
+Warning message:
+package 'testthat' was built under R version 4.5.2 
 > library(ggeffects)
 > test_check("ggeffects")
 (Intercept)    tensionM    tensionH 
@@ -90,11 +92,11 @@ Can't compute adjusted predictions, `effects::Effect()` returned an error.
 Reason: non-conformable arguments
 You may try `ggpredict()` or `ggemmeans()`.
 
-[ FAIL 0 | WARN 0 | SKIP 72 | PASS 565 ]
+[ FAIL 0 | WARN 0 | SKIP 75 | PASS 555 ]
 
-══ Skipped tests (72) ══════════════════════════════════════════════════════════
+══ Skipped tests (75) ══════════════════════════════════════════════════════════
 • !interactive() is TRUE (1): 'test-print_test_predictions-ordinal.R:7:1'
-• On CRAN (69): 'test-MCMCglmm.R:1:1', 'test-MixMod.R:1:1',
+• On CRAN (68): 'test-MCMCglmm.R:1:1', 'test-MixMod.R:1:1',
   'test-averaging.R:1:1', 'test-avg_predictions.R:1:1',
   'test-backtransform_response.R:1:1', 'test-bias_correction.R:1:1',
   'test-brglm.R:4:1', 'test-brms-categ-cum.R:1:1', 'test-brms-monotonic.R:1:1',
@@ -105,20 +107,19 @@ You may try `ggpredict()` or `ggemmeans()`.
   'test-format.R:1:1', 'test-gamlss.R:1:1', 'test-gamm4.R:1:1',
   'test-glmer.R:2:1', 'test-glmmTMB.R:1:1', 'test-interval_re.R:1:1',
   'test-ivreg.R:1:1', 'test-list_terms.R:32:1', 'test-lmer.R:1:1',
-  'test-mgcv.R:1:1', 'test-plot-from-vignettes.R:5:1',
-  'test-plot-ordinal-latent.R:1:1', 'test-plot-show_data.R:1:1',
-  'test-plot-survival.R:2:1', 'test-plot.R:1:1', 'test-polr.R:13:5',
-  'test-polr.R:43:5', 'test-poly-zeroinf.R:1:1', 'test-pool_comparisons.R:1:1',
-  'test-print.R:1:1', 'test-print_digits.R:1:1', 'test-print_md.R:1:1',
-  'test-print_subsets.R:4:1', 'test-print_subsets.R:9:1',
-  'test-print_test_predictions.R:18:1', 'test-print_test_predictions.R:22:1',
-  'test-print_test_predictions.R:27:1', 'test-print_test_predictions.R:60:1',
-  'test-print_test_predictions.R:72:1', 'test-print_test_predictions.R:82:1',
-  'test-print_test_predictions.R:99:1', 'test-print_zero_inflation.R:1:1',
-  'test-resid_over_grid.R:33:5', 'test-rstanarm-ppd.R:1:1',
-  'test-rstanarm.R:1:1', 'test-sdmTMB.R:1:1', 'test-simulate.R:1:1',
-  'test-test_predictions-margin.R:1:1', 'test-test_predictions-mixed.R:1:1',
-  'test-test_predictions_emmeans.R:58:1',
+  'test-mgcv.R:1:1', 'test-plot-ordinal-latent.R:1:1',
+  'test-plot-show_data.R:1:1', 'test-plot-survival.R:2:1', 'test-plot.R:1:1',
+  'test-polr.R:13:5', 'test-polr.R:43:5', 'test-poly-zeroinf.R:1:1',
+  'test-pool_comparisons.R:1:1', 'test-print.R:1:1', 'test-print_digits.R:1:1',
+  'test-print_md.R:1:1', 'test-print_subsets.R:4:1',
+  'test-print_subsets.R:9:1', 'test-print_test_predictions.R:18:1',
+  'test-print_test_predictions.R:22:1', 'test-print_test_predictions.R:27:1',
+  'test-print_test_predictions.R:60:1', 'test-print_test_predictions.R:72:1',
+  'test-print_test_predictions.R:82:1', 'test-print_test_predictions.R:99:1',
+  'test-print_zero_inflation.R:1:1', 'test-resid_over_grid.R:33:5',
+  'test-rstanarm-ppd.R:1:1', 'test-rstanarm.R:1:1', 'test-sdmTMB.R:1:1',
+  'test-simulate.R:1:1', 'test-test_predictions-margin.R:1:1',
+  'test-test_predictions-mixed.R:1:1', 'test-test_predictions_emmeans.R:58:1',
   'test-test_predictions_emmeans.R:73:1',
   'test-test_predictions_ggeffects.R:115:1',
   'test-test_predictions_ggeffects.R:164:1',
@@ -126,9 +127,12 @@ You may try `ggpredict()` or `ggemmeans()`.
   'test-test_predictions_ggeffects.R:226:5', 'test-vcov.R:1:1',
   'test-vglm.R:1:1', 'test-zeroinfl.R:27:3', 'test-zi_prob.R:1:1'
 • empty test (2): 'test-polr.R:136:5', 'test-polr.R:142:5'
+• {sjstats} is not installed (2): 'test-survey.R:3:1', 'test-svyglmnb.R:3:1'
+• {speedglm} is not installed (1): 'test-speedglm.R:2:1'
+• {vdiffr} is not installed (1): 'test-plot-from-vignettes.R:4:1'
 
-[ FAIL 0 | WARN 0 | SKIP 72 | PASS 565 ]
+[ FAIL 0 | WARN 0 | SKIP 75 | PASS 555 ]
 > 
 > proc.time()
    user  system elapsed 
-  48.48    2.67   58.18 
+ 242.71   12.12  270.10 

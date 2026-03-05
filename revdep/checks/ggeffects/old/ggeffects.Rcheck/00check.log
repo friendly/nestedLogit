@@ -1,9 +1,9 @@
 * using log directory 'C:/Dropbox/R/projects/nestedLogit/revdep/checks/ggeffects/old/ggeffects.Rcheck'
-* using R version 4.5.2 (2025-10-31 ucrt)
+* using R version 4.5.1 (2025-06-13 ucrt)
 * using platform: x86_64-w64-mingw32
 * R was compiled by
-    gcc.exe (GCC) 14.3.0
-    GNU Fortran (GCC) 14.3.0
+    gcc.exe (GCC) 14.2.0
+    GNU Fortran (GCC) 14.2.0
 * running under: Windows 10 x64 (build 19044)
 * using session charset: UTF-8
 * using options '--no-manual --no-build-vignettes'
@@ -12,7 +12,9 @@
 * this is package 'ggeffects' version '2.3.2'
 * package encoding: UTF-8
 * checking package namespace information ... OK
-* checking package dependencies ... OK
+* checking package dependencies ... INFO
+Packages suggested but not available for checking:
+  'sdmTMB', 'sjstats', 'speedglm', 'vdiffr'
 * checking if this is a source package ... OK
 * checking if there is a namespace ... OK
 * checking for executable files ... OK

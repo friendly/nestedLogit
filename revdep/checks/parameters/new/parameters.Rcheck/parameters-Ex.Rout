@@ -1,5 +1,5 @@
 
-R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+R version 4.5.1 (2025-06-13 ucrt) -- "Great Square Root"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
@@ -42,6 +42,8 @@ Type 'q()' to quit R.
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'boot' was built under R version 4.5.2
+Warning: package 'emmeans' was built under R version 4.5.2
 Welcome to emmeans.
 Caution: You lose important information if you filter this package's results.
 See '? untidy'
@@ -69,6 +71,8 @@ detaching 'package:emmeans', 'package:boot'
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'boot' was built under R version 4.5.2
+Warning: package 'emmeans' was built under R version 4.5.2
 Welcome to emmeans.
 Caution: You lose important information if you filter this package's results.
 See '? untidy'
@@ -106,6 +110,7 @@ detaching 'package:emmeans', 'package:boot'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: glmmTMB
+Warning: package 'glmmTMB' was built under R version 4.5.2
 > data(qol_cancer)
 > model <- lm(QoL ~ time + age + education, data = qol_cancer)
 > ci(model)
@@ -188,7 +193,10 @@ Overall accuracy of classification: 96.00%
 +   rez # Show results
 +   predict(rez) # Get clusters
 + }
-Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa
+Warning: package 'factoextra' was built under R version 4.5.2
+Warning: package 'ggplot2' was built under R version 4.5.2
+Welcome to factoextra!
+Want to learn more? See two factoextra-related books at https://www.datanovia.com/en/product/practical-guide-to-principal-component-methods-in-r/
   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 3 2 2 2 3 2 2 2 2 2 2 2 2 3 2 2 2 2 3 2 2 2
  [75] 2 3 3 3 2 2 2 2 2 2 2 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 3 3 3 3 2 3 3 3 3
@@ -225,6 +233,7 @@ Cluster | n_Obs | Sum_Squares | Sepal.Length | Sepal.Width | Petal.Length | Peta
 +   rez # Show results
 +   predict(rez) # Get clusters
 + }
+Warning: package 'cluster' was built under R version 4.5.2
   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 3 3 3 2 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3
  [75] 3 2 2 2 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2
@@ -237,6 +246,7 @@ Cluster | n_Obs | Sum_Squares | Sepal.Length | Sepal.Width | Petal.Length | Peta
 +   rez # Show results
 +   predict(rez) # Get clusters
 + }
+Warning: package 'fpc' was built under R version 4.5.2
   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
  [75] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
@@ -251,6 +261,7 @@ Cluster | n_Obs | Sum_Squares | Sepal.Length | Sepal.Width | Petal.Length | Peta
 +   rez # Show results
 +   predict(rez) # Get clusters
 + }
+Warning: package 'dbscan' was built under R version 4.5.2
 
 Attaching package: 'dbscan'
 
@@ -275,6 +286,7 @@ The following object is masked from 'package:stats':
 +   rez # Show results
 +   predict(rez) # Get clusters
 + }
+Warning: package 'mclust' was built under R version 4.5.2
 Package 'mclust' version 6.1.2
 Type 'citation("mclust")' for citing this R package in publications.
   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
@@ -431,6 +443,7 @@ Overall accuracy of classification: 92.67%
 + compare_parameters(m1, m2)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'gt' was built under R version 4.5.2
 > data(iris)
 > lm1 <- lm(Sepal.Length ~ Species, data = iris)
 > lm2 <- lm(Sepal.Length ~ Species + Petal.Length, data = iris)
@@ -488,7 +501,9 @@ detaching 'package:gt'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: psych
+Warning: package 'psych' was built under R version 4.5.2
 Loading required package: lavaan
+Warning: package 'lavaan' was built under R version 4.5.2
 This is lavaan 0.6-21
 lavaan is FREE software! Please report any bugs.
 
@@ -527,6 +542,8 @@ detaching 'package:lavaan', 'package:psych'
 + dof(model)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'lme4' was built under R version 4.5.2
+Warning: package 'Matrix' was built under R version 4.5.2
 > model <- lm(Sepal.Length ~ Petal.Length * Species, data = iris)
 > dof(model)
 [1] 144
@@ -561,6 +578,7 @@ detaching 'package:lme4', 'package:Matrix'
 + 
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'gt' was built under R version 4.5.2
 > model <- lm(mpg ~ wt + cyl, data = mtcars)
 > mp <- model_parameters(model)
 > display(mp)
@@ -619,7 +637,9 @@ detaching 'package:gt'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: domir
+Warning: package 'domir' was built under R version 4.5.2
 Loading required package: performance
+Warning: package 'performance' was built under R version 4.5.2
 > data(mtcars)
 > model <- glm(vs ~ cyl + carb + mpg, data = mtcars, family = binomial())
 > performance::r2(model)
@@ -767,6 +787,7 @@ education [high] | [10.14, 18.57] | < .001 |    Rejected | > .999
 +     result <- equivalence_test(model)
 +     plot(result)
 + }
+Warning: package 'see' was built under R version 4.5.2
 > ## End(Don't show)
 > 
 > 
@@ -1034,8 +1055,10 @@ Volvo 142E              30.6580      63.800
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: BayesFactor
+Warning: package 'BayesFactor' was built under R version 4.5.2
 Loading required package: coda
 Loading required package: Matrix
+Warning: package 'Matrix' was built under R version 4.5.2
 ************
 Welcome to BayesFactor 0.9.12-4.7. If you have questions, please contact Richard Morey (richarddmorey@gmail.com).
 
@@ -1181,7 +1204,9 @@ Anova Table (Type 1 tests)
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: rstanarm
+Warning: package 'rstanarm' was built under R version 4.5.2
 Loading required package: Rcpp
+Warning: package 'Rcpp' was built under R version 4.5.2
 This is rstanarm version 2.32.2
 - See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
 - Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
@@ -1220,6 +1245,7 @@ detaching 'package:rstanarm', 'package:Rcpp'
 +   model_parameters(model)
 + }
 Loading required package: mgcv
+Warning: package 'mgcv' was built under R version 4.5.2
 Loading required package: nlme
 This is mgcv 1.9-4. For overview type '?mgcv'.
 Gu & Wahba 4 term additive model
@@ -1308,9 +1334,12 @@ detaching 'package:mgcv', 'package:nlme'
 + 
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'boot' was built under R version 4.5.2
 Loading required package: sandwich
 Loading required package: clubSandwich
+Warning: package 'clubSandwich' was built under R version 4.5.2
 Loading required package: brglm2
+Warning: package 'brglm2' was built under R version 4.5.2
 
 Attaching package: 'brglm2'
 
@@ -1447,6 +1476,7 @@ detaching 'package:brglm2', 'package:clubSandwich', 'package:sandwich',
 +   )
 +   model_parameters(model)
 + }
+Warning: package 'brglm2' was built under R version 4.5.2
 [34m# Response level: definitely[39m
 
 Parameter       | Log-Odds |   SE |         95% CI |     z |      p
@@ -1505,8 +1535,11 @@ detaching 'package:brglm2'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: lme4
+Warning: package 'lme4' was built under R version 4.5.2
 Loading required package: Matrix
+Warning: package 'Matrix' was built under R version 4.5.2
 Loading required package: glmmTMB
+Warning: package 'glmmTMB' was built under R version 4.5.2
 > library(parameters)
 > data(mtcars)
 > model <- lme4::lmer(mpg ~ wt + (1 | gear), data = mtcars)
@@ -1705,6 +1738,7 @@ Chi2(2) | Cramer's V (adj.) | Cramers 95% CI |     p
 + model_parameters(pooled)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'mice' was built under R version 4.5.2
 
 Attaching package: 'mice'
 
@@ -1716,6 +1750,7 @@ The following objects are masked from 'package:base':
 
     cbind, rbind
 
+Warning: package 'gee' was built under R version 4.5.2
 > library(parameters)
 > data(nhanes2, package = "mice")
 > imp <- mice::mice(nhanes2)
@@ -1836,6 +1871,7 @@ detaching 'package:gee', 'package:mice'
 + model_parameters(model)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'brglm2' was built under R version 4.5.2
 > data("stemcell", package = "brglm2")
 > model <- brglm2::bracl(research ~ as.numeric(religion) + gender, weights = frequency, 
 +     data = stemcell, type = "ML")
@@ -2102,6 +2138,9 @@ y6 ~~ y8 |        0.34 | 0.11 | [ 0.12, 0.55] | 3.08 | 0.002
 +   model <- rma(yi = effectsize, sei = stderr, method = "REML", data = mydat)
 +   model_parameters(model)
 + }
+Warning: package 'metafor' was built under R version 4.5.2
+Warning: package 'Matrix' was built under R version 4.5.2
+Warning: package 'metadat' was built under R version 4.5.2
 
 Loading the 'metafor' package (version 4.8-0). For an
 introduction to the package please type: help(metafor)
@@ -2143,6 +2182,7 @@ detaching 'package:metafor', 'package:numDeriv', 'package:metadat',
 +   model_parameters(model)
 + }
 Loading required package: WRS2
+Warning: package 'WRS2' was built under R version 4.5.2
 A heteroscedastic one-way ANOVA for trimmed means
 
 F | df | df (error) |     p | Estimate |       95% CI |                         Effectsize
@@ -2178,6 +2218,7 @@ detaching 'package:WRS2'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: pscl
+Warning: package 'pscl' was built under R version 4.5.2
 Classes and Methods for R originally developed in the
 Political Science Computational Laboratory
 Department of Political Science
@@ -2229,7 +2270,11 @@ detaching 'package:pscl'
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
-Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa
+Warning: package 'see' was built under R version 4.5.2
+Warning: package 'factoextra' was built under R version 4.5.2
+Warning: package 'ggplot2' was built under R version 4.5.2
+Welcome to factoextra!
+Want to learn more? See two factoextra-related books at https://www.datanovia.com/en/product/practical-guide-to-principal-component-methods-in-r/
 > ## End(Don't show)
 > 
 > 
@@ -2260,12 +2305,26 @@ detaching 'package:factoextra', 'package:ggplot2', 'package:see'
 + summary(result)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'PCDimension' was built under R version 4.5.2
+Warning: package 'ClassDiscovery' was built under R version 4.5.2
+Warning: package 'cluster' was built under R version 4.5.2
+Warning: package 'oompaBase' was built under R version 4.5.2
+Warning: package 'nFactors' was built under R version 4.5.2
+Warning: package 'EGAnet' was built under R version 4.5.2
 
 EGAnet (version 2.4.0) 
 
 For help getting started, see <https://r-ega.net> 
 
 For bugs and errors, submit an issue to <https://github.com/hfgolino/EGAnet/issues>
+Warning: package 'psych' was built under R version 4.5.2
+
+Attaching package: 'psych'
+
+The following object is masked from 'package:EGAnet':
+
+    CFA
+
 > library(parameters)
 > n_factors(mtcars, type = "PCA")
 [34m# Method Agreement Procedure:
@@ -2354,6 +2413,7 @@ am               | 0.925  |
 + plot(result)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'see' was built under R version 4.5.2
 > data(qol_cancer)
 > model <- lm(QoL ~ time + age + education, data = qol_cancer)
 > p_direction(model)
@@ -2498,6 +2558,7 @@ educationhigh | [ 9.37, 19.34] |   100%
 +     result <- p_significance(model)
 +     plot(result)
 + }
+Warning: package 'see' was built under R version 4.5.2
 > ## End(Don't show)
 > 
 > 
@@ -2533,6 +2594,7 @@ detaching 'package:see'
 + p_value(model, component = "zi")
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'pscl' was built under R version 4.5.2
 Classes and Methods for R originally developed in the
 Political Science Computational Laboratory
 Department of Political Science
@@ -2992,6 +3054,7 @@ detaching 'package:pscl'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: mice
+Warning: package 'mice' was built under R version 4.5.2
 
 Attaching package: 'mice'
 
@@ -3004,6 +3067,7 @@ The following objects are masked from 'package:base':
     cbind, rbind
 
 Loading required package: datawizard
+Warning: package 'datawizard' was built under R version 4.5.2
 > data("nhanes2", package = "mice")
 > imp <- mice::mice(nhanes2, printFlag = FALSE)
 > models <- lapply(1:5, function(i) {
@@ -3083,6 +3147,9 @@ detaching 'package:datawizard', 'package:mice'
 + 
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'nFactors' was built under R version 4.5.2
+Warning: package 'sparsepca' was built under R version 4.5.2
+Warning: package 'psych' was built under R version 4.5.2
 > library(parameters)
 > factor_analysis(mtcars[, 1:7], n = "all", threshold = 0.2, rotation = "Promax")
 [34m# Rotated loadings from Factor Analysis (Promax-rotation)[39m
@@ -3203,6 +3270,7 @@ detaching 'package:psych', 'package:sparsepca', 'package:nFactors'
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'gt' was built under R version 4.5.2
 > ## End(Don't show)
 > 
 > 
@@ -3241,6 +3309,8 @@ detaching 'package:gt'
 + 
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'gt' was built under R version 4.5.2
+Warning: package 'glmmTMB' was built under R version 4.5.2
 > data(iris)
 > lm1 <- lm(Sepal.Length ~ Species, data = iris)
 > lm2 <- lm(Sepal.Length ~ Species + Petal.Length, data = iris)
@@ -3279,7 +3349,9 @@ detaching 'package:glmmTMB', 'package:gt'
 +   random_parameters(model)
 + }
 Loading required package: lme4
+Warning: package 'lme4' was built under R version 4.5.2
 Loading required package: Matrix
+Warning: package 'Matrix' was built under R version 4.5.2
 [34m# Random Effects
 
 [39m[34mWithin-Group Variance          [39m654.94 (25.59)
@@ -3382,6 +3454,7 @@ Coefficients:
 +   reshape_loadings(loadings)
 + }
 Loading required package: psych
+Warning: package 'psych' was built under R version 4.5.2
 Variable   |   MR1 |   MR2 |   MR3 | Complexity | Uniqueness
 ------------------------------------------------------------
 rating     |  0.90 | -0.07 | -0.05 |       1.02 |       0.23
@@ -3596,6 +3669,7 @@ Uncertainty intervals (equal-tailed) and p-values (two-tailed)
 + }) # examplesIf
 Loading required package: sandwich
 Loading required package: clubSandwich
+Warning: package 'clubSandwich' was built under R version 4.5.2
 > model <- lm(Petal.Length ~ Sepal.Length * Species, data = iris)
 > standard_error(model)
                        Parameter        SE
@@ -3794,12 +3868,16 @@ supp [VC] × dose |       0.32 | [ 0.04,  0.60]
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'lme4' was built under R version 4.5.2
+Warning: package 'Matrix' was built under R version 4.5.2
 > ## End(Don't show)
 > ## Don't show: 
 > if (require("rstanarm", quietly = TRUE)) withAutoprint({ # examplesIf
 + ## End(Don't show)
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'rstanarm' was built under R version 4.5.2
+Warning: package 'Rcpp' was built under R version 4.5.2
 This is rstanarm version 2.32.2
 - See https://mc-stan.org/rstanarm/articles/priors for changes to default priors!
 - Default priors may change, so it's safest to specify priors, even if equivalent to the defaults.
@@ -3825,7 +3903,7 @@ detaching 'package:rstanarm', 'package:Rcpp', 'package:lme4',
 
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  12.44 1.16 17.47 NA NA 
+Time elapsed:  56.99 5.2 98.74 NA NA 
 > grDevices::dev.off()
 null device 
           1 

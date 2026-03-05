@@ -170,7 +170,7 @@ used in estimation. Just add `geom_point()` for this. You can also achieve great
 resolution in the plot by moving the legend inside the plot as shown below.
 
 
-```{r}
+```{r wlf-dichotomies}
 #| out.width = "100%",
 #| fig.height = 5,
 #| fig.cap = "Predicted probabilities for the two dichotomies."

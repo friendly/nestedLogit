@@ -1,5 +1,5 @@
 
-R version 4.5.2 (2025-10-31 ucrt) -- "[Not] Part in a Rumble"
+R version 4.5.1 (2025-06-13 ucrt) -- "Great Square Root"
 Copyright (C) 2025 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64
 
@@ -69,6 +69,8 @@ Type 'q()' to quit R.
 + collapse_by_group(me, model, "e15relat")
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'lme4' was built under R version 4.5.2
+Warning: package 'Matrix' was built under R version 4.5.2
 > library(ggeffects)
 > data(efc, package = "ggeffects")
 > efc$e15relat <- as.factor(efc$e15relat)
@@ -290,6 +292,10 @@ detaching 'package:lme4', 'package:Matrix'
 +   scale_x_discrete(labels = get_x_labels(mydat))
 + ## Don't show: 
 + }) # examplesIf
+Warning: package 'datawizard' was built under R version 4.5.2
+Warning: package 'ggplot2' was built under R version 4.5.2
+Warning: package 'effects' was built under R version 4.5.2
+Warning: package 'carData' was built under R version 4.5.2
 lattice theme set by effectsTheme()
 See ?effectsTheme for details.
 > library(ggeffects)
@@ -588,6 +594,7 @@ detaching 'package:sjlabelled'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: mice
+Warning: package 'mice' was built under R version 4.5.2
 
 Attaching package: 'mice'
 
@@ -646,6 +653,7 @@ detaching 'package:mice'
 + ## Don't show: 
 + }) # examplesIf
 Loading required package: mice
+Warning: package 'mice' was built under R version 4.5.2
 
 Attaching package: 'mice'
 
@@ -1434,7 +1442,7 @@ Adjusted for:
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  5.22 0.65 7.31 NA NA 
+Time elapsed:  20.11 1.37 22.02 NA NA 
 > grDevices::dev.off()
 null device 
           1 
