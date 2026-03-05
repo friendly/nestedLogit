@@ -4,7 +4,8 @@
 * Rhub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
 * Rhub: Windows Server 2022, R-devel, 64 bit
 
->devtools::check_win_devel()
+> devtools::check_win_devel()
+> rhub::rhub_check()
 
 ## R CMD check results
 
@@ -23,6 +24,28 @@ We checked 4 reverse dependencies, comparing R CMD check results across CRAN and
  * We saw 0 new problems
  * We failed to check 0 packages
 
+
+## Response to CRAN review of 0.4.0
+
+The vignette `other-examples.Rmd` failed on CRAN with:
+
+    Error in `xtfrm.data.frame()`: cannot xtfrm data frames
+
+The `mlogit::Fishing` dataset is a `dfidx` object, which inherits from
+`tbl_df` (tibble). When passed to `nestedLogit()` it is stored as-is,
+and `plot.nestedLogit()` then called `data[, x.var]` on a tibble, which
+never drops dimensions and so returned a one-column data frame rather
+than a vector, eventually causing `sort()` to fail.
+
+Fixed by coercing `x$data` to a plain data frame at the top of
+`plot.nestedLogit()` (`data <- as.data.frame(x$data)`). The vignette
+built cleanly on local Windows machines and `win-builder` because
+`mlogit` was not installed there and the chunk is guarded by
+`eval = have_mlogit`.
+
+No other changes; version not bumped.
+
+---
 
 ## nestedLogit 0.4.0
 

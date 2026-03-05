@@ -130,7 +130,7 @@ plot.nestedLogit <- function(x,
                              ...){
   scale <- match.arg(scale)
   if (is.null(ylab)) ylab <- if (scale == "prob") "Fitted Probability" else "Fitted Log Odds"
-  data <- x$data
+  data <- as.data.frame(x$data)
   vars <- all.vars(formula(x)[-2L])
   response <- setdiff(all.vars(formula(x)), vars)
   if (missing(x.var)) {

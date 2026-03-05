@@ -6,6 +6,7 @@ package: nestedLogit
 output:
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 1
     number_sections: true
 fig_caption: yes
 bibliography: ["references.bib", "packages.bib"]
@@ -59,10 +60,16 @@ From a scan of suitable datasets in available packages, the best candidates iden
 | `survey$Smoke` | MASS | Never/Occas/Regul/Heavy | ordinal continuation | 237 |
 | `pneumo` | VGAM | normal/mild/severe | ordinal continuation | 8 |
 
+Polytomous response data comes in different forms (e.g., wide vs. long)
+so this vignette also provides an opportunity to illustrate transformations
+among these to make the data suitable for analysis and for plotting.
+
+## Load packages
+Load the packages we'll use here:
 ```{r load-packages}
 library(nestedLogit)
-library(nnet)       # multinom()
-library(car)        # Anova()
+library(nnet)       # for: multinom()
+library(car)        # for: Anova()
 library(ggplot2)
 ```
 
@@ -305,6 +312,7 @@ give quite different views of the predictions from the models.
 ### Plotting logits
 
 Using the `plot.nestedLogit()` method, we can also show these on the logit scale, using the `scale = "logit"` argument.
+The `others` argument allows us to condition on (average over) values of the variables not shown in this plot.
 There are other niceties, not shown here, such as using direct labels on the curves (`label = TRUE`, `label.x`) rather than a legend.
 
 <!-- DONE: plot() with scale="logit" now works as of commit b523bc7. -->
@@ -442,14 +450,17 @@ predictor `income`; the choice-specific `price.*` / `catch.*` variables require 
 logit / nested logit framework such as `mlogit`. This section shows the simple nested-dichotomy
 fit and notes the limitation. -->
 
-The dataset is from @HerrgesKling:1999; see also @CameronTrivedi:2005 for an econometric treatment.
+The dataset is from @HerrgesKling:1999; see also @CameronTrivedi:2005 for an econometric treatment
+that also considers the cost of fishing by these modes and also the expected catch
+associated with each. Models for such response-specific predictors are interesting,
+but outside the scope of our nested logit models.
 
 
 ```{r fishing-pkg, include=FALSE}
 have_mlogit <- requireNamespace("mlogit", quietly = TRUE)
 ```
 
-This section requires the `mlogit` package.
+This section requires the `mlogit` package for the dataset.
 
 ```{r fishing-load, eval=have_mlogit}
 data("Fishing", package = "mlogit")
@@ -493,6 +504,7 @@ fishing_dichots
 as.tree(fishing_dichots, response = "mode")
 ```
 
+Fit the model and show the summaries for the dichotomies:
 ```{r fishing-fit, eval=have_mlogit}
 fish_nested <- nestedLogit(mode ~ income,
                            dichotomies = fishing_dichots,
@@ -501,11 +513,19 @@ summary(fish_nested)
 Anova(fish_nested)
 ```
 
+## Plots
+Again, the `plot.nestedLogit()` gives an interpretable plot of the response probabilities:
 ```{r fishing-plot, eval=have_mlogit}
 plot(fish_nested, x.var = "income",
      xlab  = "Monthly income (USD)",
-     main  = "Fishing mode choice vs. income")
+     main  = "Fishing mode choice vs. income",
+     label=TRUE, label.col="black",
+     cex.lab = 1.2)
 ```
+
+* Fishing from the beach is a low-probability choice, which doesn't vary much with income.
+* Fishing from a pier is next overall, followed by charter fishing. Both of these decline with income.
+* The tendency to fish from a private boat (yours or friend's) increases dramatically with income.
 
 ---
 
@@ -514,6 +534,8 @@ plot(fish_nested, x.var = "income",
 ```{r arthritis-pkg, include=FALSE}
 have_vcd <- requireNamespace("vcd", quietly = TRUE)
 ```
+
+<!-- The dataset `vcd::Arthritis` is most commonly analysed  -->
 
 ```{r arthritis-load, eval=have_vcd}
 data("Arthritis", package = "vcd")
@@ -524,7 +546,11 @@ table(Arthritis$Improved)
 ## Overview
 
 84 patients in a double-blind clinical trial received either an active treatment
-or a placebo. The outcome `Improved` is *ordinal*:
+or a placebo (`Treatment`). They are classified by `Sex` and `Age`.
+The outcome `Improved` is *ordinal*, with levels "None", "Some" or "Marked" improvement.
+
+Simpler analyses of these data consider only the dichotomy ("Improved") between 
+"None" and the other categories.
 
 ```
       Improved
@@ -552,6 +578,7 @@ summary(arth_nested)
 Anova(arth_nested)
 ```
 
+## Plotting
 ```{r arthritis-plot, eval=have_vcd}
 plot(arth_nested, x.var = "Age",
      others = list(Treatment = "Treated", Sex = "Female"),
