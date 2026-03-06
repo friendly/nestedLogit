@@ -1,11 +1,12 @@
 ## Test environments
 * local Windows 10, Windows 11 R version 4.5.2 (2025-10-31 ucrt)
 * win-builder R Under development (unstable) (2026-03-04 r89536 ucrt)
-* Rhub: Ubuntu Linux 20.04.1 LTS, R-release, GCC
-* Rhub: Windows Server 2022, R-devel, 64 bit
+* R-hub: Ubuntu Linux 24.04 LTS, R-release, GCC
+* R-hub: macOS 13 Ventura, R-release, x86_64
+* R-hub: macOS 15 Sequoia, R-release, arm64
 
 > devtools::check_win_devel()
-> rhub::rhub_check()
+> rhub::rhub_check(platforms = c("linux", "macos", "macos-arm64"))
 
 ## R CMD check results
 
