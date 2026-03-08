@@ -1,6 +1,16 @@
 # Changelog
 
+## nestedLogit 0.4.1
+
+- Added
+  [`RSQ()`](https://friendly.github.io/nestedLogit/reference/RSQ.md)
+  function to compute pseudo-R² measures (McFadden, Cox-Snell,
+  Nagelkerke, and others) for each dichotomy sub-model and for the
+  combined polytomous model
+
 ## nestedLogit 0.4.0
+
+CRAN release: 2026-03-06
 
 This is a major release of the package adding considerable functionality
 for plotting and other features
@@ -37,6 +47,18 @@ for plotting and other features
   [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md),
   added `label.col` argument (defaulting to the value of `col` in the
   call), to control the color of the curve label
+- Add example of plotting predictions for dichotomies to `ggeffects`
+  vignette
+- Fixed problem in `ggeffects` vignette with
+  [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html)
+  for nestedLogit models; see [ggeffects
+  issue](https://github.com/strengejacke/ggeffects/issues/671)
+  [\#671](https://github.com/friendly/nestedLogit/issues/671)
+- Fixed problem in `other-examples` vignette traced to tibble not
+  handled well in `plot.nestedLogit`
+- Added
+  [`rhub::rhub_check()`](https://r-hub.github.io/rhub/reference/rhub_check.html)
+  workflow.
 
 ## nestedLogit 0.3.4
 

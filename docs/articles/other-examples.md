@@ -27,10 +27,19 @@ candidates identified for this vignette are:
 | `survey$Smoke` | MASS    | Never/Occas/Regul/Heavy | ordinal continuation | 237  |
 | `pneumo`       | VGAM    | normal/mild/severe      | ordinal continuation | 8    |
 
+Polytomous response data comes in different forms (e.g., wide vs. long)
+so this vignette also provides an opportunity to illustrate
+transformations among these to make the data suitable for analysis and
+for plotting.
+
+### Load packages
+
+Load the packages we’ll use here:
+
 ``` r
 library(nestedLogit)
-library(nnet)       # multinom()
-library(car)        # Anova()
+library(nnet)       # for: multinom()
+library(car)        # for: Anova()
 library(ggplot2)
 ```
 
@@ -411,9 +420,10 @@ predictions from the models.
 Using the
 [`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
 method, we can also show these on the logit scale, using the
-`scale = "logit"` argument. There are other niceties, not shown here,
-such as using direct labels on the curves (`label = TRUE`, `label.x`)
-rather than a legend.
+`scale = "logit"` argument. The `others` argument allows us to condition
+on (average over) values of the variables not shown in this plot. There
+are other niceties, not shown here, such as using direct labels on the
+curves (`label = TRUE`, `label.x`) rather than a legend.
 
 ``` r
 # Logit-scale plot using the new scale= argument
@@ -681,9 +691,12 @@ modes of fishing: from a beach or pier, or on a boat, that could be
 private or a charter.
 
 The dataset is from Herriges & Kling (1999); see also Cameron & Trivedi
-(2005) for an econometric treatment.
+(2005) for an econometric treatment that also considers the cost of
+fishing by these modes and also the expected catch associated with each.
+Models for such response-specific predictors are interesting, but
+outside the scope of our nested logit models.
 
-This section requires the `mlogit` package.
+This section requires the `mlogit` package for the dataset.
 
 ``` r
 data("Fishing", package = "mlogit")
@@ -748,6 +761,8 @@ as.tree(fishing_dichots, response = "mode")
 #>    /   \      /   \
 #> beach pier boat charter
 ```
+
+Fit the model and show the summaries for the dichotomies:
 
 ``` r
 fish_nested <- nestedLogit(mode ~ income,
@@ -849,13 +864,28 @@ Anova(fish_nested)
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+### Plots
+
+Again, the
+[`plot.nestedLogit()`](https://friendly.github.io/nestedLogit/reference/plot.nestedLogit.md)
+gives an interpretable plot of the response probabilities:
+
 ``` r
 plot(fish_nested, x.var = "income",
      xlab  = "Monthly income (USD)",
-     main  = "Fishing mode choice vs. income")
+     main  = "Fishing mode choice vs. income",
+     label=TRUE, label.col="black",
+     cex.lab = 1.2)
 ```
 
 ![](fig/fishing-plot-1.png)
+
+- Fishing from the beach is a low-probability choice, which doesn’t vary
+  much with income.
+- Fishing from a pier is next overall, followed by charter fishing. Both
+  of these decline with income.
+- The tendency to fish from a private boat (yours or friend’s) increases
+  dramatically with income.
 
 ------------------------------------------------------------------------
 
@@ -879,7 +909,12 @@ table(Arthritis$Improved)
 ### Overview
 
 84 patients in a double-blind clinical trial received either an active
-treatment or a placebo. The outcome `Improved` is *ordinal*:
+treatment or a placebo (`Treatment`). They are classified by `Sex` and
+`Age`. The outcome `Improved` is *ordinal*, with levels “None”, “Some”
+or “Marked” improvement.
+
+Simpler analyses of these data consider only the dichotomy (“Improved”)
+between “None” and the other categories.
 
           Improved
          /        \
@@ -976,6 +1011,8 @@ Anova(arth_nested)
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
+
+### Plotting
 
 ``` r
 plot(arth_nested, x.var = "Age",

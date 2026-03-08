@@ -5,7 +5,10 @@ date: "`r Sys.Date()`"
 package: nestedLogit
 output: 
   rmarkdown::html_vignette:
-  fig_caption: yes
+    toc: true
+    toc_depth: 3
+    number_sections: true
+fig_caption: yes
 bibliography: ["references.bib", "packages.bib"]
 csl: apa.csl
 vignette: >
@@ -375,6 +378,33 @@ gl |>
   knitr::kable(digits = 3)
 ```
 
+
+**Pseudo-R² measures**: While `Anova()` and `linearHypothesis()` test the statistical significance of individual predictors,
+pseudo-R² statistics summarize the overall explanatory power of the model.
+The `RSQ()` function computes several such measures for each dichotomy sub-model and for the combined polytomous model.
+By default it reports three widely used statistics:
+
+* **McFadden's R²**: $1 - L / L_0$, where $L$ is the fitted model log-likelihood and $L_0$ that of the null (intercept-only) model.
+  Values of 0.1–0.3 are generally considered indicative of a reasonable fit in logistic regression [@statisticalhorizons-r2].
+* **Cox-Snell R²**: $1 - \exp\!\bigl(2(L_0 - L)/n\bigr)$, a rescaling based on the likelihood ratio; it is bounded strictly below 1.
+* **Nagelkerke R²**: Cox-Snell divided by its theoretical maximum, so that the scale runs from 0 to 1.
+
+The Combined row aggregates the sub-model log-likelihoods (valid because the nested dichotomies are statistically independent)
+and uses the full sample size $n = `r nrow(Womenlf)`$ rather than the sum of the per-dichotomy observation counts,
+which would double-count observations.
+
+```{r wlf-rsq}
+RSQ(wlf.nested)
+```
+
+The results reveal an interesting asymmetry between the two dichotomies.
+The `full` sub-model — contrasting full-time with part-time work, among those who work outside the home — has
+substantially higher pseudo-R² values than the `work` sub-model, which contrasts working with not working.
+This reflects what we saw in the `Anova()` output: husband's income and presence of young children are very strong
+predictors of work _intensity_ among women who are already in the labor force, but are relatively weaker predictors
+of the initial decision to work outside the home at all.
+The Combined row gives an overall characterization of how well the predictors account for the three-category
+response.
 
 **Model updating**: The `update()` function makes it easy to create a new model from an old one, by adding or subtracting terms from the
 model formula, specifying a new formula, or changing the observations used or contrasts for factors.

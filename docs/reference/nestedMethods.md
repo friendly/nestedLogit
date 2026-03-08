@@ -190,7 +190,7 @@ sqrt(diag(vcov(m, as.matrix=TRUE))) # standard errors
 #>                          0.0016570885 
 print(m)
 #> Nested logit models: degree ~ parentdeg + year
-#> <environment: 0x000002915b110340>
+#> <environment: 0x0000027a5965c698>
 #> 
 #> Call:  glm(formula = above_.highschool ~ parentdeg + year, family = binomial, 
 #>     data = GSS, contrasts = contrasts)
@@ -234,7 +234,7 @@ print(m)
 #> Residual Deviance: 14050     AIC: 14060
 summary(m)
 #> Nested logit models: degree ~ parentdeg + year
-#> <environment: 0x000002915b110340>
+#> <environment: 0x0000027a5965c698>
 #> 
 #> Response above_.highschool: {<highschool} vs. {highschool, college, graduate}
 #> Call:

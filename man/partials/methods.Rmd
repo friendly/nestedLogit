@@ -19,3 +19,4 @@ These functions are supplemented by various methods for testing hypotheses about
 * `linearHypothesis()` uses `car::linearHypothesis()` to compute Wald tests for hypotheses about coefficients or their linear combinations.
 * `logLik()` returns the log-likelihood and degrees of freedom for the nested-dichotomies logit model.
 * Through `logLik()`, the `AIC()` and `BIC()` functions compute the Akaike and Bayesian information criteria model-comparison statistics.
+* `RSQ()` computes a variety of pseudo $R^2$ (McFadden, CoxSnell, Nagelkerke, ...) measures for nested logit models.

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.0" id="nestedlogit-040">nestedLogit 0.4.0<a class="anchor" aria-label="anchor" href="#nestedlogit-040"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.1" id="nestedlogit-041">nestedLogit 0.4.1<a class="anchor" aria-label="anchor" href="#nestedlogit-041"></a></h2>
+<ul><li>Added <code><a href="../reference/RSQ.html">RSQ()</a></code> function to compute pseudo-R² measures (McFadden, Cox-Snell, Nagelkerke, and others) for each dichotomy sub-model and for the combined polytomous model</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="nestedlogit-040">nestedLogit 0.4.0<a class="anchor" aria-label="anchor" href="#nestedlogit-040"></a></h2><p class="text-muted">CRAN release: 2026-03-06</p>
 <p>This is a major release of the package adding considerable functionality for plotting and other features</p>
 <ul><li>add <code>gators</code> data, food choice of alligators from Agresti</li>
 <li>added a vignette illustrating use of the <code>ggeffects</code> package for nestedLogit models</li>
@@ -58,6 +62,12 @@
 <li>Fixed problem with <code>lty</code> not passed to <code><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot()</a></code> in <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code>
 </li>
 <li>In <code><a href="../reference/plot.nestedLogit.html">plot.nestedLogit()</a></code>, added <code>label.col</code> argument (defaulting to the value of <code>col</code> in the call), to control the color of the curve label</li>
+<li>Add example of plotting predictions for dichotomies to <code>ggeffects</code> vignette</li>
+<li>Fixed problem in <code>ggeffects</code> vignette with <code><a href="https://strengejacke.github.io/ggeffects/reference/predict_response.html" class="external-link">predict_response()</a></code> for nestedLogit models; see <a href="https://github.com/strengejacke/ggeffects/issues/671" class="external-link">ggeffects issue </a><a href="https://github.com/friendly/nestedLogit/issues/671" class="external-link">#671</a>
+</li>
+<li>Fixed problem in <code>other-examples</code> vignette traced to tibble not handled well in <code>plot.nestedLogit</code>
+</li>
+<li>Added <code><a href="https://r-hub.github.io/rhub/reference/rhub_check.html" class="external-link">rhub::rhub_check()</a></code> workflow.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.4" id="nestedlogit-034">nestedLogit 0.3.4<a class="anchor" aria-label="anchor" href="#nestedlogit-034"></a></h2><p class="text-muted">CRAN release: 2026-02-01</p>

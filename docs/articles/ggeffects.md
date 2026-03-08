@@ -25,6 +25,10 @@ visualize predicted probabilities for each response category across
 levels of the predictors, without the manual data wrangling described in
 [`vignette("plotting-ggplot", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md).
 
+**Note**:: `ggeffects` will at some point be superseded by the
+[`modelbased`](https://easystats.github.io/modelbased/) package from the
+[`easystats`](https://easystats.github.io/easystats/) project.
+
 ## 👩 Women’s labor force participation
 
 We use the standard `Womenlf` example from the main vignette. The
@@ -127,11 +131,11 @@ plot(wlf.pred)
 ```
 
 ![Predicted probabilities from \`predict_response()\` with default
-plot.](fig/wlf-ggeffects-plot1-1.png)
+\`ggeffects\` plot.](fig/wlf-ggeffects-plot1-1.png)
 
 Predicted probabilities from
 [`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html)
-with default plot.
+with default `ggeffects` plot.
 
 ### Customizing the plot
 
@@ -197,6 +201,43 @@ having small children reducing the probability. The response category
 `parttime` shows an interactive pattern, with different shapes for those
 with children present vs. absent.
 
+### Plotting the dichotomies
+
+Recent updates[^1] to `ggeffects` now make it possible to calculate and
+plot the predicted probabilities for the sub-models that comprise the
+nested logit — for example, plotting predicted values for the `work` and
+`full` dichotomies separately. This is done by passing the argument
+`submodels = "dichotomies"` to
+[`predict_response()`](https://strengejacke.github.io/ggeffects/reference/predict_response.html).
+
+In such plots, it is sometimes useful to show explicitly the points on
+the grid of predictor values used in estimation. Just add
+[`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
+for this. You can also achieve greater resolution in the plot by moving
+the legend inside the plot as shown below.
+
+``` r
+wlf.pred.dichot <- predict_response(wlf.nested, terms = c("hincome", "children"),
+                             submodel = "dichotomies")
+
+plot(wlf.pred.dichot) +
+  geom_point() +
+  theme(legend.position = "inside",
+        legend.position.inside = c(.40, .85))
+```
+
+![Predicted probabilities for the two
+dichotomies.](fig/wlf-dichotomies-1.png)
+
+Predicted probabilities for the two dichotomies.
+
+In this view, we see that the decision to work or not varies in a simple
+decreasing manner with husband’s income, and there is a large decrement
+in the probability of working when there are young children in the home.
+
+For those women who are working, the distinction between working
+fulltime vs. parttime is also simple to describe.
+
 ## 🐊 Alligator food choice
 
 As a simpler example with a single continuous predictor, we fit a nested
@@ -246,7 +287,9 @@ For comparison, the basic
 [`nestedLogit::plot()`](https://rdrr.io/r/graphics/plot.default.html)
 method using default arguments gives a similar plot, with the three
 curves overlaid in a single panel (it uses
-[`graphics::matplot()`](https://rdrr.io/r/graphics/matplot.html)).
+[`graphics::matplot()`](https://rdrr.io/r/graphics/matplot.html)). A new
+feature of the plot method is to dispense with a legend entirely, by
+using direct labels (`label = TRUE`) on the predicted curves.
 
 ``` r
 plot(gators.nested, x.var = "length",
@@ -259,20 +302,15 @@ length.](fig/gators-plot-1.png)
 
 Predicted food choice probabilities for alligators by length.
 
-## Limitations
+## Summary
 
 The `ggeffects` package computes and plots predicted probabilities for
 the *response categories* of a nested logit model. As shown above, these
 can be displayed on the logit scale using `ggplot2`’s built-in axis
-transformation.
+transformation. You can now also display the predicted probabilities for
+the separate dichotomies (e.g., `work` and `full`) as illustrated above.
 
-However, `ggeffects` does not currently provide access to the individual
-dichotomy sub-models that comprise the nested logit — for example,
-plotting predicted values for the `work` and `full` dichotomies
-separately. (This is due to a conflict in the names of arguments
-(`model`), and may be resolved in a future version of `nestedLogit`.)
-
-For these more specialized displays, see
+For more specialized displays, see
 [`vignette("plotting-ggplot", package = "nestedLogit")`](https://friendly.github.io/nestedLogit/articles/plotting-ggplot.md),
 which describes a manual workflow using
 [`predict()`](https://rdrr.io/r/stats/predict.html) with
@@ -292,3 +330,8 @@ http://doi.org/[10.21105/joss.00772](https://doi.org/10.21105/joss.00772)
 Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
 effects for ggplot from model outputs*. Retrieved from
 <https://strengejacke.github.io/ggeffects/>
+
+[^1]: I’m grateful to Daniel Lüdecke for considering [this
+    problem](https://github.com/strengejacke/ggeffects/issues/671) and
+    revising the `ggeffects` package to more fully accommodate
+    nestedLogit models.

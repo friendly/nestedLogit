@@ -6,7 +6,7 @@ package: nestedLogit
 output:
   rmarkdown::html_vignette:
     toc: true
-    toc_depth: 1
+    toc_depth: 2
     number_sections: true
 fig_caption: yes
 bibliography: ["references.bib", "packages.bib"]
@@ -259,6 +259,36 @@ predictor of political opinion (Y/N vs. U/A) rather than of engagement. We can
 check this by inspecting the `statusquo` coefficients in each sub-model of the
 engagement tree: they should be large in `direction` and small in `engage` and
 `disengage`.
+
+### Pseudo-R² measures
+
+`RSQ()` provides a more detailed picture, showing how much of the variance in each
+dichotomy is accounted for by the predictors.
+
+```{r chile-rsq-eng}
+RSQ(chile_eng, include = c("AIC", "n"))
+```
+
+```{r chile-rsq-dir}
+RSQ(chile_dir, include = c("AIC", "n"))
+```
+
+The contrast between the two trees is striking.
+In the engagement-first tree, the `direction` sub-model (Yes vs. No, given engagement)
+has the highest R² by far, reflecting the dominant role of `statusquo` in
+distinguishing supporters from opponents once engagement is decided.
+The `engage` and `disengage` sub-models have much lower R², because the
+predictors do a poorer job of explaining who opts out of the vote.
+
+In the direction-first tree, the top-level `direction` split (pro vs. anti status quo)
+achieves the highest R² of any single sub-model across both trees, consistent
+with `statusquo` being primarily a political-orientation predictor.
+The two engagement sub-models within each side (`engage_pro`, `engage_ant`) have
+lower R², as expected.
+
+The higher Combined R² for the direction-first tree confirms the AIC comparison above:
+structuring the tree so that `statusquo` governs the first split yields a
+better-fitting and more interpretable model.
 
 ## Predicted probabilities
 

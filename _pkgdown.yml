@@ -28,6 +28,7 @@ reference:
   desc: Anova, linear hypothesis, and likelihood ratio tests for nested logit models.
   contents:
   - nestedHypotheses
+  - RSQ
 
 - title: Support for other packages
   desc: Methods for broom and effects packages.

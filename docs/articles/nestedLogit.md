@@ -929,7 +929,7 @@ The computation and display of effect graphs are highly customizable.
 For details, see the documentation for the **effects** package.
 
 Effect plots for nestedLogit models are also supported in the
-**ggeffects** package (Lüdecke, 2025). For example, the following (not
+**ggeffects** package (Lüdecke, 2026). For example, the following (not
 run) produces plots of predicted probabilities for the same model with
 separate panels for the levels of `partic`.
 
@@ -1180,6 +1180,6 @@ Friendly, M., & Meyer, D. (2016). *Discrete data analysis with R:
 Visualization and modeling techniques for categorical and count data*.
 Boca Raton, FL: Chapman & Hall/CRC.
 
-Lüdecke, D. (2025). *Ggeffects: Create tidy data frames of marginal
+Lüdecke, D. (2026). *Ggeffects: Create tidy data frames of marginal
 effects for ggplot from model outputs*. Retrieved from
 <https://strengejacke.github.io/ggeffects/>

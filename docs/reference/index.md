@@ -71,6 +71,10 @@ models.
 
   Hypothesis-Testing and Related Methods for `"nestedLogit"` Objects
 
+- [`RSQ()`](https://friendly.github.io/nestedLogit/reference/RSQ.md)
+  [`print(`*`<RSQ.nestedLogit>`*`)`](https://friendly.github.io/nestedLogit/reference/RSQ.md)
+  : Pseudo-R² Measures for Nested Logit Models
+
 ## Support for other packages
 
 Methods for broom and effects packages.

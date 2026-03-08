@@ -1,6 +1,7 @@
 ## nestedLogit 0.4.1
 
 * Added `RSQ()` function to compute pseudo-R² measures (McFadden, Cox-Snell, Nagelkerke, and others) for each dichotomy sub-model and for the combined polytomous model
+* Added exxamples of `RSQ()` in the nestedLogit and other-examples vignettes
 
 ## nestedLogit 0.4.0
 
