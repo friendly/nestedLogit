@@ -1,12 +1,13 @@
 ## Test environments
 * local Windows 10, Windows 11 R version 4.5.2 (2025-10-31 ucrt)
 * win-builder R Under development (unstable) (2026-03-04 r89536 ucrt)
-* R-hub: Ubuntu Linux 24.04 LTS, R-release, GCC
-* R-hub: macOS 13 Ventura, R-release, x86_64
-* R-hub: macOS 15 Sequoia, R-release, arm64
+* R-hub: Ubuntu Linux 24.04.3 LTS, R-devel, GCC
+* R-hub: macOS 15.7.4 Sequoia, R-devel, arm64
 
 > devtools::check_win_devel()
-> rhub::rhub_check(platforms = c("linux", "macos", "macos-arm64"))
+> rhub::rhub_check(platforms = c("linux", "macos-arm64"))
+Note: the `macos` (macOS 13, x86_64) R-hub platform is no longer supported;
+replaced by `macos-arm64` (macOS 15 Sequoia, arm64) which reflects current CRAN infrastructure.
 
 ## R CMD check results
 

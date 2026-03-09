@@ -21,7 +21,7 @@ status](https://www.r-pkg.org/badges/version/nestedLogit)](https://cran.r-projec
 
 <!-- **Version 0.3.4** -->
 
-**Version 0.4.0**; documentation built for `pkgdown` 2026-03-03
+**Version 0.4.1**; documentation built for `pkgdown` 2026-03-08
 
 The `nestedLogit` package provides functions for fitting *nested
 dichotomy* logistic regression models for a **polytomous** response
@@ -99,9 +99,9 @@ same for all categories.
 
 ## 🚀 Installation
 
-You can install the current published version (0.3.4) from
+You can install the current published version (0.4.0) from
 [CRAN](https://cran.r-project.org/package=nestedLogit), or the
-development version (0.4.0) from either
+development version (0.4.1) from either
 [R-universe](https://friendly.r-universe.dev/nestedLogit) or
 [Github](https://github.com/friendly/nestedLogit)
 
@@ -261,6 +261,8 @@ hypotheses about and comparing nested-logit models:
   nested-dichotomies logit model.
 - Through `logLik()`, the `AIC()` and `BIC()` functions compute the
   Akaike and Bayesian information criteria model-comparison statistics.
+- `RSQ()` computes a variety of pseudo $R^2$ (McFadden, CoxSnell,
+  Nagelkerke, …) measures for nested logit models.
 
 ## 🎨 Examples
 

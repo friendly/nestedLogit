@@ -10,7 +10,7 @@ Goal:
 * For display select just a few of the measures by default: "McFadden" (or: "McFaddenAdj"), "CoxSnell", "Nagelkerke"
 * Ideal would be something (from a print method) that gives:
 
-      Pseudo R^2 and other measures for the nested logit model "wlf.nested"
+      Pseudo R^2 measures for the nested logit model "wlf.nested":
       
       Model        McFadden    CoxSnell    Nagelkerke    ....        AIC      BIC
       

@@ -176,6 +176,7 @@ transport <- list(
 lobstr::tree(transport)
 ```
 
+An example with this structure is included in `vignettes("other-examples", package = "nestedLogit")`.
 
 There are also methods including `as.matrix.dichotomies()`, `as.character.dichotomies()`
 to facilitate working with `dichotomies` objects in other representations. The `ABCD` example

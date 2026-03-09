@@ -6,16 +6,30 @@
 #' \code{"Combined"} row for the overall polytomous model.
 #'
 #' @details
-#' `RSQ` is implemented as an S3 generic to allow for similar functions for related models
+#' `RSQ` is implemented as an S3 generic to allow for similar functions to be added for related models, e.g.,
+#' `MASS::polr()`, `nnet::multinom()`, ... could be added later.
+#'
+#' In contrast to standard, Gaussian linear models, where \eqn{R^2} has a uniformly simple interpretation as
+#' "variance accounted for" by the model, but with different, yet _equivalent_ computational formulas,
+#' there is no single commonly accepted measure for logistic regression models for a binary response or
+#' a dichotomy among outcomes.
 #'
 #' The following measures are available via the \code{which} argument:
 #' \describe{
-#'   \item{\code{"McFadden"}}{1 - L/L\eqn{_0}}
-#'   \item{\code{"McFaddenAdj"}}{1 - (L - k)/L\eqn{_0}, penalised for number of predictors}
-#'   \item{\code{"CoxSnell"}}{1 - exp(2(L\eqn{_0} - L)/n), bounded strictly below 1}
-#'   \item{\code{"Nagelkerke"}}{Cox-Snell rescaled to have a maximum of 1}
-#'   \item{\code{"Tjur"}}{Difference in mean fitted values between the two response
-#'     categories; per-dichotomy only (\code{NA} in the Combined row)}
+#'   \item{\code{"McFadden"}}{1 - L/L\eqn{_0}, where L is the fitted model
+#'     log-likelihood and L\eqn{_0} that of the null (intercept-only) model
+#'     (McFadden, 1979).  Values of 0.1--0.3 indicate a reasonable fit in
+#'     logistic regression.}
+#'   \item{\code{"McFaddenAdj"}}{1 - (L - k)/L\eqn{_0}, where k is the number
+#'     of non-intercept parameters; penalises model complexity (Hosmer &
+#'     Lemeshow, 2000).}
+#'   \item{\code{"CoxSnell"}}{1 - exp(2(L\eqn{_0} - L)/n); bounded strictly
+#'     below 1 for discrete outcomes (Cox & Snell, 1989).}
+#'   \item{\code{"Nagelkerke"}}{Cox-Snell divided by its theoretical maximum,
+#'     rescaling to \[0, \1] (Nagelkerke, 1991).}
+#'   \item{\code{"Tjur"}}{Mean fitted value for \eqn{y = 1} minus mean fitted
+#'     value for \eqn{y = 0}; the coefficient of discrimination (Tjur, 2009).
+#'     Per-dichotomy only (\code{NA} in the Combined row).}
 #' }
 #'
 #' For the \strong{Combined} row the log-likelihood is the sum of the sub-model
@@ -26,26 +40,57 @@
 #'
 #' A wider range of pseudo-R² measures for logistic-type models (\code{glm},
 #' \code{polr}, \code{multinom}, \code{vglm}) is available in
-#' \code{\link[DescTools]{PseudoR2}}.  For an accessible overview of these
-#' measures see \url{https://statisticalhorizons.com/r2logistic/}.
+#' \code{\link[DescTools]{PseudoR2}}, including the Efron (1978) and
+#' McKelvey & Zavoina (1975) measures not implemented here.
+#' For an accessible overview see \url{https://statisticalhorizons.com/r2logistic/}.
 #'
 #' @param x      a \code{"nestedLogit"} object.
 #' @param which  character vector naming the pseudo-R² measures to compute.
-#'   Any subset of \code{c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")}.
+#'   Any subset of \code{c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")},
+#'   or \code{"ALL"} to include all of them.
 #'   Default: \code{c("McFadden", "CoxSnell", "Nagelkerke")}.
 #' @param include character vector of additional columns to append to the result.
 #'   Any subset of \code{c("AIC", "BIC", "n")}, where \code{"n"} adds the
-#'   number of observations used for each row.  Default: \code{"AIC"}.
+#'   number of observations used for each row, or \code{"ALL"} to include all of them.
+#'   Default: \code{"AIC"}.
 #' @param digits  integer; number of decimal places used when printing
-#'   (default \code{4L}).
+#'   (default \code{3L}).
 #' @param \dots   currently unused.
 #'
 #' @return An object of class \code{c("RSQ.nestedLogit", "data.frame")} with one
-#'   row per dichotomy plus a final \code{"Combined"} row, and columns for the
-#'   model name, the requested pseudo-R² measures, and any additional statistics
-#'   requested via \code{include}.  The \code{formula} used to fit the model and
-#'   the \code{digits} argument are stored as attributes and used by the
-#'   \code{print} method.
+#'   row per dichotomy plus a final \code{"Combined"} row, and columns
+#'   \code{response} (the sub-model name), the requested pseudo-R² measures,
+#'   and any additional statistics requested via \code{include}.
+#'   The \code{formula}, object name, and \code{digits} are stored as attributes
+#'   and used by the \code{print} method.
+#'
+#' @references
+#' Cox, D. R., & Snell, E. J. (1989). *The Analysis of Binary Data* (2nd ed.).
+#' Chapman and Hall.
+#'
+#' Efron, B. (1978). Regression and ANOVA with zero-one data: Measures of
+#' residual variation. *Journal of the American Statistical Association*,
+#' *73*(361), 113--121. \url{https://doi.org/10.2307/2286498}
+#'
+#' Hosmer, D. W., & Lemeshow, S. (2000). *Applied Logistic Regression*
+#' (2nd ed.). Wiley. \url{https://doi.org/10.1002/0471722146}
+#'
+#' McFadden, D. (1979). Quantitative methods for analysing travel behaviour of
+#' individuals: Some recent developments. In D. A. Hensher & P. R. Stopher
+#' (Eds.), *Behavioural Travel Modelling* (pp. 279--318). Croom Helm.
+#'
+#' McKelvey, R. D., & Zavoina, W. (1975). A statistical model for the analysis
+#' of ordinal level dependent variables. *Journal of Mathematical Sociology*,
+#' *4*(1), 103--120. \url{https://doi.org/10.1080/0022250X.1975.9989847}
+#'
+#' Nagelkerke, N. J. D. (1991). A note on a general definition of the
+#' coefficient of determination. *Biometrika*, *78*(3), 691--692.
+#' \url{https://doi.org/10.1093/biomet/78.3.691}
+#'
+#' Tjur, T. (2009). Coefficients of determination in logistic regression
+#' models --- a new proposal: The coefficient of discrimination.
+#' *The American Statistician*, *63*(4), 366--372.
+#' \url{https://doi.org/10.1198/tast.2009.08210}
 #'
 #' @seealso \code{\link{nestedLogit}}, \code{\link[broom]{glance}},
 #'   \code{\link[DescTools]{PseudoR2}}
@@ -60,10 +105,8 @@
 #' # Default: McFadden, CoxSnell, Nagelkerke + AIC
 #' RSQ(wlf.nested)
 #'
-#' # All measures, with AIC, BIC & n
-#' RSQ(wlf.nested,
-#'     which   = c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur"),
-#'     include = c("AIC", "BIC", "n"))
+#' # All measures and all extra columns
+#' RSQ(wlf.nested, which = "ALL", include = "ALL")
 #'
 #' @importFrom utils capture.output
 #' @importFrom stats AIC BIC formula fitted
@@ -75,15 +118,15 @@ RSQ <- function(x, ...) UseMethod("RSQ")
 RSQ.nestedLogit <- function(x,
                              which   = c("McFadden", "CoxSnell", "Nagelkerke"),
                              include = "AIC",
-                             digits  = 4L,
+                             digits  = 3L,
                              ...) {
-  which <- match.arg(which,
-                     choices      = c("McFadden", "McFaddenAdj",
-                                      "CoxSnell", "Nagelkerke", "Tjur"),
-                     several.ok   = TRUE)
-  include <- match.arg(include,
-                       choices    = c("AIC", "BIC", "n"),
-                       several.ok = TRUE)
+  obj_name    <- deparse(substitute(x))
+  all_which   <- c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")
+  all_include <- c("AIC", "BIC", "n")
+  if (identical(which,   "ALL")) which   <- all_which
+  if (identical(include, "ALL")) include <- all_include
+  which <- match.arg(which,   choices = all_which,   several.ok = TRUE)
+  include <- match.arg(include, choices = all_include, several.ok = TRUE)
 
   # glance.nestedLogit() gives one row per dichotomy with all ingredients:
   #   null.deviance, df.null, logLik, AIC, BIC, df.residual, nobs, ...
@@ -121,7 +164,7 @@ RSQ.nestedLogit <- function(x,
   # --- Assemble ---
   result <- dplyr::bind_rows(sub_df, combined_row)
   result <- dplyr::bind_cols(
-    data.frame(model = c(mod_names, "Combined"), stringsAsFactors = FALSE),
+    data.frame(response = c(mod_names, "Combined"), stringsAsFactors = FALSE),
     result
   )
 
@@ -131,10 +174,11 @@ RSQ.nestedLogit <- function(x,
   if ("n"   %in% include) result$n   <- c(gl$nobs, n_combined)
 
   structure(result,
-            class   = c("RSQ.nestedLogit", "data.frame"),
-            formula = formula(x),
-            which   = which,
-            digits  = digits)
+            class      = c("RSQ.nestedLogit", "data.frame"),
+            formula    = formula(x),
+            model.name = obj_name,
+            which      = which,
+            digits     = digits)
 }
 
 # Internal helper: compute pseudo-R² values from log-likelihood components.
@@ -158,14 +202,15 @@ RSQ.nestedLogit <- function(x,
 #' @rdname RSQ
 #' @export
 print.RSQ.nestedLogit <- function(x, digits = attr(x, "digits"), ...) {
-  cat("Pseudo R\u00b2 measures for nestedLogit model:\n")
+  cat(sprintf("Pseudo R\u00b2 measures for nestedLogit model %s:\n",
+              attr(x, "model.name")))
   cat(" ", paste(deparse(attr(x, "formula")), collapse = " "), "\n\n")
 
   n_dichot <- nrow(x) - 1L
 
   # Round numeric columns before formatting
   out      <- as.data.frame(x)
-  num_cols <- setdiff(names(out), "model")
+  num_cols <- setdiff(names(out), "response")
   out[, num_cols] <- lapply(out[, num_cols, drop = FALSE], round, digits)
 
   # Capture formatted lines so we can insert a separator before Combined

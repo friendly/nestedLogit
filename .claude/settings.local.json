@@ -18,7 +18,8 @@
       "Bash(/tmp/test_labelcol.R:*)",
       "WebFetch(domain:r-hub.github.io)",
       "WebFetch(domain:blog.r-hub.io)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(gh:*)"
     ]
   }
 }
