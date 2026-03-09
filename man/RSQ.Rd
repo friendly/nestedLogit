@@ -4,7 +4,11 @@
 \alias{RSQ}
 \alias{RSQ.nestedLogit}
 \alias{print.RSQ.nestedLogit}
-\title{Pseudo-R² Measures for Nested Logit Models}
+\alias{RSQ.multinom}
+\alias{print.RSQ.multinom}
+\alias{RSQ.polr}
+\alias{print.RSQ.polr}
+\title{Pseudo-R² Measures for Nested Logit and Related Models}
 \usage{
 RSQ(x, ...)
 
@@ -17,6 +21,26 @@ RSQ(x, ...)
 )
 
 \method{print}{RSQ.nestedLogit}(x, digits = attr(x, "digits"), ...)
+
+\method{RSQ}{multinom}(
+  x,
+  which = c("McFadden", "CoxSnell", "Nagelkerke"),
+  include = "AIC",
+  digits = 3L,
+  ...
+)
+
+\method{print}{RSQ.multinom}(x, digits = attr(x, "digits"), ...)
+
+\method{RSQ}{polr}(
+  x,
+  which = c("McFadden", "CoxSnell", "Nagelkerke"),
+  include = "AIC",
+  digits = 3L,
+  ...
+)
+
+\method{print}{RSQ.polr}(x, digits = attr(x, "digits"), ...)
 }
 \arguments{
 \item{x}{a \code{"nestedLogit"} object.}
@@ -45,16 +69,19 @@ The \code{formula}, object name, and \code{digits} are stored as attributes
 and used by the \code{print} method.
 }
 \description{
-Computes pseudo-R² and related fit measures for a \code{"nestedLogit"} object,
-with one row per binary logit sub-model (dichotomy) and an additional
+Computes pseudo-R² and related fit measures for a \code{"nestedLogit"} object
+and related models for a polytomous response. For the \code{"nestedLogit"} case,
+the result shows
+one row per binary logit sub-model (dichotomy) and an additional
 \code{"Combined"} row for the overall polytomous model.
 }
 \details{
-\code{RSQ} is implemented as an S3 generic to allow for similar functions to be added for related models, e.g.,
-\code{MASS::polr()}, \code{nnet::multinom()}, ... could be added later.
+\code{RSQ} is implemented as an S3 generic with methods for \code{"nestedLogit"}, as well as
+\code{nnet::multinom()}, and \code{MASS::polr()} objects, which are other methods for
+modeling a polytomous response variable.
 
 In contrast to standard, Gaussian linear models, where \eqn{R^2} has a uniformly simple interpretation as
-"variance accounted for" by the model, but with different, yet \emph{equivalent} computational formulas,
+"variance accounted for" by the model, and with different, yet \emph{equivalent} computational formulas,
 there is no single commonly accepted measure for logistic regression models for a binary response or
 a dichotomy among outcomes.
 
@@ -101,6 +128,19 @@ RSQ(wlf.nested)
 # All measures and all extra columns
 RSQ(wlf.nested, which = "ALL", include = "ALL")
 
+# Multinomial logit for comparison
+if (requireNamespace("nnet", quietly = TRUE)) {
+  wlf.multi <- nnet::multinom(partic ~ hincome + children, data = Womenlf,
+                              trace = FALSE)
+  RSQ(wlf.multi)
+}
+
+# Proportional-odds model for comparison
+if (requireNamespace("MASS", quietly = TRUE)) {
+  wlf.polr <- MASS::polr(partic ~ hincome + children, data = Womenlf)
+  RSQ(wlf.polr)
+}
+
 }
 \references{
 Cox, D. R., & Snell, E. J. (1989). \emph{The Analysis of Binary Data} (2nd ed.).
@@ -132,7 +172,8 @@ models --- a new proposal: The coefficient of discrimination.
 }
 \seealso{
 \code{\link{nestedLogit}}, \code{\link[broom]{glance}},
-\code{\link[DescTools]{PseudoR2}}
+\code{\link[DescTools]{PseudoR2}},
+\code{\link[nnet]{multinom}}, \code{\link[MASS]{polr}}
 }
 \author{
 Michael Friendly

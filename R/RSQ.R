@@ -1,16 +1,19 @@
-#' Pseudo-R² Measures for Nested Logit Models
+#' Pseudo-R² Measures for Nested Logit and Related Models
 #'
 #' @description
-#' Computes pseudo-R² and related fit measures for a \code{"nestedLogit"} object,
-#' with one row per binary logit sub-model (dichotomy) and an additional
+#' Computes pseudo-R² and related fit measures for a \code{"nestedLogit"} object
+#' and related models for a polytomous response. For the \code{"nestedLogit"} case,
+#' the result shows
+#' one row per binary logit sub-model (dichotomy) and an additional
 #' \code{"Combined"} row for the overall polytomous model.
 #'
 #' @details
-#' `RSQ` is implemented as an S3 generic to allow for similar functions to be added for related models, e.g.,
-#' `MASS::polr()`, `nnet::multinom()`, ... could be added later.
+#' `RSQ` is implemented as an S3 generic with methods for `"nestedLogit"`, as well as
+#' `nnet::multinom()`, and `MASS::polr()` objects, which are other methods for
+#' modeling a polytomous response variable.
 #'
 #' In contrast to standard, Gaussian linear models, where \eqn{R^2} has a uniformly simple interpretation as
-#' "variance accounted for" by the model, but with different, yet _equivalent_ computational formulas,
+#' "variance accounted for" by the model, and with different, yet _equivalent_ computational formulas,
 #' there is no single commonly accepted measure for logistic regression models for a binary response or
 #' a dichotomy among outcomes.
 #'
@@ -93,7 +96,8 @@
 #' \url{https://doi.org/10.1198/tast.2009.08210}
 #'
 #' @seealso \code{\link{nestedLogit}}, \code{\link[broom]{glance}},
-#'   \code{\link[DescTools]{PseudoR2}}
+#'   \code{\link[DescTools]{PseudoR2}},
+#'   \code{\link[nnet]{multinom}}, \code{\link[MASS]{polr}}
 #' @author Michael Friendly
 #' @examples
 #' data("Womenlf", package = "carData")
@@ -108,8 +112,21 @@
 #' # All measures and all extra columns
 #' RSQ(wlf.nested, which = "ALL", include = "ALL")
 #'
+#' # Multinomial logit for comparison
+#' if (requireNamespace("nnet", quietly = TRUE)) {
+#'   wlf.multi <- nnet::multinom(partic ~ hincome + children, data = Womenlf,
+#'                               trace = FALSE)
+#'   RSQ(wlf.multi)
+#' }
+#'
+#' # Proportional-odds model for comparison
+#' if (requireNamespace("MASS", quietly = TRUE)) {
+#'   wlf.polr <- MASS::polr(partic ~ hincome + children, data = Womenlf)
+#'   RSQ(wlf.polr)
+#' }
+#'
 #' @importFrom utils capture.output
-#' @importFrom stats AIC BIC formula fitted
+#' @importFrom stats AIC BIC formula fitted model.frame model.response
 #' @export
 RSQ <- function(x, ...) UseMethod("RSQ")
 
@@ -222,6 +239,141 @@ print.RSQ.nestedLogit <- function(x, digits = attr(x, "digits"), ...) {
   for (i in seq_len(n_dichot)) cat(txt[1L + i], "\n")
   cat(strrep("-", nchar(txt[1L])), "\n")
   cat(txt[2L + n_dichot], "\n")
+
+  invisible(x)
+}
+
+#' @rdname RSQ
+#' @export
+RSQ.multinom <- function(x,
+                          which   = c("McFadden", "CoxSnell", "Nagelkerke"),
+                          include = "AIC",
+                          digits  = 3L,
+                          ...) {
+  obj_name    <- deparse(substitute(x))
+  all_which   <- c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")
+  all_include <- c("AIC", "BIC", "n")
+  if (identical(which,   "ALL")) which   <- all_which
+  if (identical(include, "ALL")) include <- all_include
+  which   <- match.arg(which,   choices = all_which,   several.ok = TRUE)
+  include <- match.arg(include, choices = all_include, several.ok = TRUE)
+
+  # --- Ingredients ---
+  L  <- as.numeric(logLik(x))
+  n  <- nrow(model.frame(x))
+
+  # Null log-likelihood: intercept-only model predicts marginal proportions
+  y   <- model.response(model.frame(x))
+  n_j <- as.integer(table(y))
+  n_j <- n_j[n_j > 0L]          # drop empty levels
+  L0  <- sum(n_j * log(n_j / n))
+
+  m <- length(n_j)               # number of response categories
+  # Non-intercept parameters: total df minus one intercept per non-ref category
+  k <- attr(logLik(x), "df") - (m - 1L)
+
+  # Tjur is defined only for binary responses
+  result <- .pseudo_r2(L, L0, n, k, setdiff(which, "Tjur"))
+  if ("Tjur" %in% which) result$Tjur <- NA_real_
+  result <- result[, intersect(all_which, names(result)), drop = FALSE]
+
+  # Response variable name as the row label
+  resp_name <- deparse(formula(x)[[2L]])
+  result <- dplyr::bind_cols(
+    data.frame(response = resp_name, stringsAsFactors = FALSE),
+    result
+  )
+
+  # --- Optional extra columns ---
+  if ("AIC" %in% include) result$AIC <- AIC(x)
+  if ("BIC" %in% include) result$BIC <- BIC(x)
+  if ("n"   %in% include) result$n   <- n
+
+  structure(result,
+            class      = c("RSQ.multinom", "data.frame"),
+            formula    = formula(x),
+            model.name = obj_name,
+            which      = which,
+            digits     = digits)
+}
+
+
+#' @rdname RSQ
+#' @export
+print.RSQ.multinom <- function(x, digits = attr(x, "digits"), ...) {
+  cat(sprintf("Pseudo R\u00b2 measures for multinom model %s:\n",
+              attr(x, "model.name")))
+  cat(" ", paste(deparse(attr(x, "formula")), collapse = " "), "\n\n")
+
+  out      <- as.data.frame(x)
+  num_cols <- setdiff(names(out), "response")
+  out[, num_cols] <- lapply(out[, num_cols, drop = FALSE], round, digits)
+  print(out, row.names = FALSE)
+
+  invisible(x)
+}
+
+#' @rdname RSQ
+#' @export
+RSQ.polr <- function(x,
+                     which   = c("McFadden", "CoxSnell", "Nagelkerke"),
+                     include = "AIC",
+                     digits  = 3L,
+                     ...) {
+  obj_name    <- deparse(substitute(x))
+  all_which   <- c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")
+  all_include <- c("AIC", "BIC", "n")
+  if (identical(which,   "ALL")) which   <- all_which
+  if (identical(include, "ALL")) include <- all_include
+  which   <- match.arg(which,   choices = all_which,   several.ok = TRUE)
+  include <- match.arg(include, choices = all_include, several.ok = TRUE)
+
+  L   <- as.numeric(logLik(x))
+  n   <- nrow(model.frame(x))
+
+  # Null log-likelihood: intercept-only model predicts marginal proportions
+  y   <- model.response(model.frame(x))
+  n_j <- as.integer(table(y))
+  n_j <- n_j[n_j > 0L]
+  L0  <- sum(n_j * log(n_j / n))
+
+  # Non-intercept parameters: slopes only (thresholds/zeta are not predictors)
+  k   <- length(x$coefficients)
+
+  # Tjur is defined only for binary responses
+  result <- .pseudo_r2(L, L0, n, k, setdiff(which, "Tjur"))
+  if ("Tjur" %in% which) result$Tjur <- NA_real_
+  result <- result[, intersect(all_which, names(result)), drop = FALSE]
+
+  resp_name <- deparse(formula(x)[[2L]])
+  result <- dplyr::bind_cols(
+    data.frame(response = resp_name, stringsAsFactors = FALSE),
+    result
+  )
+
+  if ("AIC" %in% include) result$AIC <- AIC(x)
+  if ("BIC" %in% include) result$BIC <- BIC(x)
+  if ("n"   %in% include) result$n   <- n
+
+  structure(result,
+            class      = c("RSQ.polr", "data.frame"),
+            formula    = formula(x),
+            model.name = obj_name,
+            which      = which,
+            digits     = digits)
+}
+
+#' @rdname RSQ
+#' @export
+print.RSQ.polr <- function(x, digits = attr(x, "digits"), ...) {
+  cat(sprintf("Pseudo R\u00b2 measures for polr model %s:\n",
+              attr(x, "model.name")))
+  cat(" ", paste(deparse(attr(x, "formula")), collapse = " "), "\n\n")
+
+  out      <- as.data.frame(x)
+  num_cols <- setdiff(names(out), "response")
+  out[, num_cols] <- lapply(out[, num_cols, drop = FALSE], round, digits)
+  print(out, row.names = FALSE)
 
   invisible(x)
 }
