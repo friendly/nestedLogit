@@ -1,11 +1,11 @@
 #' Pseudo-R² Measures for Nested Logit and Related Models
 #'
 #' @description
-#' Computes pseudo-R² and related fit measures for a \code{"nestedLogit"} object
-#' and related models for a polytomous response. For the \code{"nestedLogit"} case,
+#' Computes pseudo-R² and related fit measures for a `"nestedLogit"` object
+#' and related models for a polytomous response. For the `"nestedLogit"` case,
 #' the result shows
 #' one row per binary logit sub-model (dichotomy) and an additional
-#' \code{"Combined"} row for the overall polytomous model.
+#' `"Combined"` row for the overall polytomous model.
 #'
 #' @details
 #' `RSQ` is implemented as an S3 generic with methods for `"nestedLogit"`, as well as
@@ -17,55 +17,55 @@
 #' there is no single commonly accepted measure for logistic regression models for a binary response or
 #' a dichotomy among outcomes.
 #'
-#' The following measures are available via the \code{which} argument:
+#' The following measures are available via the `which` argument:
 #' \describe{
-#'   \item{\code{"McFadden"}}{1 - L/L\eqn{_0}, where L is the fitted model
+#'   \item{`"McFadden"`}{1 - L/L\eqn{_0}, where L is the fitted model
 #'     log-likelihood and L\eqn{_0} that of the null (intercept-only) model
 #'     (McFadden, 1979).  Values of 0.1--0.3 indicate a reasonable fit in
 #'     logistic regression.}
-#'   \item{\code{"McFaddenAdj"}}{1 - (L - k)/L\eqn{_0}, where k is the number
+#'   \item{`"McFaddenAdj"`}{1 - (L - k)/L\eqn{_0}, where k is the number
 #'     of non-intercept parameters; penalises model complexity (Hosmer &
 #'     Lemeshow, 2000).}
-#'   \item{\code{"CoxSnell"}}{1 - exp(2(L\eqn{_0} - L)/n); bounded strictly
+#'   \item{`"CoxSnell"`}{1 - exp(2(L\eqn{_0} - L)/n); bounded strictly
 #'     below 1 for discrete outcomes (Cox & Snell, 1989).}
-#'   \item{\code{"Nagelkerke"}}{Cox-Snell divided by its theoretical maximum,
+#'   \item{`"Nagelkerke"`}{Cox-Snell divided by its theoretical maximum,
 #'     rescaling to \[0, \1] (Nagelkerke, 1991).}
-#'   \item{\code{"Tjur"}}{Mean fitted value for \eqn{y = 1} minus mean fitted
+#'   \item{`"Tjur"`}{Mean fitted value for \eqn{y = 1} minus mean fitted
 #'     value for \eqn{y = 0}; the coefficient of discrimination (Tjur, 2009).
-#'     Per-dichotomy only (\code{NA} in the Combined row).}
+#'     Per-dichotomy only (`NA` in the Combined row).}
 #' }
 #'
-#' For the \strong{Combined} row the log-likelihood is the sum of the sub-model
+#' For the **Combined** row the log-likelihood is the sum of the sub-model
 #' log-likelihoods (exploiting the independence of the nested dichotomies), and
-#' \eqn{n} is \code{nrow(x$data)} --- the full sample size of the polytomous model ---
+#' \eqn{n} is `nrow(x$data)` --- the full sample size of the polytomous model ---
 #' not the sum of per-dichotomy observation counts, which would double-count
 #' observations that appear in more than one sub-model.
 #'
-#' A wider range of pseudo-R² measures for logistic-type models (\code{glm},
-#' \code{polr}, \code{multinom}, \code{vglm}) is available in
-#' \code{\link[DescTools]{PseudoR2}}, including the Efron (1978) and
+#' A wider range of pseudo-R² measures for logistic-type models (`glm`,
+#' `polr`, `multinom`, `vglm`) is available in
+#' [DescTools::PseudoR2()], including the Efron (1978) and
 #' McKelvey & Zavoina (1975) measures not implemented here.
 #' For an accessible overview see \url{https://statisticalhorizons.com/r2logistic/}.
 #'
-#' @param x      a \code{"nestedLogit"} object.
+#' @param x      a `"nestedLogit"` object.
 #' @param which  character vector naming the pseudo-R² measures to compute.
-#'   Any subset of \code{c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")},
-#'   or \code{"ALL"} to include all of them.
-#'   Default: \code{c("McFadden", "CoxSnell", "Nagelkerke")}.
+#'   Any subset of `c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")`,
+#'   or `"ALL"` to include all of them.
+#'   Default: `c("McFadden", "CoxSnell", "Nagelkerke")`.
 #' @param include character vector of additional columns to append to the result.
-#'   Any subset of \code{c("AIC", "BIC", "n")}, where \code{"n"} adds the
-#'   number of observations used for each row, or \code{"ALL"} to include all of them.
-#'   Default: \code{"AIC"}.
+#'   Any subset of `c("AIC", "BIC", "n")`, where `"n"` adds the
+#'   number of observations used for each row, or `"ALL"` to include all of them.
+#'   Default: `"AIC"`.
 #' @param digits  integer; number of decimal places used when printing
-#'   (default \code{3L}).
-#' @param \dots   currently unused.
+#'   (default `3L`).
+#' @param ...   currently unused.
 #'
-#' @return An object of class \code{c("RSQ.nestedLogit", "data.frame")} with one
-#'   row per dichotomy plus a final \code{"Combined"} row, and columns
-#'   \code{response} (the sub-model name), the requested pseudo-R² measures,
-#'   and any additional statistics requested via \code{include}.
-#'   The \code{formula}, object name, and \code{digits} are stored as attributes
-#'   and used by the \code{print} method.
+#' @return An object of class `c("RSQ.nestedLogit", "data.frame")` with one
+#'   row per dichotomy plus a final `"Combined"` row, and columns
+#'   `response` (the sub-model name), the requested pseudo-R² measures,
+#'   and any additional statistics requested via `include`.
+#'   The `formula`, object name, and `digits` are stored as attributes
+#'   and used by the `print` method.
 #'
 #' @references
 #' Cox, D. R., & Snell, E. J. (1989). *The Analysis of Binary Data* (2nd ed.).
@@ -95,9 +95,9 @@
 #' *The American Statistician*, *63*(4), 366--372.
 #' \url{https://doi.org/10.1198/tast.2009.08210}
 #'
-#' @seealso \code{\link{nestedLogit}}, \code{\link[broom]{glance}},
-#'   \code{\link[DescTools]{PseudoR2}},
-#'   \code{\link[nnet]{multinom}}, \code{\link[MASS]{polr}}
+#' @seealso [nestedLogit()], [broom::glance()],
+#'   [DescTools::PseudoR2()],
+#'   [nnet::multinom()], [MASS::polr()]
 #' @author Michael Friendly
 #' @examples
 #' data("Womenlf", package = "carData")
@@ -244,6 +244,7 @@ print.RSQ.nestedLogit <- function(x, digits = attr(x, "digits"), ...) {
 }
 
 #' @rdname RSQ
+#' @importFrom stats logLik
 #' @export
 RSQ.multinom <- function(x,
                           which   = c("McFadden", "CoxSnell", "Nagelkerke"),
@@ -313,6 +314,7 @@ print.RSQ.multinom <- function(x, digits = attr(x, "digits"), ...) {
   invisible(x)
 }
 
+#' @importFrom stats logLik
 #' @rdname RSQ
 #' @export
 RSQ.polr <- function(x,

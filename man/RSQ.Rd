@@ -45,7 +45,7 @@ RSQ(x, ...)
 \arguments{
 \item{x}{a \code{"nestedLogit"} object.}
 
-\item{\dots}{currently unused.}
+\item{...}{currently unused.}
 
 \item{which}{character vector naming the pseudo-R² measures to compute.
 Any subset of \code{c("McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur")},
@@ -111,7 +111,7 @@ observations that appear in more than one sub-model.
 
 A wider range of pseudo-R² measures for logistic-type models (\code{glm},
 \code{polr}, \code{multinom}, \code{vglm}) is available in
-\code{\link[DescTools]{PseudoR2}}, including the Efron (1978) and
+\code{\link[DescTools:PseudoR2]{DescTools::PseudoR2()}}, including the Efron (1978) and
 McKelvey & Zavoina (1975) measures not implemented here.
 For an accessible overview see \url{https://statisticalhorizons.com/r2logistic/}.
 }
@@ -171,9 +171,9 @@ models --- a new proposal: The coefficient of discrimination.
 \url{https://doi.org/10.1198/tast.2009.08210}
 }
 \seealso{
-\code{\link{nestedLogit}}, \code{\link[broom]{glance}},
-\code{\link[DescTools]{PseudoR2}},
-\code{\link[nnet]{multinom}}, \code{\link[MASS]{polr}}
+\code{\link[=nestedLogit]{nestedLogit()}}, \code{\link[broom:reexports]{broom::glance()}},
+\code{\link[DescTools:PseudoR2]{DescTools::PseudoR2()}},
+\code{\link[nnet:multinom]{nnet::multinom()}}, \code{\link[MASS:polr]{MASS::polr()}}
 }
 \author{
 Michael Friendly
