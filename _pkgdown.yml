@@ -31,10 +31,11 @@ reference:
   - RSQ
 
 - title: Support for other packages
-  desc: Methods for broom and effects packages.
+  desc: Methods for broom, effects, and equatiomatic packages.
   contents:
   - broomMethods
   - Effect.nestedLogit
+  - extract_eq.nestedLogit
 
 - title: Datasets
   desc: Example datasets included in the package.

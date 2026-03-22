@@ -24,10 +24,6 @@
 #'                  data = Womenlf)
 #' if (requireNamespace("equatiomatic", quietly = TRUE)) {
 #'   equatiomatic::extract_eq(wlf.nested)
-#'
-#'  # render with katex
-#'  eqns <- equatiomatic::extract_eq(wlf.nested)
-#'  katex::katex_html(as.character(eqns$work), preview = TRUE)
 #' }
 #'
 extract_eq.nestedLogit <- function(model, ...) {
