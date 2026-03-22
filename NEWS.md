@@ -1,3 +1,8 @@
+## nestedLogit 0.4.2
+
+* added an `equatiomatic::extract_eq()` method for "nestedLogit" objects
+* added a vignette illustrating LaTeX equations
+
 ## nestedLogit 0.4.1
 
 * Added `RSQ()` function to compute pseudo-R² measures (McFadden, Cox-Snell, Nagelkerke, and others) for each dichotomy sub-model and for the combined polytomous model

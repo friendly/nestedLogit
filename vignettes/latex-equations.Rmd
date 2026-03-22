@@ -1,0 +1,147 @@
+---
+title: "Displaying nestedLogit Models as LaTeX Equations"
+author: "Michael Friendly"
+date: "`r Sys.Date()`"
+package: nestedLogit
+output:
+  rmarkdown::html_vignette:
+  fig_caption: yes
+bibliography: ["references.bib", "packages.bib"]
+csl: apa.csl
+vignette: >
+  %\VignetteIndexEntry{Displaying nestedLogit Models as LaTeX Equations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message  = FALSE,
+  warning  = FALSE,
+  comment  = "#>"
+)
+
+.opts <- options(digits = 4)
+
+# packages to be cited in packages.bib
+.to.cite <- c("nestedLogit", "equatiomatic", "carData")
+```
+
+## Overview
+
+The `equatiomatic` package [@R-equatiomatic] provides a general mechanism for
+converting fitted statistical models into LaTeX equations, via the function
+`extract_eq()`.  For any model class that has a `broom::tidy()` method,
+`extract_eq()` can generate both the symbolic form of the model equation and
+a version with fitted coefficient values substituted in.
+
+The `nestedLogit` package [@R-nestedLogit] supports `extract_eq()` for objects
+of class `"nestedLogit"` through a dedicated S3 method, `extract_eq.nestedLogit`.
+Because a nested logit model is represented internally as a collection of binary
+logit sub-models — one for each dichotomy — `extract_eq()` generates a separate
+equation for each dichotomy and returns them as a named list.
+
+To use these features, load both packages:
+
+```{r setup}
+library(nestedLogit)
+library(equatiomatic)
+```
+
+## Fitting a nested logit model
+
+We use the `Womenlf` data [@R-carData], which records the labour-force
+participation of married women and is included in the `carData` package.
+The three-category response `partic` (not working, part-time, full-time) is
+decomposed into two nested binary dichotomies:
+
+- **work**: not working vs. working (part-time or full-time)
+- **full**: part-time vs. full-time, *among those who work*
+
+```{r model}
+data(Womenlf, package = "carData")
+
+comparisons <- logits(
+  work = dichotomy("not.work", working = c("parttime", "fulltime")),
+  full = dichotomy("parttime", "fulltime")
+)
+
+wlf.nested <- nestedLogit(partic ~ hincome + children,
+                           dichotomies = comparisons,
+                           data = Womenlf)
+```
+
+## Symbolic equations
+
+Calling `extract_eq()` on a `"nestedLogit"` object returns the model equations
+in symbolic (Greek-letter) form, with the response for each dichotomy labelled
+by its name.
+
+```{r eqns}
+eqns <- extract_eq(wlf.nested)
+```
+
+### Work dichotomy (not working vs. working)
+
+```{r eqn-work}
+eqns$work
+```
+
+### Full-time dichotomy (part-time vs. full-time)
+
+```{r eqn-full}
+eqns$full
+```
+
+## Equations with fitted coefficients
+
+Passing `use_coefs = TRUE` substitutes the fitted coefficient values into the
+equations.
+
+```{r eqns-coef}
+eqns_coef <- extract_eq(wlf.nested, use_coefs = TRUE)
+```
+
+```{r eqn-coef-work}
+eqns_coef$work
+```
+
+```{r eqn-coef-full}
+eqns_coef$full
+```
+
+## Equations for individual sub-models
+
+The individual binary logit sub-models (objects of class `"glm"`) can also be
+passed directly to `extract_eq()`.  This can be useful when you want to work
+with a single dichotomy in isolation.
+
+```{r submodel}
+mod.work <- models(wlf.nested, "work")
+extract_eq(mod.work)
+```
+
+## Using the raw LaTeX
+
+Each element of the returned list is an object of class `"equation"` (from
+`equatiomatic`), which is a character string containing the LaTeX source.
+It renders automatically in R Markdown and Quarto documents.  To access
+the raw LaTeX — for example to paste it into a paper or to render it with
+another tool such as `katex` — use `as.character()`:
+
+```{r raw-latex}
+cat(as.character(eqns$work), "\n\n")
+cat(as.character(eqns$full), "\n")
+```
+
+```{r write-bib, echo=FALSE}
+pkgs <- unique(c(.to.cite, .packages()))
+knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
+
+## References
+
+```{r, include=FALSE}
+options(.opts)
+```

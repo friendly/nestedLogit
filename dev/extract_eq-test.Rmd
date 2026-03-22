@@ -1,0 +1,97 @@
+---
+title: "Displaying nestedLogit models as LaTeX equations"
+author: "Michael Friendly"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    fig_caption: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  comment   = "#>"
+)
+```
+
+# Setup
+
+```{r load}
+devtools::load_all()   # load dev version (not yet installed)
+library(equatiomatic)
+data(Womenlf, package = "carData")
+
+comparisons <- logits(work = dichotomy("not.work",
+                                       working = c("parttime", "fulltime")),
+                      full = dichotomy("parttime", "fulltime"))
+
+wlf.nested <- nestedLogit(partic ~ hincome + children,
+                           dichotomies = comparisons,
+                           data = Womenlf)
+```
+
+# Baseline: equations for individual sub-models
+
+`extract_eq()` already works on the individual `glm` sub-models. These serve as
+the baseline for comparison.
+
+```{r submodel-work}
+mod.work <- models(wlf.nested, "work")
+extract_eq(mod.work)
+```
+
+Note that the response is rendered as `..y` — the internal variable name used
+when fitting the sub-model — rather than as a meaningful label.
+
+```{r submodel-full}
+mod.full <- models(wlf.nested, "full")
+extract_eq(mod.full)
+```
+
+# Equations for the full `nestedLogit` object
+
+`extract_eq(wlf.nested)` dispatches to `extract_eq.nestedLogit`, which applies
+`extract_eq()` to each sub-model and replaces `..y` with the dichotomy name.
+
+The result is a named list of class `"nestedLogit_equations"`.
+
+```{r nestedLogit-eqns}
+eqns <- extract_eq(wlf.nested)
+class(eqns)
+names(eqns)
+```
+
+## Work dichotomy (not working vs. working)
+
+```{r eqn-work}
+eqns$work
+```
+
+## Full-time dichotomy (part-time vs. full-time)
+
+```{r eqn-full}
+eqns$full
+```
+
+# Inspect raw LaTeX
+
+```{r raw-latex}
+cat("work:\n", as.character(eqns$work), "\n\n")
+cat("full:\n", as.character(eqns$full), "\n")
+```
+
+# With actual coefficient values
+
+`extract_eq()` accepts a `use_coefs = TRUE` argument to substitute the
+fitted coefficient values into the equation.
+
+```{r eqn-coefs}
+eqns_coef <- extract_eq(wlf.nested, use_coefs = TRUE)
+eqns_coef$work
+eqns_coef$full
+```
