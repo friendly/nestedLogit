@@ -11,9 +11,9 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2026-03-22" />
+<meta name="date" content="2026-03-23" />
 
-<title>Testing equatiomatic::extract_eq for nestedLogit</title>
+<title>Displaying nestedLogit models as LaTeX equations</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1479,10 +1479,10 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Testing equatiomatic::extract_eq for
-nestedLogit</h1>
+<h1 class="title toc-ignore">Displaying nestedLogit models as LaTeX
+equations</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2026-03-22</h4>
+<h4 class="date">2026-03-23</h4>
 
 </div>
 
@@ -1545,8 +1545,8 @@ names(eqns)
 working vs. working)</h2>
 <pre class="r"><code>eqns$work</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { P( \operatorname{work} = \operatorname{1} ) }{ 1 - P(
-\operatorname{work} = \operatorname{1} ) } \right] = \alpha +
+\log\left[ \frac { P( \operatorname{work} ) }{ 1 - P(
+\operatorname{work} ) } \right] = \alpha +
 \beta_{1}(\operatorname{hincome}) +
 \beta_{2}(\operatorname{children}_{\operatorname{present}})
 \]</span></p>
@@ -1567,7 +1567,7 @@ working vs. working)</h2>
 <h1><span class="header-section-number">4</span> Inspect raw LaTeX</h1>
 <pre class="r"><code>cat(&quot;work:\n&quot;, as.character(eqns$work), &quot;\n\n&quot;)
 #&gt; work:
-#&gt;  \log\left[ \frac { P( \operatorname{work} = \operatorname{1} ) }{ 1 - P( \operatorname{work} = \operatorname{1} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
+#&gt;  \log\left[ \frac { P( \operatorname{work} ) }{ 1 - P( \operatorname{work} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
 cat(&quot;full:\n&quot;, as.character(eqns$full), &quot;\n&quot;)
 #&gt; full:
 #&gt;  \log\left[ \frac { P( \operatorname{full} ) }{ 1 - P( \operatorname{full} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})</code></pre>
@@ -1581,9 +1581,8 @@ equation.</p>
 <pre class="r"><code>eqns_coef &lt;- extract_eq(wlf.nested, use_coefs = TRUE)
 eqns_coef$work</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { \widehat{P( \operatorname{work} = \operatorname{1} )}
-}{ 1 - \widehat{P( \operatorname{work} = \operatorname{1} )} } \right] =
-1.34 - 0.04(\operatorname{hincome}) -
+\log\left[ \frac { \widehat{P( \operatorname{work} )} }{ 1 - \widehat{P(
+\operatorname{work} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) -
 1.58(\operatorname{children}_{\operatorname{present}})
 \]</span></p>
 <pre class="r"><code>eqns_coef$full</code></pre>
@@ -1591,6 +1590,120 @@ eqns_coef$work</code></pre>
 \log\left[ \frac { \widehat{P( \operatorname{full} )} }{ 1 - \widehat{P(
 \operatorname{full} )} } \right] = 3.48 - 0.11(\operatorname{hincome}) -
 2.65(\operatorname{children}_{\operatorname{present}})
+\]</span></p>
+</div>
+<div id="gators-data-2-dichotomies-continuous-predictor" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Gators data: 2
+dichotomies, continuous predictor</h1>
+<p>The <code>gators</code> data models alligator food choice (Other,
+Fish, Invertebrates) as a function of body length. The two dichotomies
+use <code>logits()</code> rather than <code>continuationLogits()</code>,
+and the only predictor is continuous.</p>
+<pre class="r"><code>data(gators)
+gators.dichots &lt;- logits(
+  other    = dichotomy(&quot;Other&quot;, c(&quot;Fish&quot;, &quot;Invertebrates&quot;)),
+  fish_inv = dichotomy(&quot;Fish&quot;, &quot;Invertebrates&quot;)
+)
+
+# view the dichotomies
+gators.dichots
+#&gt; other: {Other} vs. {Fish, Invertebrates}
+#&gt; fish_inv: {Fish} vs. {Invertebrates}
+
+gators.nested &lt;- nestedLogit(food ~ length,
+                             dichotomies = gators.dichots,
+                             data = gators)</code></pre>
+<p>Display the model equations:</p>
+<pre class="r"><code>eqns_gators &lt;- extract_eq(gators.nested)
+eqns_gators$other</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{other} ) }{ 1 - P(
+\operatorname{other} ) } \right] = \alpha +
+\beta_{1}(\operatorname{length})
+\]</span></p>
+<pre class="r"><code>eqns_gators$fish_inv</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{fish_inv} ) }{ 1 - P(
+\operatorname{fish_inv} ) } \right] = \alpha +
+\beta_{1}(\operatorname{length})
+\]</span></p>
+<p>Use the estimated coefficients:</p>
+<pre class="r"><code>eqns_gators_coef &lt;- extract_eq(gators.nested, use_coefs = TRUE)
+eqns_gators_coef$other</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { \widehat{P( \operatorname{other} )} }{ 1 -
+\widehat{P( \operatorname{other} )} } \right] = 3.13 -
+0.57(\operatorname{length})
+\]</span></p>
+<pre class="r"><code>eqns_gators_coef$fish_inv</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { \widehat{P( \operatorname{fish_inv} )} }{ 1 -
+\widehat{P( \operatorname{fish_inv} )} } \right] = 4.32 -
+2.48(\operatorname{length})
+\]</span></p>
+</div>
+<div id="gss-data-3-dichotomies-via-continuationlogits-interaction-term" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> GSS data: 3 dichotomies
+via <code>continuationLogits()</code>, interaction term</h1>
+<p>The <code>GSS</code> data models educational attainment
+(<code>degree</code>) across four ordered levels using continuation
+logits. The predictor includes an interaction
+(<code>parentdeg * year</code>), giving a more complex RHS and three
+dichotomy equations.</p>
+<pre class="r"><code>data(GSS)
+gss.nested &lt;- nestedLogit(degree ~ parentdeg * year,
+                           dichotomies = continuationLogits(
+                             c(&quot;&lt;highschool&quot;, &quot;highschool&quot;, &quot;college&quot;, &quot;graduate&quot;)
+                           ),
+                           data = GSS)
+names(models(gss.nested))
+#&gt; [1] &quot;above_.highschool&quot; &quot;above_highschool&quot;  &quot;above_college&quot;</code></pre>
+<pre class="r"><code>eqns_gss &lt;- extract_eq(gss.nested)
+eqns_gss[[1]]</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{above_.highschool} ) }{ 1 - P(
+\operatorname{above_.highschool} ) } \right] = \alpha +
+\beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
+\beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
+\beta_{3}(\operatorname{parentdeg}_{\operatorname{graduate}}) +
+\beta_{4}(\operatorname{year}) +
+\beta_{5}(\operatorname{parentdeg}_{\operatorname{highschool}} \times
+\operatorname{year}) +
+\beta_{6}(\operatorname{parentdeg}_{\operatorname{college}} \times
+\operatorname{year}) +
+\beta_{7}(\operatorname{parentdeg}_{\operatorname{graduate}} \times
+\operatorname{year})
+\]</span></p>
+<pre class="r"><code>eqns_gss[[2]]</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{above_highschool} = \operatorname{0}
+) }{ 1 - P( \operatorname{above_highschool} = \operatorname{0} ) }
+\right] = \alpha +
+\beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
+\beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
+\beta_{3}(\operatorname{parentdeg}_{\operatorname{graduate}}) +
+\beta_{4}(\operatorname{year}) +
+\beta_{5}(\operatorname{parentdeg}_{\operatorname{highschool}} \times
+\operatorname{year}) +
+\beta_{6}(\operatorname{parentdeg}_{\operatorname{college}} \times
+\operatorname{year}) +
+\beta_{7}(\operatorname{parentdeg}_{\operatorname{graduate}} \times
+\operatorname{year})
+\]</span></p>
+<pre class="r"><code>eqns_gss[[3]]</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{above_college} ) }{ 1 - P(
+\operatorname{above_college} ) } \right] = \alpha +
+\beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
+\beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
+\beta_{3}(\operatorname{parentdeg}_{\operatorname{graduate}}) +
+\beta_{4}(\operatorname{year}) +
+\beta_{5}(\operatorname{parentdeg}_{\operatorname{highschool}} \times
+\operatorname{year}) +
+\beta_{6}(\operatorname{parentdeg}_{\operatorname{college}} \times
+\operatorname{year}) +
+\beta_{7}(\operatorname{parentdeg}_{\operatorname{graduate}} \times
+\operatorname{year})
 \]</span></p>
 </div>
 

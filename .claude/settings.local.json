@@ -19,7 +19,10 @@
       "WebFetch(domain:r-hub.github.io)",
       "WebFetch(domain:blog.r-hub.io)",
       "WebFetch(domain:github.com)",
-      "Bash(gh:*)"
+      "Bash(gh:*)",
+      "Bash(grep -n \"nestedLogit\\(\" C:/Dropbox/R/projects/nestedLogit/vignettes/*.Rmd)",
+      "WebFetch(domain:rdrr.io)",
+      "WebFetch(domain:datalorax.github.io)"
     ]
   }
 }

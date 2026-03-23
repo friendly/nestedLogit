@@ -1,18 +1,35 @@
-#' Extract Equations for a \code{"nestedLogit"} Model
+#' Extract Equations for a `"nestedLogit"` Model
 #'
 #' @description
-#' An \code{\link[equatiomatic]{extract_eq}} method for \code{"nestedLogit"} objects.
-#' Extracts the LaTeX equation for each of the binary logit sub-models comprising
-#' a nested logit model, substituting the dichotomy name for the internal
-#' \code{..y} placeholder used by \code{\link{nestedLogit}}.
+#' Provides an [equatiomatic::extract_eq()] method for `"nestedLogit"` objects
+#' to render the models as LaTeX equations in documents.
 #'
-#' @param model a \code{"nestedLogit"} object.
-#' @param \dots additional arguments passed to \code{\link[equatiomatic]{extract_eq}}.
+#' It extracts the LaTeX equation for each of the binary logit sub-models
+#' comprising a nested logit model, substituting the dichotomy name for the
+#' internal `..y` placeholder used by [nestedLogit()].
 #'
-#' @return An object of class \code{c("nestedLogit_equations", "list")} containing
-#'   one \code{"equation"} per dichotomy in \code{model}, named by the dichotomy.
+#' @param model a `"nestedLogit"` object.
+#' @param \dots additional arguments passed to [equatiomatic::extract_eq()].
+#'   For example, use `use_coefs = TRUE` to display fitted coefficients rather
+#'   than symbols; `wrap = TRUE` to split the RHS across multiple lines;
+#'   `greek_colors`, `var_colors`, etc. to color the symbols.
 #'
-#' @seealso \code{\link[equatiomatic]{extract_eq}}
+#' @details
+#' Internally, [nestedLogit()] fits each sub-model on a temporary response
+#' column named `..y`, so [equatiomatic::extract_eq()] would render the
+#' response as `..y` rather than the dichotomy name.  This method replaces
+#' `..y` with the name of each dichotomy.
+#'
+#' Because `"_"` is the subscript operator in LaTeX, any underscores in
+#' dichotomy names are replaced by `"."` in the displayed equation
+#' (e.g., a dichotomy named `fish_inv` appears as `fish.inv`).
+#' This does not affect the names of the returned list, which retain the
+#' original R names.
+#'
+#' @return An object of class `c("nestedLogit_equations", "list")` containing
+#'   one `"equation"` per dichotomy in `model`, named by the dichotomy.
+#'
+#' @seealso [equatiomatic::extract_eq()]
 #' @exportS3Method equatiomatic::extract_eq nestedLogit
 #'
 #' @examples
@@ -33,8 +50,11 @@ extract_eq.nestedLogit <- function(model, ...) {
     eq <- equatiomatic::extract_eq(mods[[i]], ...)
     # The sub-models were fit on a data column named `..y`; equatiomatic renders
     # that literally.  Replace it with the dichotomy name.
+    # Replace underscores with dots: `_` is the subscript operator in LaTeX so
+    # `fish_inv` would render as "fish" subscript "inv".  Dots are safe.
+    nm_latex <- gsub("_", ".", nms[i], fixed = TRUE)
     eq_str <- gsub("\\\\operatorname\\{\\.\\.y\\}(\\s*=\\s*\\\\operatorname\\{1\\})?",
-                   paste0("\\\\operatorname{", nms[i], "}"),
+                   paste0("\\\\operatorname{", nm_latex, "}"),
                    as.character(eq))
     class(eq_str) <- class(eq)
     eq_str

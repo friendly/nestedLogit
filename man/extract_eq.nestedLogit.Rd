@@ -9,17 +9,34 @@
 \arguments{
 \item{model}{a \code{"nestedLogit"} object.}
 
-\item{\dots}{additional arguments passed to \code{\link[equatiomatic]{extract_eq}}.}
+\item{\dots}{additional arguments passed to \code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}}.
+For example, use \code{use_coefs = TRUE} to display fitted coefficients rather
+than symbols; \code{wrap = TRUE} to split the RHS across multiple lines;
+\code{greek_colors}, \code{var_colors}, etc. to color the symbols.}
 }
 \value{
 An object of class \code{c("nestedLogit_equations", "list")} containing
 one \code{"equation"} per dichotomy in \code{model}, named by the dichotomy.
 }
 \description{
-An \code{\link[equatiomatic]{extract_eq}} method for \code{"nestedLogit"} objects.
-Extracts the LaTeX equation for each of the binary logit sub-models comprising
-a nested logit model, substituting the dichotomy name for the internal
-\code{..y} placeholder used by \code{\link{nestedLogit}}.
+Provides an \code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}} method for \code{"nestedLogit"} objects
+to render the models as LaTeX equations in documents.
+
+It extracts the LaTeX equation for each of the binary logit sub-models
+comprising a nested logit model, substituting the dichotomy name for the
+internal \code{..y} placeholder used by \code{\link[=nestedLogit]{nestedLogit()}}.
+}
+\details{
+Internally, \code{\link[=nestedLogit]{nestedLogit()}} fits each sub-model on a temporary response
+column named \code{..y}, so \code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}} would render the
+response as \code{..y} rather than the dichotomy name.  This method replaces
+\code{..y} with the name of each dichotomy.
+
+Because \code{"_"} is the subscript operator in LaTeX, any underscores in
+dichotomy names are replaced by \code{"."} in the displayed equation
+(e.g., a dichotomy named \code{fish_inv} appears as \code{fish.inv}).
+This does not affect the names of the returned list, which retain the
+original R names.
 }
 \examples{
 data("Womenlf", package = "carData")
@@ -34,5 +51,5 @@ if (requireNamespace("equatiomatic", quietly = TRUE)) {
 
 }
 \seealso{
-\code{\link[equatiomatic]{extract_eq}}
+\code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}}
 }

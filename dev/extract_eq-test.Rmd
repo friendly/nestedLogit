@@ -95,3 +95,61 @@ eqns_coef <- extract_eq(wlf.nested, use_coefs = TRUE)
 eqns_coef$work
 eqns_coef$full
 ```
+
+# Gators data: 2 dichotomies, continuous predictor
+
+The `gators` data models alligator food choice (Other, Fish, Invertebrates) as
+a function of body length.  The two dichotomies use `logits()` rather than
+`continuationLogits()`, and the only predictor is continuous.
+
+```{r gators-model}
+data(gators)
+gators.dichots <- logits(
+  other    = dichotomy("Other", c("Fish", "Invertebrates")),
+  fish_inv = dichotomy("Fish", "Invertebrates")
+)
+
+# view the dichotomies
+gators.dichots
+
+gators.nested <- nestedLogit(food ~ length,
+                             dichotomies = gators.dichots,
+                             data = gators)
+```
+
+Display the model equations:
+```{r gators-eqns}
+eqns_gators <- extract_eq(gators.nested)
+eqns_gators$other
+eqns_gators$fish_inv
+```
+
+Use the estimated coefficients:
+```{r gators-eqns-coef}
+eqns_gators_coef <- extract_eq(gators.nested, use_coefs = TRUE)
+eqns_gators_coef$other
+eqns_gators_coef$fish_inv
+```
+
+# GSS data: 3 dichotomies via `continuationLogits()`, interaction term
+
+The `GSS` data models educational attainment (`degree`) across four ordered
+levels using continuation logits.  The predictor includes an interaction
+(`parentdeg * year`), giving a more complex RHS and three dichotomy equations.
+
+```{r gss-model}
+data(GSS)
+gss.nested <- nestedLogit(degree ~ parentdeg * year,
+                           dichotomies = continuationLogits(
+                             c("<highschool", "highschool", "college", "graduate")
+                           ),
+                           data = GSS)
+names(models(gss.nested))
+```
+
+```{r gss-eqns}
+eqns_gss <- extract_eq(gss.nested)
+eqns_gss[[1]]
+eqns_gss[[2]]
+eqns_gss[[3]]
+```

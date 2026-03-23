@@ -5,6 +5,9 @@ date: "`r Sys.Date()`"
 package: nestedLogit
 output:
   rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    number_sections: true
   fig_caption: yes
 bibliography: ["references.bib", "packages.bib"]
 csl: apa.csl
@@ -51,7 +54,7 @@ library(equatiomatic)
 
 ## Fitting a nested logit model
 
-We use the `Womenlf` data [@R-carData], which records the labour-force
+We use the `Womenlf` data [@R-carData], which records the labor-force
 participation of married women and is included in the `carData` package.
 The three-category response `partic` (not working, part-time, full-time) is
 decomposed into two nested binary dichotomies:
@@ -75,7 +78,7 @@ wlf.nested <- nestedLogit(partic ~ hincome + children,
 ## Symbolic equations
 
 Calling `extract_eq()` on a `"nestedLogit"` object returns the model equations
-in symbolic (Greek-letter) form, with the response for each dichotomy labelled
+in symbolic (Greek-letter) form, with the response for each dichotomy labeled
 by its name.
 
 ```{r eqns}
@@ -94,7 +97,17 @@ eqns$work
 eqns$full
 ```
 
-## Equations with fitted coefficients
+## Using `extract_eq()` options
+
+There are a wide variety of options you can pass to `extract_eq()` to control the details of how the equations are rendered
+in LateX. These include:
+
+* `use_coefs`: Use the model estimates in the equations instead of symbols, a nice way to display a fitted model
+* Options for coloring symbols in the equations: `greek_colors`, `var_colors`, `subscript_colors` and others.
+* `ital_vars`: 	Logical, defaults to `FALSE`. Should the variable names not be wrapped in the `\operatorname{}` command so they appear in Roman text?
+
+
+### Equations with fitted coefficients
 
 Passing `use_coefs = TRUE` substitutes the fitted coefficient values into the
 equations.
@@ -111,29 +124,56 @@ eqns_coef$work
 eqns_coef$full
 ```
 
+### Coloring symbols
+
+The `greek_colors` and `var_colors` arguments control the color of the Greek
+coefficient symbols and the variable names, respectively.  This can help
+distinguish the structural parameters from the predictors when displaying
+equations in presentations or documents.
+
+```{r eqn-colors}
+extract_eq(wlf.nested,
+           greek_colors = "blue",
+           var_colors   = "brown")$work
+```
+
+The color arguments accept any R color name or hex code, and can be a vector
+to color each symbol differently:
+
+```{r eqn-colors-vec}
+extract_eq(wlf.nested,
+           greek_colors = c("black", "blue", "blue"),
+           var_colors   = "red")$work
+```
+
 ## Equations for individual sub-models
 
 The individual binary logit sub-models (objects of class `"glm"`) can also be
 passed directly to `extract_eq()`.  This can be useful when you want to work
-with a single dichotomy in isolation.
+with a single dichotomy in isolation. 
 
 ```{r submodel}
 mod.work <- models(wlf.nested, "work")
 extract_eq(mod.work)
 ```
 
+Note that the response is rendered as `..y` — the internal variable name used when fitting the sub-model — rather than as a meaningful label. The `extract_eq()` method for a `"nestedLogit"` model fixes this infelicity.
+
 ## Using the raw LaTeX
 
 Each element of the returned list is an object of class `"equation"` (from
 `equatiomatic`), which is a character string containing the LaTeX source.
-It renders automatically in R Markdown and Quarto documents.  To access
+This renders automatically in R Markdown and Quarto documents.  To access
 the raw LaTeX — for example to paste it into a paper or to render it with
 another tool such as `katex` — use `as.character()`:
 
 ```{r raw-latex}
 cat(as.character(eqns$work), "\n\n")
+
 cat(as.character(eqns$full), "\n")
 ```
+
+
 
 ```{r write-bib, echo=FALSE}
 pkgs <- unique(c(.to.cite, .packages()))
