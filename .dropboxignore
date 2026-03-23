@@ -1,0 +1,3 @@
+# Dropbox ignore file
+# Prevent Dropbox from syncing git internals (causes object corruption)
+.git

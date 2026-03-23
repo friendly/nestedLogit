@@ -17,3 +17,4 @@ dev/
 .nojekyll
 ^vignettes/articles$
 .github
+^\.dropboxignore$
