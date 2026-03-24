@@ -48,14 +48,22 @@ extract_eq.nestedLogit <- function(model, ...) {
   nms  <- names(mods)
   eqns <- lapply(seq_along(mods), function(i) {
     eq <- equatiomatic::extract_eq(mods[[i]], ...)
-    # The sub-models were fit on a data column named `..y`; equatiomatic renders
-    # that literally.  Replace it with the dichotomy name.
+    # The sub-models were fit on a data column named `..y`; equatiomatic usually
+    # renders that literally.  Replace it with the dichotomy name.
     # Replace underscores with dots: `_` is the subscript operator in LaTeX so
     # `fish_inv` would render as "fish" subscript "inv".  Dots are safe.
     nm_latex <- gsub("_", ".", nms[i], fixed = TRUE)
+    # Case 1: equatiomatic used the `..y` data-column name (the normal case).
     eq_str <- gsub("\\\\operatorname\\{\\.\\.y\\}(\\s*=\\s*\\\\operatorname\\{1\\})?",
                    paste0("\\\\operatorname{", nm_latex, "}"),
                    as.character(eq))
+    # Case 2: equatiomatic used the formula LHS directly (e.g. `fish_inv`).
+    # Use fixed = TRUE so the literal backslash and braces are matched as-is.
+    if (grepl("_", nms[i], fixed = TRUE)) {
+      eq_str <- gsub(paste0("\\operatorname{", nms[i], "}"),
+                     paste0("\\operatorname{", nm_latex, "}"),
+                     eq_str, fixed = TRUE)
+    }
     class(eq_str) <- class(eq)
     eq_str
   })

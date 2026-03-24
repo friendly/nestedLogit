@@ -1,7 +1,8 @@
 ## nestedLogit 0.4.2
 
 * added an `equatiomatic::extract_eq()` method for "nestedLogit" objects
-* added a vignette illustrating LaTeX equations
+* added a vignette ("latex-equations") illustrating use of LaTeX equations in Rmarkdown / Quarto documents for these models and various options available.
+* fixed subtle LaTeX bug in `extract_eq()` when dichotomy names contain "_"
 
 ## nestedLogit 0.4.1
 

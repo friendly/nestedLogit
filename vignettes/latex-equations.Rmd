@@ -133,20 +133,19 @@ equations in presentations or documents.
 
 ```{r eqn-colors}
 extract_eq(wlf.nested,
-           greek_colors = "blue",
-           var_colors   = "brown")$work
+           greek_colors = "blue")$work
 ```
 
 The color arguments accept any R color name or hex code, and can be a vector
-to color each symbol differently:
+to color each symbol differently. `var_colors` needs a named vector of the variable names.
 
 ```{r eqn-colors-vec}
 extract_eq(wlf.nested,
            greek_colors = c("black", "blue", "blue"),
-           var_colors   = "red")$work
+           var_colors   = c(hincome = "red", children="darkgreen"))$work
 ```
 
-## Equations for individual sub-models
+### Equations for individual sub-models
 
 The individual binary logit sub-models (objects of class `"glm"`) can also be
 passed directly to `extract_eq()`.  This can be useful when you want to work
@@ -178,6 +177,45 @@ cat(as.character(eqns$full), "\n")
 ```{r write-bib, echo=FALSE}
 pkgs <- unique(c(.to.cite, .packages()))
 knitr::write_bib(pkgs, file = here::here("vignettes", "packages.bib"))
+```
+
+## Alligator food choice: `gators` data
+
+The `gators` data (built into `nestedLogit`) records the primary food choice of
+alligators — Other, Fish, or Invertebrates — as a function of body length.
+The three-category response is decomposed into two dichotomies using `logits()`:
+
+- **other**: {Other} vs. {Fish, Invertebrates}
+- **fish_inv**: {Fish} vs. {Invertebrates}, *among those not eating Other*
+
+```{r gators-model}
+data(gators)
+gators.dichots <- logits(
+  other    = dichotomy("Other", c("Fish", "Invertebrates")),
+  fish_inv = dichotomy("Fish", "Invertebrates")
+)
+gators.dichots
+
+gators.nested <- nestedLogit(food ~ length,
+                             dichotomies = gators.dichots,
+                             data = gators)
+```
+
+Note that the dichotomy name `fish_inv` contains an underscore. Because `_` is
+the subscript operator in LaTeX, `extract_eq()` replaces it with `.` in the
+displayed equation (the list element is still accessed as `eqns_gators$fish_inv`).
+
+```{r gators-eqns}
+eqns_gators <- extract_eq(gators.nested)
+eqns_gators$other
+eqns_gators$fish_inv
+```
+
+With fitted coefficients:
+
+```{r gators-eqns-coef}
+extract_eq(gators.nested, use_coefs = TRUE)$other
+extract_eq(gators.nested, use_coefs = TRUE)$fish_inv
 ```
 
 ## References
