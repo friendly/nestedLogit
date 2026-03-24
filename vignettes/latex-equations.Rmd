@@ -77,24 +77,21 @@ wlf.nested <- nestedLogit(partic ~ hincome + children,
 
 ## Symbolic equations
 
-Calling `extract_eq()` on a `"nestedLogit"` object returns the model equations
-in symbolic (Greek-letter) form, with the response for each dichotomy labeled
-by its name.
-
-```{r eqns}
-eqns <- extract_eq(wlf.nested)
-```
+Calling `extract_eq()` on a `"nestedLogit"` object with `submodel = "name"`
+returns the equation for a single dichotomy in symbolic (Greek-letter) form,
+labeled by its name.  The equation renders automatically in R Markdown and
+Quarto documents.
 
 ### Work dichotomy (not working vs. working)
 
 ```{r eqn-work}
-eqns$work
+extract_eq(wlf.nested, submodel = "work")
 ```
 
 ### Full-time dichotomy (part-time vs. full-time)
 
 ```{r eqn-full}
-eqns$full
+extract_eq(wlf.nested, submodel = "full")
 ```
 
 ## Using `extract_eq()` options
@@ -112,16 +109,12 @@ in LateX. These include:
 Passing `use_coefs = TRUE` substitutes the fitted coefficient values into the
 equations.
 
-```{r eqns-coef}
-eqns_coef <- extract_eq(wlf.nested, use_coefs = TRUE)
-```
-
 ```{r eqn-coef-work}
-eqns_coef$work
+extract_eq(wlf.nested, use_coefs = TRUE, submodel = "work")
 ```
 
 ```{r eqn-coef-full}
-eqns_coef$full
+extract_eq(wlf.nested, use_coefs = TRUE, submodel = "full")
 ```
 
 ### Coloring symbols
@@ -133,7 +126,8 @@ equations in presentations or documents.
 
 ```{r eqn-colors}
 extract_eq(wlf.nested,
-           greek_colors = "blue")$work
+           greek_colors = "blue",
+           submodel = "work")
 ```
 
 The color arguments accept any R color name or hex code, and can be a vector
@@ -142,14 +136,15 @@ to color each symbol differently. `var_colors` needs a named vector of the varia
 ```{r eqn-colors-vec}
 extract_eq(wlf.nested,
            greek_colors = c("black", "blue", "blue"),
-           var_colors   = c(hincome = "red", children="darkgreen"))$work
+           var_colors   = c(hincome = "red", children="darkgreen"),
+           submodel     = "work")
 ```
 
 ### Equations for individual sub-models
 
 The individual binary logit sub-models (objects of class `"glm"`) can also be
 passed directly to `extract_eq()`.  This can be useful when you want to work
-with a single dichotomy in isolation. 
+with a single dichotomy in isolation.
 
 ```{r submodel}
 mod.work <- models(wlf.nested, "work")
@@ -160,16 +155,16 @@ Note that the response is rendered as `..y` — the internal variable name used 
 
 ## Using the raw LaTeX
 
-Each element of the returned list is an object of class `"equation"` (from
+Each equation returned by `extract_eq()` is an object of class `"equation"` (from
 `equatiomatic`), which is a character string containing the LaTeX source.
 This renders automatically in R Markdown and Quarto documents.  To access
 the raw LaTeX — for example to paste it into a paper or to render it with
 another tool such as `katex` — use `as.character()`:
 
 ```{r raw-latex}
-cat(as.character(eqns$work), "\n\n")
+cat(as.character(extract_eq(wlf.nested, submodel = "work")), "\n\n")
 
-cat(as.character(eqns$full), "\n")
+cat(as.character(extract_eq(wlf.nested, submodel = "full")), "\n")
 ```
 
 
@@ -203,19 +198,18 @@ gators.nested <- nestedLogit(food ~ length,
 
 Note that the dichotomy name `fish_inv` contains an underscore. Because `_` is
 the subscript operator in LaTeX, `extract_eq()` replaces it with `.` in the
-displayed equation (the list element is still accessed as `eqns_gators$fish_inv`).
+displayed equation (the `submodel` argument still uses the original R name).
 
 ```{r gators-eqns}
-eqns_gators <- extract_eq(gators.nested)
-eqns_gators$other
-eqns_gators$fish_inv
+extract_eq(gators.nested, submodel = "other")
+extract_eq(gators.nested, submodel = "fish_inv")
 ```
 
 With fitted coefficients:
 
 ```{r gators-eqns-coef}
-extract_eq(gators.nested, use_coefs = TRUE)$other
-extract_eq(gators.nested, use_coefs = TRUE)$fish_inv
+extract_eq(gators.nested, use_coefs = TRUE, submodel = "other")
+extract_eq(gators.nested, use_coefs = TRUE, submodel = "fish_inv")
 ```
 
 ## References

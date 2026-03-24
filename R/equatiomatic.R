@@ -9,6 +9,10 @@
 #' internal `..y` placeholder used by [nestedLogit()].
 #'
 #' @param model a `"nestedLogit"` object.
+#' @param submodel character; name of a single dichotomy (e.g. `"work"`).
+#'   When supplied, a single `"equation"` object is returned and renders
+#'   directly in a knitr chunk.  When omitted, equations for all dichotomies
+#'   are returned as a named list of class `"nestedLogit_equations"`.
 #' @param \dots additional arguments passed to [equatiomatic::extract_eq()].
 #'   For example, use `use_coefs = TRUE` to display fitted coefficients rather
 #'   than symbols; `wrap = TRUE` to split the RHS across multiple lines;
@@ -20,14 +24,18 @@
 #' response as `..y` rather than the dichotomy name.  This method replaces
 #' `..y` with the name of each dichotomy.
 #'
-#' Because `"_"` is the subscript operator in LaTeX, any underscores in
-#' dichotomy names are replaced by `"."` in the displayed equation
+#' Because `_` is the subscript operator in LaTeX, any underscores in
+#' dichotomy names are replaced by `.` in the displayed equation
 #' (e.g., a dichotomy named `fish_inv` appears as `fish.inv`).
 #' This does not affect the names of the returned list, which retain the
 #' original R names.
 #'
-#' @return An object of class `c("nestedLogit_equations", "list")` containing
-#'   one `"equation"` per dichotomy in `model`, named by the dichotomy.
+#' @return When `submodel` is `NULL`, an object of class
+#'   `c("nestedLogit_equations", "list")` containing one `"equation"` per
+#'   dichotomy, named by the dichotomy.  Individual equations can be extracted
+#'   with `$name` or by passing `submodel`.  When `submodel` is a dichotomy
+#'   name, the single corresponding `"equation"` object is returned and renders
+#'   directly in a knitr chunk.
 #'
 #' @seealso [equatiomatic::extract_eq()]
 #' @exportS3Method equatiomatic::extract_eq nestedLogit
@@ -43,9 +51,13 @@
 #'   equatiomatic::extract_eq(wlf.nested)
 #' }
 #'
-extract_eq.nestedLogit <- function(model, ...) {
+extract_eq.nestedLogit <- function(model, submodel = NULL, ...) {
   mods <- models(model)
   nms  <- names(mods)
+  if (!is.null(submodel) && !submodel %in% nms) {
+    stop("submodel '", submodel, "' not found; available: ",
+         paste(nms, collapse = ", "))
+  }
   eqns <- lapply(seq_along(mods), function(i) {
     eq <- equatiomatic::extract_eq(mods[[i]], ...)
     # The sub-models were fit on a data column named `..y`; equatiomatic usually
@@ -69,7 +81,7 @@ extract_eq.nestedLogit <- function(model, ...) {
   })
   names(eqns) <- nms
   class(eqns) <- c("nestedLogit_equations", "list")
-  eqns
+  if (!is.null(submodel)) eqns[[submodel]] else eqns
 }
 
 #' @export
@@ -80,3 +92,4 @@ print.nestedLogit_equations <- function(x, ...) {
   }
   invisible(x)
 }
+

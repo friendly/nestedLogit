@@ -153,3 +153,46 @@ eqns_gss[[1]]
 eqns_gss[[2]]
 eqns_gss[[3]]
 ```
+
+# Testing `submodel` argument and `knit_print`
+
+## `submodel`: extract a single equation by name
+
+`submodel = "work"` should return a bare `"equation"` object that renders
+directly — equivalent to `extract_eq(wlf.nested)$work` but without the
+`$` indexing.
+
+```{r submodel-arg}
+extract_eq(wlf.nested, submodel = "work")
+```
+
+```{r submodel-arg-coef}
+extract_eq(wlf.nested, submodel = "full", use_coefs = TRUE)
+```
+
+Error on a bad name:
+
+```{r submodel-bad, error=TRUE}
+extract_eq(wlf.nested, submodel = "bad_name")
+```
+
+## `submodel` with other arguments
+
+`submodel` and `...` arguments can be combined:
+
+```{r submodel-coef}
+extract_eq(wlf.nested, submodel = "work", use_coefs = TRUE)
+```
+
+```{r submodel-colors}
+extract_eq(wlf.nested, submodel = "work",
+           greek_colors = c("black", "blue", "blue"),
+           var_colors   = c(hincome = "red", children = "darkgreen"))
+```
+
+## Gators: `submodel` with underscore name
+
+```{r submodel-gators}
+extract_eq(gators.nested, submodel = "other")
+extract_eq(gators.nested, submodel = "fish_inv")
+```

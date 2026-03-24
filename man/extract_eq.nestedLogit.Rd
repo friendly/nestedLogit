@@ -4,10 +4,15 @@
 \alias{extract_eq.nestedLogit}
 \title{Extract Equations for a \code{"nestedLogit"} Model}
 \usage{
-\method{extract_eq}{nestedLogit}(model, ...)
+extract_eq.nestedLogit(model, submodel = NULL, ...)
 }
 \arguments{
 \item{model}{a \code{"nestedLogit"} object.}
+
+\item{submodel}{character; name of a single dichotomy (e.g. \code{"work"}).
+When supplied, a single \code{"equation"} object is returned and renders
+directly in a knitr chunk.  When omitted, equations for all dichotomies
+are returned as a named list of class \code{"nestedLogit_equations"}.}
 
 \item{\dots}{additional arguments passed to \code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}}.
 For example, use \code{use_coefs = TRUE} to display fitted coefficients rather
@@ -15,8 +20,12 @@ than symbols; \code{wrap = TRUE} to split the RHS across multiple lines;
 \code{greek_colors}, \code{var_colors}, etc. to color the symbols.}
 }
 \value{
-An object of class \code{c("nestedLogit_equations", "list")} containing
-one \code{"equation"} per dichotomy in \code{model}, named by the dichotomy.
+When \code{submodel} is \code{NULL}, an object of class
+\code{c("nestedLogit_equations", "list")} containing one \code{"equation"} per
+dichotomy, named by the dichotomy.  Individual equations can be extracted
+with \verb{$name} or by passing \code{submodel}.  When \code{submodel} is a dichotomy
+name, the single corresponding \code{"equation"} object is returned and renders
+directly in a knitr chunk.
 }
 \description{
 Provides an \code{\link[equatiomatic:extract_eq]{equatiomatic::extract_eq()}} method for \code{"nestedLogit"} objects
@@ -32,8 +41,8 @@ column named \code{..y}, so \code{\link[equatiomatic:extract_eq]{equatiomatic::e
 response as \code{..y} rather than the dichotomy name.  This method replaces
 \code{..y} with the name of each dichotomy.
 
-Because \code{"_"} is the subscript operator in LaTeX, any underscores in
-dichotomy names are replaced by \code{"."} in the displayed equation
+Because \verb{_} is the subscript operator in LaTeX, any underscores in
+dichotomy names are replaced by \code{.} in the displayed equation
 (e.g., a dichotomy named \code{fish_inv} appears as \code{fish.inv}).
 This does not affect the names of the returned list, which retain the
 original R names.

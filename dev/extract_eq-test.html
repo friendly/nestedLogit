@@ -11,7 +11,7 @@
 
 <meta name="author" content="Michael Friendly" />
 
-<meta name="date" content="2026-03-23" />
+<meta name="date" content="2026-03-24" />
 
 <title>Displaying nestedLogit models as LaTeX equations</title>
 
@@ -1482,7 +1482,7 @@ border-radius: 0px;
 <h1 class="title toc-ignore">Displaying nestedLogit models as LaTeX
 equations</h1>
 <h4 class="author">Michael Friendly</h4>
-<h4 class="date">2026-03-23</h4>
+<h4 class="date">2026-03-24</h4>
 
 </div>
 
@@ -1623,8 +1623,8 @@ eqns_gators$other</code></pre>
 \]</span></p>
 <pre class="r"><code>eqns_gators$fish_inv</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { P( \operatorname{fish_inv} ) }{ 1 - P(
-\operatorname{fish_inv} ) } \right] = \alpha +
+\log\left[ \frac { P( \operatorname{fish.inv} ) }{ 1 - P(
+\operatorname{fish.inv} ) } \right] = \alpha +
 \beta_{1}(\operatorname{length})
 \]</span></p>
 <p>Use the estimated coefficients:</p>
@@ -1637,8 +1637,8 @@ eqns_gators_coef$other</code></pre>
 \]</span></p>
 <pre class="r"><code>eqns_gators_coef$fish_inv</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { \widehat{P( \operatorname{fish_inv} )} }{ 1 -
-\widehat{P( \operatorname{fish_inv} )} } \right] = 4.32 -
+\log\left[ \frac { \widehat{P( \operatorname{fish.inv} )} }{ 1 -
+\widehat{P( \operatorname{fish.inv} )} } \right] = 4.32 -
 2.48(\operatorname{length})
 \]</span></p>
 </div>
@@ -1661,8 +1661,8 @@ names(models(gss.nested))
 <pre class="r"><code>eqns_gss &lt;- extract_eq(gss.nested)
 eqns_gss[[1]]</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { P( \operatorname{above_.highschool} ) }{ 1 - P(
-\operatorname{above_.highschool} ) } \right] = \alpha +
+\log\left[ \frac { P( \operatorname{above..highschool} ) }{ 1 - P(
+\operatorname{above..highschool} ) } \right] = \alpha +
 \beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
 \beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
 \beta_{3}(\operatorname{parentdeg}_{\operatorname{graduate}}) +
@@ -1676,8 +1676,8 @@ eqns_gss[[1]]</code></pre>
 \]</span></p>
 <pre class="r"><code>eqns_gss[[2]]</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { P( \operatorname{above_highschool} = \operatorname{0}
-) }{ 1 - P( \operatorname{above_highschool} = \operatorname{0} ) }
+\log\left[ \frac { P( \operatorname{above.highschool} = \operatorname{0}
+) }{ 1 - P( \operatorname{above.highschool} = \operatorname{0} ) }
 \right] = \alpha +
 \beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
 \beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
@@ -1692,8 +1692,8 @@ eqns_gss[[1]]</code></pre>
 \]</span></p>
 <pre class="r"><code>eqns_gss[[3]]</code></pre>
 <p><span class="math display">\[
-\log\left[ \frac { P( \operatorname{above_college} ) }{ 1 - P(
-\operatorname{above_college} ) } \right] = \alpha +
+\log\left[ \frac { P( \operatorname{above.college} ) }{ 1 - P(
+\operatorname{above.college} ) } \right] = \alpha +
 \beta_{1}(\operatorname{parentdeg}_{\operatorname{highschool}}) +
 \beta_{2}(\operatorname{parentdeg}_{\operatorname{college}}) +
 \beta_{3}(\operatorname{parentdeg}_{\operatorname{graduate}}) +
@@ -1705,6 +1705,72 @@ eqns_gss[[1]]</code></pre>
 \beta_{7}(\operatorname{parentdeg}_{\operatorname{graduate}} \times
 \operatorname{year})
 \]</span></p>
+</div>
+<div id="testing-submodel-argument-and-knit_print" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Testing
+<code>submodel</code> argument and <code>knit_print</code></h1>
+<div id="submodel-extract-a-single-equation-by-name" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span>
+<code>submodel</code>: extract a single equation by name</h2>
+<p><code>submodel = &quot;work&quot;</code> should return a bare
+<code>&quot;equation&quot;</code> object that renders directly — equivalent to
+<code>extract_eq(wlf.nested)$work</code> but without the <code>$</code>
+indexing.</p>
+<pre class="r"><code>extract_eq(wlf.nested, submodel = &quot;work&quot;)</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{work} ) }{ 1 - P(
+\operatorname{work} ) } \right] = \alpha +
+\beta_{1}(\operatorname{hincome}) +
+\beta_{2}(\operatorname{children}_{\operatorname{present}})
+\]</span></p>
+<pre class="r"><code>extract_eq(wlf.nested, submodel = &quot;full&quot;, use_coefs = TRUE)</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { \widehat{P( \operatorname{full} )} }{ 1 - \widehat{P(
+\operatorname{full} )} } \right] = 3.48 - 0.11(\operatorname{hincome}) -
+2.65(\operatorname{children}_{\operatorname{present}})
+\]</span></p>
+<p>Error on a bad name:</p>
+<pre class="r"><code>extract_eq(wlf.nested, submodel = &quot;bad_name&quot;)
+#&gt; Error in `extract_eq.nestedLogit()`:
+#&gt; ! submodel &#39;bad_name&#39; not found; available: work, full</code></pre>
+</div>
+<div id="submodel-with-other-arguments" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> <code>submodel</code>
+with other arguments</h2>
+<p><code>submodel</code> and <code>...</code> arguments can be
+combined:</p>
+<pre class="r"><code>extract_eq(wlf.nested, submodel = &quot;work&quot;, use_coefs = TRUE)</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { \widehat{P( \operatorname{work} )} }{ 1 - \widehat{P(
+\operatorname{work} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) -
+1.58(\operatorname{children}_{\operatorname{present}})
+\]</span></p>
+<pre class="r"><code>extract_eq(wlf.nested, submodel = &quot;work&quot;,
+           greek_colors = c(&quot;black&quot;, &quot;blue&quot;, &quot;blue&quot;),
+           var_colors   = c(hincome = &quot;red&quot;, children = &quot;darkgreen&quot;))</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{work} ) }{ 1 - P(
+\operatorname{work} ) } \right] = {\color{black}{\alpha}} +
+{\color{blue}{\beta}}_{1}({\color{red}{\operatorname{hincome}}}) +
+{\color{blue}{\beta}}_{2}({\color{darkgreen}{\operatorname{children}}}_{\operatorname{present}})
+\]</span></p>
+</div>
+<div id="gators-submodel-with-underscore-name" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Gators:
+<code>submodel</code> with underscore name</h2>
+<pre class="r"><code>extract_eq(gators.nested, submodel = &quot;other&quot;)</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{other} ) }{ 1 - P(
+\operatorname{other} ) } \right] = \alpha +
+\beta_{1}(\operatorname{length})
+\]</span></p>
+<pre class="r"><code>extract_eq(gators.nested, submodel = &quot;fish_inv&quot;)</code></pre>
+<p><span class="math display">\[
+\log\left[ \frac { P( \operatorname{fish.inv} ) }{ 1 - P(
+\operatorname{fish.inv} ) } \right] = \alpha +
+\beta_{1}(\operatorname{length})
+\]</span></p>
+</div>
 </div>
 
 
