@@ -39,7 +39,7 @@ The second ignores A, B and contrasts D against C."><meta property="og:image" co
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@ The second ignores A, B and contrasts D against C."><meta property="og:image" co
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/easystats.html">Using easystats with nestedLogit models</a></li>
     <li><a class="dropdown-item" href="../articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="../articles/latex-equations.html">Displaying nestedLogit Models as LaTeX Equations</a></li>
     <li><a class="dropdown-item" href="../articles/other-examples.html">Other Examples of Nested Logit Models</a></li>
     <li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
@@ -244,7 +245,7 @@ Section 8.2.</p>
 <span class="r-in"><span>                   data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: partic ~ hincome + children</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000020dc0537858&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000017551898da0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response work: {not.work} vs. working{parttime, fulltime}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -327,7 +328,7 @@ Section 8.2.</p>
 <span class="r-in"><span>                                 working<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"parttime"</span>, <span class="st">"fulltime"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              data<span class="op">=</span><span class="va">Womenlf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Nested logit models: partic ~ hincome + children</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000020dc0537858&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x0000017551898da0&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glm(formula = not.work_v_working ~ hincome + children, family = binomial, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     data = Womenlf, contrasts = contrasts)</span>

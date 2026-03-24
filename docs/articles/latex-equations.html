@@ -39,7 +39,7 @@
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../articles/nestedLogit.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/easystats.html">Using easystats with nestedLogit models</a></li>
@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Michael
 Friendly</h4>
             
-            <h4 data-toc-skip class="date">2026-03-22</h4>
+            <h4 data-toc-skip class="date">2026-03-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/friendly/nestedLogit/blob/HEAD/vignettes/latex-equations.Rmd" class="external-link"><code>vignettes/latex-equations.Rmd</code></a></small>
       <div class="d-none name"><code>latex-equations.Rmd</code></div>
@@ -108,7 +108,7 @@ named list.</p>
 <h2 id="fitting-a-nested-logit-model">Fitting a nested logit model<a class="anchor" aria-label="anchor" href="#fitting-a-nested-logit-model"></a>
 </h2>
 <p>We use the <code>Womenlf</code> data <span class="citation">(<strong>R-carData?</strong>)</span>, which records the
-labour-force participation of married women and is included in the
+labor-force participation of married women and is included in the
 <code>carData</code> package. The three-category response
 <code>partic</code> (not working, part-time, full-time) is decomposed
 into two nested binary dichotomies:</p>
@@ -137,15 +137,15 @@ work</em>
 <h2 id="symbolic-equations">Symbolic equations<a class="anchor" aria-label="anchor" href="#symbolic-equations"></a>
 </h2>
 <p>Calling <code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code> on a <code>"nestedLogit"</code>
-object returns the model equations in symbolic (Greek-letter) form, with
-the response for each dichotomy labelled by its name.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span></code></pre></div>
+object with <code>submodel = "name"</code> returns the equation for a
+single dichotomy in symbolic (Greek-letter) form, labeled by its name.
+The equation renders automatically in R Markdown and Quarto
+documents.</p>
 <div class="section level3">
 <h3 id="work-dichotomy-not-working-vs--working">Work dichotomy (not working vs. working)<a class="anchor" aria-label="anchor" href="#work-dichotomy-not-working-vs--working"></a>
 </h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns</span><span class="op">$</span><span class="va">work</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, submodel <span class="op">=</span> <span class="st">"work"</span><span class="op">)</span></span></code></pre></div>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \log\left[ \frac { P( \operatorname{work} ) }{ 1 - P( \operatorname{work} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
 </annotation></semantics></math></p>
@@ -153,34 +153,77 @@ the response for each dichotomy labelled by its name.</p>
 <div class="section level3">
 <h3 id="full-time-dichotomy-part-time-vs--full-time">Full-time dichotomy (part-time vs. full-time)<a class="anchor" aria-label="anchor" href="#full-time-dichotomy-part-time-vs--full-time"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns</span><span class="op">$</span><span class="va">full</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, submodel <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span></span></code></pre></div>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>full</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>full</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \log\left[ \frac { P( \operatorname{full} ) }{ 1 - P( \operatorname{full} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
 </annotation></semantics></math></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="equations-with-fitted-coefficients">Equations with fitted coefficients<a class="anchor" aria-label="anchor" href="#equations-with-fitted-coefficients"></a>
+<h2 id="using-extract_eq-options">Using <code>extract_eq()</code> options<a class="anchor" aria-label="anchor" href="#using-extract_eq-options"></a>
 </h2>
+<p>There are a wide variety of options you can pass to
+<code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code> to control the details of how the equations
+are rendered in LateX. These include:</p>
+<ul>
+<li>
+<code>use_coefs</code>: Use the model estimates in the equations
+instead of symbols, a nice way to display a fitted model</li>
+<li>Options for coloring symbols in the equations:
+<code>greek_colors</code>, <code>var_colors</code>,
+<code>subscript_colors</code> and others.</li>
+<li>
+<code>ital_vars</code>: Logical, defaults to <code>FALSE</code>.
+Should the variable names not be wrapped in the
+<code>\operatorname{}</code> command so they appear in Roman text?</li>
+</ul>
+<div class="section level3">
+<h3 id="equations-with-fitted-coefficients">Equations with fitted coefficients<a class="anchor" aria-label="anchor" href="#equations-with-fitted-coefficients"></a>
+</h3>
 <p>Passing <code>use_coefs = TRUE</code> substitutes the fitted
 coefficient values into the equations.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns_coef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns_coef</span><span class="op">$</span><span class="va">work</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span>, submodel <span class="op">=</span> <span class="st">"work"</span><span class="op">)</span></span></code></pre></div>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover><mrow><mn>1</mn><mo>−</mo><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mn>1.34</mn><mo>−</mo><mn>0.04</mn><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1.58</mn><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \log\left[ \frac { \widehat{P( \operatorname{work} )} }{ 1 - \widehat{P( \operatorname{work} )} } \right] = 1.34 - 0.04(\operatorname{hincome}) - 1.58(\operatorname{children}_{\operatorname{present}})
 </annotation></semantics></math></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eqns_coef</span><span class="op">$</span><span class="va">full</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span>, submodel <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span></span></code></pre></div>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>full</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover><mrow><mn>1</mn><mo>−</mo><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>full</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mn>3.48</mn><mo>−</mo><mn>0.11</mn><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>2.65</mn><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \log\left[ \frac { \widehat{P( \operatorname{full} )} }{ 1 - \widehat{P( \operatorname{full} )} } \right] = 3.48 - 0.11(\operatorname{hincome}) - 2.65(\operatorname{children}_{\operatorname{present}})
 </annotation></semantics></math></p>
 </div>
-<div class="section level2">
-<h2 id="equations-for-individual-sub-models">Equations for individual sub-models<a class="anchor" aria-label="anchor" href="#equations-for-individual-sub-models"></a>
-</h2>
+<div class="section level3">
+<h3 id="coloring-symbols">Coloring symbols<a class="anchor" aria-label="anchor" href="#coloring-symbols"></a>
+</h3>
+<p>The <code>greek_colors</code> and <code>var_colors</code> arguments
+control the color of the Greek coefficient symbols and the variable
+names, respectively. This can help distinguish the structural parameters
+from the predictors when displaying equations in presentations or
+documents.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>,</span>
+<span>           greek_colors <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>           submodel <span class="op">=</span> <span class="st">"work"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { P( \operatorname{work} ) }{ 1 - P( \operatorname{work} ) } \right] = {\color{blue}{\alpha}} + {\color{blue}{\beta}}_{1}(\operatorname{hincome}) + {\color{blue}{\beta}}_{2}(\operatorname{children}_{\operatorname{present}})
+</annotation></semantics></math></p>
+<p>The color arguments accept any R color name or hex code, and can be a
+vector to color each symbol differently. <code>var_colors</code> needs a
+named vector of the variable names.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>,</span>
+<span>           greek_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"blue"</span><span class="op">)</span>,</span>
+<span>           var_colors   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>hincome <span class="op">=</span> <span class="st">"red"</span>, children<span class="op">=</span><span class="st">"darkgreen"</span><span class="op">)</span>,</span>
+<span>           submodel     <span class="op">=</span> <span class="st">"work"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>work</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { P( \operatorname{work} ) }{ 1 - P( \operatorname{work} ) } \right] = {\color{black}{\alpha}} + {\color{blue}{\beta}}_{1}({\color{red}{\operatorname{hincome}}}) + {\color{blue}{\beta}}_{2}({\color{darkgreen}{\operatorname{children}}}_{\operatorname{present}})
+</annotation></semantics></math></p>
+</div>
+<div class="section level3">
+<h3 id="equations-for-individual-sub-models">Equations for individual sub-models<a class="anchor" aria-label="anchor" href="#equations-for-individual-sub-models"></a>
+</h3>
 <p>The individual binary logit sub-models (objects of class
 <code>"glm"</code>) can also be passed directly to
 <code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code>. This can be useful when you want to work with
@@ -191,21 +234,84 @@ a single dichotomy in isolation.</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>..y</mo><mo>=</mo><mo>1</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>..y</mo><mo>=</mo><mo>1</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>hincome</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>children</mo><mo>present</mo></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \log\left[ \frac { P( \operatorname{..y} = \operatorname{1} ) }{ 1 - P( \operatorname{..y} = \operatorname{1} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
 </annotation></semantics></math></p>
+<p>Note that the response is rendered as <code>..y</code> — the internal
+variable name used when fitting the sub-model — rather than as a
+meaningful label. The <code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code> method for a
+<code>"nestedLogit"</code> model fixes this infelicity.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="using-the-raw-latex">Using the raw LaTeX<a class="anchor" aria-label="anchor" href="#using-the-raw-latex"></a>
 </h2>
-<p>Each element of the returned list is an object of class
-<code>"equation"</code> (from <code>equatiomatic</code>), which is a
-character string containing the LaTeX source. It renders automatically
-in R Markdown and Quarto documents. To access the raw LaTeX — for
-example to paste it into a paper or to render it with another tool such
-as <code>katex</code> — use <code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code>:</p>
+<p>Each equation returned by <code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code> is an object of
+class <code>"equation"</code> (from <code>equatiomatic</code>), which is
+a character string containing the LaTeX source. This renders
+automatically in R Markdown and Quarto documents. To access the raw
+LaTeX — for example to paste it into a paper or to render it with
+another tool such as <code>katex</code> — use
+<code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">eqns</span><span class="op">$</span><span class="va">work</span><span class="op">)</span>, <span class="st">"\n\n"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, submodel <span class="op">=</span> <span class="st">"work"</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; \log\left[ \frac { P( \operatorname{work} ) }{ 1 - P( \operatorname{work} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">eqns</span><span class="op">$</span><span class="va">full</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">wlf.nested</span>, submodel <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; \log\left[ \frac { P( \operatorname{full} ) }{ 1 - P( \operatorname{full} ) } \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="alligator-food-choice-gators-data">Alligator food choice: <code>gators</code> data<a class="anchor" aria-label="anchor" href="#alligator-food-choice-gators-data"></a>
+</h2>
+<p>The <code>gators</code> data (built into <code>nestedLogit</code>)
+records the primary food choice of alligators — Other, Fish, or
+Invertebrates — as a function of body length. The three-category
+response is decomposed into two dichotomies using
+<code><a href="../reference/nestedLogit.html">logits()</a></code>:</p>
+<ul>
+<li>
+<strong>other</strong>: {Other} vs. {Fish, Invertebrates}</li>
+<li>
+<strong>fish_inv</strong>: {Fish} vs. {Invertebrates}, <em>among
+those not eating Other</em>
+</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gators</span><span class="op">)</span></span>
+<span><span class="va">gators.dichots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">logits</a></span><span class="op">(</span></span>
+<span>  other    <span class="op">=</span> <span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"Other"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fish"</span>, <span class="st">"Invertebrates"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  fish_inv <span class="op">=</span> <span class="fu"><a href="../reference/nestedLogit.html">dichotomy</a></span><span class="op">(</span><span class="st">"Fish"</span>, <span class="st">"Invertebrates"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">gators.dichots</span></span>
+<span><span class="co">#&gt; other: {Other} vs. {Fish, Invertebrates}</span></span>
+<span><span class="co">#&gt; fish_inv: {Fish} vs. {Invertebrates}</span></span>
+<span></span>
+<span><span class="va">gators.nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nestedLogit.html">nestedLogit</a></span><span class="op">(</span><span class="va">food</span> <span class="op">~</span> <span class="va">length</span>,</span>
+<span>                             dichotomies <span class="op">=</span> <span class="va">gators.dichots</span>,</span>
+<span>                             data <span class="op">=</span> <span class="va">gators</span><span class="op">)</span></span></code></pre></div>
+<p>Note that the dichotomy name <code>fish_inv</code> contains an
+underscore. Because <code>_</code> is the subscript operator in LaTeX,
+<code><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq()</a></code> replaces it with <code>.</code> in the
+displayed equation (the <code>submodel</code> argument still uses the
+original R name).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">gators.nested</span>, submodel <span class="op">=</span> <span class="st">"other"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>other</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>other</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>length</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { P( \operatorname{other} ) }{ 1 - P( \operatorname{other} ) } \right] = \alpha + \beta_{1}(\operatorname{length})
+</annotation></semantics></math></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">gators.nested</span>, submodel <span class="op">=</span> <span class="st">"fish_inv"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>fish.inv</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mn>1</mn><mo>−</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>fish.inv</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>α</mi><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>length</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { P( \operatorname{fish.inv} ) }{ 1 - P( \operatorname{fish.inv} ) } \right] = \alpha + \beta_{1}(\operatorname{length})
+</annotation></semantics></math></p>
+<p>With fitted coefficients:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">gators.nested</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span>, submodel <span class="op">=</span> <span class="st">"other"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>other</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover><mrow><mn>1</mn><mo>−</mo><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>other</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mn>3.13</mn><mo>−</mo><mn>0.57</mn><mrow><mo stretchy="true" form="prefix">(</mo><mo>length</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { \widehat{P( \operatorname{other} )} }{ 1 - \widehat{P( \operatorname{other} )} } \right] = 3.13 - 0.57(\operatorname{length})
+</annotation></semantics></math></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://datalorax.github.io/equatiomatic/reference/extract_eq.html" class="external-link">extract_eq</a></span><span class="op">(</span><span class="va">gators.nested</span>, use_coefs <span class="op">=</span> <span class="cn">TRUE</span>, submodel <span class="op">=</span> <span class="st">"fish_inv"</span><span class="op">)</span></span></code></pre></div>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">[</mo><mfrac><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>fish.inv</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover><mrow><mn>1</mn><mo>−</mo><mover><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>fish.inv</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">̂</mo></mover></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mn>4.32</mn><mo>−</mo><mn>2.48</mn><mrow><mo stretchy="true" form="prefix">(</mo><mo>length</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+\log\left[ \frac { \widehat{P( \operatorname{fish.inv} )} }{ 1 - \widehat{P( \operatorname{fish.inv} )} } \right] = 4.32 - 2.48(\operatorname{length})
+</annotation></semantics></math></p>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -15,7 +15,7 @@ one row per binary logit sub-model (dichotomy) and an additional
 
     <a class="navbar-brand me-2" href="../index.html">nestedLogit</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@ one row per binary logit sub-model (dichotomy) and an additional
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/easystats.html">Using easystats with nestedLogit models</a></li>
     <li><a class="dropdown-item" href="../articles/ggeffects.html">Using ggeffects with nestedLogit models</a></li>
+    <li><a class="dropdown-item" href="../articles/latex-equations.html">Displaying nestedLogit Models as LaTeX Equations</a></li>
     <li><a class="dropdown-item" href="../articles/other-examples.html">Other Examples of Nested Logit Models</a></li>
     <li><a class="dropdown-item" href="../articles/plotting-ggplot.html">Plotting nestedLogit models with ggplot2</a></li>
     <li><a class="dropdown-item" href="../articles/standard-errors.html">Standard Errors of Fitted Category Probabilities by the Delta Method for the Nested Logit Model</a></li>
@@ -227,18 +228,25 @@ models — a new proposal: The coefficient of discrimination.
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Default: McFadden, CoxSnell, Nagelkerke + AIC</span></span></span>
 <span class="r-in"><span><span class="fu">RSQ</span><span class="op">(</span><span class="va">wlf.nested</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Pseudo R² measures for nestedLogit model:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pseudo R² measures for nestedLogit model wlf.nested:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   partic ~ hincome + children </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     model McFadden CoxSnell Nagelkerke      AIC </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      work   0.1023   0.1293     0.1743 325.7325 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      full   0.2761   0.3085     0.4185 110.4948 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ----------------------------------------------- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Combined   0.1524   0.2517     0.2958 436.2274 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  response McFadden CoxSnell Nagelkerke     AIC </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      work    0.102    0.129      0.174 325.733 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      full    0.276    0.309      0.419 110.495 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Combined    0.152    0.252      0.296 436.227 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># All measures and all extra columns</span></span></span>
 <span class="r-in"><span><span class="fu">RSQ</span><span class="op">(</span><span class="va">wlf.nested</span>, which <span class="op">=</span> <span class="st">"ALL"</span>, include <span class="op">=</span> <span class="st">"ALL"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in match.arg(which, choices = c("McFadden", "McFaddenAdj", "CoxSnell",     "Nagelkerke", "Tjur"), several.ok = TRUE):</span> 'arg' should be one of "McFadden", "McFaddenAdj", "CoxSnell", "Nagelkerke", "Tjur"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pseudo R² measures for nestedLogit model wlf.nested:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   partic ~ hincome + children </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  response McFadden McFaddenAdj CoxSnell Nagelkerke  Tjur     AIC     BIC   n </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      work    0.102       0.091    0.129      0.174 0.138 325.733 336.449 263 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      full    0.276       0.248    0.309      0.419 0.333 110.495 118.541 108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------------------------------------------- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Combined    0.152       0.136    0.252      0.296    NA 436.227 457.660 263 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multinomial logit for comparison</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"nnet"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -246,14 +254,22 @@ models — a new proposal: The coefficient of discrimination.
 <span class="r-in"><span>                              trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">RSQ</span><span class="op">(</span><span class="va">wlf.multi</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("RSQ"):</span> no applicable method for 'RSQ' applied to an object of class "c('multinom', 'nnet')"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pseudo R² measures for multinom model wlf.multi:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   partic ~ hincome + children </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  response McFadden CoxSnell Nagelkerke     AIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    partic    0.155    0.256        0.3 434.882</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Proportional-odds model for comparison</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"MASS"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="va">wlf.polr</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html" class="external-link">polr</a></span><span class="op">(</span><span class="va">partic</span> <span class="op">~</span> <span class="va">hincome</span> <span class="op">+</span> <span class="va">children</span>, data <span class="op">=</span> <span class="va">Womenlf</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">RSQ</span><span class="op">(</span><span class="va">wlf.polr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("RSQ"):</span> no applicable method for 'RSQ' applied to an object of class "polr"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pseudo R² measures for polr model wlf.polr:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   partic ~ hincome + children </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  response McFadden CoxSnell Nagelkerke     AIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    partic    0.127    0.214      0.252 445.075</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
