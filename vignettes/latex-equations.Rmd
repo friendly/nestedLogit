@@ -94,6 +94,16 @@ extract_eq(wlf.nested, submodel = "work")
 extract_eq(wlf.nested, submodel = "full")
 ```
 
+### Logit notation
+
+A new version of `equatiomatic` (v. 0.4.6) implements a `logit_notation` argument to simply the display of the LHS of these
+equations as `logit [P()]` rather than `log [P() / 1 - P()]`.
+
+```{r eqn-full-logit}
+extract_eq(wlf.nested, submodel = "full", logit_notation = TRUE)
+```
+
+
 ## Using `extract_eq()` options
 
 There are a wide variety of options you can pass to `extract_eq()` to control the details of how the equations are rendered

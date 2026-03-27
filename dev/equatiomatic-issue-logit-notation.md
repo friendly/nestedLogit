@@ -29,6 +29,9 @@ dichotomy.  For a model with several dichotomies and several predictors, the
 equations become long, and the log-fraction LHS adds visual noise on top of an
 already busy RHS.
 
+See: [the vignette](https://friendly.github.io/nestedLogit/articles/latex-equations.html) 
+illustrating the current implementation.
+
 In this context:
 - Each sub-model is a standard `glm(..., family = binomial)` object.
 - `extract_eq()` is called on each sub-model in turn; the results are assembled
@@ -87,3 +90,80 @@ engine only supports back-references in *replacement* strings.)
   a separate decision.
 - For `polr` (ordered logit/probit), the threshold form of the LHS is different
   and would need separate treatment.
+- GLMs in general allow a wide variety of link functions `g(Y)` so this idea could be more generally useful.
+
+## Testing the `logit-notation` branch
+
+Installed via `remotes::install_github("datalorax/equatiomatic@logit_notation")` and
+tested with the `nestedLogit` package.
+
+### What works
+
+`logit_notation = TRUE` produces the correct LHS on a single GLM sub-model:
+
+```r
+mod.work <- models(wlf.nested, "work")
+extract_eq(mod.work, logit_notation = TRUE)
+```
+
+Output (as expected):
+
+```latex
+$$
+\operatorname{logit}\left[ P( \operatorname{work} ) \right] = \alpha + \beta_{1}(\operatorname{hincome}) + \beta_{2}(\operatorname{children}_{\operatorname{present}})
+$$
+```
+
+The argument also passes through correctly to the `nestedLogit` S3 method, which
+calls `extract_eq()` on each sub-model in turn — so the full nested model works too.
+
+### Bug: misleading message when `logit_notation = TRUE` is actually applied
+
+Every call to `extract_eq(model, logit_notation = TRUE)` emits:
+
+```
+logit_notation = TRUE ignored when show_distribution is TRUE.
+```
+
+But the output IS correct — the logit notation is applied.  The message is
+contradicted by the result.  It appears that the warning fires unconditionally
+(perhaps whenever `show_distribution` takes its default `TRUE` value) rather than
+only when the substitution is genuinely being skipped.  This should either be
+suppressed when the substitution succeeds, or the condition guarding it should be
+inverted.
+
+### Downstream issue: `preview_eq()` fails on already-rendered equation strings
+
+`preview_eq()` works fine on a single sub-model:
+
+```r
+extract_eq(mod.work, logit_notation = TRUE) |> preview_eq()   # OK
+```
+
+But piping the full `nestedLogit` output to `preview_eq()` errors:
+
+```r
+extract_eq(wlf.nested, logit_notation = TRUE) |> preview_eq()
+# logit_notation = TRUE ignored when show_distribution is TRUE.
+# logit_notation = TRUE ignored when show_distribution is TRUE.
+# Error in UseMethod("extract_lhs", model) :
+#   no applicable method for 'extract_lhs' applied to an object of class
+#   "c('equation', 'character')"
+```
+
+The `nestedLogit` method returns a named list of `"equation"` objects that are
+already-rendered character strings (class `c("equation", "character")`).
+`preview_eq()` then tries to call `extract_lhs()` on each one as if it were still
+a model object, which fails.  This is most likely a `nestedLogit`-side issue —
+the package needs a `preview_eq` method for its `"nestedLogit_equations"` list
+class — rather than a bug in equatiomatic.  Noting it here for completeness.
+
+### Summary
+
+| Test | Result |
+|------|--------|
+| `extract_eq(glm_submodel, logit_notation = TRUE)` | ✓ correct output |
+| `extract_eq(nestedLogit_model, logit_notation = TRUE)` | ✓ correct output |
+| Message "ignored when show_distribution is TRUE" | ✗ misleading — fires even when substitution succeeds |
+| `extract_eq(...) \|> preview_eq()` on single sub-model | ✓ works |
+| `extract_eq(nestedLogit_model, ...) \|> preview_eq()` | ✗ errors (nestedLogit-side fix needed) |
