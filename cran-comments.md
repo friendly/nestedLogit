@@ -12,7 +12,7 @@
 ## Reverse dependencies
 
 > devtools::revdep()
-[1] "ggeffects"   "insight"     "parameters"  "performance"
+[1] "ggeffects"   "insight"     "modelbased"  "parameters"  "performance"
 
 ## revdepcheck results
 > revdepcheck::revdep_check(num_workers=4)
