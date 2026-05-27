@@ -332,13 +332,16 @@ createDichotomies <- function(x){
 }
 
 #' @keywords internal
+#' @export
 createDichotomies.dichotomies <- function(x) x
 
 #' @keywords internal
+#' @export
 createDichotomies.default <- function(x)
   stop("dichotomies argument must be of class 'dichotomies' or mode 'list'")
 
 #' @keywords internal
+#' @export
 createDichotomies.list <- function(x){
   helper <- function(dichotomies, x){
     if (length(x) != 2L || !is.list(x)) {

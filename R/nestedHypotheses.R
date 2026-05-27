@@ -1,8 +1,7 @@
 #' Hypothesis-Testing and Related Methods for \code{"nestedLogit"} Objects
 #'
 #' @name nestedHypotheses
-#' @aliases nestedHypotheses Anova.nestedLogit print.Anova.nestedLogit
-#' anova.nestedLogit print.anova.nestedLogit logLik.nestedLogit
+#' @aliases nestedHypotheses Anova.nestedLogit print.Anova.nestedLogit anova.nestedLogit print.anova.nestedLogit logLik.nestedLogit
 #'
 #' @description Various methods for testing hypotheses about nested logit models.
 #' \describe{

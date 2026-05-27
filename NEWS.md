@@ -4,6 +4,8 @@
 * added a vignette ("latex-equations") illustrating use of LaTeX equations in Rmarkdown / Quarto documents for these models and various options available.
 * fixed subtle LaTeX bug in `extract_eq()` when dichotomy names contain "_"
 * added a `submodel=` arg to avoid `$submodel` indexing
+* Fixed DOIs in RSQ.R now that CRAN is pickier about their format
+* Fixed documentation nits from Roxygen 8.0.0
 
 ## nestedLogit 0.4.1
 

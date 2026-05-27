@@ -1,10 +1,7 @@
 #' Methods for \code{"nestedLogit"} and Related Objects
 #'
 #' @name nestedMethods
-#' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit
-#' update.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies
-#' as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies
-#' as.matrix.dichotomies as.dichotomies
+#' @aliases nestedMethods print.nestedLogit summary.nestedLogit print.summary.nestedLogit update.nestedLogit coef.nestedLogit vcov.nestedLogit print.dichotomies as.dichotomies.matrix as.matrix.continuationDichotomies as.character.dichotomies as.matrix.dichotomies as.dichotomies
 #'
 #' @description Various methods for processing \code{"nestedLogit"} and related objects.
 #' Most of these are the standard methods for a model-fitting function.

@@ -18,3 +18,5 @@ dev/
 ^vignettes/articles$
 .github
 ^\.dropboxignore$
+^\.positai$
+^\.claude$

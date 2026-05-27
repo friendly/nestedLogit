@@ -1,8 +1,7 @@
 #' Predicted Probabilities and Logits for \code{"nestedLogit"} Models
 #'
 #' @name predict.nestedLogit
-#' @aliases predict.nestedLogit fitted.nestedLogit print.predictNestedLogit
-#' confint.predictNestedLogit print.predictDichotomies
+#' @aliases predict.nestedLogit fitted.nestedLogit print.predictNestedLogit confint.predictNestedLogit print.predictDichotomies
 #'
 #' @description The \code{predict} and \code{fitted} methods compute predicted values from a fitted
 #' \code{"nestedLogit"} model.

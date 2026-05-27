@@ -148,10 +148,10 @@ Chapman and Hall.
 
 Efron, B. (1978). Regression and ANOVA with zero-one data: Measures of
 residual variation. \emph{Journal of the American Statistical Association},
-\emph{73}(361), 113--121. \url{https://doi.org/10.2307/2286498}
+\emph{73}(361), 113--121. \doi{10.2307/2286498}
 
 Hosmer, D. W., & Lemeshow, S. (2000). \emph{Applied Logistic Regression}
-(2nd ed.). Wiley. \url{https://doi.org/10.1002/0471722146}
+(2nd ed.). Wiley. \doi{10.1002/0471722146}
 
 McFadden, D. (1979). Quantitative methods for analysing travel behaviour of
 individuals: Some recent developments. In D. A. Hensher & P. R. Stopher
@@ -159,19 +159,19 @@ individuals: Some recent developments. In D. A. Hensher & P. R. Stopher
 
 McKelvey, R. D., & Zavoina, W. (1975). A statistical model for the analysis
 of ordinal level dependent variables. \emph{Journal of Mathematical Sociology},
-\emph{4}(1), 103--120. \url{https://doi.org/10.1080/0022250X.1975.9989847}
+\emph{4}(1), 103--120. \doi{10.1080/0022250X.1975.9989847}
 
 Nagelkerke, N. J. D. (1991). A note on a general definition of the
 coefficient of determination. \emph{Biometrika}, \emph{78}(3), 691--692.
-\url{https://doi.org/10.1093/biomet/78.3.691}
+\doi{10.1093/biomet/78.3.691}
 
 Tjur, T. (2009). Coefficients of determination in logistic regression
 models --- a new proposal: The coefficient of discrimination.
 \emph{The American Statistician}, \emph{63}(4), 366--372.
-\url{https://doi.org/10.1198/tast.2009.08210}
+\doi{10.1198/tast.2009.08210}
 }
 \seealso{
-\code{\link[=nestedLogit]{nestedLogit()}}, \code{\link[broom:reexports]{broom::glance()}},
+\code{\link[=nestedLogit]{nestedLogit()}}, \code{\link[broom:glance]{broom::glance()}},
 \code{\link[DescTools:PseudoR2]{DescTools::PseudoR2()}},
 \code{\link[nnet:multinom]{nnet::multinom()}}, \code{\link[MASS:polr]{MASS::polr()}}
 }
