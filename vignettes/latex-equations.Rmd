@@ -107,7 +107,7 @@ extract_eq(wlf.nested, submodel = "full", logit_notation = TRUE)
 ## Using `extract_eq()` options
 
 There are a wide variety of options you can pass to `extract_eq()` to control the details of how the equations are rendered
-in LateX. These include:
+in LaTeX. These include:
 
 * `use_coefs`: Use the model estimates in the equations instead of symbols, a nice way to display a fitted model
 * Options for coloring symbols in the equations: `greek_colors`, `var_colors`, `subscript_colors` and others.
